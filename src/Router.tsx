@@ -1,13 +1,16 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Layout from './layout';
 import Post from './post';
 
 function Router() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Post />} />
-      </Routes>
-    </BrowserRouter>
+    <Layout>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Post />} />
+        </Routes>
+      </BrowserRouter>
+    </Layout>
   );
 }
 
