@@ -8,6 +8,7 @@ const postId = '63bc5a9f23d1e65ff38c6b9b';
 const DetailPost = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const token = localStorage.getItem('TOKEN_KEY');
 
   const handleTitleOnChnage = (e: string) => {
     setTitle(e);
@@ -15,8 +16,6 @@ const DetailPost = () => {
   const handleContentOnChnage = (e: string) => {
     setContent(e);
   };
-
-  const token = localStorage.getItem('TOKEN_KEY');
 
   const UpdatePost = () => {
     const testData = {
@@ -34,6 +33,18 @@ const DetailPost = () => {
     };
 
     axios.put(`${END_POINT}/posts/update`, post, {
+      headers: {
+        Authorization: `bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+  };
+
+  const DeletePost = () => {
+    axios.delete(`${END_POINT}/posts/delete`, {
+      data: {
+        id: postId,
+      },
       headers: {
         Authorization: `bearer ${token}`,
         'Content-Type': 'application/json',
@@ -74,6 +85,7 @@ const DetailPost = () => {
         placeholder="내용"
       />
       <button onClick={UpdatePost}>내용 수정</button>
+      <button onClick={DeletePost}>글 삭제</button>
     </div>
   );
 };
