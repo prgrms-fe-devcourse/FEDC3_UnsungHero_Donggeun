@@ -2,11 +2,16 @@ import React, { useState, useRef, useCallback } from 'react';
 import { FunctionComponent } from 'react';
 
 interface SearchBoxProps {
-  setSelectedValue2: (value: string) => void;
-  setInputValue2: (value: string) => void;
+  setSelectedSearchValue: (value: string) => void;
+  setInputSearchValue: (value: string) => void;
+  getPostsList: () => void;
 }
 
-const SearchBox: FunctionComponent<SearchBoxProps> = ({ setSelectedValue2, setInputValue2 }) => {
+const SearchBox: FunctionComponent<SearchBoxProps> = ({
+  setSelectedSearchValue,
+  setInputSearchValue,
+  getPostsList,
+}) => {
   const [inputValue, setInputValue] = useState('');
   const [selectedValue, setSelectedValue] = useState('제목');
   const inputRef = useRef<HTMLInputElement>(null);
@@ -22,8 +27,9 @@ const SearchBox: FunctionComponent<SearchBoxProps> = ({ setSelectedValue2, setIn
   const onSubmitForm = useCallback(
     (e: React.FormEvent<HTMLFormElement>): void => {
       e.preventDefault();
-      setSelectedValue2(selectedValue);
-      setInputValue2(inputValue);
+      setSelectedSearchValue(selectedValue);
+      setInputSearchValue(inputValue);
+      getPostsList();
     },
     [inputValue, selectedValue]
   );
