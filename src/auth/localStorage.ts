@@ -20,7 +20,15 @@ const useLocalStorage = (key: string, initialValue: string) => {
     }
   };
 
-  return [storedValue, setValue];
+  const removeValue = () => {
+    try {
+      localStorage.removeItem(key);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return [storedValue, setValue, removeValue];
 };
 
 export default useLocalStorage;
