@@ -4,13 +4,13 @@ import Post from './post';
 
 function Router() {
   return (
-    <Layout>
-      <BrowserRouter>
+    <BrowserRouter>
+      <Layout>
         <Routes>
           <Route path="/" element={<Post />} />
         </Routes>
-      </BrowserRouter>
-    </Layout>
+      </Layout>
+    </BrowserRouter>
   );
 }
 
