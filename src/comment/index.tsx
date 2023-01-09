@@ -1,7 +1,17 @@
 import { useState, useEffect } from 'react';
 
+interface Comment {
+  _id: string;
+  comment: string;
+  author: any;
+  post: string; // 포스트 id
+  createdAt: string;
+  updatedAt: string;
+}
+
 function Comment() {
   const [value, setValue] = useState('');
+  const [commentList, setCommentList] = useState<Comment[]>();
 
   const handleInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
@@ -34,12 +44,35 @@ function Comment() {
     }
   };
 
+  const getCommentList = async () => {
+    const response = await fetch(
+      'http://kdt.frontend.3rd.programmers.co.kr:5006/posts/63bbc0d78c65a93bebe29fd4',
+      {
+        method: 'GET',
+      }
+    );
+
+    if (response.ok) {
+      const res = await response.json();
+      setCommentList(res.comments);
+    }
+  };
+
+  useEffect(() => {
+    getCommentList();
+  }, []);
+
   return (
     <>
       <form onSubmit={handleSubmitInput}>
         <input placeholder="댓글 입력해주세요" onChange={handleInputValue} value={value} />
         <button>전송</button>
       </form>
+      <ul>
+        {commentList?.map(({ comment }) => (
+          <li>{comment}</li>
+        ))}
+      </ul>
     </>
   );
 }
