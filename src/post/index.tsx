@@ -1,10 +1,10 @@
-import Index from '../search/Index';
+import Search from '../search/Search';
 
 function Post() {
   return (
     <>
       <h1>언성히어로 최고🤗</h1>
-      <Index _id={'rkskekfkakqktk'} />
+      <Search _id={'rkskekfkakqktk'} />
     </>
   );
 }

@@ -1,28 +1,32 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { FunctionComponent } from 'react';
 
-type SearchBoxProps = {
-  searchPostList: (selectedValue: string, inputValue: string) => void;
-};
+interface SearchBoxProps {
+  setSelectedValue2: (value: string) => void;
+  setInputValue2: (value: string) => void;
+}
 
-const SearchBox: FunctionComponent<SearchBoxProps> = ({ searchPostList }) => {
+const SearchBox: FunctionComponent<SearchBoxProps> = ({ setSelectedValue2, setInputValue2 }) => {
   const [inputValue, setInputValue] = useState('');
   const [selectedValue, setSelectedValue] = useState('제목');
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const onSubmitForm = useCallback((e: any): void => {
-    e.preventDefault();
-    searchPostList(selectedValue, inputValue);
-    // inputRef.current.focus();
-  }, []);
-
-  const onChangeInput = useCallback((e: any): void => {
+  const onChangeInput = useCallback((e: React.ChangeEvent<HTMLInputElement>): void => {
     setInputValue(e.target.value);
   }, []);
 
-  const onChangeSelect = useCallback((e: any): void => {
+  const onChangeSelect = useCallback((e: React.ChangeEvent<HTMLSelectElement>): void => {
     setSelectedValue(e.target.value);
   }, []);
+
+  const onSubmitForm = useCallback(
+    (e: React.FormEvent<HTMLFormElement>): void => {
+      e.preventDefault();
+      setSelectedValue2(selectedValue);
+      setInputValue2(inputValue);
+    },
+    [inputValue, selectedValue]
+  );
 
   return (
     <form onSubmit={onSubmitForm}>
