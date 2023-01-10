@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 const API_URL = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 
-interface ChannelList {
+interface Channel {
   _id: string;
   name: string;
 }
@@ -14,23 +14,23 @@ const Channels = () => {
   const [channelList, setChannelList] = useState([]);
   const navigate = useNavigate();
   useEffect(() => {
-    requestChannelList();
+    getChannelList();
   }, []);
 
-  const requestChannelList = async () => {
+  const getChannelList = async () => {
     return await axios.get(`${API_URL}/channels`).then(({ data }) => setChannelList(data));
   };
 
-  const moveChannel = (id: string) => {
+  const handleClickMoveChannel = (id: string) => {
     navigate(`/channel/${id}`);
   };
 
   return (
     <Sidebar>
       <ChannelTitle>채널목록</ChannelTitle>
-      {channelList.map((e: ChannelList) => (
-        <Channel key={e._id} onClick={() => moveChannel(e._id)}>
-          {e.name}
+      {channelList.map(({ _id, name }: Channel) => (
+        <Channel key={_id} onClick={() => handleClickMoveChannel(_id)}>
+          {name}
         </Channel>
       ))}
     </Sidebar>
