@@ -37,28 +37,29 @@ const PostListContainer: FunctionComponent<IpostListContainerProps> = ({
     return result;
   };
 
-  const filteredPosts = postsInfo.filter((postInfo) => {
-    const { title } = postInfo;
-    const { fullName } = postInfo.author; //fullName이 아니라 userName이 닉네임인 경우 변경해야함
+  const filterPosts = () => {
+    const filteredPosts = postsInfo.filter((postInfo) => {
+      const { title } = postInfo;
+      const { fullName } = postInfo.author; //fullName이 아니라 userName이 닉네임인 경우 변경해야함
 
-    if (selectedSearchOption === '제목') {
-      return JSON.parse(title).title.includes(inputSearchValue);
-    } else if (selectedSearchOption === '제목+내용') {
-      return (
-        JSON.parse(title).title.includes(inputSearchValue) ||
-        JSON.parse(title).content.includes(inputSearchValue)
-      );
-    } else if (selectedSearchOption === '작성자') {
-      return fullName.includes(inputSearchValue);
-    }
-  });
-
-  console.log(filteredPosts.length);
+      if (selectedSearchOption === '제목') {
+        return JSON.parse(title).title.includes(inputSearchValue);
+      } else if (selectedSearchOption === '제목+내용') {
+        return (
+          JSON.parse(title).title.includes(inputSearchValue) ||
+          JSON.parse(title).content.includes(inputSearchValue)
+        );
+      } else if (selectedSearchOption === '작성자') {
+        return fullName.includes(inputSearchValue);
+      }
+    });
+    return filteredPosts;
+  };
 
   return (
     <>
-      <PostList filteredPostsInfo={dividePosts(filteredPosts)} />
-      <Pagination limit={limit} page={page} totalPosts={filteredPosts.length} setPage={setPage} />
+      <PostList filteredPostsInfo={dividePosts(filterPosts())} />
+      <Pagination limit={limit} page={page} totalPosts={filterPosts().length} setPage={setPage} />
     </>
   );
 };
