@@ -1,13 +1,3 @@
-import SignUp from './SignUp';
-import Login from './Login';
-
-const Auth = () => {
-  return (
-    <>
-      <SignUp />
-      <Login />
-    </>
-  );
-};
-
-export default Auth;
+export { default as SignUp } from './SignUp';
+export { default as Login } from './Login';
+export { default as Logout } from './Logout';
