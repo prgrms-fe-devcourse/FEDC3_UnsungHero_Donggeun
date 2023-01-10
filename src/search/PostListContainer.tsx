@@ -17,20 +17,20 @@ interface IpostsInfo {
 }
 interface IpostListContainerProps {
   postsInfo: IpostsInfo[];
-  selectedSearchValue: string;
+  selectedSearchOption: string;
   inputSearchValue: string;
 }
 
 const PostListContainer: FunctionComponent<IpostListContainerProps> = ({
   postsInfo,
-  selectedSearchValue,
+  selectedSearchOption,
   inputSearchValue,
 }) => {
   return (
     <>
       <PostList
         postsInfo={postsInfo}
-        selectedSearchValue={selectedSearchValue}
+        selectedSearchOption={selectedSearchOption}
         inputSearchValue={inputSearchValue}
       />
     </>

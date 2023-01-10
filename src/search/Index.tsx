@@ -11,7 +11,7 @@ interface ISearchProps {
 
 const Search: FunctionComponent<ISearchProps> = ({ channelId }) => {
   const [postsInfo, setPostsInfo] = useState([]); //PostListContainer에 넘겨 줄 데이터들
-  const [selectedSearchValue, setSelectedSearchValue] = useState('');
+  const [selectedSearchOption, setSelectedSearchOption] = useState('');
   const [inputSearchValue, setInputSearchValue] = useState('');
 
   const getPostsList = async () => {
@@ -24,13 +24,13 @@ const Search: FunctionComponent<ISearchProps> = ({ channelId }) => {
   return (
     <>
       <SearchBox
-        setSelectedSearchValue={setSelectedSearchValue}
+        setSelectedSearchOption={setSelectedSearchOption}
         setInputSearchValue={setInputSearchValue}
         getPostsList={getPostsList}
       />
       <PostListContainer
         postsInfo={postsInfo}
-        selectedSearchValue={selectedSearchValue}
+        selectedSearchOption={selectedSearchOption}
         inputSearchValue={inputSearchValue}
       />
     </>

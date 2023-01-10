@@ -2,18 +2,18 @@ import React, { useState, useRef, useCallback } from 'react';
 import { FunctionComponent } from 'react';
 
 interface SearchBoxProps {
-  setSelectedSearchValue: (value: string) => void;
+  setSelectedSearchOption: (value: string) => void;
   setInputSearchValue: (value: string) => void;
   getPostsList: () => void;
 }
 
 const SearchBox: FunctionComponent<SearchBoxProps> = ({
-  setSelectedSearchValue,
+  setSelectedSearchOption,
   setInputSearchValue,
   getPostsList,
 }) => {
   const [inputValue, setInputValue] = useState('');
-  const [selectedValue, setSelectedValue] = useState('제목');
+  const [selectedOption, setSelectedOption] = useState('제목');
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleChangeInput = useCallback((e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -21,22 +21,22 @@ const SearchBox: FunctionComponent<SearchBoxProps> = ({
   }, []);
 
   const handleChangeSelect = useCallback((e: React.ChangeEvent<HTMLSelectElement>): void => {
-    setSelectedValue(e.target.value);
+    setSelectedOption(e.target.value);
   }, []);
 
   const handleSubmitForm = useCallback(
     (e: React.FormEvent<HTMLFormElement>): void => {
       e.preventDefault();
-      setSelectedSearchValue(selectedValue);
+      setSelectedSearchOption(selectedOption);
       setInputSearchValue(inputValue);
       getPostsList();
     },
-    [inputValue, selectedValue]
+    [inputValue, selectedOption]
   );
 
   return (
     <form onSubmit={handleSubmitForm}>
-      <select onChange={handleChangeSelect} value={selectedValue}>
+      <select onChange={handleChangeSelect} value={selectedOption}>
         <option>제목</option>
         <option>제목+내용</option>
         <option>작성자</option>

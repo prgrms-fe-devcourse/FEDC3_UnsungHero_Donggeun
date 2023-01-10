@@ -16,16 +16,15 @@ interface IpostsInfo {
 }
 interface IPostListProps {
   postsInfo: IpostsInfo[];
-  selectedSearchValue: string;
+  selectedSearchOption: string;
   inputSearchValue: string;
 }
 
 const PostList: FunctionComponent<IPostListProps> = ({
   postsInfo,
-  selectedSearchValue,
+  selectedSearchOption,
   inputSearchValue,
 }) => {
-  console.log(postsInfo);
   return (
     <ul>
       {postsInfo
@@ -33,14 +32,14 @@ const PostList: FunctionComponent<IPostListProps> = ({
           const { title } = postInfo;
           const { fullName } = postInfo.author; //fullName이 아니라 userName이 닉네임인 경우 변경해야함
 
-          if (selectedSearchValue === '제목') {
+          if (selectedSearchOption === '제목') {
             return JSON.parse(title).title.includes(inputSearchValue);
-          } else if (selectedSearchValue === '제목+내용') {
+          } else if (selectedSearchOption === '제목+내용') {
             return (
               JSON.parse(title).title.includes(inputSearchValue) ||
               JSON.parse(title).content.includes(inputSearchValue)
             );
-          } else if (selectedSearchValue === '작성자') {
+          } else if (selectedSearchOption === '작성자') {
             return fullName.includes(inputSearchValue);
           }
         })
