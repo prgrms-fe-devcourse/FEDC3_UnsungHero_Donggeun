@@ -41,12 +41,15 @@ export const useCustomApi = async ({ url, body, headers, method }: Iprops) => {
       break;
     case 'DELETE':
       try {
-        axios.delete(`${END_POINT}${url}`, {
-          data: {
-            ...body,
-            ...headers,
-          },
-        });
+        axios
+          .delete(`${END_POINT}${url}`, {
+            data: {
+              ...body,
+              ...headers,
+            },
+          })
+          .then((res) => res.data)
+          .catch((e) => console.log(e));
       } catch (e) {
         console.log(e);
       }
