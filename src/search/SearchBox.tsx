@@ -16,15 +16,15 @@ const SearchBox: FunctionComponent<SearchBoxProps> = ({
   const [selectedValue, setSelectedValue] = useState('제목');
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const onChangeInput = useCallback((e: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleChangeInput = useCallback((e: React.ChangeEvent<HTMLInputElement>): void => {
     setInputValue(e.target.value);
   }, []);
 
-  const onChangeSelect = useCallback((e: React.ChangeEvent<HTMLSelectElement>): void => {
+  const handleChangeSelect = useCallback((e: React.ChangeEvent<HTMLSelectElement>): void => {
     setSelectedValue(e.target.value);
   }, []);
 
-  const onSubmitForm = useCallback(
+  const handleSubmitForm = useCallback(
     (e: React.FormEvent<HTMLFormElement>): void => {
       e.preventDefault();
       setSelectedSearchValue(selectedValue);
@@ -35,13 +35,13 @@ const SearchBox: FunctionComponent<SearchBoxProps> = ({
   );
 
   return (
-    <form onSubmit={onSubmitForm}>
-      <select onChange={onChangeSelect} value={selectedValue}>
+    <form onSubmit={handleSubmitForm}>
+      <select onChange={handleChangeSelect} value={selectedValue}>
         <option>제목</option>
         <option>제목+내용</option>
         <option>작성자</option>
       </select>
-      <input onChange={onChangeInput} value={inputValue} ref={inputRef} />
+      <input onChange={handleChangeInput} value={inputValue} ref={inputRef} />
       <button>검색</button>
     </form>
   );

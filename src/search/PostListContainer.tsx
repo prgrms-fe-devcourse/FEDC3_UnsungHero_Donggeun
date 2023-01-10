@@ -1,24 +1,35 @@
 import PostList from './PostList';
 import { FunctionComponent } from 'react';
 
-interface PostTitle {
-  title: string;
+interface Ilikes {
+  _id: string;
 }
-interface PostListContainerProps {
-  postTitles: PostTitle[];
+interface Iauthor {
+  fullName: string;
+  username: string;
+}
+
+interface IpostsInfo {
+  title: string;
+  _id: string;
+  author: Iauthor;
+  likes: Ilikes[];
+}
+interface IpostListContainerProps {
+  postsInfo: IpostsInfo[];
   selectedSearchValue: string;
   inputSearchValue: string;
 }
 
-const PostListContainer: FunctionComponent<PostListContainerProps> = ({
-  postTitles,
+const PostListContainer: FunctionComponent<IpostListContainerProps> = ({
+  postsInfo,
   selectedSearchValue,
   inputSearchValue,
 }) => {
   return (
     <>
       <PostList
-        postTitles={postTitles}
+        postsInfo={postsInfo}
         selectedSearchValue={selectedSearchValue}
         inputSearchValue={inputSearchValue}
       />
