@@ -5,11 +5,11 @@ import axios from 'axios';
 
 const API_END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 
-interface ISearchProps {
+interface IsearchProps {
   channelId: string;
 }
 
-const Search: FunctionComponent<ISearchProps> = ({ channelId }) => {
+const Search: FunctionComponent<IsearchProps> = ({ channelId }) => {
   const [postsInfo, setPostsInfo] = useState([]); //PostListContainer에 넘겨 줄 데이터들
   const [selectedSearchOption, setSelectedSearchOption] = useState('');
   const [inputSearchValue, setInputSearchValue] = useState('');

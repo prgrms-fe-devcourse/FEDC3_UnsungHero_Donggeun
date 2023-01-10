@@ -14,13 +14,13 @@ interface IpostsInfo {
   author: Iauthor;
   likes: Ilikes[];
 }
-interface IPostListProps {
+interface IpostListProps {
   postsInfo: IpostsInfo[];
   selectedSearchOption: string;
   inputSearchValue: string;
 }
 
-const PostList: FunctionComponent<IPostListProps> = ({
+const PostList: FunctionComponent<IpostListProps> = ({
   postsInfo,
   selectedSearchOption,
   inputSearchValue,

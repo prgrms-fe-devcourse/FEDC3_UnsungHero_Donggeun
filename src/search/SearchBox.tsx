@@ -1,13 +1,13 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { FunctionComponent } from 'react';
 
-interface SearchBoxProps {
+interface IsearchBoxProps {
   setSelectedSearchOption: (value: string) => void;
   setInputSearchValue: (value: string) => void;
   getPostsList: () => void;
 }
 
-const SearchBox: FunctionComponent<SearchBoxProps> = ({
+const SearchBox: FunctionComponent<IsearchBoxProps> = ({
   setSelectedSearchOption,
   setInputSearchValue,
   getPostsList,
