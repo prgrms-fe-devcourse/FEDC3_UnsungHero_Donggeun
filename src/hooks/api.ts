@@ -4,28 +4,27 @@ const END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 
 interface Iprops {
   url: string;
-  body: object;
-  headers: object;
   method: string;
+  body?: object;
+  headers?: object;
 }
 
-export const useCustomApi = ({ url, body, headers, method }: Iprops) => {
+export const useCustomApi = async ({ url, body, headers, method }: Iprops) => {
   // const token = localStorage.getItem('TOKEN_KEY');
   // if (!token) return console.warn('Need Token');
 
   switch (method) {
     case 'GET':
       try {
-        async () =>
-          await axios
-            .get(`${END_POINT}${url}`, {
-              data: {
-                ...body,
-                ...headers,
-              },
-            })
-            .then((res) => res.data)
-            .catch((e) => console.log(e));
+        return await axios
+          .get(`${END_POINT}${url}`, {
+            data: {
+              ...body,
+              ...headers,
+            },
+          })
+          .then((res) => res.data)
+          .catch((e) => console.log(e));
       } catch (e) {
         console.log(e);
       }
