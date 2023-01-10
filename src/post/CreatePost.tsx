@@ -7,6 +7,7 @@ const chnnalId = '63bbe845400746566c234d41';
 function CreatePost() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const token = localStorage.getItem('TOKEN_KEY');
 
   const handleTitleChange = (e: string) => {
     setTitle(e);
@@ -16,14 +17,13 @@ function CreatePost() {
   };
 
   const handleOnClick = async () => {
-    const token = localStorage.getItem('TOKEN_KEY');
     if (!token) return;
 
-    const testData = {
+    const newPost = {
       title: title,
       content: content,
     };
-    const temp = JSON.stringify(testData);
+    const temp = JSON.stringify(newPost);
 
     const contentData = {
       title: temp,
@@ -46,7 +46,7 @@ function CreatePost() {
   return (
     <div>
       <h1>글 작성 페이지</h1>
-      <input onChange={(e) => handleTitleChange(e.target.value)} placeholder="제목" />
+      <input type="text" onChange={(e) => handleTitleChange(e.target.value)} placeholder="제목" />
       <br />
       <textarea
         rows={10}
