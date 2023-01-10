@@ -58,6 +58,9 @@ const User = () => {
         {totalLikes}
       </div>
       <button onClick={handlemoveEditPage}>내 정보 수정</button>
+      {user.posts.map((post: IPost) => (
+        <UserPostListItem key={post._id} post={post} />
+      ))}
     </>
   );
 };
