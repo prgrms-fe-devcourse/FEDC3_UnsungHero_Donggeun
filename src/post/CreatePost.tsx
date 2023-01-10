@@ -46,13 +46,13 @@ function CreatePost() {
   return (
     <div>
       <h1>글 작성 페이지</h1>
-      <input type="text" onChange={(e) => handleTitleChange(e.target.value)} placeholder="제목" />
+      <input type='text' onChange={(e) => handleTitleChange(e.target.value)} placeholder='제목' />
       <br />
       <textarea
         rows={10}
         cols={100}
         onChange={(e) => handleContentChange(e.target.value)}
-        placeholder="내용"
+        placeholder='내용'
       />
       <br />
       <button onClick={handleOnClick}>글 작성</button>
