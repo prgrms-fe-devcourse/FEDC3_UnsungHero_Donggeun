@@ -9,14 +9,14 @@ function CreatePost() {
   const [content, setContent] = useState('');
   const token = localStorage.getItem('TOKEN_KEY');
 
-  const handleTitleChange = (e: string) => {
+  const handleChangeTitle = (e: string) => {
     setTitle(e);
   };
-  const handleContentChange = (e: string) => {
+  const handleChangeContent = (e: string) => {
     setContent(e);
   };
 
-  const handleOnClick = async () => {
+  const handleOnClickPost = async () => {
     if (!token) return;
 
     const newPost = {
@@ -46,16 +46,16 @@ function CreatePost() {
   return (
     <div>
       <h1>글 작성 페이지</h1>
-      <input type='text' onChange={(e) => handleTitleChange(e.target.value)} placeholder='제목' />
+      <input type='text' onChange={(e) => handleChangeTitle(e.target.value)} placeholder='제목' />
       <br />
       <textarea
         rows={10}
         cols={100}
-        onChange={(e) => handleContentChange(e.target.value)}
+        onChange={(e) => handleChangeContent(e.target.value)}
         placeholder='내용'
       />
       <br />
-      <button onClick={handleOnClick}>글 작성</button>
+      <button onClick={handleOnClickPost}>글 작성</button>
     </div>
   );
 }

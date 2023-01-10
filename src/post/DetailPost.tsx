@@ -17,7 +17,7 @@ const DetailPost = () => {
     setContent(e);
   };
 
-  const UpdatePost = () => {
+  const handleUpdatePost = () => {
     const testData = {
       title: title,
       content: content,
@@ -28,7 +28,6 @@ const DetailPost = () => {
       postId: postId,
       title: temp,
       image: null,
-      //imageToDeletePublicId: Optional<string>,
       channelId: String,
     };
 
@@ -40,7 +39,7 @@ const DetailPost = () => {
     });
   };
 
-  const DeletePost = () => {
+  const handleDeletePost = () => {
     axios.delete(`${END_POINT}/posts/delete`, {
       data: {
         id: postId,
@@ -82,10 +81,10 @@ const DetailPost = () => {
         rows={10}
         cols={100}
         value={content}
-        placeholder="내용"
+        placeholder='내용'
       />
-      <button onClick={UpdatePost}>내용 수정</button>
-      <button onClick={DeletePost}>글 삭제</button>
+      <button onClick={handleUpdatePost}>내용 수정</button>
+      <button onClick={handleDeletePost}>글 삭제</button>
     </div>
   );
 };
