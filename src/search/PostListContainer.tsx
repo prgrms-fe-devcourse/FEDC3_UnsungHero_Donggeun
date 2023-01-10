@@ -1,5 +1,6 @@
 import PostList from './PostList';
-import { FunctionComponent } from 'react';
+import Pagination from './Pagination';
+import { FunctionComponent, useState } from 'react';
 
 interface Ilikes {
   _id: string;
@@ -14,6 +15,7 @@ interface IpostsInfo {
   _id: string;
   author: Iauthor;
   likes: Ilikes[];
+  createdAt: string;
 }
 interface IpostListContainerProps {
   postsInfo: IpostsInfo[];
@@ -26,13 +28,37 @@ const PostListContainer: FunctionComponent<IpostListContainerProps> = ({
   selectedSearchOption,
   inputSearchValue,
 }) => {
+  const [page, setPage] = useState(1);
+  const limit = 3;
+  const offset = (page - 1) * limit;
+
+  const dividePosts = (posts: any) => {
+    const result = posts.slice(offset, offset + limit);
+    return result;
+  };
+
+  const filteredPosts = postsInfo.filter((postInfo) => {
+    const { title } = postInfo;
+    const { fullName } = postInfo.author; //fullName이 아니라 userName이 닉네임인 경우 변경해야함
+
+    if (selectedSearchOption === '제목') {
+      return JSON.parse(title).title.includes(inputSearchValue);
+    } else if (selectedSearchOption === '제목+내용') {
+      return (
+        JSON.parse(title).title.includes(inputSearchValue) ||
+        JSON.parse(title).content.includes(inputSearchValue)
+      );
+    } else if (selectedSearchOption === '작성자') {
+      return fullName.includes(inputSearchValue);
+    }
+  });
+
+  console.log(filteredPosts.length);
+
   return (
     <>
-      <PostList
-        postsInfo={postsInfo}
-        selectedSearchOption={selectedSearchOption}
-        inputSearchValue={inputSearchValue}
-      />
+      <PostList filteredPostsInfo={dividePosts(filteredPosts)} />
+      <Pagination limit={limit} page={page} totalPosts={filteredPosts.length} setPage={setPage} />
     </>
   );
 };
