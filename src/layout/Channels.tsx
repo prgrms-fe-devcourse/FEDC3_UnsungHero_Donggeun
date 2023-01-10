@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import * as L from './layout';
+import styled from 'styled-components';
 
 const API_URL = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 
@@ -26,15 +26,35 @@ const Channels = () => {
   };
 
   return (
-    <L.Sidebar>
-      <L.ChannelTitle>채널목록</L.ChannelTitle>
+    <Sidebar>
+      <ChannelTitle>채널목록</ChannelTitle>
       {channelList.map((e: ChannelList) => (
-        <L.Channel key={e._id} onClick={() => moveChannel(e._id)}>
+        <Channel key={e._id} onClick={() => moveChannel(e._id)}>
           {e.name}
-        </L.Channel>
+        </Channel>
       ))}
-    </L.Sidebar>
+    </Sidebar>
   );
 };
 
 export default Channels;
+
+export const Sidebar = styled.nav`
+  background-color: #e8eaf6;
+  position: fixed;
+  margin-top: 64px;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  width: 185px;
+  height: 100%;
+`;
+
+export const ChannelTitle = styled.div`
+  margin-bottom: 20px;
+`;
+
+export const Channel = styled.div`
+  margin-bottom: 20px;
+`;

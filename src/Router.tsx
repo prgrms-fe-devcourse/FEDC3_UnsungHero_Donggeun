@@ -7,7 +7,7 @@ function Router() {
     <BrowserRouter>
       <Layout>
         <Routes>
-          <Route path="/" element={<Post />} />
+          <Route path='/' element={<Post />} />
         </Routes>
       </Layout>
     </BrowserRouter>
