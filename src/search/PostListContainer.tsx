@@ -58,20 +58,35 @@ const PostListContainer = ({
     if (!checkedSorting) {
       filteredPosts.sort((a, b) => {
         if (a.likes.length > b.likes.length) {
-          return 1;
-        } else if (a.likes.length < b.likes.length) {
           return -1;
+        } else if (a.likes.length < b.likes.length) {
+          return 1;
         } else {
           return 0;
         }
       });
     }
-
     return filteredPosts;
+  };
+
+  const handleClickRecent = () => {
+    setCheckedSorting(!checkedSorting);
+  };
+
+  const handleClickSympathy = () => {
+    setCheckedSorting(!checkedSorting);
   };
 
   return (
     <>
+      <div>
+        <button onClick={handleClickRecent} disabled={checkedSorting}>
+          최신순
+        </button>
+        <button onClick={handleClickSympathy} disabled={!checkedSorting}>
+          공감순
+        </button>
+      </div>
       <PostList
         filteredPostsInfo={dividePosts(filterPosts())}
         selectedSearchOption={selectedSearchOption}

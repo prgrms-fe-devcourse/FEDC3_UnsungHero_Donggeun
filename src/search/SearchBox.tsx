@@ -40,7 +40,7 @@ const SearchBox = ({ setSelectedSearchOption, setInputSearchValue, getPostsList 
         onChange={handleChangeInput}
         value={inputValue}
         ref={inputRef}
-        placeholder="검색어를 입력해 주세요"
+        placeholder='검색어를 입력해 주세요'
       />
       <button>검색</button>
     </form>

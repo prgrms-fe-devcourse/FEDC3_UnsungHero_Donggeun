@@ -3,7 +3,7 @@ import PostListContainer from './PostListContainer';
 import { useState } from 'react';
 import axios from 'axios';
 
-const API_END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
+const API_END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006/posts/channel';
 
 interface IsearchProps {
   channelId: string | undefined;
@@ -15,7 +15,7 @@ const Search = ({ channelId }: IsearchProps) => {
   const [inputSearchValue, setInputSearchValue] = useState('');
 
   const getPostsList = async () => {
-    axios.get(`${API_END_POINT}/posts/channel/${channelId}/?offset=1&limit=9`).then((response) => {
+    axios.get(`${API_END_POINT}/${channelId}?offset=1&limit=9`).then((response) => {
       const { data } = response;
       setPostsInfo(data);
     });
