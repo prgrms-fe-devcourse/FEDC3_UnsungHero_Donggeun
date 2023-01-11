@@ -29,6 +29,7 @@ const PostListContainer = ({
   inputSearchValue,
 }: IpostListContainerProps) => {
   const [page, setPage] = useState(1);
+  const [checkedSorting, setCheckedSorting] = useState(true);
   const limit = 5;
   const offset = (page - 1) * limit;
 
@@ -53,6 +54,19 @@ const PostListContainer = ({
         return fullName.includes(inputSearchValue);
       }
     });
+
+    if (!checkedSorting) {
+      filteredPosts.sort((a, b) => {
+        if (a.likes.length > b.likes.length) {
+          return 1;
+        } else if (a.likes.length < b.likes.length) {
+          return -1;
+        } else {
+          return 0;
+        }
+      });
+    }
+
     return filteredPosts;
   };
 
