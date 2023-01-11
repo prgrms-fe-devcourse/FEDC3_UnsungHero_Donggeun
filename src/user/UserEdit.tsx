@@ -1,45 +1,84 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
-const token = localStorage.getItem('token');
+const API_URL = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
+const TOKEN = localStorage.getItem('token');
 const header = {
-  Authorization: `bearer ${token}`,
+  Authorization: `bearer ${TOKEN}`,
 };
 
+interface ICheckPassword {
+  validated: boolean;
+  message: string;
+}
+
 const UserEdit = () => {
-  const [userName, setUserName] = useState('');
+  const navigate = useNavigate();
+  const [userName, setUserName] = useState({
+    currentName: '',
+    newName: '',
+  });
   const [password, setPassword] = useState('');
   const { id } = useParams();
+
   useEffect(() => {
-    axios
-      .get(`http://kdt.frontend.3rd.programmers.co.kr:5006/users/${id}`)
-      .then(({ data }) => setUserName(data.fullName));
-  }, []);
+    axios.get(`${API_URL}/users/${id}`).then(({ data }) =>
+      setUserName({
+        currentName: data.fullName,
+        newName: data.fullName,
+      })
+    );
+  }, []); //다른 컴포넌트와 중복되는 api호출 부분.
 
   const handleChangeUserName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUserName(() => e.target.value);
+    setUserName({
+      ...userName,
+      newName: e.target.value,
+    });
   };
 
   const handleChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(() => e.target.value);
   };
 
-  const submitUserName = (e: React.MouseEvent) => {
+  const handleChangeUserInfo = (e: React.MouseEvent) => {
     e.preventDefault();
-    requestChangeUserName();
+    const { validated, message } = CheckUserPassword(password);
 
-    if (password.length > 4) {
-      requestChangePassword();
-      setPassword('');
-      alert('저장이 완료되었습니다.');
+    if (!validated) return alert(message);
+
+    if (userName.currentName !== userName.newName) {
+      //유저이름이 변경되었을 때만 호출
+      getChangeUserName();
     }
+
+    if (password.length > 0) {
+      //비밀번호가 입력되었을 때만 호출
+      getChangePassword();
+    }
+
+    navigate(`/user/${id}`);
   };
 
-  const requestChangePassword = async () => {
+  const CheckUserPassword = (password: string): ICheckPassword => {
+    if (password.length > 0 && password.length < 7) {
+      return {
+        validated: false,
+        message: '비밀번호는 7글자 이상 입력해주세요!',
+      };
+    }
+
+    return {
+      validated: true,
+      message: '',
+    };
+  };
+
+  const getChangePassword = async () => {
     return await axios.put(
-      `http://kdt.frontend.3rd.programmers.co.kr:5006/settings/update-password`,
+      `${API_URL}/settings/update-password`,
       {
         password: password,
       },
@@ -48,11 +87,11 @@ const UserEdit = () => {
       }
     );
   };
-  const requestChangeUserName = async () => {
+  const getChangeUserName = async () => {
     return await axios.put(
-      `http://kdt.frontend.3rd.programmers.co.kr:5006/settings/update-user`,
+      `${API_URL}/settings/update-user`,
       {
-        fullName: userName,
+        fullName: userName.newName,
         username: '',
       },
       {
@@ -65,9 +104,9 @@ const UserEdit = () => {
       <div>커버이미지</div>
       <div>프로필 이미지</div>
       <form>
-        <input type='text' value={userName} onChange={handleChangeUserName} />
+        <input type='text' value={userName.newName} onChange={handleChangeUserName} />
         <input type='password' value={password} onChange={handleChangePassword} />
-        <button onClick={submitUserName}>저장</button>
+        <button onClick={handleChangeUserInfo}>저장</button>
       </form>
     </>
   );
