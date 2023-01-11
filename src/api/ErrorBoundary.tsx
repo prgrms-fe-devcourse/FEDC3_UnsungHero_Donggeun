@@ -23,7 +23,7 @@ class ErrorBoundary extends Component<Props, State> {
 
   public render() {
     if (this.state.hasError) {
-      return <h1>처리중 에러가 발생했습니다.</h1>;
+      return <h1>처리 중 에러가 발생했습니다.</h1>;
     }
 
     return this.props.children;

@@ -13,11 +13,11 @@ const useMutation = () => {
         Authorization: `bearer ${localStorage.getItem('token')}`,
         'Content-Type': data instanceof FormData ? 'multipart/form-data' : 'application/json',
       },
+      data,
     };
 
     try {
-      const response = await axios[method](url, data, config);
-
+      const response = await axios[method](url, config);
       return response.data;
     } catch (e) {
       if (axios.isAxiosError(e)) {

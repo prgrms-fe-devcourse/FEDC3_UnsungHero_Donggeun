@@ -22,18 +22,32 @@ function Comment() {
     setValue(e.target.value);
   };
 
+  const handleClickRemoveButton = async (id: string) => {
+    mutate({
+      url: `${tempData.baseUrl}/comments/delete`,
+      method: 'delete',
+      data: {
+        id,
+      },
+    });
+
+    fetchData();
+  };
+
   const handleSubmitInput = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     createComment();
   };
 
   const createComment = async () => {
-    const data = {
-      comment: value,
-      postId: tempData.postId,
-    };
-
-    await mutate({ url: `${tempData.baseUrl}/comments/create`, method: 'post', data });
+    await mutate({
+      url: `${tempData.baseUrl}/comments/create`,
+      method: 'post',
+      data: {
+        comment: value,
+        postId: tempData.postId,
+      },
+    });
 
     fetchData();
     setValue('');
@@ -47,7 +61,10 @@ function Comment() {
       </form>
       <ul>
         {data?.comments.map(({ _id, comment }) => (
-          <li key={_id}>{comment}</li>
+          <li key={_id}>
+            {comment}
+            <button onClick={() => handleClickRemoveButton(_id)}>❌</button>
+          </li>
         ))}
       </ul>
     </>
