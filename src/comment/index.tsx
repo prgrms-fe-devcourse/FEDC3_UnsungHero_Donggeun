@@ -1,24 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import useAxios from '../api/useAxios';
+import { IPost } from '../types/post';
 
-interface IComment {
-  _id: string;
-  comment: string;
-  author: any; // auth 타입 정의 후 불러오기
-  post: string;
-  createdAt: string;
-  updatedAt: string;
-}
+const tempData = {
+  postId: '63bbc0d78c65a93bebe29fd4',
+  baseUrl: 'http://kdt.frontend.3rd.programmers.co.kr:5006',
+  token:
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYzYmJiZjBkOGM2NWE5M2JlYmUyOWZiMiIsImVtYWlsIjoieWpAMTIzLmNvbSJ9LCJpYXQiOjE2NzMyNDg1MjV9.wHXuuSkuHKMKDbaD0weUnGJkRW9P0Ae_k74BlFMWiqY',
+};
 
 function Comment() {
   const [value, setValue] = useState('');
-  const [commentList, setCommentList] = useState<IComment[]>();
-
-  const tempData = {
-    postId: '63bbc0d78c65a93bebe29fd4',
-    baseUrl: 'http://kdt.frontend.3rd.programmers.co.kr:5006',
-    token:
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYzYmJiZjBkOGM2NWE5M2JlYmUyOWZiMiIsImVtYWlsIjoieWpAMTIzLmNvbSJ9LCJpYXQiOjE2NzMyNDg1MjV9.wHXuuSkuHKMKDbaD0weUnGJkRW9P0Ae_k74BlFMWiqY',
-  };
+  const { data } = useAxios<IPost>({ url: `${tempData.baseUrl}/posts/${tempData.postId}` });
 
   const handleInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
@@ -43,34 +36,16 @@ function Comment() {
       },
       body: JSON.stringify(data),
     });
-
-    if (response.ok) {
-      getCommentList();
-    }
   };
-
-  const getCommentList = async () => {
-    const response = await fetch(`${tempData.baseUrl}/posts/${tempData.postId}`);
-
-    if (response.ok) {
-      const { comments } = await response.json();
-
-      setCommentList(comments);
-    }
-  };
-
-  useEffect(() => {
-    getCommentList();
-  }, []);
 
   return (
     <>
       <form onSubmit={handleSubmitInput}>
-        <input placeholder="댓글을 입력해주세요" onChange={handleInputValue} value={value} />
+        <input placeholder='댓글을 입력해주세요' onChange={handleInputValue} value={value} />
         <button>전송</button>
       </form>
       <ul>
-        {commentList?.map(({ _id, comment }) => (
+        {data?.comments.map(({ _id, comment }) => (
           <li key={_id}>{comment}</li>
         ))}
       </ul>

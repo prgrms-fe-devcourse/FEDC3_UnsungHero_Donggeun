@@ -14,8 +14,6 @@ class ErrorBoundary extends Component<Props, State> {
   };
 
   static getDerivedStateFromError(_: Error): State {
-    // Update state so the next render will show the fallback UI.
-    console.log('에러발생');
     return { hasError: true };
   }
 
