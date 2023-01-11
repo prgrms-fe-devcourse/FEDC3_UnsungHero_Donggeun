@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import UserEditImg from './UserEditImg';
 
 const API_URL = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 const TOKEN = localStorage.getItem('token');
@@ -53,8 +54,7 @@ const UserEdit = () => {
   };
   return (
     <>
-      <div>커버이미지</div>
-      <div>프로필 이미지</div>
+      <UserEditImg />
       <form onSubmit={handleSubmit(handleChangeUserInfo)}>
         <input
           type='text'
