@@ -29,7 +29,7 @@ const PostListContainer: FunctionComponent<IpostListContainerProps> = ({
   inputSearchValue,
 }) => {
   const [page, setPage] = useState(1);
-  const limit = 3;
+  const limit = 5;
   const offset = (page - 1) * limit;
 
   const dividePosts = (posts: any) => {
@@ -58,7 +58,11 @@ const PostListContainer: FunctionComponent<IpostListContainerProps> = ({
 
   return (
     <>
-      <PostList filteredPostsInfo={dividePosts(filterPosts())} />
+      <PostList
+        filteredPostsInfo={dividePosts(filterPosts())}
+        selectedSearchOption={selectedSearchOption}
+        inputSearchValue={inputSearchValue}
+      />
       <Pagination limit={limit} page={page} totalPosts={filterPosts().length} setPage={setPage} />
     </>
   );
