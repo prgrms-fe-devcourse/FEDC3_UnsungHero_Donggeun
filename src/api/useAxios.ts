@@ -2,26 +2,28 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { useEffect, useState } from 'react';
 
-interface IRequest {
+interface IAxiosProps {
   url: string;
-  method?: string;
-  data?: {} | FormData;
+  method?: 'get' | 'post' | 'put' | 'delete';
   config?: AxiosRequestConfig;
-  params?: {};
 }
 
 interface IResponse<T> {
   data?: T;
 }
 
-const useAxios = <T>({ url, params = {} }: IRequest): IResponse<T> => {
+const useAxios = <T>({ url, method = 'get', config }: IAxiosProps): IResponse<T> => {
   const [data, setData] = useState<T>();
   const [error, setError] = useState<Error>();
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(url, {
-        params,
+      const response = await axios[method](url, {
+        headers: {
+          Authorization: `bearer ${localStorage.getItem('token')}`,
+          'Content-Type': config?.data instanceof FormData ? 'multipart/form-data' : 'application/json',
+        },
+        ...config,
       });
 
       setData(response.data);
