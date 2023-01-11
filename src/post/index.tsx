@@ -3,9 +3,9 @@ import Comment from '../comment';
 
 function Post() {
   return (
-    <ErrorBoundary>
-      <Comment />
-    </ErrorBoundary>
+    <>
+      <h1>언성히어로 최고🤗</h1>
+    </>
   );
 }
 
