@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import useAxios from '../api/useAxios';
+import useMutation from '../api/useMutation';
 import { IPost } from '../types/post';
 
 const tempData = {
@@ -11,7 +12,11 @@ const tempData = {
 
 function Comment() {
   const [value, setValue] = useState('');
-  const { data } = useAxios<IPost>({ url: `${tempData.baseUrl}/posts/${tempData.postId}` });
+  const { data, fetchData } = useAxios<IPost>({
+    url: `${tempData.baseUrl}/posts/${tempData.postId}`,
+    method: 'get',
+  });
+  const { mutate } = useMutation();
 
   const handleInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
@@ -28,14 +33,10 @@ function Comment() {
       postId: tempData.postId,
     };
 
-    const response = await fetch(`${tempData.baseUrl}/comments/create`, {
-      method: 'POST',
-      headers: {
-        Authorization: `bearer ${tempData.token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
+    await mutate({ url: `${tempData.baseUrl}/comments/create`, method: 'post', data });
+
+    fetchData();
+    setValue('');
   };
 
   return (

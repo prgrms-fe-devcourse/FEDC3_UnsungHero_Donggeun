@@ -1,30 +1,15 @@
-/* eslint-disable @typescript-eslint/ban-types */
-import axios, { AxiosRequestConfig } from 'axios';
+import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { IRequest } from '../types/request';
+import { IResponse } from '../types/response';
 
-interface IAxiosProps {
-  url: string;
-  method?: 'get' | 'post' | 'put' | 'delete';
-  config?: AxiosRequestConfig;
-}
-
-interface IResponse<T> {
-  data?: T;
-}
-
-const useAxios = <T>({ url, method = 'get', config }: IAxiosProps): IResponse<T> => {
+const useAxios = <T>({ url, params = {} }: IRequest): IResponse<T> => {
   const [data, setData] = useState<T>();
   const [error, setError] = useState<Error>();
 
   const fetchData = async () => {
     try {
-      const response = await axios[method](url, {
-        headers: {
-          Authorization: `bearer ${localStorage.getItem('token')}`,
-          'Content-Type': config?.data instanceof FormData ? 'multipart/form-data' : 'application/json',
-        },
-        ...config,
-      });
+      const response = await axios.get(url, { params });
 
       setData(response.data);
     } catch (e) {
@@ -44,7 +29,7 @@ const useAxios = <T>({ url, method = 'get', config }: IAxiosProps): IResponse<T>
     fetchData();
   }, []);
 
-  return { data };
+  return { data, fetchData };
 };
 
 export default useAxios;
