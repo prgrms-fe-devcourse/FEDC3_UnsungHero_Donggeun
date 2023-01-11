@@ -1,6 +1,3 @@
-/**
- * 현재 unFollow 기능이 정상적으로 작동하지 않습니다.
- */
 import axios from 'axios';
 
 const END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
@@ -14,9 +11,6 @@ interface temp {
 const Follow = () => {
   const token = localStorage.getItem('TOKEN_KEY'); // 팔로우 하는 계정 token
 
-  const body = {
-    _id: followed,
-  };
   const headers = {
     'Content-Type': 'application/json',
     Authorization: `bearer ${token}`,
@@ -25,33 +19,40 @@ const Follow = () => {
   const handleOnClickFollow = () => {
     axios.get(`${END_POINT}/auth-user`, { headers }).then((res) => {
       const { data } = res;
-      let check = true;
 
-      if (data.following.find(({ user }: temp) => user === followed)) check = false;
+      const target = data.following.find(({ user }: temp) => user === followed);
 
-      if (check) {
+      if (!target) {
         axios
-          .post(`${END_POINT}/follow/create`, body, { headers })
+          .post(`${END_POINT}/follow/create`, { id: followed }, { headers })
           .then((res) => console.log(res.data))
           .catch((e) => console.log(e));
       }
     });
   };
 
-  // UnFollow 기능이 정상적으로 작동하지 않습니다.
+  /**
+   * 계정 정보를 받아온다.
+   * 내가 언팔할 유저의 정보가 following에 있는지 찾는다.
+   * 있다면 해당 'follow'의 'id'를 delete 요청으로 삭제한다.
+   */
   const handleOnClickUnFollow = () => {
-    axios.post(`${END_POINT}/login`, { email: 'following', password: '123' }).then((res) => {
+    axios.get(`${END_POINT}/auth-user`, { headers }).then((res) => {
       const { data } = res;
-      const temp = data.user.following.find((i: any) => i.user === followed);
-      console.log({ ...temp });
 
-      axios
-        .delete(`${END_POINT}/follow/delete`, {
-          data: { id: '63be4d1dad5c5114f90103e5' }, // 팔로우 당하는 계정.
-          headers,
-        })
-        .then((res) => console.log(res))
-        .catch((e) => console.log(e));
+      const target = data.following.find(({ user }: temp) => user === followed);
+
+      if (target) {
+        axios
+          .delete(`${END_POINT}/follow/delete`, {
+            data: {
+              id: target._id,
+            },
+            headers,
+          })
+          .then((res) => console.log(res))
+          .catch((e) => console.log(e));
+      }
     });
   };
 
