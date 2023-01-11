@@ -23,7 +23,7 @@ const SearchBox = ({ setSelectedSearchOption, setInputSearchValue, getPostsList 
     (e: React.FormEvent<HTMLFormElement>): void => {
       e.preventDefault();
       setSelectedSearchOption(selectedOption);
-      setInputSearchValue(inputValue);
+      setInputSearchValue(inputValue.toLowerCase());
       getPostsList();
     },
     [inputValue, selectedOption]
