@@ -5,5 +5,6 @@ export interface IComment {
   comment: string;
   author: IUser;
   post: string;
+  createdAt: string;
   updatedAt: string;
 }
