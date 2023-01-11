@@ -1,5 +1,4 @@
 import React, { useState, useRef, useCallback } from 'react';
-import { FunctionComponent } from 'react';
 
 interface IsearchBoxProps {
   setSelectedSearchOption: (value: string) => void;
@@ -7,11 +6,7 @@ interface IsearchBoxProps {
   getPostsList: () => void;
 }
 
-const SearchBox: FunctionComponent<IsearchBoxProps> = ({
-  setSelectedSearchOption,
-  setInputSearchValue,
-  getPostsList,
-}) => {
+const SearchBox = ({ setSelectedSearchOption, setInputSearchValue, getPostsList }: IsearchBoxProps) => {
   const [inputValue, setInputValue] = useState('');
   const [selectedOption, setSelectedOption] = useState('제목');
   const inputRef = useRef<HTMLInputElement>(null);
@@ -41,7 +36,12 @@ const SearchBox: FunctionComponent<IsearchBoxProps> = ({
         <option>제목+내용</option>
         <option>작성자</option>
       </select>
-      <input onChange={handleChangeInput} value={inputValue} ref={inputRef} />
+      <input
+        onChange={handleChangeInput}
+        value={inputValue}
+        ref={inputRef}
+        placeholder="검색어를 입력해 주세요"
+      />
       <button>검색</button>
     </form>
   );
