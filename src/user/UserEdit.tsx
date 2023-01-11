@@ -2,7 +2,6 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-const currentName = 'yellow'; //서버에서 받아오는 이름
 const API_URL = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 const TOKEN = localStorage.getItem('token');
 const headers = {
@@ -14,24 +13,26 @@ interface IFormValue {
   password: string;
 }
 
-const id = '63bbb8d08c65a93bebe29f78';
 const UserEdit = () => {
   const navigate = useNavigate();
-
-  // const { id } = useParams();
+  const { id } = useParams();
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, dirtyFields },
   } = useForm<IFormValue>({
-    defaultValues: {
-      fullName: currentName,
-    },
+    defaultValues: () =>
+      axios.get(`${API_URL}/users/${id}`).then(({ data }) => {
+        return {
+          fullName: data.fullName,
+          password: '',
+        };
+      }),
   });
 
   const handleChangeUserInfo: SubmitHandler<IFormValue> = ({ fullName, password }) => {
-    if (currentName !== fullName) getChangeUserName(fullName);
-    if (password.length > 0) getChangePassword(password);
+    if (dirtyFields.fullName) getChangeUserName(fullName);
+    if (dirtyFields.password) getChangePassword(password);
 
     navigate(`/user/${id}`);
   };
