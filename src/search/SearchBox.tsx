@@ -41,7 +41,12 @@ const SearchBox: FunctionComponent<IsearchBoxProps> = ({
         <option>제목+내용</option>
         <option>작성자</option>
       </select>
-      <input onChange={handleChangeInput} value={inputValue} ref={inputRef} />
+      <input
+        onChange={handleChangeInput}
+        value={inputValue}
+        ref={inputRef}
+        placeholder="검색어를 입력해 주세요"
+      />
       <button>검색</button>
     </form>
   );
