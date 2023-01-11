@@ -1,6 +1,6 @@
 import PostList from './PostList';
 import Pagination from './Pagination';
-import { FunctionComponent, useState } from 'react';
+import { useState } from 'react';
 
 interface Ilikes {
   _id: string;
@@ -23,11 +23,11 @@ interface IpostListContainerProps {
   inputSearchValue: string;
 }
 
-const PostListContainer: FunctionComponent<IpostListContainerProps> = ({
+const PostListContainer = ({
   postsInfo,
   selectedSearchOption,
   inputSearchValue,
-}) => {
+}: IpostListContainerProps) => {
   const [page, setPage] = useState(1);
   const limit = 5;
   const offset = (page - 1) * limit;

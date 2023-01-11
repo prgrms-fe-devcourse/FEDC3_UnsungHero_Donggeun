@@ -1,5 +1,4 @@
-import { FunctionComponent } from 'react';
-import styled, { StyledComponent } from 'styled-components';
+import styled from 'styled-components';
 
 interface Ilikes {
   _id: string;
@@ -26,11 +25,7 @@ const Span = styled.span`
   font-weight: 900;
 `;
 
-const PostList: FunctionComponent<IpostListProps> = ({
-  filteredPostsInfo,
-  selectedSearchOption,
-  inputSearchValue,
-}) => {
+const PostList = ({ filteredPostsInfo, selectedSearchOption, inputSearchValue }: IpostListProps) => {
   const highlightIncludedText = (content: string, searchedValue: string) => {
     const title = content.toLowerCase();
     const searchValue = searchedValue.toLowerCase();

@@ -1,5 +1,3 @@
-import { FunctionComponent } from 'react';
-
 interface IpaginationProps {
   limit: number;
   page: number;
@@ -7,7 +5,7 @@ interface IpaginationProps {
   setPage: (value: number) => void;
 }
 
-const Pagination: FunctionComponent<IpaginationProps> = ({ limit, page, totalPosts, setPage }) => {
+const Pagination = ({ limit, page, totalPosts, setPage }: IpaginationProps) => {
   const pageNumbers = Math.ceil(totalPosts / limit);
   const buttonNumbers = Array(pageNumbers).fill(1);
 

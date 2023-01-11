@@ -1,5 +1,4 @@
 import React, { useState, useRef, useCallback } from 'react';
-import { FunctionComponent } from 'react';
 
 interface IsearchBoxProps {
   setSelectedSearchOption: (value: string) => void;
@@ -7,11 +6,7 @@ interface IsearchBoxProps {
   getPostsList: () => void;
 }
 
-const SearchBox: FunctionComponent<IsearchBoxProps> = ({
-  setSelectedSearchOption,
-  setInputSearchValue,
-  getPostsList,
-}) => {
+const SearchBox = ({ setSelectedSearchOption, setInputSearchValue, getPostsList }: IsearchBoxProps) => {
   const [inputValue, setInputValue] = useState('');
   const [selectedOption, setSelectedOption] = useState('제목');
   const inputRef = useRef<HTMLInputElement>(null);
