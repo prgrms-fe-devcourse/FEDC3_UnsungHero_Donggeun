@@ -54,6 +54,16 @@ export const useCustomApi = async ({ url, body, headers, method }: Iprops) => {
         console.log(e);
       }
       break;
+    case 'PUT':
+      try {
+        axios
+          .put(`${END_POINT}${url}`, body, headers)
+          .then((res) => res.data)
+          .catch((e) => console.log(e));
+      } catch (e) {
+        console.log(e);
+      }
+      break;
     default:
       console.log('method is not valid');
   }
