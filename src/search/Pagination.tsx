@@ -1,25 +1,58 @@
-interface IpaginationProps {
+import styled from 'styled-components';
+
+interface IProps {
+  totalPosts: number;
   limit: number;
   page: number;
-  totalPosts: number;
-  setPage: (value: number) => void;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const Pagination = ({ limit, page, totalPosts, setPage }: IpaginationProps) => {
-  const pageNumbers = Math.ceil(totalPosts / limit);
-  const buttonNumbers = Array(pageNumbers).fill(1);
+// interface IpaginationProps {
+//   limit: number;
+//   page: number;
+//   totalPosts: number;
+//   setPage: (value: number) => void;
+// }
+
+interface IButtonStyle {
+  page: number;
+  i: number;
+}
+
+const Pagination = ({ totalPosts, limit, page, setPage }: IProps) => {
+  const totalPages = Math.ceil(totalPosts / limit);
 
   return (
-    <div>
-      {buttonNumbers.map((_, i) => {
-        return (
-          <button key={i + 1} onClick={() => setPage(i + 1)}>
+    <>
+      <button onClick={() => setPage(1)}>처음</button>
+      <button onClick={() => setPage(page - 1)} disabled={page === 1}>
+        이전
+      </button>
+      {Array.from(new Array(totalPages), (_, i) => i)
+        .filter((i) => {
+          if (page < 4) {
+            return i < 5;
+          } else if (page > totalPages - 3) {
+            return i >= totalPages - 5;
+          }
+          return i >= page - 2 && i <= page + 2;
+        })
+        .map((i) => (
+          <Button key={i + 1} onClick={() => setPage(i + 1)} page={page} i={i}>
             {i + 1}
-          </button>
-        );
-      })}
-    </div>
+          </Button>
+        ))}
+      <button onClick={() => setPage(page + 1)} disabled={page === totalPages}>
+        다음
+      </button>
+      <button onClick={() => setPage(totalPages)}>마지막</button>
+    </>
   );
 };
 
 export default Pagination;
+
+const Button = styled.button<IButtonStyle>`
+  background-color: ${({ page, i }) => (page === i + 1 ? 'white' : null)};
+  cursor: pointer;
+`;

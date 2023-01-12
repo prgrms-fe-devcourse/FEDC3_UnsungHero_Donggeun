@@ -1,6 +1,6 @@
 import PostList from './PostList';
 import Pagination from './Pagination';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { IsJsonString } from './isJsonString';
 
 interface Ilikes {
@@ -33,6 +33,10 @@ const PostListContainer = ({
   const [checkedSorting, setCheckedSorting] = useState(true);
   const limit = 10;
   const offset = (page - 1) * limit;
+
+  useEffect(() => {
+    setCheckedSorting(true);
+  }, [postsInfo]);
 
   const dividePosts = (posts: any) => {
     const result = posts.slice(offset, offset + limit);

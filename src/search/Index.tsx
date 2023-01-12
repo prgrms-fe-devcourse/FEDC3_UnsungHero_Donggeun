@@ -20,6 +20,8 @@ const Search = ({ channelId }: IsearchProps) => {
       console.log('channelId가 없는 경우 어떤 처리를 해주면 좋을지 고민중...');
     } else {
       getPostsList();
+      setSelectedSearchOption('');
+      setInputSearchValue('');
     }
   }, [channelId]);
 
@@ -36,6 +38,7 @@ const Search = ({ channelId }: IsearchProps) => {
         setSelectedSearchOption={setSelectedSearchOption}
         setInputSearchValue={setInputSearchValue}
         getPostsList={getPostsList}
+        channelId={channelId}
       />
       <PostListContainer
         postsInfo={postsInfo}

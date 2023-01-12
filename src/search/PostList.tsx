@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import { IsJsonString } from './isJsonString';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 interface Ilikes {
   _id: string;
@@ -27,6 +29,8 @@ const Span = styled.span`
 `;
 
 const PostList = ({ filteredPostsInfo, selectedSearchOption, inputSearchValue }: IpostListProps) => {
+  const navigatePost = useNavigate();
+
   const highlightIncludedText = (content: string, searchedValue: string) => {
     const title = content.toLowerCase();
     const searchValue = searchedValue.toLowerCase();
@@ -53,7 +57,7 @@ const PostList = ({ filteredPostsInfo, selectedSearchOption, inputSearchValue }:
           const postContent = IsJsonString(title) ? JSON.parse(title).content : ' ';
 
           return (
-            <li key={_id}>
+            <li key={_id} onClick={() => navigatePost(`/post/:${_id}`)}>
               <div>
                 <div>
                   제목:{' '}
