@@ -17,7 +17,14 @@ const useMutation = () => {
     };
 
     try {
-      const response = await axios[method](url, config);
+      let response;
+
+      if (method === 'delete') {
+        response = await axios[method](url, config);
+      } else {
+        response = await axios[method](url, data, config);
+      }
+
       return response.data;
     } catch (e) {
       if (axios.isAxiosError(e)) {

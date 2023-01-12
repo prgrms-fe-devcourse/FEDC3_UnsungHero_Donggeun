@@ -1,10 +1,15 @@
 import ErrorBoundary from '../api/ErrorBoundary';
 import Comment from '../comment';
+import Like from '../like';
 
 function Post() {
   return (
     <>
-      <h1>언성히어로 최고🤗</h1>
+      <ErrorBoundary>
+        <h1>언성히어로 최고🤗</h1>
+        <Comment />
+        <Like />
+      </ErrorBoundary>
     </>
   );
 }
