@@ -1,26 +1,24 @@
 import styled from 'styled-components';
+import { useEffect } from 'react';
 
-interface IProps {
-  totalPosts: number;
+interface IpaginationProps {
   limit: number;
   page: number;
-  setPage: React.Dispatch<React.SetStateAction<number>>;
+  totalPosts: number;
+  setPage: (value: number) => void;
 }
-
-// interface IpaginationProps {
-//   limit: number;
-//   page: number;
-//   totalPosts: number;
-//   setPage: (value: number) => void;
-// }
 
 interface IButtonStyle {
   page: number;
   i: number;
 }
 
-const Pagination = ({ totalPosts, limit, page, setPage }: IProps) => {
+const Pagination = ({ totalPosts, limit, page, setPage }: IpaginationProps) => {
   const totalPages = Math.ceil(totalPosts / limit);
+
+  useEffect(() => {
+    setPage(1);
+  }, [totalPosts]);
 
   return (
     <>

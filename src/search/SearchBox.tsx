@@ -19,6 +19,7 @@ const SearchBox = ({
 
   useEffect(() => {
     setInputValue('');
+    setSelectedOption('제목');
   }, [channelId]);
 
   const handleChangeInput = useCallback((e: React.ChangeEvent<HTMLInputElement>): void => {
