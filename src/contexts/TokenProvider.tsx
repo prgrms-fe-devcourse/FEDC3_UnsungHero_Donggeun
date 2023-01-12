@@ -1,11 +1,6 @@
 import React, { useState, createContext, useContext } from 'react';
 import useLocalStorage from '../auth/useLocalStorage';
-
-interface IToken {
-  token: string | undefined;
-  addToken: (getToken: string) => void;
-  removeToken: () => void;
-}
+import { IToken } from '../types/token';
 
 const TokenContext = createContext<IToken | null>(null);
 

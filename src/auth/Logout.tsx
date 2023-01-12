@@ -1,14 +1,9 @@
 import useLocalStorage from './useLocalStorage';
 import { useToken } from '../contexts/TokenProvider';
 import { useNavigate } from 'react-router-dom';
+import { IToken } from '../types/token';
 
 const TOKEN_KEY = 'token';
-
-interface IToken {
-  token: string | undefined;
-  addToken: (getToken: string) => void;
-  removeToken: () => void;
-}
 
 const Logout = () => {
   const [, , removeValue] = useLocalStorage(TOKEN_KEY, '');

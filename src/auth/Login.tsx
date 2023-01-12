@@ -3,16 +3,8 @@ import axios from 'axios';
 import useLocalStorage from './useLocalStorage';
 import { useToken } from '../contexts/TokenProvider';
 import { useNavigate } from 'react-router-dom';
-
-interface IFormValue {
-  email: string;
-  password: string;
-}
-
-interface IToken {
-  token: string | undefined;
-  addToken: (getToken: string) => void;
-}
+import { IToken } from '../types/token';
+import { IAuth } from '../types/auth';
 
 const TOKEN_KEY = 'token';
 
@@ -22,13 +14,13 @@ const Login = () => {
     handleSubmit,
     setError,
     formState: { isSubmitting, errors },
-  } = useForm<IFormValue>();
+  } = useForm<IAuth>();
   const [, setValue] = useLocalStorage(TOKEN_KEY, '');
   const tokenContextObj: IToken | null = useToken();
 
   const navigate = useNavigate();
 
-  const onSubmitHandler: SubmitHandler<IFormValue> = async ({ email, password }) => {
+  const onSubmitHandler: SubmitHandler<IAuth> = async ({ email, password }) => {
     await axios
       .post('http://kdt.frontend.3rd.programmers.co.kr:5006/login', {
         email,
