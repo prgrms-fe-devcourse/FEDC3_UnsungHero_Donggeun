@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import Pagination from './Pagination';
 import UserPostListItem from './UserPostListItem';
 
 interface IUserInfo {
@@ -27,8 +28,11 @@ const User = () => {
     fullName: '',
     posts: [],
   });
+  const [page, setPage] = useState(1);
   const { id } = useParams();
   const navigate = useNavigate();
+  const limit = 7;
+  const offset = (page - 1) * limit;
 
   useEffect(() => {
     getUserInfo();
@@ -58,9 +62,10 @@ const User = () => {
         {totalLikes}
       </div>
       <button onClick={handlemoveEditPage}>내 정보 수정</button>
-      {user.posts.map((post: IPost) => (
+      {user.posts.slice(offset, offset + limit).map((post: IPost) => (
         <UserPostListItem key={post._id} post={post} />
       ))}
+      <Pagination total={user.posts.length} limit={limit} page={page} setPage={setPage} />
     </>
   );
 };
