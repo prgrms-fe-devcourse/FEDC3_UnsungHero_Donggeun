@@ -1,10 +1,17 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import axios from 'axios';
 import useLocalStorage from './useLocalStorage';
+import { useToken } from '../contexts/TokenProvider';
+import { useNavigate } from 'react-router-dom';
 
 interface IFormValue {
   email: string;
   password: string;
+}
+
+interface IToken {
+  token: string | undefined;
+  addToken: (getToken: string) => void;
 }
 
 const TOKEN_KEY = 'token';
@@ -17,6 +24,9 @@ const Login = () => {
     formState: { isSubmitting, errors },
   } = useForm<IFormValue>();
   const [, setValue] = useLocalStorage(TOKEN_KEY, '');
+  const tokenContextObj: IToken | null = useToken();
+
+  const navigate = useNavigate();
 
   const onSubmitHandler: SubmitHandler<IFormValue> = async ({ email, password }) => {
     await axios
@@ -26,6 +36,8 @@ const Login = () => {
       })
       .then((res) => {
         setValue(res.data.token);
+        tokenContextObj?.addToken(res.data.token);
+        navigate('/');
       })
       .catch(() => {
         setError(

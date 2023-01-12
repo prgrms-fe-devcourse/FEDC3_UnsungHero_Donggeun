@@ -1,9 +1,9 @@
 import React, { useState, createContext, useContext } from 'react';
-import useLocalStorage from '../../auth/useLocalStorage';
+import useLocalStorage from '../auth/useLocalStorage';
 
 interface IToken {
   token: string | undefined;
-  addToken: () => void;
+  addToken: (getToken: string) => void;
 }
 
 const TokenContext = createContext<IToken | null>(null);
@@ -13,12 +13,10 @@ export const useToken = () => useContext(TokenContext);
 const TOKEN_KEY = 'token';
 
 const TokenProvider = ({ children }: { children: React.ReactNode }) => {
-  const [token, setToken] = useState();
+  const [localToken] = useLocalStorage(TOKEN_KEY, '');
+  const [token, setToken] = useState(localToken);
 
-  const addToken = () => {
-    const [localToken] = useLocalStorage(TOKEN_KEY, '');
-    setToken(localToken);
-  };
+  const addToken = (getToken: string) => setToken(getToken);
 
   return <TokenContext.Provider value={{ token, addToken }}>{children}</TokenContext.Provider>;
 };
