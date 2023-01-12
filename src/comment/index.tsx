@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import useAxios from '../api/useAxios';
 import useMutation from '../api/useMutation';
+import { IComment } from '../types/comment';
 import { IPost } from '../types/post';
+import { fetchPost } from './api';
 
 const tempData = {
   postId: '63bbc0d78c65a93bebe29fd4',
@@ -9,8 +11,11 @@ const tempData = {
   token:
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYzYmJiZjBkOGM2NWE5M2JlYmUyOWZiMiIsImVtYWlsIjoieWpAMTIzLmNvbSJ9LCJpYXQiOjE2NzMyNDg1MjV9.wHXuuSkuHKMKDbaD0weUnGJkRW9P0Ae_k74BlFMWiqY',
 };
+const resource = fetchPost<IPost>();
 
 const Comment = () => {
+  const post = resource.read();
+
   const [value, setValue] = useState('');
   const { data, fetchData } = useAxios<IPost>({
     url: `${tempData.baseUrl}/posts/${tempData.postId}`,
@@ -64,7 +69,7 @@ const Comment = () => {
         <button>전송</button>
       </form>
       <ul>
-        {data?.comments.map(({ _id, comment }) => (
+        {post?.comments.map(({ _id, comment }: IComment) => (
           <li key={_id}>
             {comment}
             <button onClick={() => handleClickButton(_id)}>❌</button>

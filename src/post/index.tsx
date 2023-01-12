@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import ErrorBoundary from '../api/ErrorBoundary';
 import Comment from '../comment';
 import Like from '../like';
@@ -7,8 +8,10 @@ function Post() {
     <>
       <ErrorBoundary>
         <h1>언성히어로 최고🤗</h1>
-        <Comment />
-        <Like />
+        <Suspense fallback={<div>loading...</div>}>
+          <Comment />
+          <Like />
+        </Suspense>
       </ErrorBoundary>
     </>
   );
