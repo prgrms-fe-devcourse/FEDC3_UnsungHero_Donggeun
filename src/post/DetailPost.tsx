@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import ErrorBoundary from '../api/ErrorBoundary';
 import Comment from '../comment';
 import Like from '../like';
+import useAxios from '../api/useAxios';
+import { IPost } from '../types/post';
 
 const END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 
@@ -40,7 +42,17 @@ const DetailPost = () => {
 
   useEffect(() => {
     fetchPost();
+    //fetchData();
   }, []);
+
+  // const { data, fetchData } = useAxios<IPost>({
+  //   url: `${END_POINT}/posts/${postId}`,
+  //   method: 'get',
+  // });
+
+  // setTitle(JSON.parse(data?.title).title);
+  // const temp = data?.title as string;
+  //   if (temp) console.log(setTitle(JSON.parse(temp).title));
 
   const handleOnClickToUpdatePage = () => {
     navigate(`/post/channelId/updatePost/${postId}`);
