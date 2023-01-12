@@ -5,8 +5,8 @@ interface IComment {
 }
 
 export interface INotification {
-  seen: boolean;
-  _id: string;
+  seen?: boolean;
+  _id?: string;
   author?: IUser;
   userId?: IUser | string;
   postId?: string | null;
@@ -15,6 +15,6 @@ export interface INotification {
   message?: string;
   createdAt?: string;
   updatedAt?: string;
-  notificationType?: 'COMMENT' | 'FOLLOW' | 'LIKE';
+  notificationType?: string;
   notificationTypeId?: string;
 }
