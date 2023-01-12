@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import useAxios from '../api/useAxios';
 import useMutation from '../api/useMutation';
 import { ILike } from '../types/like';
 import { IPost } from '../types/post';
 
 const tempData = {
-  postId: '63bbc0d78c65a93bebe29fd4',
   baseUrl: 'http://kdt.frontend.3rd.programmers.co.kr:5006',
   userId: '63be3977ad5c5114f90101aa',
   token:
@@ -13,10 +13,12 @@ const tempData = {
 };
 
 const Like = () => {
+  const { postId } = useParams();
+
   const [isLike, setIsLike] = useState(false);
   const [likes, setLikes] = useState<ILike[]>([]);
   const { data, fetchData } = useAxios<IPost>({
-    url: `${tempData.baseUrl}/posts/${tempData.postId}`,
+    url: `${tempData.baseUrl}/posts/${postId}`,
     method: 'get',
   });
   const { mutate } = useMutation();
@@ -30,7 +32,7 @@ const Like = () => {
       url: `${tempData.baseUrl}/likes/create`,
       method: 'post',
       data: {
-        postId: tempData.postId,
+        postId: postId,
       },
     });
 

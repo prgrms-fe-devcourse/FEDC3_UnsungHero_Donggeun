@@ -1,55 +1,31 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import ErrorBoundary from '../api/ErrorBoundary';
+import Comment from '../comment';
+import Like from '../like';
+
+import useAxios from '../api/useAxios';
+import { IPost } from '../types/post';
 
 const END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
-const postId = '63bc5a9f23d1e65ff38c6b9b';
+//const postId = '63bc3d1023d1e65ff38c5e77';
 
 // 추후에 postId를 DetailPost의 props로 받아와서 보여주는 방식으로 구성하면될듯.
 const DetailPost = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const token = localStorage.getItem('TOKEN_KEY');
+  const { postId } = useParams();
 
-  const handleTitleOnChnage = (e: string) => {
-    setTitle(e);
-  };
-  const handleContentOnChnage = (e: string) => {
-    setContent(e);
-  };
+  const navigate = useNavigate();
 
-  const handleUpdatePost = () => {
-    const testData = {
-      title: title,
-      content: content,
-    };
-    const temp = JSON.stringify(testData);
+  // const { data, fetchData } = useAxios<IPost>({
+  //   url: `${END_POINT}/posts/${postId}`,
+  //   method: 'get',
+  // });
 
-    const post = {
-      postId: postId,
-      title: temp,
-      image: null,
-      channelId: String,
-    };
-
-    axios.put(`${END_POINT}/posts/update`, post, {
-      headers: {
-        Authorization: `bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    });
-  };
-
-  const handleDeletePost = () => {
-    axios.delete(`${END_POINT}/posts/delete`, {
-      data: {
-        id: postId,
-      },
-      headers: {
-        Authorization: `bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    });
-  };
+  // //  JSON.parse(data.title);
+  // console.log({ ...data });
 
   const fetchPost = async () => {
     try {
@@ -71,21 +47,20 @@ const DetailPost = () => {
     fetchPost();
   }, []);
 
+  const handleOnClickToUpdatePage = () => {
+    navigate(`/post/channelId/${postId}`);
+  };
+
   return (
-    <div>
+    <ErrorBoundary>
       <h1>Detail Post Page</h1>
-      <input value={title} onChange={(e) => handleTitleOnChnage(e.target.value)} />
+      <h1>제목: {title}</h1>
+      <h2>내용: {content}</h2>
       <br />
-      <textarea
-        onChange={(e) => handleContentOnChnage(e.target.value)}
-        rows={10}
-        cols={100}
-        value={content}
-        placeholder='내용'
-      />
-      <button onClick={handleUpdatePost}>내용 수정</button>
-      <button onClick={handleDeletePost}>글 삭제</button>
-    </div>
+      <button onClick={handleOnClickToUpdatePage}>내용 수정 페이지로 가기</button>
+      <Comment />
+      <Like />
+    </ErrorBoundary>
   );
 };
 
