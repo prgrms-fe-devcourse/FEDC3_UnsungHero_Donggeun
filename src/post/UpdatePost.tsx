@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 const END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 
@@ -8,6 +8,7 @@ const UpdatePost = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const { postId } = useParams();
+  const navigate = useNavigate();
 
   const token = localStorage.getItem('TOKEN_KEY');
 
@@ -54,6 +55,8 @@ const UpdatePost = () => {
         'Content-Type': 'application/json',
       },
     });
+
+    navigate(`/post/${postId}`);
   };
 
   const handleDeletePost = () => {
