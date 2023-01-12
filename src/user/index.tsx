@@ -25,7 +25,7 @@ const API_URL = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 
 const User = () => {
   const { id } = useParams();
-  const { data } = useAxios<IUser>({
+  const { data, fetchData } = useAxios<IUser>({
     url: `${API_URL}/users/${id}`,
     method: 'get',
   });
@@ -45,6 +45,10 @@ const User = () => {
       coverImage: data?.coverImage ?? COVER_IMG_URL,
     });
   }, [data]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const handlemoveEditPage = () => {
     navigate(`/userEdit/${id}`);

@@ -2,22 +2,22 @@ import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import useAxios from '../api/useAxios';
 import { IUser } from '../types/user';
-import axios from 'axios';
 
 const COVER_IMG_URL = 'https://ifh.cc/g/ZSypny.png';
 const PROFIE_IMG_URL = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
 const API_URL = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
-const TOKEN = localStorage.getItem('token');
-const headers = {
-  Authorization: `bearer ${TOKEN}`,
-  'Content-Type': 'multipart/form-data',
-};
 interface IProps {
   id: string | undefined;
+  setimgFiles: React.Dispatch<React.SetStateAction<object>>;
 }
 
-const UserEditImg = ({ id }: IProps) => {
-  const { data, fetchData } = useAxios<IUser>({
+interface IImage {
+  cover?: FormData | string;
+  profile?: FormData | string;
+}
+
+const UserEditImg = ({ id, setimgFiles }: IProps) => {
+  const { data } = useAxios<IUser>({
     url: `${API_URL}/users/${id}`,
     method: 'get',
   });
@@ -26,6 +26,10 @@ const UserEditImg = ({ id }: IProps) => {
   const [coverImage, setCoverImage] = useState('');
   const profileInputRef = useRef<HTMLInputElement>(null);
   const coverInputRef = useRef<HTMLInputElement>(null);
+  const imgFileRef = useRef<IImage>({
+    cover: '',
+    profile: '',
+  });
 
   useEffect(() => {
     setCoverImage(data?.coverImage ?? COVER_IMG_URL);
@@ -51,14 +55,10 @@ const UserEditImg = ({ id }: IProps) => {
       formData.append('isCover', cover);
       formData.append('image', file);
 
-      getChangeImg(formData);
+      imgFileRef.current[type as keyof IImage] = formData;
+
+      setimgFiles(imgFileRef.current);
     }
-  };
-
-  const getChangeImg = async (formData: FormData) => {
-    await axios.post(`${API_URL}/users/upload-photo`, formData, { headers });
-
-    fetchData();
   };
 
   return (
