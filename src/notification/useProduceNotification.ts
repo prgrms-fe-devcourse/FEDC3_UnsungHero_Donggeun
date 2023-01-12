@@ -1,15 +1,14 @@
 import axios from 'axios';
-
-interface IAlram {
-  notificationType: string;
-  notificationTypeId: string;
-  userId: string;
-  postId: string;
-}
+import { INotification } from '../types/notification';
 
 const TOKEN_KEY = 'token';
 
-export const produceAlram = async ({ notificationType, notificationTypeId, userId, postId }: IAlram) => {
+export const produceNotification = async ({
+  notificationType,
+  notificationTypeId,
+  userId,
+  postId,
+}: INotification) => {
   const body = {
     notificationType,
     notificationTypeId,
