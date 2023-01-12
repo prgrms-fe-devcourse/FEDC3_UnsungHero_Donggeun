@@ -7,8 +7,8 @@ const TOKEN_KEY = 'token';
 
 const NotificationList = () => {
   const [notificationList, setNotificationlist] = useState<INotification[]>();
-  const [notificationStatus, setAlramStatus] = useState<boolean | undefined>(true);
-  const [showedNotification, setShowedNotification] = useState(false);
+  const [notificationStatus, setNotificationStatus] = useState<boolean | undefined>(true);
+  const [showedNotificationListStatus, setShowedNotificationListStatus] = useState(false);
 
   // by 민형, 이미 모든 알람을 열어본 경우에는 해당 로직이 수행되지 않도록(리팩토링)_230111
   const confirmNotificationlist = async () => {
@@ -46,42 +46,36 @@ const NotificationList = () => {
       });
   };
 
-  const viewNotificationlist = async () => {
-    if (showedNotification) {
-      setShowedNotification(false);
-      return;
-    }
-
-    setShowedNotification(true);
+  const updateNotificationStatus = () => {
+    const notificationListData = notificationList?.map(({ seen }) => seen);
+    const notificationStatus = notificationListData?.includes(false);
+    setNotificationStatus(notificationStatus);
   };
 
-  const checkNotificationStatus = () => {
-    const seenData = notificationList?.map(({ seen }) => seen);
-    const status = seenData?.includes(false);
-    setAlramStatus(status);
-  };
+  const toggleShowedNotificationListStatus = () =>
+    setShowedNotificationListStatus((prevStatus) => !prevStatus);
 
   useEffect(() => {
     fetchNotificationData();
   }, []);
 
   useEffect(() => {
-    checkNotificationStatus();
+    updateNotificationStatus();
   }, [notificationList]);
 
   return (
     <>
-      <button onClick={viewNotificationlist} style={{ width: '100vw' }}>
+      <button onClick={toggleShowedNotificationListStatus} style={{ width: '100vw' }}>
         알림 목록 리스트 Render
       </button>
-      {showedNotification && (
+      {showedNotificationListStatus && (
         <>
           <button onClick={confirmNotificationlist} style={{ width: '100vw' }}>
             모든 알림 확인
           </button>
           <div style={{ display: 'flex', justifyContent: 'center' }}>
-            {notificationList?.map(({ _id, seen, comment }) => (
-              <NotificationlistItem _id={_id} seen={seen} comment={comment} />
+            {notificationList?.map(({ _id, seen: isCheck, comment }) => (
+              <NotificationlistItem key={_id} _id={_id} seen={isCheck} comment={comment} />
             ))}
             {notificationStatus && (
               <>
