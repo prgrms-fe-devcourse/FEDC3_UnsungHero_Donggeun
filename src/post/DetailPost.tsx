@@ -48,7 +48,7 @@ const DetailPost = () => {
   }, []);
 
   const handleOnClickToUpdatePage = () => {
-    navigate(`/post/channelId/${postId}`);
+    navigate(`/post/channelId/updatePost/${postId}`);
   };
 
   return (

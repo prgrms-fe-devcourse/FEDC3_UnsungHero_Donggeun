@@ -5,6 +5,7 @@ import User from './user';
 import UpdatePost from './post/UpdatePost';
 import CreatePost from './post/CreatePost';
 import DetailPost from './post/DetailPost';
+
 // import UserEdit from './user/UserEdit';
 
 function Router() {
@@ -14,8 +15,8 @@ function Router() {
         <Routes>
           <Route path='/user/:id' element={<User />} />
           <Route path='/post/:postId' element={<DetailPost />} />
-          <Route path='/post/channelId/:postId' element={<UpdatePost />} />
-          <Route path='/post/channelId/create' element={<CreatePost />} />
+          <Route path='/post/channelId/updatePost/:postId' element={<UpdatePost />} />
+          <Route path='/post/create/channelId' element={<CreatePost />} />
           {/* <Route path='/userEdit/:id' element={<UserEdit />} /> */}
         </Routes>
       </Layout>

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useState } from 'react';
 
 const END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
-const chnnalId = '63bbe845400746566c234d41'; // params로 받아오면 될듯?
+const chnnalId = '63b5b7f5a87de522e8646d65'; // params로 받아오면 될듯?
 
 function CreatePost() {
   const [title, setTitle] = useState('');

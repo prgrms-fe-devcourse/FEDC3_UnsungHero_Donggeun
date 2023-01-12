@@ -45,7 +45,7 @@ const UpdatePost = () => {
       postId: postId,
       title: jsonToUpdate,
       image: null,
-      channelId: String,
+      channelId: '63b5b7f5a87de522e8646d65', // 첫 번 쨰 채널
     };
 
     axios.put(`${END_POINT}/posts/update`, post, {
