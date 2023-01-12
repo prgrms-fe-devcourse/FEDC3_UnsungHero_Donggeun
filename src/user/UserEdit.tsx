@@ -8,7 +8,7 @@ const TOKEN = localStorage.getItem('token');
 const headers = {
   Authorization: `bearer ${TOKEN}`,
 };
-const id = '63bbb8d08c65a93bebe29f78';
+
 interface IFormValue {
   fullName: string;
   password: string;
@@ -16,7 +16,7 @@ interface IFormValue {
 
 const UserEdit = () => {
   const navigate = useNavigate();
-  // const { id } = useParams();
+  const { id } = useParams();
   const {
     register,
     handleSubmit,

@@ -13,7 +13,7 @@ const headers = {
   'Content-Type': 'multipart/form-data',
 };
 interface IProps {
-  id: string;
+  id: string | undefined;
 }
 
 const UserEditImg = ({ id }: IProps) => {
@@ -38,7 +38,7 @@ const UserEditImg = ({ id }: IProps) => {
 
       const reader = new FileReader();
       reader.readAsDataURL(file);
-      reader.onload = async () => {
+      reader.onload = () => {
         if (reader.readyState === 2) {
           type === 'profile'
             ? setProfileImage(reader.result as string)
@@ -47,10 +47,10 @@ const UserEditImg = ({ id }: IProps) => {
       };
 
       const formData = new FormData();
-
       const cover = type === 'profile' ? 'false' : 'true';
       formData.append('isCover', cover);
       formData.append('image', file);
+
       getChangeImg(formData);
     }
   };
