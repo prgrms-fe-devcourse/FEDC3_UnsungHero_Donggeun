@@ -23,7 +23,7 @@ const SearchBox = ({ setSelectedSearchOption, setInputSearchValue, getPostsList 
     (e: React.FormEvent<HTMLFormElement>): void => {
       e.preventDefault();
       setSelectedSearchOption(selectedOption);
-      setInputSearchValue(inputValue);
+      setInputSearchValue(inputValue.toLowerCase());
       getPostsList();
     },
     [inputValue, selectedOption]
@@ -40,7 +40,7 @@ const SearchBox = ({ setSelectedSearchOption, setInputSearchValue, getPostsList 
         onChange={handleChangeInput}
         value={inputValue}
         ref={inputRef}
-        placeholder="검색어를 입력해 주세요"
+        placeholder='검색어를 입력해 주세요'
       />
       <button>검색</button>
     </form>
