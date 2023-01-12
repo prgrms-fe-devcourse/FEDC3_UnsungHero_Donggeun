@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { IsJsonString } from './isJsonString';
 
 interface Ilikes {
   _id: string;
@@ -48,8 +49,8 @@ const PostList = ({ filteredPostsInfo, selectedSearchOption, inputSearchValue }:
         {filteredPostsInfo.map((postInfo, index) => {
           const { title, _id, likes, createdAt } = postInfo;
           const { fullName } = postInfo.author; //fullName이 아니라 userName이 닉네임인 경우 변경해야함
-          const postTitle = JSON.parse(title).title;
-          const postContent = JSON.parse(title).content;
+          const postTitle = IsJsonString(title) ? JSON.parse(title).title : title;
+          const postContent = IsJsonString(title) ? JSON.parse(title).content : ' ';
 
           return (
             <li key={_id}>

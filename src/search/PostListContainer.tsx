@@ -1,6 +1,7 @@
 import PostList from './PostList';
 import Pagination from './Pagination';
 import { useState } from 'react';
+import { IsJsonString } from './isJsonString';
 
 interface Ilikes {
   _id: string;
@@ -30,7 +31,7 @@ const PostListContainer = ({
 }: IpostListContainerProps) => {
   const [page, setPage] = useState(1);
   const [checkedSorting, setCheckedSorting] = useState(true);
-  const limit = 5;
+  const limit = 10;
   const offset = (page - 1) * limit;
 
   const dividePosts = (posts: any) => {
@@ -42,8 +43,8 @@ const PostListContainer = ({
     const filteredPosts = postsInfo.filter((postInfo) => {
       const { title } = postInfo;
       const { fullName } = postInfo.author; //fullName이 아니라 userName이 닉네임인 경우 변경해야함
-      const postTitle = JSON.parse(title).title;
-      const postContent = JSON.parse(title).content;
+      const postTitle = IsJsonString(title) ? JSON.parse(title).title : title;
+      const postContent = IsJsonString(title) ? JSON.parse(title).content : '';
 
       if (selectedSearchOption === '제목') {
         return postTitle.includes(inputSearchValue);
@@ -51,6 +52,8 @@ const PostListContainer = ({
         return postTitle.includes(inputSearchValue) || postContent.includes(inputSearchValue);
       } else if (selectedSearchOption === '작성자') {
         return fullName.includes(inputSearchValue);
+      } else {
+        return postsInfo;
       }
     });
 
@@ -65,6 +68,7 @@ const PostListContainer = ({
         }
       });
     }
+
     return filteredPosts;
   };
 
