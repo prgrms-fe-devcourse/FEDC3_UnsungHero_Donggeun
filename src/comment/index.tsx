@@ -1,27 +1,37 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import useAxios from '../api/useAxios';
+import useMutation from '../api/useMutation';
+import { IPost } from '../types/post';
 
-interface IComment {
-  _id: string;
-  comment: string;
-  author: any; // auth 타입 정의 후 불러오기
-  post: string;
-  createdAt: string;
-  updatedAt: string;
-}
+const tempData = {
+  postId: '63bbc0d78c65a93bebe29fd4',
+  baseUrl: 'http://kdt.frontend.3rd.programmers.co.kr:5006',
+  token:
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYzYmJiZjBkOGM2NWE5M2JlYmUyOWZiMiIsImVtYWlsIjoieWpAMTIzLmNvbSJ9LCJpYXQiOjE2NzMyNDg1MjV9.wHXuuSkuHKMKDbaD0weUnGJkRW9P0Ae_k74BlFMWiqY',
+};
 
 function Comment() {
   const [value, setValue] = useState('');
-  const [commentList, setCommentList] = useState<IComment[]>();
-
-  const tempData = {
-    postId: '63bbc0d78c65a93bebe29fd4',
-    baseUrl: 'http://kdt.frontend.3rd.programmers.co.kr:5006',
-    token:
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYzYmJiZjBkOGM2NWE5M2JlYmUyOWZiMiIsImVtYWlsIjoieWpAMTIzLmNvbSJ9LCJpYXQiOjE2NzMyNDg1MjV9.wHXuuSkuHKMKDbaD0weUnGJkRW9P0Ae_k74BlFMWiqY',
-  };
+  const { data, fetchData } = useAxios<IPost>({
+    url: `${tempData.baseUrl}/posts/${tempData.postId}`,
+    method: 'get',
+  });
+  const { mutate } = useMutation();
 
   const handleInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
+  };
+
+  const handleClickRemoveButton = async (id: string) => {
+    mutate({
+      url: `${tempData.baseUrl}/comments/delete`,
+      method: 'delete',
+      data: {
+        id,
+      },
+    });
+
+    fetchData();
   };
 
   const handleSubmitInput = (e: React.FormEvent<HTMLFormElement>) => {
@@ -30,48 +40,31 @@ function Comment() {
   };
 
   const createComment = async () => {
-    const data = {
-      comment: value,
-      postId: tempData.postId,
-    };
-
-    const response = await fetch(`${tempData.baseUrl}/comments/create`, {
-      method: 'POST',
-      headers: {
-        Authorization: `bearer ${tempData.token}`,
-        'Content-Type': 'application/json',
+    await mutate({
+      url: `${tempData.baseUrl}/comments/create`,
+      method: 'post',
+      data: {
+        comment: value,
+        postId: tempData.postId,
       },
-      body: JSON.stringify(data),
     });
 
-    if (response.ok) {
-      getCommentList();
-    }
+    fetchData();
+    setValue('');
   };
-
-  const getCommentList = async () => {
-    const response = await fetch(`${tempData.baseUrl}/posts/${tempData.postId}`);
-
-    if (response.ok) {
-      const { comments } = await response.json();
-
-      setCommentList(comments);
-    }
-  };
-
-  useEffect(() => {
-    getCommentList();
-  }, []);
 
   return (
     <>
       <form onSubmit={handleSubmitInput}>
-        <input placeholder="댓글을 입력해주세요" onChange={handleInputValue} value={value} />
+        <input placeholder='댓글을 입력해주세요' onChange={handleInputValue} value={value} />
         <button>전송</button>
       </form>
       <ul>
-        {commentList?.map(({ _id, comment }) => (
-          <li key={_id}>{comment}</li>
+        {data?.comments.map(({ _id, comment }) => (
+          <li key={_id}>
+            {comment}
+            <button onClick={() => handleClickRemoveButton(_id)}>❌</button>
+          </li>
         ))}
       </ul>
     </>

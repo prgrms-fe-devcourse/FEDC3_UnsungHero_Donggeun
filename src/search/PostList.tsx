@@ -1,4 +1,4 @@
-import { FunctionComponent } from 'react';
+import styled from 'styled-components';
 
 interface Ilikes {
   _id: string;
@@ -8,56 +8,78 @@ interface Iauthor {
   username: string;
 }
 
-interface IpostsInfo {
+interface IfilteredPostsInfo {
   title: string;
   _id: string;
   author: Iauthor;
   likes: Ilikes[];
+  createdAt: string;
 }
 interface IpostListProps {
-  postsInfo: IpostsInfo[];
+  filteredPostsInfo: IfilteredPostsInfo[];
   selectedSearchOption: string;
   inputSearchValue: string;
 }
 
-const PostList: FunctionComponent<IpostListProps> = ({
-  postsInfo,
-  selectedSearchOption,
-  inputSearchValue,
-}) => {
-  return (
-    <ul>
-      {postsInfo
-        .filter((postInfo) => {
-          const { title } = postInfo;
-          const { fullName } = postInfo.author; //fullName이 아니라 userName이 닉네임인 경우 변경해야함
+const Span = styled.span`
+  font-weight: 900;
+`;
 
-          if (selectedSearchOption === '제목') {
-            return JSON.parse(title).title.includes(inputSearchValue);
-          } else if (selectedSearchOption === '제목+내용') {
-            return (
-              JSON.parse(title).title.includes(inputSearchValue) ||
-              JSON.parse(title).content.includes(inputSearchValue)
-            );
-          } else if (selectedSearchOption === '작성자') {
-            return fullName.includes(inputSearchValue);
-          }
-        })
-        .map((postInfo) => {
-          const { title, _id, likes } = postInfo;
+const PostList = ({ filteredPostsInfo, selectedSearchOption, inputSearchValue }: IpostListProps) => {
+  const highlightIncludedText = (content: string, searchedValue: string) => {
+    const title = content.toLowerCase();
+    const searchValue = searchedValue.toLowerCase();
+    if (searchValue !== '' && title.includes(searchValue)) {
+      const matchText = content.split(new RegExp(`(${searchValue})`, 'gi'));
+      return (
+        <>
+          {matchText.map((text, index) =>
+            text.toLowerCase() === searchValue.toLowerCase() ? <Span key={index}>{text}</Span> : text
+          )}
+        </>
+      );
+    }
+    return content;
+  };
+
+  return (
+    <>
+      <ul>
+        {filteredPostsInfo.map((postInfo, index) => {
+          const { title, _id, likes, createdAt } = postInfo;
           const { fullName } = postInfo.author; //fullName이 아니라 userName이 닉네임인 경우 변경해야함
+          const postTitle = JSON.parse(title).title;
+          const postContent = JSON.parse(title).content;
+
           return (
             <li key={_id}>
               <div>
-                {JSON.parse(title).title}
+                <div>
+                  제목:{' '}
+                  {selectedSearchOption === '제목' || selectedSearchOption === '제목+내용'
+                    ? highlightIncludedText(postTitle, inputSearchValue)
+                    : postTitle}
+                </div>
                 <div>공감수: {likes.length}</div>
-                <div>작성자: {fullName}</div>
+                <div>
+                  닉네임:{' '}
+                  {selectedSearchOption === '작성자'
+                    ? highlightIncludedText(fullName, inputSearchValue)
+                    : fullName}
+                </div>
+                <div>작성일: {createdAt.slice(0, 10)}</div>
               </div>
-              <div>{JSON.parse(title).content}</div>
+              <div>
+                내용:{' '}
+                {selectedSearchOption === '제목+내용'
+                  ? highlightIncludedText(postContent, inputSearchValue)
+                  : postContent}
+              </div>
             </li>
           );
         })}
-    </ul>
+      </ul>
+    </>
   );
 };
 export default PostList;
