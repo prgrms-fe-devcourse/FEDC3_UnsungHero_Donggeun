@@ -10,7 +10,7 @@ const tempData = {
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYzYmJiZjBkOGM2NWE5M2JlYmUyOWZiMiIsImVtYWlsIjoieWpAMTIzLmNvbSJ9LCJpYXQiOjE2NzMyNDg1MjV9.wHXuuSkuHKMKDbaD0weUnGJkRW9P0Ae_k74BlFMWiqY',
 };
 
-function Comment() {
+const Comment = () => {
   const [value, setValue] = useState('');
   const { data, fetchData } = useAxios<IPost>({
     url: `${tempData.baseUrl}/posts/${tempData.postId}`,
@@ -22,21 +22,13 @@ function Comment() {
     setValue(e.target.value);
   };
 
-  const handleClickRemoveButton = async (id: string) => {
-    mutate({
-      url: `${tempData.baseUrl}/comments/delete`,
-      method: 'delete',
-      data: {
-        id,
-      },
-    });
-
-    fetchData();
-  };
-
   const handleSubmitInput = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     createComment();
+  };
+
+  const handleClickButton = (id: string) => {
+    deleteComment(id);
   };
 
   const createComment = async () => {
@@ -53,6 +45,18 @@ function Comment() {
     setValue('');
   };
 
+  const deleteComment = async (id: string) => {
+    await mutate({
+      url: `${tempData.baseUrl}/comments/delete`,
+      method: 'delete',
+      data: {
+        id,
+      },
+    });
+
+    fetchData();
+  };
+
   return (
     <>
       <form onSubmit={handleSubmitInput}>
@@ -63,12 +67,12 @@ function Comment() {
         {data?.comments.map(({ _id, comment }) => (
           <li key={_id}>
             {comment}
-            <button onClick={() => handleClickRemoveButton(_id)}>❌</button>
+            <button onClick={() => handleClickButton(_id)}>❌</button>
           </li>
         ))}
       </ul>
     </>
   );
-}
+};
 
 export default Comment;
