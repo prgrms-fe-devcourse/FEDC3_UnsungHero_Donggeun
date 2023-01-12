@@ -1,8 +1,15 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
 const END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
+
+const Container = styled.div`
+  max-width: 50%;
+  display: flex;
+  flex-direction: column;
+`;
 
 const UpdatePost = () => {
   const [title, setTitle] = useState('');
@@ -12,11 +19,11 @@ const UpdatePost = () => {
 
   const token = localStorage.getItem('TOKEN_KEY');
 
-  const handleTitleOnChnage = (e: string) => {
-    setTitle(e);
+  const handleTitleOnChnage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(e.target.value);
   };
-  const handleContentOnChnage = (e: string) => {
-    setContent(e);
+  const handleContentOnChnage = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setContent(e.target.value);
   };
 
   const fetchPost = async () => {
@@ -69,14 +76,16 @@ const UpdatePost = () => {
         'Content-Type': 'application/json',
       },
     });
+
+    navigate(`/`);
   };
   return (
-    <div>
+    <Container>
       <h1>Update Post</h1>
-      <input value={title} onChange={(e) => handleTitleOnChnage(e.target.value)} />
+      <input value={title} onChange={(e) => handleTitleOnChnage(e)} />
       <br />
       <textarea
-        onChange={(e) => handleContentOnChnage(e.target.value)}
+        onChange={(e) => handleContentOnChnage(e)}
         rows={10}
         cols={100}
         value={content}
@@ -85,7 +94,7 @@ const UpdatePost = () => {
       <br />
       <button onClick={handleUpdatePost}>내용 수정</button>
       <button onClick={handleDeletePost}>글 삭제</button>
-    </div>
+    </Container>
   );
 };
 

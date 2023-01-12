@@ -13,10 +13,11 @@ function Router() {
     <BrowserRouter>
       <Layout>
         <Routes>
+          <Route path='/' element={<Post />} />
           <Route path='/user/:id' element={<User />} />
           <Route path='/post/:postId' element={<DetailPost />} />
           <Route path='/post/channelId/updatePost/:postId' element={<UpdatePost />} />
-          <Route path='/post/create/channelId' element={<CreatePost />} />
+          <Route path='/post/create/:chnnalId' element={<CreatePost />} />
           {/* <Route path='/userEdit/:id' element={<UserEdit />} /> */}
         </Routes>
       </Layout>
