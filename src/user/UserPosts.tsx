@@ -19,7 +19,7 @@ const UserPosts = ({ posts }: IProps) => {
         posts
           .slice(offset, offset + limit)
           .map((post: IPost) => <UserPostListItem key={post._id} post={post} />)}
-      <Pagination total={posts && posts.length} limit={limit} page={page} setPage={setPage} />
+      <Pagination total={posts?.length as number} limit={limit} page={page} setPage={setPage} />
     </>
   );
 };

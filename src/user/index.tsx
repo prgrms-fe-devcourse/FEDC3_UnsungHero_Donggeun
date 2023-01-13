@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { IUser } from '../types/user';
 import styled from 'styled-components';
 import useAxios from '../api/useAxios';
-import UserPosts from './UserPosts';
 import { IPost } from '../types/post';
 import { IFollow } from '../types/follow';
-import UserFollowing from './UserFollowing';
-import UserFollowers from './UserFollowers';
+import UserPosts from './UserPosts';
 
 interface IUserInfo {
   fullName: string | undefined;
@@ -73,9 +71,14 @@ const User = () => {
         <img src={LIKE_IMG_URL} />
         {totalLikes}
       </div>
-      <UserFollowers followers={userFollow.followers} />
-      <UserFollowing following={userFollow.following} />
       <button onClick={handlemoveEditPage}>내 정보 수정</button>
+
+      <Link to={`/followers`} state={{ followers: userFollow.followers }}>
+        팔로워: {userFollow.followers && userFollow.followers.length}
+      </Link>
+      <Link to={`/following`} state={{ following: userFollow.following }}>
+        팔로잉: {userFollow.following && userFollow.following.length}
+      </Link>
       {userInfo.posts && userInfo.posts.length > 0 && <UserPosts posts={userInfo.posts} />}
     </>
   );
