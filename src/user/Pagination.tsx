@@ -12,7 +12,7 @@ interface IButtonStyle {
   i: number;
 }
 
-const Pagination = ({ total, limit, page, setPage }: IProps) => {
+const Pagination = ({ total = 0, limit, page, setPage }: IProps) => {
   const totalPages = Math.ceil(total / limit);
 
   return (
