@@ -1,69 +1,46 @@
 import { useState, useEffect } from 'react';
-import useAxios from '../api/useAxios';
-import useMutation from '../api/useMutation';
+import { getPost } from '../comment/api';
+import { tempData } from '../comment/tempData';
 import { ILike } from '../types/like';
 import { IPost } from '../types/post';
+import { createLike, deleteLike } from './api';
 
-const tempData = {
-  postId: '63bbc0d78c65a93bebe29fd4',
-  baseUrl: 'http://kdt.frontend.3rd.programmers.co.kr:5006',
-  userId: '63be3977ad5c5114f90101aa',
-  token:
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYzYmJiZjBkOGM2NWE5M2JlYmUyOWZiMiIsImVtYWlsIjoieWpAMTIzLmNvbSJ9LCJpYXQiOjE2NzMyNDg1MjV9.wHXuuSkuHKMKDbaD0weUnGJkRW9P0Ae_k74BlFMWiqY',
-};
+const resource = getPost<IPost>();
 
 const Like = () => {
+  let post = resource.read();
   const [isLike, setIsLike] = useState(false);
   const [likes, setLikes] = useState<ILike[]>([]);
-  const { data, fetchData } = useAxios<IPost>({
-    url: `${tempData.baseUrl}/posts/${tempData.postId}`,
-    method: 'get',
-  });
-  const { mutate } = useMutation();
 
-  const handleClickLike = () => {
-    isLike ? deleteLike() : createLike();
-  };
-
-  const createLike = async () => {
-    await mutate({
-      url: `${tempData.baseUrl}/likes/create`,
-      method: 'post',
-      data: {
-        postId: tempData.postId,
-      },
-    });
-
-    fetchData();
-  };
-
-  const deleteLike = async () => {
+  const handleClickLike = async () => {
     const targetLike = likes?.find(({ user }) => user === tempData.userId);
 
-    await mutate({
-      url: `${tempData.baseUrl}/likes/delete`,
-      method: 'delete',
-      data: { id: targetLike },
-    });
+    if (isLike && targetLike) {
+      await deleteLike(targetLike);
+    } else {
+      await createLike();
+    }
 
-    fetchData();
+    post = resource.read();
   };
 
   useEffect(() => {
-    setIsLike(likes?.findIndex(({ user }) => user === tempData.userId) > -1 ? true : false);
+    const userLikeIndex = likes?.findIndex(({ user }) => user === tempData.userId);
+
+    setIsLike(userLikeIndex > -1 ? true : false);
   }, [likes]);
 
   useEffect(() => {
-    if (data) {
-      setLikes(data.likes);
+    if (post) {
+      setLikes(post.likes);
     }
-  }, [data]);
+  }, [post]);
 
   return (
     <>
       <div style={{ cursor: 'pointer', fontSize: '2rem' }} onClick={handleClickLike}>
         {isLike ? '❤️' : '🤍'}
-        {data?.likes.length}
+        {post?.likes.length}
       </div>
     </>
   );

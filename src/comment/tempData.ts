@@ -3,4 +3,5 @@ export const tempData = {
   baseUrl: 'http://kdt.frontend.3rd.programmers.co.kr:5006',
   token:
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYzYmJiZjBkOGM2NWE5M2JlYmUyOWZiMiIsImVtYWlsIjoieWpAMTIzLmNvbSJ9LCJpYXQiOjE2NzMyNDg1MjV9.wHXuuSkuHKMKDbaD0weUnGJkRW9P0Ae_k74BlFMWiqY',
+  userId: '63be3977ad5c5114f90101aa',
 };
