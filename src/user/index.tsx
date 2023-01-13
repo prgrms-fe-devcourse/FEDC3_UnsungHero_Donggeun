@@ -3,20 +3,16 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { IUser } from '../types/user';
 import styled from 'styled-components';
 import useAxios from '../api/useAxios';
-import Pagination from './Pagination';
-import UserPostListItem from './UserPostListItem';
+import UserPosts from './UserPosts';
+import { IPost } from '../types/post';
 
 interface IUserInfo {
   fullName: string | undefined;
   posts: [];
   image: string;
   coverImage: string;
-}
-
-interface IPost {
-  _id: string;
-  title: string;
-  likes: [];
+  followers: number;
+  following: number;
 }
 
 const COVER_IMG_URL = 'https://ifh.cc/g/xBfBwB.png';
@@ -35,11 +31,10 @@ const User = () => {
     posts: [],
     image: '',
     coverImage: '',
+    followers: 0,
+    following: 0,
   });
-  const [page, setPage] = useState(1);
   const navigate = useNavigate();
-  const limit = 7;
-  const offset = (page - 1) * limit;
 
   useEffect(() => {
     setUserInfo({
@@ -47,6 +42,8 @@ const User = () => {
       posts: data?.posts as [],
       image: data?.image ?? PROFIE_IMG_URL,
       coverImage: data?.coverImage ?? COVER_IMG_URL,
+      followers: data?.followers.length as number,
+      following: data?.following.length as number,
     });
   }, [data]);
 
@@ -68,17 +65,11 @@ const User = () => {
         <img src={LIKE_IMG_URL} />
         {totalLikes}
       </div>
+      <div>
+        팔로워 {userInfo.followers} 팔로잉 {userInfo.following}
+      </div>
       <button onClick={handlemoveEditPage}>내 정보 수정</button>
-      {userInfo.posts &&
-        userInfo.posts
-          .slice(offset, offset + limit)
-          .map((post: IPost) => <UserPostListItem key={post._id} post={post} />)}
-      <Pagination
-        total={userInfo.posts && userInfo.posts.length}
-        limit={limit}
-        page={page}
-        setPage={setPage}
-      />
+      {userInfo.posts && userInfo.posts.length > 0 && <UserPosts posts={userInfo.posts} />}
     </>
   );
 };
