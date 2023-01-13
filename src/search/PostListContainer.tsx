@@ -18,6 +18,7 @@ interface IpostsInfo {
   likes: Ilikes[];
   createdAt: string;
 }
+
 interface IpostListContainerProps {
   postsInfo: IpostsInfo[];
   selectedSearchOption: string;

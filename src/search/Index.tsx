@@ -11,21 +11,30 @@ const Search = () => {
   const [postsInfo, setPostsInfo] = useState([]);
   const [selectedSearchOption, setSelectedSearchOption] = useState('');
   const [inputSearchValue, setInputSearchValue] = useState('');
-  const [presentChannelId, setPresentChannelId] = useState<string | undefined>('');
+  const [currentChannelId, setCurrentChannelId] = useState<string | undefined>('');
   const { channelId } = useParams();
 
-  if (presentChannelId !== channelId) {
-    setPresentChannelId(channelId);
+  if (channelId !== currentChannelId) {
+    setCurrentChannelId(channelId);
   }
 
   useEffect(() => {
-    getPostsList();
-    setSelectedSearchOption('');
-    setInputSearchValue('');
-  }, [presentChannelId]);
+    if (currentChannelId !== undefined) {
+      getPostsList();
+      setSelectedSearchOption('');
+      setInputSearchValue('');
+    }
+  }, [currentChannelId]);
 
   const getPostsList = async () => {
-    axios.get(`${API_END_POINT}/posts/channel/${presentChannelId}`).then((response) => {
+    axios.get(`${API_END_POINT}/posts/channel/${currentChannelId}`).then((response) => {
+      const { data } = response;
+      setPostsInfo(data);
+    });
+  };
+
+  const getEntirePostsList = async () => {
+    axios.get(`${API_END_POINT}/posts`).then((response) => {
       const { data } = response;
       setPostsInfo(data);
     });
@@ -37,13 +46,14 @@ const Search = () => {
         setSelectedSearchOption={setSelectedSearchOption}
         setInputSearchValue={setInputSearchValue}
         getPostsList={getPostsList}
-        channelId={presentChannelId}
+        getEntirePostsList={getEntirePostsList}
+        channelId={currentChannelId}
       />
       <PostListContainer
         postsInfo={postsInfo}
         selectedSearchOption={selectedSearchOption}
         inputSearchValue={inputSearchValue}
-        presentChannelId={presentChannelId}
+        presentChannelId={currentChannelId}
       />
     </ErrorBoundary>
   );

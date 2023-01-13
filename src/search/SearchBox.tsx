@@ -4,6 +4,7 @@ interface IsearchBoxProps {
   setSelectedSearchOption: (value: string) => void;
   setInputSearchValue: (value: string) => void;
   getPostsList: () => void;
+  getEntirePostsList: () => void;
   channelId: string | undefined;
 }
 
@@ -11,6 +12,7 @@ const SearchBox = ({
   setSelectedSearchOption,
   setInputSearchValue,
   getPostsList,
+  getEntirePostsList,
   channelId,
 }: IsearchBoxProps) => {
   const [inputValue, setInputValue] = useState('');
@@ -35,9 +37,13 @@ const SearchBox = ({
       e.preventDefault();
       setSelectedSearchOption(selectedOption);
       setInputSearchValue(inputValue);
-      getPostsList();
+      if (channelId !== undefined) {
+        getPostsList();
+      } else if (channelId === undefined) {
+        getEntirePostsList();
+      }
     },
-    [inputValue, selectedOption]
+    [inputValue, selectedOption, channelId]
   );
 
   return (

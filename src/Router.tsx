@@ -14,7 +14,6 @@ function Router() {
       <Layout>
         <Routes>
           <Route path='/' element={<Post />} />
-          <Route path='/' element={<Search />} />
           <Route path='/user/:id' element={<User />} />
           <Route path='/post/:postId' element={<DetailPost />} />
           <Route path='/post/channelId/updatePost/:postId' element={<UpdatePost />} />

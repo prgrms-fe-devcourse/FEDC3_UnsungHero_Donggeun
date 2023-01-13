@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import ErrorBoundary from '../api/ErrorBoundary';
-
+import Search from '../search';
 function Post() {
   const navigate = useNavigate();
   const tempOnClickPostRead = () => {
@@ -13,6 +13,7 @@ function Post() {
   return (
     <>
       <ErrorBoundary>
+        <Search />
         <h1>언성히어로 최고🤗</h1>
         <button onClick={tempOnClickPostRead}>임시 글 읽기 버튼</button>
         <button onClick={tempOnClickPostCreate}>임시 글 쓰기 버튼</button>
