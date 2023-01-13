@@ -1,14 +1,20 @@
 import { IUser } from './user';
 
+interface IComment {
+  comment: string;
+}
+
 export interface INotification {
-  seen: boolean;
-  _id: string;
-  author: IUser;
-  user: IUser | string;
-  post: string | null;
+  seen?: boolean;
+  _id?: string;
+  author?: IUser;
+  userId?: IUser | string;
+  postId?: string | null;
   follow?: string;
-  comment?: string;
+  comment?: IComment;
   message?: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
+  notificationType?: string;
+  notificationTypeId?: string;
 }

@@ -1,11 +1,10 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import axios from 'axios';
 import useLocalStorage from './useLocalStorage';
-
-interface IFormValue {
-  email: string;
-  password: string;
-}
+import { useToken } from '../contexts/TokenProvider';
+import { useNavigate } from 'react-router-dom';
+import { IToken } from '../types/token';
+import { IAuth } from '../types/auth';
 
 const TOKEN_KEY = 'token';
 
@@ -15,10 +14,13 @@ const Login = () => {
     handleSubmit,
     setError,
     formState: { isSubmitting, errors },
-  } = useForm<IFormValue>();
+  } = useForm<IAuth>();
   const [, setValue] = useLocalStorage(TOKEN_KEY, '');
+  const tokenContextObj: IToken | null = useToken();
 
-  const onSubmitHandler: SubmitHandler<IFormValue> = async ({ email, password }) => {
+  const navigate = useNavigate();
+
+  const onSubmitHandler: SubmitHandler<IAuth> = async ({ email, password }) => {
     await axios
       .post('http://kdt.frontend.3rd.programmers.co.kr:5006/login', {
         email,
@@ -26,6 +28,8 @@ const Login = () => {
       })
       .then((res) => {
         setValue(res.data.token);
+        tokenContextObj?.addToken(res.data.token);
+        navigate('/');
       })
       .catch(() => {
         setError(

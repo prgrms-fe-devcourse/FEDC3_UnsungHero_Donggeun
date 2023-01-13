@@ -1,13 +1,16 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { IUser } from '../types/user';
 import styled from 'styled-components';
+import useAxios from '../api/useAxios';
 import Pagination from './Pagination';
 import UserPostListItem from './UserPostListItem';
 
 interface IUserInfo {
-  fullName: string;
+  fullName: string | undefined;
   posts: [];
+  image: string;
+  coverImage: string;
 }
 
 interface IPost {
@@ -22,50 +25,60 @@ const LIKE_IMG_URL = 'https://ifh.cc/g/vmscWK.png';
 const API_URL = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 
 const User = () => {
-  const [profileImage, setProfileImage] = useState(PROFIE_IMG_URL);
-  const [coverImage, setCoverImage] = useState(COVER_IMG_URL);
-  const [user, setUser] = useState<IUserInfo>({
+  const { id } = useParams();
+  const { data, fetchData } = useAxios<IUser>({
+    url: `${API_URL}/users/${id}`,
+    method: 'get',
+  });
+  const [userInfo, setUserInfo] = useState<IUserInfo>({
     fullName: '',
     posts: [],
+    image: '',
+    coverImage: '',
   });
   const [page, setPage] = useState(1);
-  const { id } = useParams();
   const navigate = useNavigate();
   const limit = 7;
   const offset = (page - 1) * limit;
 
   useEffect(() => {
-    getUserInfo();
-  }, []);
-
-  const getUserInfo = async () => {
-    await axios.get(`${API_URL}/users/${id}`).then(({ data }) => {
-      setUser({
-        fullName: data.fullName,
-        posts: data.posts,
-      });
+    setUserInfo({
+      fullName: data?.fullName,
+      posts: data?.posts as [],
+      image: data?.image ?? PROFIE_IMG_URL,
+      coverImage: data?.coverImage ?? COVER_IMG_URL,
     });
-  };
+  }, [data]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const handlemoveEditPage = () => {
     navigate(`/userEdit/${id}`);
   };
-  const totalLikes = user.posts.reduce((acc, cur: Pick<IPost, 'likes'>) => acc + cur.likes.length, 0);
-
+  const totalLikes =
+    userInfo.posts && userInfo.posts.reduce((acc, cur: Pick<IPost, 'likes'>) => acc + cur.likes.length, 0);
   return (
     <>
-      <CoverImg src={coverImage} />
-      <ProfileImg src={profileImage} />
-      <div>{user.fullName}</div>
+      <CoverImg src={userInfo.coverImage} />
+      <ProfileImg src={userInfo.image} />
+      <div>{userInfo.fullName}</div>
       <div>
         <img src={LIKE_IMG_URL} />
         {totalLikes}
       </div>
       <button onClick={handlemoveEditPage}>내 정보 수정</button>
-      {user.posts.slice(offset, offset + limit).map((post: IPost) => (
-        <UserPostListItem key={post._id} post={post} />
-      ))}
-      <Pagination total={user.posts.length} limit={limit} page={page} setPage={setPage} />
+      {userInfo.posts &&
+        userInfo.posts
+          .slice(offset, offset + limit)
+          .map((post: IPost) => <UserPostListItem key={post._id} post={post} />)}
+      <Pagination
+        total={userInfo.posts && userInfo.posts.length}
+        limit={limit}
+        page={page}
+        setPage={setPage}
+      />
     </>
   );
 };

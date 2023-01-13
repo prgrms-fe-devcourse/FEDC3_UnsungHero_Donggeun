@@ -1,11 +1,22 @@
 import useLocalStorage from './useLocalStorage';
+import { useToken } from '../contexts/TokenProvider';
+import { useNavigate } from 'react-router-dom';
+import { IToken } from '../types/token';
 
 const TOKEN_KEY = 'token';
 
 const Logout = () => {
   const [, , removeValue] = useLocalStorage(TOKEN_KEY, '');
+  const tokenContextObj: IToken | null = useToken();
+  const navigate = useNavigate();
 
-  return <button onClick={removeValue}>로그아웃</button>;
+  const useLogout = () => {
+    removeValue();
+    tokenContextObj?.removeToken();
+    navigate('/');
+  };
+
+  return <button onClick={useLogout}>로그 아웃</button>;
 };
 
 export default Logout;

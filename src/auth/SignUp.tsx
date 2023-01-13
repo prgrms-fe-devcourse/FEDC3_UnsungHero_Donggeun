@@ -1,13 +1,8 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import axios from 'axios';
 import { useRef } from 'react';
-
-interface IFormValue {
-  email: string;
-  fullName: string;
-  password: string;
-  passwordConfrim: string;
-}
+import { IAuth } from '../types/auth';
+import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
   const {
@@ -15,17 +10,21 @@ const SignUp = () => {
     handleSubmit,
     watch,
     formState: { isSubmitting, errors },
-  } = useForm<IFormValue>();
+  } = useForm<IAuth>();
 
   const passwordRef = useRef<string | null>(null);
   passwordRef.current = watch('password');
 
-  const onSubmitHandler: SubmitHandler<IFormValue> = async ({ email, fullName, password }) => {
-    await axios.post('http://kdt.frontend.3rd.programmers.co.kr:5006/signup', {
-      email,
-      fullName,
-      password,
-    });
+  const navigate = useNavigate();
+
+  const onSubmitHandler: SubmitHandler<IAuth> = async ({ email, fullName, password }) => {
+    await axios
+      .post('http://kdt.frontend.3rd.programmers.co.kr:5006/signup', {
+        email,
+        fullName,
+        password,
+      })
+      .then(() => navigate('/login'));
   };
 
   return (
