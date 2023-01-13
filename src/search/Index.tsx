@@ -3,13 +3,12 @@ import PostListContainer from './PostListContainer';
 import { useState, useEffect } from 'react';
 import ErrorBoundary from '../api/ErrorBoundary';
 import axios from 'axios';
-import { useLocation, useParams } from 'react-router-dom';
-import { idText } from 'typescript';
+import { useParams } from 'react-router-dom';
 
 const API_END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 
 const Search = () => {
-  const [postsInfo, setPostsInfo] = useState([]); //PostListContainer에 넘겨 줄 데이터들
+  const [postsInfo, setPostsInfo] = useState([]);
   const [selectedSearchOption, setSelectedSearchOption] = useState('');
   const [inputSearchValue, setInputSearchValue] = useState('');
   const [presentChannelId, setPresentChannelId] = useState<string | undefined>('');
@@ -44,6 +43,7 @@ const Search = () => {
         postsInfo={postsInfo}
         selectedSearchOption={selectedSearchOption}
         inputSearchValue={inputSearchValue}
+        presentChannelId={presentChannelId}
       />
     </ErrorBoundary>
   );
