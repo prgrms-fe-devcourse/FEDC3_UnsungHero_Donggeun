@@ -2,30 +2,31 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import NotificationlistItem from './NotificationListItem';
 import { INotification, INotificationStatus } from '../types/notification';
-import useMutation from '../api/useMutation';
 import { useToken } from '../contexts/TokenProvider';
 import { IToken } from '../types/token';
 import { useNotificationStatus } from '../contexts/NotificationStatusProvider';
 
 const NotificationList = () => {
   const [notificationList, setNotificationlist] = useState<INotification[]>();
-  const [showedNotificationListStatus, setShowedNotificationListStatus] = useState(false);
+  const [notificationLength, setNotificationLength] = useState(0);
 
   const tokenContextObj: IToken | null = useToken();
   const notificationStatusContextObj: INotificationStatus | null = useNotificationStatus();
 
-  const { mutate } = useMutation();
-
-  const confirmNotificationlist = () => {
+  const confirmNotificationlist = async () => {
     if (!notificationStatusContextObj?.notificationStatus) return;
 
-    mutate({
-      url: `http://kdt.frontend.3rd.programmers.co.kr:5006/notifications/seen`,
-      method: 'put',
-      data: {},
-    });
-
-    fetchNotificationData();
+    await axios
+      .put(
+        'http://kdt.frontend.3rd.programmers.co.kr:5006/notifications/seen',
+        {},
+        {
+          headers: { Authorization: `bearer ${tokenContextObj?.token}` },
+        }
+      )
+      .then(() => {
+        fetchNotificationData();
+      });
   };
 
   const fetchNotificationData = async () => {
@@ -34,7 +35,10 @@ const NotificationList = () => {
         headers: { Authorization: `bearer ${tokenContextObj?.token}` },
       })
       .then((res) => {
-        setNotificationlist(res.data);
+        if (notificationLength !== res.data.length) {
+          setNotificationlist(res.data);
+          setNotificationLength(res.data.length);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -47,9 +51,6 @@ const NotificationList = () => {
     notificationStatusContextObj?.setNotification(!!notificationState);
   };
 
-  const toggleShowedNotificationListStatus = () =>
-    setShowedNotificationListStatus((prevStatus) => !prevStatus);
-
   useEffect(() => {
     tokenContextObj?.token !== null && fetchNotificationData();
   }, []);
@@ -61,23 +62,15 @@ const NotificationList = () => {
 
   return (
     <>
-      {tokenContextObj?.token !== null && (
-        <button onClick={toggleShowedNotificationListStatus} style={{ width: '100vw' }}>
-          알림 목록 리스트 Render
-        </button>
-      )}
-      {showedNotificationListStatus && (
-        <>
-          <button onClick={confirmNotificationlist} style={{ width: '100vw' }}>
-            모든 알림 확인
-          </button>
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
-            {notificationList?.map(({ _id, seen: isCheck, comment }) => (
-              <NotificationlistItem key={_id} _id={_id} seen={isCheck} comment={comment} />
-            ))}
-          </div>
-        </>
-      )}
+      <button onClick={confirmNotificationlist} style={{ width: '100vw' }}>
+        모든 알림 확인
+      </button>
+      <div style={{ display: 'flex', justifyContent: 'center' }}>
+        {notificationList?.map(({ _id, seen: isCheck, comment }) => (
+          <NotificationlistItem key={_id} _id={_id} seen={isCheck} comment={comment} />
+        ))}
+      </div>
+      <button onClick={fetchNotificationData}>실시간 알람 확인</button>
     </>
   );
 };
