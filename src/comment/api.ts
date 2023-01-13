@@ -20,11 +20,15 @@ export const createComment = async (value: string) => {
 };
 
 export const deleteComment = async (id: string) => {
-  await mutate({
-    url: `${tempData.baseUrl}/comments/delete`,
-    method: 'delete',
-    data: {
-      id,
-    },
-  });
+  try {
+    await mutate({
+      url: `${tempData.baseUrl}/comments/delete`,
+      method: 'delete',
+      data: {
+        id,
+      },
+    });
+  } catch {
+    alert('본인의 댓글이 아니므로 삭제할 수 없습니다.');
+  }
 };

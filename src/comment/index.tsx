@@ -25,6 +25,7 @@ const Comment = ({ commentList, refetchPost }: ICommentProps) => {
 
   const handleClickButton = async (id: string) => {
     await deleteComment(id);
+
     refetchPost();
   };
 
