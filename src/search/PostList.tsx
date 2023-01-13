@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+import { IsJsonString } from './isJsonString';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 interface Ilikes {
   _id: string;
@@ -26,6 +29,8 @@ const Span = styled.span`
 `;
 
 const PostList = ({ filteredPostsInfo, selectedSearchOption, inputSearchValue }: IpostListProps) => {
+  const navigatePost = useNavigate();
+
   const highlightIncludedText = (content: string, searchedValue: string) => {
     const title = content.toLowerCase();
     const searchValue = searchedValue.toLowerCase();
@@ -48,11 +53,11 @@ const PostList = ({ filteredPostsInfo, selectedSearchOption, inputSearchValue }:
         {filteredPostsInfo.map((postInfo, index) => {
           const { title, _id, likes, createdAt } = postInfo;
           const { fullName } = postInfo.author; //fullName이 아니라 userName이 닉네임인 경우 변경해야함
-          const postTitle = JSON.parse(title).title;
-          const postContent = JSON.parse(title).content;
+          const postTitle = IsJsonString(title) ? JSON.parse(title).title : title;
+          const postContent = IsJsonString(title) ? JSON.parse(title).content : ' ';
 
           return (
-            <li key={_id}>
+            <li key={_id} onClick={() => navigatePost(`/post/:${_id}`)}>
               <div>
                 <div>
                   제목:{' '}

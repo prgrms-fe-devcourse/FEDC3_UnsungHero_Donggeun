@@ -1,15 +1,26 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 
 interface IsearchBoxProps {
   setSelectedSearchOption: (value: string) => void;
   setInputSearchValue: (value: string) => void;
   getPostsList: () => void;
+  channelId: string;
 }
 
-const SearchBox = ({ setSelectedSearchOption, setInputSearchValue, getPostsList }: IsearchBoxProps) => {
+const SearchBox = ({
+  setSelectedSearchOption,
+  setInputSearchValue,
+  getPostsList,
+  channelId,
+}: IsearchBoxProps) => {
   const [inputValue, setInputValue] = useState('');
   const [selectedOption, setSelectedOption] = useState('제목');
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setInputValue('');
+    setSelectedOption('제목');
+  }, [channelId]);
 
   const handleChangeInput = useCallback((e: React.ChangeEvent<HTMLInputElement>): void => {
     setInputValue(e.target.value);
@@ -40,7 +51,7 @@ const SearchBox = ({ setSelectedSearchOption, setInputSearchValue, getPostsList 
         onChange={handleChangeInput}
         value={inputValue}
         ref={inputRef}
-        placeholder="검색어를 입력해 주세요"
+        placeholder='검색어를 입력해 주세요'
       />
       <button>검색</button>
     </form>

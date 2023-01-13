@@ -10,14 +10,21 @@ const useMutation = () => {
   const mutate = async ({ url, method, data }: IRequest) => {
     const config = {
       headers: {
-        Authorization: `bearer ${localStorage.getItem('token')}`,
+        Authorization: `bearer ${localStorage.getItem('TOKEN_KEY')}`,
         'Content-Type': data instanceof FormData ? 'multipart/form-data' : 'application/json',
       },
       data,
     };
 
     try {
-      const response = await axios[method](url, config);
+      let response;
+
+      if (method === 'delete') {
+        response = await axios[method](url, config);
+      } else {
+        response = await axios[method](url, data, config);
+      }
+
       return response.data;
     } catch (e) {
       if (axios.isAxiosError(e)) {

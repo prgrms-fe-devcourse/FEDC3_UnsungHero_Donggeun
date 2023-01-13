@@ -5,12 +5,15 @@ import styled from 'styled-components';
 
 const API_URL = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 
+interface ISetSelectedChannelId {
+  setSelectedChannelId: (value: string) => void;
+}
 interface Channel {
   _id: string;
   name: string;
 }
 
-const Channels = () => {
+const Channels = ({ setSelectedChannelId }: ISetSelectedChannelId) => {
   const [channelList, setChannelList] = useState([]);
   const navigate = useNavigate();
   useEffect(() => {
@@ -22,6 +25,7 @@ const Channels = () => {
   };
 
   const handleClickMoveChannel = (id: string) => {
+    setSelectedChannelId(id);
     navigate(`/channel/${id}`);
   };
 
