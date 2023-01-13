@@ -1,6 +1,8 @@
 import axios from 'axios';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import UserEditImg from './UserEditImg';
 
 const API_URL = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 const TOKEN = localStorage.getItem('token');
@@ -14,12 +16,14 @@ interface IFormValue {
 }
 
 const UserEdit = () => {
-  const navigate = useNavigate();
   const { id } = useParams();
+  const [imgFiles, setimgFiles] = useState({});
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
-    formState: { errors, dirtyFields },
+    formState: { errors, dirtyFields, isSubmitting },
   } = useForm<IFormValue>({
     defaultValues: () =>
       axios.get(`${API_URL}/users/${id}`).then(({ data }) => {
@@ -30,11 +34,21 @@ const UserEdit = () => {
       }),
   });
 
-  const handleChangeUserInfo: SubmitHandler<IFormValue> = ({ fullName, password }) => {
-    if (dirtyFields.fullName) getChangeUserName(fullName);
-    if (dirtyFields.password) getChangePassword(password);
+  const handleChangeUserInfo: SubmitHandler<IFormValue> = async ({ fullName, password }) => {
+    if (dirtyFields.fullName) await getChangeUserName(fullName);
+    if (dirtyFields.password) await getChangePassword(password);
+
+    for (const formdata of Object.values(imgFiles)) {
+      if (formdata instanceof FormData) {
+        await getChangeImg(formdata);
+      }
+    }
 
     navigate(`/user/${id}`);
+  };
+
+  const getChangeImg = async (formdata: FormData) => {
+    await axios.post(`${API_URL}/users/upload-photo`, formdata, { headers });
   };
 
   const getChangePassword = async (password: string) => {
@@ -51,10 +65,10 @@ const UserEdit = () => {
       { headers }
     );
   };
+
   return (
     <>
-      <div>커버이미지</div>
-      <div>프로필 이미지</div>
+      <UserEditImg id={id} setimgFiles={setimgFiles} />
       <form onSubmit={handleSubmit(handleChangeUserInfo)}>
         <input
           type='text'
@@ -76,7 +90,9 @@ const UserEdit = () => {
           })}
         />
         <span>{errors?.password?.message}</span>
-        <button type='submit'>저장</button>
+        <button type='submit' disabled={isSubmitting}>
+          저장
+        </button>
       </form>
     </>
   );
