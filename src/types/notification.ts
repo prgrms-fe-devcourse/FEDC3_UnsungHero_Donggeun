@@ -18,3 +18,7 @@ export interface INotification {
   notificationType?: string;
   notificationTypeId?: string;
 }
+export interface INotificationStatus {
+  notificationStatus: boolean;
+  setNotification: (bool: boolean) => void;
+}

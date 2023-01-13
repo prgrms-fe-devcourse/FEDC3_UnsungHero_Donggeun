@@ -1,13 +1,14 @@
 import axios from 'axios';
 import { useToken } from '../contexts/TokenProvider';
 import { IToken } from '../types/token';
-import { INotification } from '../types/notification';
+import { useNotificationStatus } from '../contexts/NotificationStatusProvider';
+import { INotification, INotificationStatus } from '../types/notification';
 import { useState, useEffect } from 'react';
 
 const NotificationStatus = () => {
   const [notificationStatusList, setNotificationStatusList] = useState<boolean[]>([]);
-  const [notificationStatus, setNotificationStatus] = useState<boolean>();
   const tokenContextObj: IToken | null = useToken();
+  const notificationStatusContextObj: INotificationStatus | null = useNotificationStatus();
 
   const fetchNotificationData = async () => {
     await axios
@@ -25,7 +26,7 @@ const NotificationStatus = () => {
   };
 
   const checkNotificationStatus = () => {
-    if (notificationStatusList.indexOf(false) !== -1) setNotificationStatus(true);
+    if (notificationStatusList.indexOf(false) !== -1) notificationStatusContextObj?.setNotification(true);
   };
 
   useEffect(() => {
@@ -38,7 +39,7 @@ const NotificationStatus = () => {
 
   return (
     <>
-      {notificationStatus && (
+      {notificationStatusContextObj?.notificationStatus && (
         <div style={{ width: '30px', height: '30px', borderRadius: '50%', backgroundColor: 'green' }}></div>
       )}
     </>

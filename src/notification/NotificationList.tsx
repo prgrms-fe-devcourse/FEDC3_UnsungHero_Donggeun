@@ -1,24 +1,23 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import NotificationlistItem from './NotificationListItem';
-import { INotification } from '../types/notification';
+import { INotification, INotificationStatus } from '../types/notification';
 import useMutation from '../api/useMutation';
 import { useToken } from '../contexts/TokenProvider';
 import { IToken } from '../types/token';
+import { useNotificationStatus } from '../contexts/NotificationStatusProvider';
 
 const NotificationList = () => {
   const [notificationList, setNotificationlist] = useState<INotification[]>();
-  const [notificationStatus, setNotificationStatus] = useState<boolean | undefined>(false);
   const [showedNotificationListStatus, setShowedNotificationListStatus] = useState(false);
 
   const tokenContextObj: IToken | null = useToken();
+  const notificationStatusContextObj: INotificationStatus | null = useNotificationStatus();
 
   const { mutate } = useMutation();
 
-  // by 민형, 이미 모든 알람을 열어본 경우에는 해당 로직이 수행되지 않도록(리팩토링)_230111
-  // by 민형, 리팩토링 완료_230112
   const confirmNotificationlist = () => {
-    if (notificationStatus) return;
+    if (!notificationStatusContextObj?.notificationStatus) return;
 
     mutate({
       url: `http://kdt.frontend.3rd.programmers.co.kr:5006/notifications/seen`,
@@ -45,7 +44,7 @@ const NotificationList = () => {
   const updateNotificationStatus = () => {
     const notificationListData = notificationList?.map(({ seen }) => seen);
     const notificationState = notificationListData?.includes(false);
-    setNotificationStatus(!notificationState);
+    notificationStatusContextObj?.setNotification(!!notificationState);
   };
 
   const toggleShowedNotificationListStatus = () =>
