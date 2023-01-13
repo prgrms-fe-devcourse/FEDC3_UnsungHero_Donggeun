@@ -1,14 +1,6 @@
-interface IComment {
-  comment: string;
-}
+import { INotification } from '../types/notification';
 
-interface IAlarm {
-  seen: boolean;
-  _id: string;
-  comment: IComment;
-}
-
-const AlarmListItem = ({ _id, seen, comment }: IAlarm) => {
+const NotificationListItem = ({ _id, seen, comment }: INotification) => {
   return (
     <div
       style={{
@@ -25,4 +17,4 @@ const AlarmListItem = ({ _id, seen, comment }: IAlarm) => {
   );
 };
 
-export default AlarmListItem;
+export default NotificationListItem;
