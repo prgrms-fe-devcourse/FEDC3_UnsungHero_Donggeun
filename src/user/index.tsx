@@ -5,14 +5,15 @@ import styled from 'styled-components';
 import useAxios from '../api/useAxios';
 import UserPosts from './UserPosts';
 import { IPost } from '../types/post';
+import { IFollow } from '../types/follow';
+import UserFollowing from './UserFollowing';
+import UserFollowers from './UserFollowers';
 
 interface IUserInfo {
   fullName: string | undefined;
   posts: [];
   image: string;
   coverImage: string;
-  followers: number;
-  following: number;
 }
 
 const COVER_IMG_URL = 'https://ifh.cc/g/xBfBwB.png';
@@ -22,6 +23,7 @@ const API_URL = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 
 const User = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { data, fetchData } = useAxios<IUser>({
     url: `${API_URL}/users/${id}`,
     method: 'get',
@@ -31,10 +33,11 @@ const User = () => {
     posts: [],
     image: '',
     coverImage: '',
-    followers: 0,
-    following: 0,
   });
-  const navigate = useNavigate();
+  const [userFollow, setUserFollow] = useState({
+    followers: [],
+    following: [],
+  });
 
   useEffect(() => {
     setUserInfo({
@@ -42,8 +45,13 @@ const User = () => {
       posts: data?.posts as [],
       image: data?.image ?? PROFIE_IMG_URL,
       coverImage: data?.coverImage ?? COVER_IMG_URL,
-      followers: data?.followers.length as number,
-      following: data?.following.length as number,
+    });
+    const followerList = data?.followers.map((user: IFollow) => user.user);
+    const followingList = data?.following.map((user: IFollow) => user.user);
+
+    setUserFollow({
+      followers: followerList as [],
+      following: followingList as [],
     });
   }, [data]);
 
@@ -65,9 +73,8 @@ const User = () => {
         <img src={LIKE_IMG_URL} />
         {totalLikes}
       </div>
-      <div>
-        팔로워 {userInfo.followers} 팔로잉 {userInfo.following}
-      </div>
+      <UserFollowers followers={userFollow.followers} />
+      <UserFollowing following={userFollow.following} />
       <button onClick={handlemoveEditPage}>내 정보 수정</button>
       {userInfo.posts && userInfo.posts.length > 0 && <UserPosts posts={userInfo.posts} />}
     </>
