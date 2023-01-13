@@ -59,7 +59,6 @@ const User = () => {
   };
   const totalLikes =
     userInfo.posts && userInfo.posts.reduce((acc, cur: Pick<IPost, 'likes'>) => acc + cur.likes.length, 0);
-
   return (
     <>
       <CoverImg src={userInfo.coverImage} />
@@ -70,10 +69,16 @@ const User = () => {
         {totalLikes}
       </div>
       <button onClick={handlemoveEditPage}>내 정보 수정</button>
-      {userInfo.posts && userInfo.posts.slice(offset, offset + limit).map((post: IPost) => (
-        <UserPostListItem key={post._id} post={post} />
-      ))}
-      <Pagination total={user.posts.length} limit={limit} page={page} setPage={setPage} />
+      {userInfo.posts &&
+        userInfo.posts
+          .slice(offset, offset + limit)
+          .map((post: IPost) => <UserPostListItem key={post._id} post={post} />)}
+      <Pagination
+        total={userInfo.posts && userInfo.posts.length}
+        limit={limit}
+        page={page}
+        setPage={setPage}
+      />
     </>
   );
 };
