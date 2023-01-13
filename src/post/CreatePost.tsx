@@ -67,17 +67,12 @@ function CreatePost() {
       <h1>글 작성 페이지</h1>
       <input type='text' size={99} onChange={(e) => handleChangeTitle(e)} placeholder='제목을 입력하세요' />
       <br />
-      <textarea
-        rows={10}
-        cols={100}
-        onChange={(e) => handleChangeContent(e)}
-        placeholder='내용을 입력하세요'
-      />
+      <textarea rows={10} cols={100} onChange={handleChangeContent} placeholder='내용을 입력하세요' />
       <br />
       <input
         type='file'
         accept='image/jpg,impge/png,image/jpeg,image/gif'
-        onChange={(e) => handleOnClickUploadImage(e)}
+        onChange={handleOnClickUploadImage}
       />
       <button onClick={handleOnClickCreatePost}>글 작성</button>
     </Container>
