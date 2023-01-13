@@ -1,15 +1,13 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { IComment } from '../types/comment';
 import { IPost } from '../types/post';
 import { createComment, deleteComment, getPost } from './api';
 
-let resource = getPost<IPost>();
+const resource = getPost<IPost>();
 
 const Comment = () => {
-  const post = resource.read();
+  const [post, setPost] = useState<IPost | undefined>(resource.read());
   const [value, setValue] = useState('');
-  const [, updateState] = useState({});
-  const forceUpdate = useCallback(() => updateState({}), []);
 
   const handleInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
@@ -19,16 +17,17 @@ const Comment = () => {
     e.preventDefault();
 
     await createComment(value);
+    const result = await resource.refetch();
 
-    resource = getPost<IPost>();
+    setPost(result);
     setValue('');
   };
 
   const handleClickButton = async (id: string) => {
     await deleteComment(id);
+    const result = await resource.refetch();
 
-    resource = getPost<IPost>();
-    forceUpdate();
+    setPost(result);
   };
 
   return (
