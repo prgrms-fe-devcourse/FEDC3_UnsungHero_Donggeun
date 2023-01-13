@@ -11,7 +11,7 @@ const UserPostListItem = ({ post }: IProps) => {
   const navigate = useNavigate();
 
   const handleClickPost = (id: string) => {
-    navigate(`/posts/${id}`);
+    navigate(`/post/${id}`);
   };
 
   return (
