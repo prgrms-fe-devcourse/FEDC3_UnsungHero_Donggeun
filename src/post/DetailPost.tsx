@@ -22,6 +22,8 @@ const DetailPost = () => {
   const [content, setContent] = useState('');
   const { postId } = useParams();
 
+  const token = localStorage.getItem('token');
+
   const navigate = useNavigate();
 
   const fetchPost = async () => {
@@ -65,7 +67,7 @@ const DetailPost = () => {
         <h1>제목: {title}</h1>
         <textarea value={content} disabled rows={10} cols={100} />
         <br />
-        <button onClick={handleOnClickToUpdatePage}>내용 수정 페이지로 가기</button>
+        {token ? <button onClick={handleOnClickToUpdatePage}>내용 수정 페이지로 가기</button> : null}
         <Comment />
         <Like />
       </Container>
