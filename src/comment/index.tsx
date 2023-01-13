@@ -1,54 +1,31 @@
 import { useState } from 'react';
-import useMutation from '../api/useMutation';
 import { IComment } from '../types/comment';
 import { IPost } from '../types/post';
-import { getPost } from './api';
-import { tempData } from './tempData';
+import { createComment, deleteComment, getPost } from './api';
 
 let resource = getPost<IPost>();
 
 const Comment = () => {
   const post = resource.read();
   const [value, setValue] = useState('');
-  const { mutate } = useMutation();
 
   const handleInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   };
 
-  const handleSubmitInput = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmitInput = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    createComment();
-  };
 
-  const handleClickButton = (id: string) => {
-    deleteComment(id);
-  };
-
-  const createComment = async () => {
-    await mutate({
-      url: `${tempData.baseUrl}/comments/create`,
-      method: 'post',
-      data: {
-        comment: value,
-        postId: tempData.postId,
-      },
-    });
+    await createComment(value);
 
     resource = getPost<IPost>();
     setValue('');
   };
 
-  const deleteComment = async (id: string) => {
-    await mutate({
-      url: `${tempData.baseUrl}/comments/delete`,
-      method: 'delete',
-      data: {
-        id,
-      },
-    });
+  const handleClickButton = async (id: string) => {
+    await deleteComment(id);
 
-    resource = getPost<IPost>();
+    resource = getPost<IPost>(); // 삭제 후 목록 반영 실패
   };
 
   return (

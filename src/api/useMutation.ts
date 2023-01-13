@@ -1,12 +1,7 @@
-/* eslint-disable @typescript-eslint/ban-types */
-import { useEffect } from 'react';
 import axios from 'axios';
-import { useState } from 'react';
 import { IRequest } from '../types/request';
 
 const useMutation = () => {
-  const [error, setError] = useState<Error>();
-
   const mutate = async ({ url, method, data }: IRequest) => {
     const config = {
       headers: {
@@ -18,7 +13,6 @@ const useMutation = () => {
 
     try {
       let response;
-
       if (method === 'delete') {
         response = await axios[method](url, config);
       } else {
@@ -28,16 +22,10 @@ const useMutation = () => {
       return response.data;
     } catch (e) {
       if (axios.isAxiosError(e)) {
-        setError(e);
+        throw new Error(e.message);
       }
     }
   };
-
-  useEffect(() => {
-    if (error) {
-      throw new Error(error.message);
-    }
-  }, [error]);
 
   return { mutate };
 };
