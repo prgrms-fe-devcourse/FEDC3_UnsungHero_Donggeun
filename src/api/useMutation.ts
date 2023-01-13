@@ -1,11 +1,12 @@
 import axios from 'axios';
+import { TOKEN_KEY } from '../contexts/TokenProvider';
 import { IRequest } from '../types/request';
 
 const useMutation = () => {
   const mutate = async ({ url, method, data }: IRequest) => {
     const config = {
       headers: {
-        Authorization: `bearer ${localStorage.getItem('TOKEN_KEY')}`,
+        Authorization: `bearer ${localStorage.getItem(TOKEN_KEY)}`,
         'Content-Type': data instanceof FormData ? 'multipart/form-data' : 'application/json',
       },
       data,

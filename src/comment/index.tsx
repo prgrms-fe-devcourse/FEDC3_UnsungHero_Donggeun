@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { IComment } from '../types/comment';
-import { IPost } from '../types/post';
-import { createComment, deleteComment, getPost } from './api';
+import { createComment, deleteComment } from './api';
 
-const resource = getPost<IPost>();
+interface ICommentProps {
+  commentList?: IComment[];
+  refetchPost: () => void;
+}
 
-const Comment = () => {
-  const [post, setPost] = useState<IPost | undefined>(resource.read());
+const Comment = ({ commentList, refetchPost }: ICommentProps) => {
   const [value, setValue] = useState('');
 
   const handleInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -17,17 +18,14 @@ const Comment = () => {
     e.preventDefault();
 
     await createComment(value);
-    const result = await resource.refetch();
+    refetchPost();
 
-    setPost(result);
     setValue('');
   };
 
   const handleClickButton = async (id: string) => {
     await deleteComment(id);
-    const result = await resource.refetch();
-
-    setPost(result);
+    refetchPost();
   };
 
   return (
@@ -37,7 +35,7 @@ const Comment = () => {
         <button>전송</button>
       </form>
       <ul>
-        {post?.comments.map(({ _id, comment }: IComment) => (
+        {commentList?.map(({ _id, comment }: IComment) => (
           <li key={_id}>
             {comment}
             <button onClick={() => handleClickButton(_id)}>❌</button>

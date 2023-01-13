@@ -6,7 +6,7 @@ const TokenContext = createContext<IToken | null>(null);
 
 export const useToken = () => useContext(TokenContext);
 
-const TOKEN_KEY = 'token';
+export const TOKEN_KEY = 'token';
 
 const TokenProvider = ({ children }: { children: React.ReactNode }) => {
   const [localToken] = useLocalStorage(TOKEN_KEY, '');

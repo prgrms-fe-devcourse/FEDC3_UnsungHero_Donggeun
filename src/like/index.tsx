@@ -1,19 +1,18 @@
 import { useState, useEffect } from 'react';
-import { getPost } from '../comment/api';
 import { tempData } from '../comment/tempData';
 import { ILike } from '../types/like';
-import { IPost } from '../types/post';
 import { createLike, deleteLike } from './api';
 
-const resource = getPost<IPost>();
+interface ILikeProps {
+  likeList?: ILike[];
+  refetchPost: () => void;
+}
 
-const Like = () => {
-  const [post, setPost] = useState<IPost | undefined>(resource.read());
+const Like = ({ likeList, refetchPost }: ILikeProps) => {
   const [isLike, setIsLike] = useState(false);
-  const [likes, setLikes] = useState<ILike[]>([]);
 
   const handleClickLike = async () => {
-    const targetLike = likes?.find(({ user }) => user === tempData.userId);
+    const targetLike = likeList?.find(({ user }) => user === tempData.userId);
 
     if (isLike && targetLike) {
       await deleteLike(targetLike);
@@ -21,27 +20,21 @@ const Like = () => {
       await createLike();
     }
 
-    const result = await resource.refetch();
-    setPost(result);
+    refetchPost();
   };
 
   useEffect(() => {
-    const userLikeIndex = likes?.findIndex(({ user }) => user === tempData.userId);
-
-    setIsLike(userLikeIndex > -1 ? true : false);
-  }, [likes]);
-
-  useEffect(() => {
-    if (post) {
-      setLikes(post.likes);
+    if (likeList) {
+      const userLikeIndex = likeList.findIndex(({ user }) => user === tempData.userId);
+      setIsLike(userLikeIndex > -1 ? true : false);
     }
-  }, [post]);
+  }, [likeList]);
 
   return (
     <>
       <div style={{ cursor: 'pointer', fontSize: '2rem' }} onClick={handleClickLike}>
         {isLike ? '❤️' : '🤍'}
-        {post?.likes.length}
+        {likeList?.length}
       </div>
     </>
   );

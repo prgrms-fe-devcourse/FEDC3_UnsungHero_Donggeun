@@ -68,8 +68,8 @@ const DetailPost = () => {
         <textarea value={content} disabled rows={10} cols={100} />
         <br />
         {token ? <button onClick={handleOnClickToUpdatePage}>내용 수정 페이지로 가기</button> : null}
-        <Comment />
-        <Like />
+        {/* <Comment /> */}
+        {/* <Like /> */}
       </Container>
     </ErrorBoundary>
   );

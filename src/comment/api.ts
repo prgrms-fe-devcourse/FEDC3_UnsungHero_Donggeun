@@ -4,8 +4,8 @@ import { tempData } from './tempData';
 
 const { mutate } = useMutation();
 
-export const getPost = <T>() => {
-  return request<T>(`${tempData.baseUrl}/posts/${tempData.postId}`);
+export const getPost = <T>(postId: string) => {
+  return request<T>(`${tempData.baseUrl}/posts/${postId}`);
 };
 
 export const createComment = async (value: string) => {
