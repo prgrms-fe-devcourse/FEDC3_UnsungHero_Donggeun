@@ -1,16 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { getPost } from '../comment/api';
 import { tempData } from '../comment/tempData';
 import { ILike } from '../types/like';
 import { IPost } from '../types/post';
 import { createLike, deleteLike } from './api';
 
-const resource = getPost<IPost>();
+let resource = getPost<IPost>();
 
 const Like = () => {
-  let post = resource.read();
+  const post = resource.read();
   const [isLike, setIsLike] = useState(false);
   const [likes, setLikes] = useState<ILike[]>([]);
+  const [, updateState] = useState({});
+  const forceUpdate = useCallback(() => updateState({}), []);
 
   const handleClickLike = async () => {
     const targetLike = likes?.find(({ user }) => user === tempData.userId);
@@ -21,7 +23,8 @@ const Like = () => {
       await createLike();
     }
 
-    post = resource.read();
+    resource = getPost<IPost>();
+    forceUpdate();
   };
 
   useEffect(() => {

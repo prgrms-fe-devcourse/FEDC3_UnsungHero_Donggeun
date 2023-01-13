@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { IComment } from '../types/comment';
 import { IPost } from '../types/post';
 import { createComment, deleteComment, getPost } from './api';
@@ -8,6 +8,8 @@ let resource = getPost<IPost>();
 const Comment = () => {
   const post = resource.read();
   const [value, setValue] = useState('');
+  const [, updateState] = useState({});
+  const forceUpdate = useCallback(() => updateState({}), []);
 
   const handleInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
@@ -25,7 +27,8 @@ const Comment = () => {
   const handleClickButton = async (id: string) => {
     await deleteComment(id);
 
-    resource = getPost<IPost>(); // 삭제 후 목록 반영 실패
+    resource = getPost<IPost>();
+    forceUpdate();
   };
 
   return (
