@@ -5,8 +5,7 @@ import User from './user';
 import UpdatePost from './post/UpdatePost';
 import CreatePost from './post/CreatePost';
 import DetailPost from './post/DetailPost';
-
-// import UserEdit from './user/UserEdit';
+import UserEdit from './user/UserEdit';
 
 function Router() {
   return (
@@ -18,7 +17,7 @@ function Router() {
           <Route path='/post/:postId' element={<DetailPost />} />
           <Route path='/post/channelId/updatePost/:postId' element={<UpdatePost />} />
           <Route path='/post/create/:chnnalId' element={<CreatePost />} />
-          {/* <Route path='/userEdit/:id' element={<UserEdit />} /> */}
+          <Route path='/userEdit/:id' element={<UserEdit />} />
         </Routes>
       </Layout>
     </BrowserRouter>
