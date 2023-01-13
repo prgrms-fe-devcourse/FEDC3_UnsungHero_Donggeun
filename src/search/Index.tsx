@@ -3,30 +3,30 @@ import PostListContainer from './PostListContainer';
 import { useState, useEffect } from 'react';
 import ErrorBoundary from '../api/ErrorBoundary';
 import axios from 'axios';
+import { useLocation, useParams } from 'react-router-dom';
+import { idText } from 'typescript';
 
 const API_END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 
-interface IsearchProps {
-  channelId: string | '';
-}
-
-const Search = ({ channelId }: IsearchProps) => {
+const Search = () => {
   const [postsInfo, setPostsInfo] = useState([]); //PostListContainer에 넘겨 줄 데이터들
   const [selectedSearchOption, setSelectedSearchOption] = useState('');
   const [inputSearchValue, setInputSearchValue] = useState('');
+  const [presentChannelId, setPresentChannelId] = useState<string | undefined>('');
+  const { channelId } = useParams();
+
+  if (presentChannelId !== channelId) {
+    setPresentChannelId(channelId);
+  }
 
   useEffect(() => {
-    if (channelId === '') {
-      console.log('channelId가 없는 경우 어떤 처리를 해주면 좋을지 고민중...');
-    } else {
-      getPostsList();
-      setSelectedSearchOption('');
-      setInputSearchValue('');
-    }
-  }, [channelId]);
+    getPostsList();
+    setSelectedSearchOption('');
+    setInputSearchValue('');
+  }, [presentChannelId]);
 
   const getPostsList = async () => {
-    axios.get(`${API_END_POINT}/posts/channel/${channelId}`).then((response) => {
+    axios.get(`${API_END_POINT}/posts/channel/${presentChannelId}`).then((response) => {
       const { data } = response;
       setPostsInfo(data);
     });
@@ -38,7 +38,7 @@ const Search = ({ channelId }: IsearchProps) => {
         setSelectedSearchOption={setSelectedSearchOption}
         setInputSearchValue={setInputSearchValue}
         getPostsList={getPostsList}
-        channelId={channelId}
+        channelId={presentChannelId}
       />
       <PostListContainer
         postsInfo={postsInfo}

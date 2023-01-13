@@ -4,7 +4,7 @@ interface IsearchBoxProps {
   setSelectedSearchOption: (value: string) => void;
   setInputSearchValue: (value: string) => void;
   getPostsList: () => void;
-  channelId: string;
+  channelId: string | undefined;
 }
 
 const SearchBox = ({
