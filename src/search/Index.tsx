@@ -47,7 +47,7 @@ const Search = () => {
         setInputSearchValue={setInputSearchValue}
         getPostsList={getPostsList}
         getEntirePostsList={getEntirePostsList}
-        channelId={currentChannelId}
+        currentChannelId={currentChannelId}
       />
       <PostListContainer
         postsInfo={postsInfo}
