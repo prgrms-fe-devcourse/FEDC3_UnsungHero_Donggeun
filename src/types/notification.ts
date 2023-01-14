@@ -1,7 +1,15 @@
 import { IUser } from './user';
 
 interface IComment {
-  comment: string;
+  post: {
+    title: string;
+  };
+}
+
+interface ILike {
+  post: {
+    title: string;
+  };
 }
 
 export interface INotification {
@@ -12,6 +20,8 @@ export interface INotification {
   postId?: string | null;
   follow?: string;
   comment?: IComment;
+  like?: ILike;
+  post?: string;
   message?: string;
   createdAt?: string;
   updatedAt?: string;

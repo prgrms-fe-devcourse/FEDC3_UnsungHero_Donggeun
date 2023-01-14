@@ -5,6 +5,7 @@ import { INotification, INotificationStatus } from '../types/notification';
 import { useToken } from '../contexts/TokenProvider';
 import { IToken } from '../types/token';
 import { useNotificationStatus } from '../contexts/NotificationStatusProvider';
+import ProduceNotification from './ProduceNotification';
 
 const NotificationList = () => {
   const [notificationList, setNotificationlist] = useState<INotification[]>();
@@ -35,7 +36,7 @@ const NotificationList = () => {
         headers: { Authorization: `bearer ${tokenContextObj?.token}` },
       })
       .then((res) => {
-        if (notificationLength !== res.data.length) {
+        if (notificationLength !== res.data.length || notificationStatusContextObj?.notificationStatus) {
           setNotificationlist(res.data);
           setNotificationLength(res.data.length);
         }
@@ -65,12 +66,21 @@ const NotificationList = () => {
       <button onClick={confirmNotificationlist} style={{ width: '100vw' }}>
         모든 알림 확인
       </button>
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
-        {notificationList?.map(({ _id, seen: isCheck, comment }) => (
-          <NotificationlistItem key={_id} _id={_id} seen={isCheck} comment={comment} />
+      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+        {notificationList?.map(({ _id, seen: isCheck, comment, like, author, post }) => (
+          <NotificationlistItem
+            key={_id}
+            _id={_id}
+            seen={isCheck}
+            comment={comment}
+            like={like}
+            author={author}
+            post={post}
+          />
         ))}
       </div>
       <button onClick={fetchNotificationData}>실시간 알람 확인</button>
+      <ProduceNotification />
     </>
   );
 };
