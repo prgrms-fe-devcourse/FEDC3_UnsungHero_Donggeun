@@ -6,6 +6,7 @@ import useAxios from '../api/useAxios';
 import { IPost } from '../types/post';
 import { IFollow } from '../types/follow';
 import UserPosts from './UserPosts';
+import { useUserId } from '../contexts/TokenProvider';
 
 interface IUserInfo {
   fullName: string | undefined;
@@ -14,15 +15,22 @@ interface IUserInfo {
   coverImage: string;
 }
 
+interface IFollowList {
+  followers: string[];
+  following: string[];
+}
+
 const COVER_IMG_URL = 'https://ifh.cc/g/xBfBwB.png';
-const PROFIE_IMG_URL = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
+const PROFIE_IMG_URL = 'https://ifh.cc/g/35RDD6.png';
 const LIKE_IMG_URL = 'https://ifh.cc/g/vmscWK.png';
 const API_URL = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 
 const User = () => {
   const { id } = useParams();
+  const userIdContext = useUserId();
+  const myUserId = userIdContext?.userId;
   const navigate = useNavigate();
-  const { data, fetchData } = useAxios<IUser>({
+  const { data } = useAxios<IUser>({
     url: `${API_URL}/users/${id}`,
     method: 'get',
   });
@@ -32,7 +40,7 @@ const User = () => {
     image: '',
     coverImage: '',
   });
-  const [userFollow, setUserFollow] = useState({
+  const [userFollow, setUserFollow] = useState<IFollowList>({
     followers: [],
     following: [],
   });
@@ -53,15 +61,18 @@ const User = () => {
     });
   }, [data]);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   const handlemoveEditPage = () => {
     navigate(`/userEdit/${id}`);
   };
   const totalLikes =
     userInfo.posts && userInfo.posts.reduce((acc, cur: Pick<IPost, 'likes'>) => acc + cur.likes.length, 0);
+
+  const followbutton =
+    userFollow.followers && userFollow.followers.includes(myUserId as string) ? (
+      <button>팔로잉</button>
+    ) : (
+      <button>팔로우</button>
+    );
   return (
     <>
       <CoverImg src={userInfo.coverImage} />
@@ -71,7 +82,7 @@ const User = () => {
         <img src={LIKE_IMG_URL} />
         {totalLikes}
       </div>
-      <button onClick={handlemoveEditPage}>내 정보 수정</button>
+      {id === myUserId ? <button onClick={handlemoveEditPage}>내 정보 수정</button> : followbutton}
 
       <Link to={`/followers`} state={{ followers: userFollow.followers }}>
         팔로워: {userFollow.followers && userFollow.followers.length}
