@@ -21,7 +21,6 @@ const UserFollowers = () => {
   });
 
   const followersList = data?.filter((user: IUser) => followers.includes(user._id));
-  console.log(followersList);
   const handleClickUser = (id: string) => {
     navigate(`/user/${id}`);
   };
