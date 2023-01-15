@@ -5,7 +5,7 @@ import User from './user';
 import UpdatePost from './post/UpdatePost';
 import CreatePost from './post/CreatePost';
 import DetailPost from './post/DetailPost';
-import Search from './search';
+import Search from './search/Index';
 // import UserEdit from './user/UserEdit';
 
 function Router() {

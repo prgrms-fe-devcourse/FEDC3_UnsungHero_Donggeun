@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import ErrorBoundary from '../api/ErrorBoundary';
-import Search from '../search';
+import Search from '../search/Index';
 function Post() {
   const navigate = useNavigate();
   const tempOnClickPostRead = () => {
