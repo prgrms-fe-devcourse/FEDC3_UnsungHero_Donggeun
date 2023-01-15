@@ -3,6 +3,9 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useToken } from '../contexts/TokenProvider';
+import useMutation from '../api/useMutation';
+import useAxios from '../api/useAxios';
+import { IPost } from '../types/post';
 
 const END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 
@@ -15,11 +18,14 @@ const Container = styled.div`
 const UpdatePost = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [channelId, setChannelId] = useState('');
   const { postId } = useParams();
   const navigate = useNavigate();
 
   const tokenContextObj = useToken();
   const token = tokenContextObj?.token;
+
+  const { mutate } = useMutation();
 
   const handleTitleOnChnage = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -30,37 +36,30 @@ const UpdatePost = () => {
     localStorage.setItem('tempContentInUpdatePost', e.target.value);
   };
 
-  const fetchPost = async () => {
-    const tempTitle = localStorage.getItem('tempTitleInUpdatePost') || '';
-    const tempContent = localStorage.getItem('tempContentInUpdatePost') || '';
-
-    if (!tempTitle && !tempContent) {
-      console.log('패치함');
-      const result = await axios
-        .get(`${END_POINT}/posts/${postId}`)
-        .then((res) => res.data)
-        .catch((e) => {
-          console.log(e);
-        });
-      const post = JSON.parse(result.title);
-
-      setTitle(post.title);
-      setContent(post.content);
-      localStorage.setItem('tempTitleInUpdatePost', post.title);
-      localStorage.setItem('tempContentInUpdatePost', post.content);
-    }
-
-    if (tempTitle) {
-      setTitle(tempTitle);
-    }
-    if (tempContent) {
-      setContent(tempContent);
-    }
-  };
+  const { data } = useAxios<IPost>({
+    url: `${END_POINT}/posts/${postId}`,
+    method: 'get',
+  });
 
   useEffect(() => {
-    fetchPost();
-  }, []);
+    if (typeof data === 'object') {
+      const post = JSON.parse(data?.title as string);
+      setTitle(post.title);
+      setContent(post.content);
+
+      const tempTitle = localStorage.getItem('tempTitleInUpdatePost') || '';
+      const tempContent = localStorage.getItem('tempContentInUpdatePost') || '';
+
+      if (tempTitle) {
+        setTitle(tempTitle);
+      }
+      if (tempContent) {
+        setContent(tempContent);
+      }
+
+      setChannelId(data.channel._id);
+    }
+  }, [data]);
 
   const handleUpdatePost = () => {
     const postToUpdate = {
@@ -73,7 +72,7 @@ const UpdatePost = () => {
       postId: postId,
       title: jsonToUpdate,
       image: null,
-      channelId: '63b5b7f5a87de522e8646d65', // 첫 번 쨰 채널
+      channelId: channelId,
     };
 
     axios
@@ -86,9 +85,22 @@ const UpdatePost = () => {
       .then(() => {
         localStorage.removeItem('tempTitleInUpdatePost');
         localStorage.removeItem('tempContentInUpdatePost');
+
+        navigate(`/post/${postId}`);
       });
 
-    navigate(`/post/${postId}`);
+    // mutate({
+    //   url: `${END_POINT}/posts/update`,
+    //   method: 'post',
+    //   data: {
+    //     ...post,
+    //   },
+    // }).then(() => {
+    //   localStorage.removeItem('tempTitleInUpdatePost');
+    //   localStorage.removeItem('tempContentInUpdatePost');
+
+    //   navigate(`/post/${postId}`);
+    // });
   };
 
   const handleDeletePost = () => {

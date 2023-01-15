@@ -1,8 +1,9 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useToken } from '../contexts/TokenProvider';
+import useMutation from '../api/useMutation';
+
 const END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 
 const Container = styled.div`
@@ -22,6 +23,8 @@ function CreatePost() {
 
   const tokenContextObj = useToken();
   const token = tokenContextObj?.token;
+
+  const { mutate } = useMutation();
 
   const initTitle = localStorage.getItem('tempTitleInCreatePost') || '';
   const initContent = localStorage.getItem('tempContentInCreatePost') || '';
@@ -46,31 +49,27 @@ function CreatePost() {
       title: title,
       content: content,
     };
-    const temp = JSON.stringify(newPost);
+    const newPostChangedToJson = JSON.stringify(newPost);
 
     const contentData = {
-      title: temp,
+      title: newPostChangedToJson,
       image: image,
       channelId: channelId,
     };
 
-    axios
-      .post(`${END_POINT}/posts/create`, contentData, {
-        headers: {
-          Authorization: `bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      })
-      .then((res) => {
-        localStorage.removeItem('tempTitleInCreatePost');
-        localStorage.removeItem('tempContentInCreatePost');
+    mutate({
+      url: `${END_POINT}/posts/create`,
+      method: 'post',
+      data: {
+        ...contentData,
+      },
+    }).then((res) => {
+      localStorage.removeItem('tempTitleInCreatePost');
+      localStorage.removeItem('tempContentInCreatePost');
 
-        const { _id } = res.data;
-        navigate(`/post/${_id}`);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+      const { _id } = res;
+      navigate(`/post/${_id}`);
+    });
   };
 
   const handleOnClickUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
