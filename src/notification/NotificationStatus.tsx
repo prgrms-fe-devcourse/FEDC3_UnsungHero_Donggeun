@@ -26,7 +26,7 @@ const NotificationStatus = () => {
   };
 
   const checkNotificationStatus = () => {
-    if (notificationStatusList.indexOf(false) !== -1) notificationStatusContextObj?.setNotification(true);
+    if (notificationStatusList.includes(false)) notificationStatusContextObj?.setNotification(true);
   };
 
   useEffect(() => {
