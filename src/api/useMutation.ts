@@ -3,14 +3,17 @@ import { useEffect } from 'react';
 import axios from 'axios';
 import { useState } from 'react';
 import { IRequest } from '../types/request';
+import { IToken } from '../types/token';
+import { useToken } from '../contexts/TokenProvider';
 
 const useMutation = () => {
   const [error, setError] = useState<Error>();
+  const tokenContextObj: IToken | null = useToken();
 
   const mutate = async ({ url, method, data }: IRequest) => {
     const config = {
       headers: {
-        Authorization: `bearer ${localStorage.getItem('TOKEN_KEY')}`,
+        Authorization: `bearer ${tokenContextObj?.token}`,
         'Content-Type': data instanceof FormData ? 'multipart/form-data' : 'application/json',
       },
       data,
