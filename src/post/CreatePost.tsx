@@ -16,7 +16,8 @@ function CreatePost() {
   const [content, setContent] = useState<string>('');
   const [image, setImage] = useState('');
 
-  const { chnnalId } = useParams();
+  const { channelId } = useParams<string>();
+
   const navigate = useNavigate();
 
   const tokenContextObj = useToken();
@@ -50,7 +51,7 @@ function CreatePost() {
     const contentData = {
       title: temp,
       image: image,
-      channelId: chnnalId,
+      channelId: channelId,
     };
 
     axios

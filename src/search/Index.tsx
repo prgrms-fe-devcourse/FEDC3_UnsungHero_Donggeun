@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import ErrorBoundary from '../api/ErrorBoundary';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const API_END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 
@@ -13,6 +14,8 @@ const Search = () => {
   const [inputSearchValue, setInputSearchValue] = useState('');
   const [currentChannelId, setCurrentChannelId] = useState<string | undefined>('');
   const { channelId } = useParams();
+
+  const navigate = useNavigate();
 
   if (channelId !== currentChannelId) {
     setCurrentChannelId(channelId);
@@ -55,6 +58,8 @@ const Search = () => {
         inputSearchValue={inputSearchValue}
         presentChannelId={currentChannelId}
       />
+      <br />
+      {channelId ? <button onClick={() => navigate(`/post/create/${channelId}`)}>글 쓰기</button> : null}
     </ErrorBoundary>
   );
 };
