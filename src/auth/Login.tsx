@@ -1,13 +1,15 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import axios from 'axios';
 import useLocalStorage from './useLocalStorage';
-import { useToken } from '../contexts/TokenProvider';
+import { useToken, useUserId } from '../contexts/TokenProvider';
 import { useNavigate } from 'react-router-dom';
 import { IToken } from '../types/token';
 import { IAuth } from '../types/auth';
+import { IUserId } from '../types/useId';
 import { useState, useEffect } from 'react';
 
 const TOKEN_KEY = 'token';
+const USERID_KEY = 'userId';
 
 const Login = () => {
   const [allOnlineEmail, setAllOnlineEmail] = useState<string>();
@@ -18,7 +20,9 @@ const Login = () => {
     formState: { isSubmitting, errors },
   } = useForm<IAuth>();
   const [, setValue] = useLocalStorage(TOKEN_KEY, '');
+  const [, setUserId] = useLocalStorage(USERID_KEY, '');
   const tokenContextObj: IToken | null = useToken();
+  const userIdContext: IUserId | null = useUserId();
 
   const navigate = useNavigate();
 
@@ -35,7 +39,9 @@ const Login = () => {
       })
       .then(({ data }) => {
         setValue(data.token);
+        setUserId(data.user._id);
         tokenContextObj?.addToken(data.token);
+        userIdContext?.addUserId(data.user._id);
         navigate('/');
       })
       .catch(() => {

@@ -3,12 +3,9 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import UserEditImg from './UserEditImg';
+import useMutation from '../api/useMutation';
 
 const API_URL = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
-const TOKEN = localStorage.getItem('token');
-const headers = {
-  Authorization: `bearer ${TOKEN}`,
-};
 
 interface IFormValue {
   fullName: string;
@@ -17,6 +14,7 @@ interface IFormValue {
 
 const UserEdit = () => {
   const { id } = useParams();
+  const { mutate } = useMutation();
   const [imgFiles, setimgFiles] = useState({});
   const navigate = useNavigate();
 
@@ -44,26 +42,36 @@ const UserEdit = () => {
       }
     }
 
-    navigate(`/user/${id}`);
+    navigate(`/user/${id}`, { replace: true });
   };
 
   const getChangeImg = async (formdata: FormData) => {
-    await axios.post(`${API_URL}/users/upload-photo`, formdata, { headers });
+    return await mutate({
+      url: `${API_URL}/users/upload-photo`,
+      method: 'post',
+      data: formdata,
+    });
   };
 
   const getChangePassword = async (password: string) => {
-    return await axios.put(`${API_URL}/settings/update-password`, { password }, { headers });
+    return await mutate({
+      url: `${API_URL}/settings/update-password`,
+      method: 'put',
+      data: {
+        password,
+      },
+    });
   };
 
   const getChangeUserName = async (fullName: string) => {
-    return await axios.put(
-      `${API_URL}/settings/update-user`,
-      {
+    return await mutate({
+      url: `${API_URL}/settings/update-user`,
+      method: 'put',
+      data: {
         fullName,
         username: '',
       },
-      { headers }
-    );
+    });
   };
 
   return (
