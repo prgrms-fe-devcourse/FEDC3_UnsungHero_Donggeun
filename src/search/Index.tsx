@@ -3,30 +3,38 @@ import PostListContainer from './PostListContainer';
 import { useState, useEffect } from 'react';
 import ErrorBoundary from '../api/ErrorBoundary';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 const API_END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 
-interface IsearchProps {
-  channelId: string | '';
-}
-
-const Search = ({ channelId }: IsearchProps) => {
-  const [postsInfo, setPostsInfo] = useState([]); //PostListContainer에 넘겨 줄 데이터들
+const Search = () => {
+  const [postsInfo, setPostsInfo] = useState([]);
   const [selectedSearchOption, setSelectedSearchOption] = useState('');
   const [inputSearchValue, setInputSearchValue] = useState('');
+  const [currentChannelId, setCurrentChannelId] = useState<string | undefined>('');
+  const { channelId } = useParams();
+
+  if (channelId !== currentChannelId) {
+    setCurrentChannelId(channelId);
+  }
 
   useEffect(() => {
-    if (channelId === '') {
-      console.log('channelId가 없는 경우 어떤 처리를 해주면 좋을지 고민중...');
-    } else {
+    if (currentChannelId !== undefined) {
       getPostsList();
       setSelectedSearchOption('');
       setInputSearchValue('');
     }
-  }, [channelId]);
+  }, [currentChannelId]);
 
   const getPostsList = async () => {
-    axios.get(`${API_END_POINT}/posts/channel/${channelId}`).then((response) => {
+    axios.get(`${API_END_POINT}/posts/channel/${currentChannelId}`).then((response) => {
+      const { data } = response;
+      setPostsInfo(data);
+    });
+  };
+
+  const getEntirePostsList = async () => {
+    axios.get(`${API_END_POINT}/posts`).then((response) => {
       const { data } = response;
       setPostsInfo(data);
     });
@@ -38,12 +46,14 @@ const Search = ({ channelId }: IsearchProps) => {
         setSelectedSearchOption={setSelectedSearchOption}
         setInputSearchValue={setInputSearchValue}
         getPostsList={getPostsList}
-        channelId={channelId}
+        getEntirePostsList={getEntirePostsList}
+        currentChannelId={currentChannelId}
       />
       <PostListContainer
         postsInfo={postsInfo}
         selectedSearchOption={selectedSearchOption}
         inputSearchValue={inputSearchValue}
+        presentChannelId={currentChannelId}
       />
     </ErrorBoundary>
   );
