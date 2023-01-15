@@ -1,14 +1,18 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import axios from 'axios';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { IAuth } from '../types/auth';
 import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
+  const [allFullNameList, setAllFullNameList] = useState<string>();
+  const [allEmailList, setAllEmailList] = useState<string>();
+
   const {
     register,
     handleSubmit,
     watch,
+    setError,
     formState: { isSubmitting, errors },
   } = useForm<IAuth>();
 
@@ -18,6 +22,16 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   const onSubmitHandler: SubmitHandler<IAuth> = async ({ email, fullName, password }) => {
+    if (allFullNameList?.indexOf(fullName) !== -1) {
+      setError('fullName', { message: '이미 사용중인 nickname 입니다.' }, { shouldFocus: true });
+      return;
+    }
+
+    if (allEmailList?.indexOf(email) !== -1) {
+      setError('email', { message: '이미 사용중인 email 입니다.' }, { shouldFocus: true });
+      return;
+    }
+
     await axios
       .post('http://kdt.frontend.3rd.programmers.co.kr:5006/signup', {
         email,
@@ -26,6 +40,20 @@ const SignUp = () => {
       })
       .then(() => navigate('/login'));
   };
+
+  const getAllUserData = async () => {
+    await axios.get('http://kdt.frontend.3rd.programmers.co.kr:5006/users/get-users').then(({ data }) => {
+      const serverData = data;
+      const allFullNameData = serverData.map((data: IAuth) => data.fullName);
+      const allEmailData = serverData.map((data: IAuth) => data.email);
+      setAllFullNameList(allFullNameData);
+      setAllEmailList(allEmailData);
+    });
+  };
+
+  useEffect(() => {
+    getAllUserData();
+  }, []);
 
   return (
     <form onSubmit={handleSubmit(onSubmitHandler)} style={{ display: 'flex', flexDirection: 'column' }}>

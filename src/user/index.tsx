@@ -1,19 +1,17 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { IUser } from '../types/user';
 import styled from 'styled-components';
-import Pagination from './Pagination';
-import UserPostListItem from './UserPostListItem';
+import useAxios from '../api/useAxios';
+import { IPost } from '../types/post';
+import { IFollow } from '../types/follow';
+import UserPosts from './UserPosts';
 
 interface IUserInfo {
-  fullName: string;
+  fullName: string | undefined;
   posts: [];
-}
-
-interface IPost {
-  _id: string;
-  title: string;
-  likes: [];
+  image: string;
+  coverImage: string;
 }
 
 const COVER_IMG_URL = 'https://ifh.cc/g/xBfBwB.png';
@@ -22,50 +20,66 @@ const LIKE_IMG_URL = 'https://ifh.cc/g/vmscWK.png';
 const API_URL = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 
 const User = () => {
-  const [profileImage, setProfileImage] = useState(PROFIE_IMG_URL);
-  const [coverImage, setCoverImage] = useState(COVER_IMG_URL);
-  const [user, setUser] = useState<IUserInfo>({
-    fullName: '',
-    posts: [],
-  });
-  const [page, setPage] = useState(1);
   const { id } = useParams();
   const navigate = useNavigate();
-  const limit = 7;
-  const offset = (page - 1) * limit;
+  const { data, fetchData } = useAxios<IUser>({
+    url: `${API_URL}/users/${id}`,
+    method: 'get',
+  });
+  const [userInfo, setUserInfo] = useState<IUserInfo>({
+    fullName: '',
+    posts: [],
+    image: '',
+    coverImage: '',
+  });
+  const [userFollow, setUserFollow] = useState({
+    followers: [],
+    following: [],
+  });
 
   useEffect(() => {
-    getUserInfo();
-  }, []);
-
-  const getUserInfo = async () => {
-    await axios.get(`${API_URL}/users/${id}`).then(({ data }) => {
-      setUser({
-        fullName: data.fullName,
-        posts: data.posts,
-      });
+    setUserInfo({
+      fullName: data?.fullName,
+      posts: data?.posts as [],
+      image: data?.image ?? PROFIE_IMG_URL,
+      coverImage: data?.coverImage ?? COVER_IMG_URL,
     });
-  };
+    const followerList = data?.followers.map((user: IFollow) => user.user);
+    const followingList = data?.following.map((user: IFollow) => user.user);
+
+    setUserFollow({
+      followers: followerList as [],
+      following: followingList as [],
+    });
+  }, [data]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const handlemoveEditPage = () => {
     navigate(`/userEdit/${id}`);
   };
-  const totalLikes = user.posts.reduce((acc, cur: Pick<IPost, 'likes'>) => acc + cur.likes.length, 0);
-
+  const totalLikes =
+    userInfo.posts && userInfo.posts.reduce((acc, cur: Pick<IPost, 'likes'>) => acc + cur.likes.length, 0);
   return (
     <>
-      <CoverImg src={coverImage} />
-      <ProfileImg src={profileImage} />
-      <div>{user.fullName}</div>
+      <CoverImg src={userInfo.coverImage} />
+      <ProfileImg src={userInfo.image} />
+      <div>{userInfo.fullName}</div>
       <div>
         <img src={LIKE_IMG_URL} />
         {totalLikes}
       </div>
       <button onClick={handlemoveEditPage}>내 정보 수정</button>
-      {user.posts.slice(offset, offset + limit).map((post: IPost) => (
-        <UserPostListItem key={post._id} post={post} />
-      ))}
-      <Pagination total={user.posts.length} limit={limit} page={page} setPage={setPage} />
+
+      <Link to={`/followers`} state={{ followers: userFollow.followers }}>
+        팔로워: {userFollow.followers && userFollow.followers.length}
+      </Link>
+      <Link to={`/following`} state={{ following: userFollow.following }}>
+        팔로잉: {userFollow.following && userFollow.following.length}
+      </Link>
+      {userInfo.posts && userInfo.posts.length > 0 && <UserPosts posts={userInfo.posts} />}
     </>
   );
 };

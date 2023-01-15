@@ -5,10 +5,12 @@ import { useToken } from '../contexts/TokenProvider';
 import { useNavigate } from 'react-router-dom';
 import { IToken } from '../types/token';
 import { IAuth } from '../types/auth';
+import { useState, useEffect } from 'react';
 
 const TOKEN_KEY = 'token';
 
 const Login = () => {
+  const [allOnlineEmail, setAllOnlineEmail] = useState<string>();
   const {
     register,
     handleSubmit,
@@ -21,14 +23,19 @@ const Login = () => {
   const navigate = useNavigate();
 
   const onSubmitHandler: SubmitHandler<IAuth> = async ({ email, password }) => {
+    if (allOnlineEmail?.indexOf(email) !== -1) {
+      setError('email', { message: '현재 접속중인 email 입니다.' }, { shouldFocus: true });
+      return;
+    }
+
     await axios
       .post('http://kdt.frontend.3rd.programmers.co.kr:5006/login', {
         email,
         password,
       })
-      .then((res) => {
-        setValue(res.data.token);
-        tokenContextObj?.addToken(res.data.token);
+      .then(({ data }) => {
+        setValue(data.token);
+        tokenContextObj?.addToken(data.token);
         navigate('/');
       })
       .catch(() => {
@@ -39,6 +46,18 @@ const Login = () => {
         );
       });
   };
+
+  const getAllOnlineEmailData = async () => {
+    await axios.get('http://kdt.frontend.3rd.programmers.co.kr:5006/users/online-users').then(({ data }) => {
+      const serverData = data;
+      const allFullNameData = serverData.map((data: IAuth) => data.email);
+      setAllOnlineEmail(allFullNameData);
+    });
+  };
+
+  useEffect(() => {
+    getAllOnlineEmailData();
+  }, []);
 
   return (
     <form onSubmit={handleSubmit(onSubmitHandler)} style={{ display: 'flex', flexDirection: 'column' }}>
