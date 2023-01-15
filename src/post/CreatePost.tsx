@@ -61,9 +61,11 @@ function CreatePost() {
         },
       })
       .then((res) => {
+        localStorage.removeItem('tempTitle');
+        localStorage.removeItem('tempContent');
+
         const { _id } = res.data;
         navigate(`/post/${_id}`);
-        localStorage.clear();
       })
       .catch((e) => {
         console.log(e);
