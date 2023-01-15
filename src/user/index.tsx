@@ -26,12 +26,12 @@ const LIKE_IMG_URL = 'https://ifh.cc/g/vmscWK.png';
 const API_URL = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 
 const User = () => {
-  const { id } = useParams();
+  const { id: currentPageId } = useParams();
   const userIdContext = useUserId();
   const myUserId = userIdContext?.userId;
   const navigate = useNavigate();
   const { data } = useAxios<IUser>({
-    url: `${API_URL}/users/${id}`,
+    url: `${API_URL}/users/${currentPageId}`,
     method: 'get',
   });
   const [userInfo, setUserInfo] = useState<IUserInfo>({
@@ -62,17 +62,16 @@ const User = () => {
   }, [data]);
 
   const handlemoveEditPage = () => {
-    navigate(`/userEdit/${id}`);
+    navigate(`/userEdit/${currentPageId}`);
   };
   const totalLikes =
     userInfo.posts && userInfo.posts.reduce((acc, cur: Pick<IPost, 'likes'>) => acc + cur.likes.length, 0);
 
-  const followbutton =
-    userFollow.followers && userFollow.followers.includes(myUserId as string) ? (
-      <button>팔로잉</button>
-    ) : (
-      <button>팔로우</button>
-    );
+  const followbutton = userFollow?.followers?.includes(myUserId as string) ? (
+    <button>팔로잉</button>
+  ) : (
+    <button>팔로우</button>
+  );
   return (
     <>
       <CoverImg src={userInfo.coverImage} />
@@ -82,7 +81,7 @@ const User = () => {
         <img src={LIKE_IMG_URL} />
         {totalLikes}
       </div>
-      {id === myUserId ? <button onClick={handlemoveEditPage}>내 정보 수정</button> : followbutton}
+      {currentPageId === myUserId ? <button onClick={handlemoveEditPage}>내 정보 수정</button> : followbutton}
 
       <Link to={`/followers`} state={{ followers: userFollow.followers }}>
         팔로워: {userFollow.followers && userFollow.followers.length}
