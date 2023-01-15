@@ -104,18 +104,15 @@ const UpdatePost = () => {
   };
 
   const handleDeletePost = () => {
-    axios.delete(`${END_POINT}/posts/delete`, {
+    mutate({
+      url: `${END_POINT}/posts/delete`,
+      method: 'delete',
       data: {
         id: postId,
       },
-      headers: {
-        Authorization: `bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    });
-
-    navigate(`/`);
+    }).then(() => navigate(`/channel/${channelId}`));
   };
+
   return (
     <Container>
       <h1>Update Post</h1>
