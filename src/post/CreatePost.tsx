@@ -22,8 +22,8 @@ function CreatePost() {
   const tokenContextObj = useToken();
   const token = tokenContextObj?.token;
 
-  const initTitle = localStorage.getItem('tempTitle') || '';
-  const initContent = localStorage.getItem('tempContent') || '';
+  const initTitle = localStorage.getItem('tempTitleInCreatePost') || '';
+  const initContent = localStorage.getItem('tempContentInCreatePost') || '';
   useEffect(() => {
     setTitle(initTitle);
     setContent(initContent);
@@ -31,11 +31,11 @@ function CreatePost() {
 
   const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
-    localStorage.setItem('tempTitle', e.target.value);
+    localStorage.setItem('tempTitleInCreatePost', e.target.value);
   };
   const handleChangeContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
-    localStorage.setItem('tempContent', e.target.value);
+    localStorage.setItem('tempContentInCreatePost', e.target.value);
   };
 
   const handleOnClickCreatePost = async () => {
@@ -61,8 +61,8 @@ function CreatePost() {
         },
       })
       .then((res) => {
-        localStorage.removeItem('tempTitle');
-        localStorage.removeItem('tempContent');
+        localStorage.removeItem('tempTitleInCreatePost');
+        localStorage.removeItem('tempContentInCreatePost');
 
         const { _id } = res.data;
         navigate(`/post/${_id}`);

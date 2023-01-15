@@ -23,26 +23,32 @@ const UpdatePost = () => {
 
   const handleTitleOnChnage = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
-    localStorage.setItem('tempTitle', e.target.value);
+    localStorage.setItem('tempTitleInUpdatePost', e.target.value);
   };
   const handleContentOnChnage = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
-    localStorage.setItem('tempContent', e.target.value);
+    localStorage.setItem('tempContentInUpdatePost', e.target.value);
   };
 
   const fetchPost = async () => {
-    const result = await axios
-      .get(`${END_POINT}/posts/${postId}`)
-      .then((res) => res.data)
-      .catch((e) => {
-        console.log(e);
-      });
-    const post = JSON.parse(result.title);
-    setTitle(post.title);
-    setContent(post.content);
+    const tempTitle = localStorage.getItem('tempTitleInUpdatePost') || '';
+    const tempContent = localStorage.getItem('tempContentInUpdatePost') || '';
 
-    const tempTitle = localStorage.getItem('tempTitle') || '';
-    const tempContent = localStorage.getItem('tempContent') || '';
+    if (!tempTitle && !tempContent) {
+      console.log('패치함');
+      const result = await axios
+        .get(`${END_POINT}/posts/${postId}`)
+        .then((res) => res.data)
+        .catch((e) => {
+          console.log(e);
+        });
+      const post = JSON.parse(result.title);
+
+      setTitle(post.title);
+      setContent(post.content);
+      localStorage.setItem('tempTitleInUpdatePost', post.title);
+      localStorage.setItem('tempContentInUpdatePost', post.content);
+    }
 
     if (tempTitle) {
       setTitle(tempTitle);
@@ -78,8 +84,8 @@ const UpdatePost = () => {
         },
       })
       .then(() => {
-        localStorage.removeItem('tempTitle');
-        localStorage.removeItem('tempContent');
+        localStorage.removeItem('tempTitleInUpdatePost');
+        localStorage.removeItem('tempContentInUpdatePost');
       });
 
     navigate(`/post/${postId}`);
