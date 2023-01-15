@@ -27,7 +27,7 @@ const Pagination = ({ total = 0, limit, page, setPage }: IProps) => {
           } else if (page > totalPages - 3) {
             return i >= totalPages - 5;
           }
-          return i >= page - 2 && i <= page + 2;
+          return i >= page - 3 && i <= page + 1;
         })
         .map((i) => (
           <Button key={i + 1} onClick={() => setPage(i + 1)} page={page} i={i}>

@@ -1,22 +1,17 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { IUser } from '../types/user';
 import styled from 'styled-components';
 import useAxios from '../api/useAxios';
-import Pagination from './Pagination';
-import UserPostListItem from './UserPostListItem';
+import { IPost } from '../types/post';
+import { IFollow } from '../types/follow';
+import UserPosts from './UserPosts';
 
 interface IUserInfo {
   fullName: string | undefined;
   posts: [];
   image: string;
   coverImage: string;
-}
-
-interface IPost {
-  _id: string;
-  title: string;
-  likes: [];
 }
 
 const COVER_IMG_URL = 'https://ifh.cc/g/xBfBwB.png';
@@ -26,6 +21,7 @@ const API_URL = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 
 const User = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { data, fetchData } = useAxios<IUser>({
     url: `${API_URL}/users/${id}`,
     method: 'get',
@@ -36,10 +32,10 @@ const User = () => {
     image: '',
     coverImage: '',
   });
-  const [page, setPage] = useState(1);
-  const navigate = useNavigate();
-  const limit = 7;
-  const offset = (page - 1) * limit;
+  const [userFollow, setUserFollow] = useState({
+    followers: [],
+    following: [],
+  });
 
   useEffect(() => {
     setUserInfo({
@@ -47,6 +43,13 @@ const User = () => {
       posts: data?.posts as [],
       image: data?.image ?? PROFIE_IMG_URL,
       coverImage: data?.coverImage ?? COVER_IMG_URL,
+    });
+    const followerList = data?.followers.map((user: IFollow) => user.user);
+    const followingList = data?.following.map((user: IFollow) => user.user);
+
+    setUserFollow({
+      followers: followerList as [],
+      following: followingList as [],
     });
   }, [data]);
 
@@ -69,16 +72,14 @@ const User = () => {
         {totalLikes}
       </div>
       <button onClick={handlemoveEditPage}>내 정보 수정</button>
-      {userInfo.posts &&
-        userInfo.posts
-          .slice(offset, offset + limit)
-          .map((post: IPost) => <UserPostListItem key={post._id} post={post} />)}
-      <Pagination
-        total={userInfo.posts && userInfo.posts.length}
-        limit={limit}
-        page={page}
-        setPage={setPage}
-      />
+
+      <Link to={`/followers`} state={{ followers: userFollow.followers }}>
+        팔로워: {userFollow.followers && userFollow.followers.length}
+      </Link>
+      <Link to={`/following`} state={{ following: userFollow.following }}>
+        팔로잉: {userFollow.following && userFollow.following.length}
+      </Link>
+      {userInfo.posts && userInfo.posts.length > 0 && <UserPosts posts={userInfo.posts} />}
     </>
   );
 };

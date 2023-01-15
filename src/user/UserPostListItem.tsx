@@ -1,12 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { IPost } from '../types/post';
 
 interface IProps {
-  post: {
-    title: string;
-    likes: [];
-    _id: string;
-  };
+  post: Pick<IPost, 'title' | '_id' | 'likes'>;
 }
 const LIKE_IMG_URL = 'https://ifh.cc/g/vmscWK.png';
 
@@ -14,7 +11,7 @@ const UserPostListItem = ({ post }: IProps) => {
   const navigate = useNavigate();
 
   const handleClickPost = (id: string) => {
-    navigate(`/posts/${id}`);
+    navigate(`/post/${id}`);
   };
 
   return (
