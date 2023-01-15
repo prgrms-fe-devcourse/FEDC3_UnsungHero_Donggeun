@@ -1,12 +1,14 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import axios from 'axios';
 import useLocalStorage from './useLocalStorage';
-import { useToken } from '../contexts/TokenProvider';
+import { useToken, useUserId } from '../contexts/TokenProvider';
 import { useNavigate } from 'react-router-dom';
 import { IToken } from '../types/token';
 import { IAuth } from '../types/auth';
+import { IUserId } from '../types/useId';
 
 const TOKEN_KEY = 'token';
+const USERID_KEY = 'userId';
 
 const Login = () => {
   const {
@@ -16,7 +18,9 @@ const Login = () => {
     formState: { isSubmitting, errors },
   } = useForm<IAuth>();
   const [, setValue] = useLocalStorage(TOKEN_KEY, '');
+  const [, setUserId] = useLocalStorage(USERID_KEY, '');
   const tokenContextObj: IToken | null = useToken();
+  const userIdContext: IUserId | null = useUserId();
 
   const navigate = useNavigate();
 
@@ -28,7 +32,9 @@ const Login = () => {
       })
       .then((res) => {
         setValue(res.data.token);
+        setUserId(res.data.user._id);
         tokenContextObj?.addToken(res.data.token);
+        userIdContext?.addUserId(res.data.user._id);
         navigate('/');
       })
       .catch(() => {
