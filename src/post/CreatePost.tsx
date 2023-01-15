@@ -26,8 +26,8 @@ function CreatePost() {
 
   const { mutate } = useMutation();
 
-  const initTitle = localStorage.getItem('tempTitleInCreatePost') || '';
-  const initContent = localStorage.getItem('tempContentInCreatePost') || '';
+  const initTitle = localStorage.getItem(`tempTitleInCreatePost${channelId}`) || '';
+  const initContent = localStorage.getItem(`tempContentInCreatePost${channelId}`) || '';
   useEffect(() => {
     setTitle(initTitle);
     setContent(initContent);
@@ -35,11 +35,11 @@ function CreatePost() {
 
   const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
-    localStorage.setItem('tempTitleInCreatePost', e.target.value);
+    localStorage.setItem(`tempTitleInCreatePost${channelId}`, e.target.value);
   };
   const handleChangeContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
-    localStorage.setItem('tempContentInCreatePost', e.target.value);
+    localStorage.setItem(`tempContentInCreatePost${channelId}`, e.target.value);
   };
 
   const handleOnClickCreatePost = async () => {
@@ -64,8 +64,8 @@ function CreatePost() {
         ...contentData,
       },
     }).then((res) => {
-      localStorage.removeItem('tempTitleInCreatePost');
-      localStorage.removeItem('tempContentInCreatePost');
+      localStorage.removeItem(`tempTitleInCreatePost${channelId}`);
+      localStorage.removeItem(`tempContentInCreatePost${channelId}`);
 
       const { _id } = res;
       navigate(`/post/${_id}`);

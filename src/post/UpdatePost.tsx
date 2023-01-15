@@ -29,11 +29,11 @@ const UpdatePost = () => {
 
   const handleTitleOnChnage = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
-    localStorage.setItem('tempTitleInUpdatePost', e.target.value);
+    localStorage.setItem(`tempTitleInUpdatePost${postId}`, e.target.value);
   };
   const handleContentOnChnage = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
-    localStorage.setItem('tempContentInUpdatePost', e.target.value);
+    localStorage.setItem(`tempContentInUpdatePost${postId}`, e.target.value);
   };
 
   const { data } = useAxios<IPost>({
@@ -47,8 +47,8 @@ const UpdatePost = () => {
       setTitle(post.title);
       setContent(post.content);
 
-      const tempTitle = localStorage.getItem('tempTitleInUpdatePost') || '';
-      const tempContent = localStorage.getItem('tempContentInUpdatePost') || '';
+      const tempTitle = localStorage.getItem(`tempTitleInUpdatePost${postId}`) || '';
+      const tempContent = localStorage.getItem(`tempContentInUpdatePost${postId}`) || '';
 
       if (tempTitle) {
         setTitle(tempTitle);
@@ -83,8 +83,8 @@ const UpdatePost = () => {
         },
       })
       .then(() => {
-        localStorage.removeItem('tempTitleInUpdatePost');
-        localStorage.removeItem('tempContentInUpdatePost');
+        localStorage.removeItem(`tempTitleInUpdatePost${postId}`);
+        localStorage.removeItem(`tempContentInUpdatePost${postId}`);
 
         navigate(`/post/${postId}`);
       });
