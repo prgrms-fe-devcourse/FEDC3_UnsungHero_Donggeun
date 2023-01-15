@@ -18,16 +18,19 @@ interface IpostsInfo {
   likes: Ilikes[];
   createdAt: string;
 }
+
 interface IpostListContainerProps {
   postsInfo: IpostsInfo[];
   selectedSearchOption: string;
   inputSearchValue: string;
+  presentChannelId: string | undefined;
 }
 
 const PostListContainer = ({
   postsInfo,
   selectedSearchOption,
   inputSearchValue,
+  presentChannelId,
 }: IpostListContainerProps) => {
   const [page, setPage] = useState(1);
   const [checkedSorting, setCheckedSorting] = useState(true);
@@ -36,7 +39,7 @@ const PostListContainer = ({
 
   useEffect(() => {
     setCheckedSorting(true);
-  }, [postsInfo]);
+  }, [presentChannelId]);
 
   const dividePosts = (posts: any) => {
     const result = posts.slice(offset, offset + limit);
@@ -99,7 +102,13 @@ const PostListContainer = ({
         selectedSearchOption={selectedSearchOption}
         inputSearchValue={inputSearchValue}
       />
-      <Pagination limit={limit} page={page} totalPosts={filterPosts().length} setPage={setPage} />
+      <Pagination
+        limit={limit}
+        page={page}
+        totalPosts={filterPosts().length}
+        setPage={setPage}
+        presentChannelId={presentChannelId}
+      />
     </>
   );
 };

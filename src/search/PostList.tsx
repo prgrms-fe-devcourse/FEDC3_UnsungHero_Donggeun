@@ -57,7 +57,7 @@ const PostList = ({ filteredPostsInfo, selectedSearchOption, inputSearchValue }:
           const postContent = IsJsonString(title) ? JSON.parse(title).content : ' ';
 
           return (
-            <li key={_id} onClick={() => navigatePost(`/post/:${_id}`)}>
+            <li key={_id} onClick={() => navigatePost(`/post/${_id}`)}>
               <div>
                 <div>
                   제목:{' '}
