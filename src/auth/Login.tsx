@@ -33,9 +33,9 @@ const Login = () => {
         email,
         password,
       })
-      .then((res) => {
-        setValue(res.data.token);
-        tokenContextObj?.addToken(res.data.token);
+      .then(({ data }) => {
+        setValue(data.token);
+        tokenContextObj?.addToken(data.token);
         navigate('/');
       })
       .catch(() => {
@@ -48,8 +48,8 @@ const Login = () => {
   };
 
   const getAllOnlineEmailData = async () => {
-    await axios.get('http://kdt.frontend.3rd.programmers.co.kr:5006/users/online-users').then((res) => {
-      const serverData = res.data;
+    await axios.get('http://kdt.frontend.3rd.programmers.co.kr:5006/users/online-users').then(({ data }) => {
+      const serverData = data;
       const allFullNameData = serverData.map((data: IAuth) => data.email);
       setAllOnlineEmail(allFullNameData);
     });

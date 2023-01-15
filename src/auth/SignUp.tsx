@@ -42,8 +42,8 @@ const SignUp = () => {
   };
 
   const getAllUserData = async () => {
-    await axios.get('http://kdt.frontend.3rd.programmers.co.kr:5006/users/get-users').then((res) => {
-      const serverData = res.data;
+    await axios.get('http://kdt.frontend.3rd.programmers.co.kr:5006/users/get-users').then(({ data }) => {
+      const serverData = data;
       const allFullNameData = serverData.map((data: IAuth) => data.fullName);
       const allEmailData = serverData.map((data: IAuth) => data.email);
       setAllFullNameList(allFullNameData);
