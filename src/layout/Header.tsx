@@ -2,9 +2,13 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useUserId } from '../contexts/TokenProvider';
 import { IUserId } from '../types/useId';
+import { useToken } from '../contexts/TokenProvider';
+import { Logout } from '../auth';
 
 const Header = () => {
-  const userLogin = localStorage.getItem('token');
+  const tokenObject = useToken();
+  const userLogin = tokenObject?.token;
+
   const userIdContext: IUserId | null = useUserId();
   const id = userIdContext?.userId;
   const navigate = useNavigate();
@@ -22,6 +26,7 @@ const Header = () => {
             <>
               <button onClick={() => handleMovePage('notifications')}>알림</button>
               <button onClick={() => handleMovePage('user', id)}>사용자</button>
+              <Logout />
             </>
           ) : (
             <>
