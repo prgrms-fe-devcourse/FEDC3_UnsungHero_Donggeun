@@ -4,7 +4,7 @@ import useAxios from '../api/useAxios';
 import { IUser } from '../types/user';
 
 const COVER_IMG_URL = 'https://ifh.cc/g/ZSypny.png';
-const PROFIE_IMG_URL = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
+const PROFIE_IMG_URL = 'https://ifh.cc/g/35RDD6.png';
 const API_URL = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 interface IProps {
   id: string | undefined;
