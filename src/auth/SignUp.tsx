@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
   const [allFullNameList, setAllFullNameList] = useState<string>();
+  const [allEmailList, setAllEmailList] = useState<string>();
+
   const {
     register,
     handleSubmit,
@@ -25,28 +27,32 @@ const SignUp = () => {
       return;
     }
 
+    if (allEmailList?.indexOf(email) !== -1) {
+      setError('email', { message: '이미 사용중인 email 입니다.' }, { shouldFocus: true });
+      return;
+    }
+
     await axios
       .post('http://kdt.frontend.3rd.programmers.co.kr:5006/signup', {
         email,
         fullName,
         password,
       })
-      .then(() => navigate('/login'))
-      .catch(() => {
-        setError('email', { message: '이미 사용중인 email 입니다.' }, { shouldFocus: true });
-      });
+      .then(() => navigate('/login'));
   };
 
-  const getAllFullNameData = async () => {
+  const getAllUserData = async () => {
     await axios.get('http://kdt.frontend.3rd.programmers.co.kr:5006/users/get-users').then((res) => {
       const serverData = res.data;
       const allFullNameData = serverData.map((data: IAuth) => data.fullName);
+      const allEmailData = serverData.map((data: IAuth) => data.email);
       setAllFullNameList(allFullNameData);
+      setAllEmailList(allEmailData);
     });
   };
 
   useEffect(() => {
-    getAllFullNameData();
+    getAllUserData();
   }, []);
 
   return (
