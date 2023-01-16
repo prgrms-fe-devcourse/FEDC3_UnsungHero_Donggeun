@@ -10,12 +10,6 @@ import { useToken } from '../contexts/TokenProvider';
 
 const END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 
-const Container = styled.div`
-  max-width: 50%;
-  display: flex;
-  flex-direction: column;
-`;
-
 const DetailPost = () => {
   const navigate = useNavigate();
 
@@ -47,7 +41,6 @@ const DetailPost = () => {
   return (
     <ErrorBoundary>
       <Container>
-        <h1>Detail Post Page</h1>
         <h1>제목: {title}</h1>
         <textarea value={content} disabled rows={10} cols={100} />
         <br />
@@ -58,5 +51,11 @@ const DetailPost = () => {
     </ErrorBoundary>
   );
 };
+
+const Container = styled.div`
+  max-width: 50%;
+  display: flex;
+  flex-direction: column;
+`;
 
 export default DetailPost;

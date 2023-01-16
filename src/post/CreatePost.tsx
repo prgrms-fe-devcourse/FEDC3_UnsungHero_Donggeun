@@ -6,16 +6,10 @@ import useMutation from '../api/useMutation';
 
 const END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 
-const Container = styled.div`
-  max-width: 50%;
-  display: flex;
-  flex-direction: column;
-`;
-
 function CreatePost() {
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState({});
 
   const { channelId } = useParams<string>();
 
@@ -57,11 +51,19 @@ function CreatePost() {
       channelId: channelId,
     };
 
+    const formData = new FormData();
+    if (channelId) {
+      formData.append('title', newPostChangedToJson);
+      formData.append('image', JSON.stringify(image));
+      formData.append('channelId', channelId);
+    }
+    console.log(formData);
+
     mutate({
       url: `${END_POINT}/posts/create`,
       method: 'post',
       data: {
-        ...contentData,
+        formData,
       },
     }).then((res) => {
       localStorage.removeItem(`tempTitleInCreatePost${channelId}`);
@@ -73,12 +75,20 @@ function CreatePost() {
   };
 
   const handleOnClickUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    setImage(e.target.value);
+    if (e.currentTarget.files) {
+      const file = e.currentTarget.files[0];
+
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+
+      console.log(reader);
+      setImage(file);
+    }
   };
 
   return (
     <Container>
-      <h1>글 작성 페이지</h1>
+      <Title>글 작성 페이지</Title>
       <input
         type='text'
         size={99}
@@ -87,7 +97,7 @@ function CreatePost() {
         placeholder='제목을 입력하세요'
       />
       <br />
-      <textarea
+      <Textarea
         rows={10}
         cols={100}
         onChange={handleChangeContent}
@@ -100,9 +110,31 @@ function CreatePost() {
         accept='image/jpg,impge/png,image/jpeg,image/gif'
         onChange={handleOnClickUploadImage}
       />
-      <button onClick={handleOnClickCreatePost}>글 작성</button>
+      <Button onClick={handleOnClickCreatePost}>저장</Button>
     </Container>
   );
 }
+
+const Title = styled.h1``;
+
+const Container = styled.div`
+  margin: 5rem;
+  max-width: 50%;
+  display: flex;
+  flex-direction: column;
+  border: solid 1px black;
+`;
+
+const Textarea = styled.textarea`
+  resize: none;
+  border: none;
+`;
+
+const Button = styled.button`
+  align-self: end;
+  width: 10%;
+  background-color: #52d2a4;
+  color: #ffffff;
+`;
 
 export default CreatePost;
