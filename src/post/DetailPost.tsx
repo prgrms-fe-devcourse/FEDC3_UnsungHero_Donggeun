@@ -53,7 +53,7 @@ const DetailPost = () => {
         <Like />
       </Container>
       <div>
-        <img src={image} />
+        <img src={image} alt='이미지!' />
       </div>
     </ErrorBoundary>
   );

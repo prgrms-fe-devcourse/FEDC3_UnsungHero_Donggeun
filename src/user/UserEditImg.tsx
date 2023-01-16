@@ -58,7 +58,6 @@ const UserEditImg = ({ id, setimgFiles }: IProps) => {
       imgFileRef.current[type as keyof IImage] = formData;
 
       setimgFiles(imgFileRef.current);
-      console.log(formData);
     }
   };
 
