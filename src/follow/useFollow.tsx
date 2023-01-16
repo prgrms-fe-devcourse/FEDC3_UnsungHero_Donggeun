@@ -86,9 +86,9 @@ const useFollow = (currentPageId: string) => {
 
     const following = LoginUserData?.following.map((user) => user.user);
     return following?.includes(id) ? (
-      <button onClick={(e) => handleClickUnFollow(e, id)}>팔로잉</button>
+      <button onClick={(e) => handleClickUnFollow(e, id)}>언팔로우하기</button>
     ) : (
-      <button onClick={(e) => handleClickFollow(e, id)}>팔로우</button>
+      <button onClick={(e) => handleClickFollow(e, id)}>팔로우하기</button>
     );
   };
 
