@@ -100,9 +100,6 @@ function CreatePost() {
         value={initContent}
       />
       <Div />
-      {/* <Label className='image-fill-upload-button' htmlFor='Image-file'>
-        이미지 업로드
-      </Label> */}
       <ImageInput
         id='Image-file'
         type='file'
@@ -160,7 +157,6 @@ const ImageInput = styled.input`
   &::file-selector-button {
     cursor: pointer;
     border: none;
-    /* background-color: #52d2a4; */
   }
 `;
 

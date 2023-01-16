@@ -70,23 +70,22 @@ const DetailPost = () => {
   return (
     <ErrorBoundary>
       <Container>
-        <h1>{title}</h1>
+        <Title>{title}</Title>
         <p>작성일: {author.createAt}</p>
         <Div />
         <Author onClick={() => navigate(`/user/${author._id}`)}>
-          <p>작성자: {author.fullName}</p>
           <ProfileImg src={author.image} />
+          <UserName>{author.fullName}</UserName>
         </Author>
         <Div />
+        {image ? <ContentImage src={image} alt='이미지!' /> : null}
         <Textarea value={content} disabled rows={10} cols={100} />
         <Div />
         {token ? <Button onClick={handleOnClickToUpdatePage}>내용 수정 페이지로 가기</Button> : null}
+        <Div />
         <Comment />
         <Like />
       </Container>
-      <div>
-        <img src={image} alt='이미지!' />
-      </div>
     </ErrorBoundary>
   );
 };
@@ -102,8 +101,25 @@ const Container = styled.div`
   box-shadow: 12px 12px 2px 1px rgba(216, 216, 235, 0.2);
 `;
 
+const Title = styled.h1`
+  font-size: 20px;
+`;
+
+const UserName = styled.p`
+  font-size: 14px;
+`;
+
 const Author = styled.div`
-  background-color: #e6dada;
+  display: flex;
+`;
+
+const ProfileImg = styled.img`
+  border-radius: 50%;
+  width: 50px;
+`;
+
+const ContentImage = styled.img`
+  margin-bottom: 1rem;
 `;
 
 const Div = styled.div`
@@ -116,6 +132,7 @@ const Div = styled.div`
 const Textarea = styled.textarea`
   resize: none;
   border: none;
+  font-size: 16px;
   &:focus {
     background-color: #f0f0f0;
     outline: none;
@@ -129,11 +146,6 @@ const Button = styled.button<{ backgroundColor?: string }>`
   border-radius: 5%;
   background-color: #52d2a4;
   color: #ffffff;
-`;
-
-const ProfileImg = styled.img`
-  border-radius: 50%;
-  width: 50px;
 `;
 
 export default DetailPost;
