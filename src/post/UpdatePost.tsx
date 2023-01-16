@@ -2,6 +2,10 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useToken } from '../contexts/TokenProvider';
+import useMutation from '../api/useMutation';
+import useAxios from '../api/useAxios';
+import { IPost } from '../types/post';
 
 const END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 
@@ -14,33 +18,48 @@ const Container = styled.div`
 const UpdatePost = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [channelId, setChannelId] = useState('');
   const { postId } = useParams();
   const navigate = useNavigate();
 
-  const token = localStorage.getItem('TOKEN_KEY');
+  const tokenContextObj = useToken();
+  const token = tokenContextObj?.token;
+
+  const { mutate } = useMutation();
 
   const handleTitleOnChnage = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
+    localStorage.setItem(`tempTitleInUpdatePost${postId}`, e.target.value);
   };
   const handleContentOnChnage = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
+    localStorage.setItem(`tempContentInUpdatePost${postId}`, e.target.value);
   };
 
-  const fetchPost = async () => {
-    const result = await axios
-      .get(`${END_POINT}/posts/${postId}`)
-      .then((res) => res.data)
-      .catch((e) => {
-        console.log(e);
-      });
-    const post = JSON.parse(result.title);
-    setTitle(post.title);
-    setContent(post.content);
-  };
+  const { data } = useAxios<IPost>({
+    url: `${END_POINT}/posts/${postId}`,
+    method: 'get',
+  });
 
   useEffect(() => {
-    fetchPost();
-  }, []);
+    if (typeof data === 'object') {
+      const post = JSON.parse(data?.title as string);
+      setTitle(post.title);
+      setContent(post.content);
+
+      const tempTitle = localStorage.getItem(`tempTitleInUpdatePost${postId}`) || '';
+      const tempContent = localStorage.getItem(`tempContentInUpdatePost${postId}`) || '';
+
+      if (tempTitle) {
+        setTitle(tempTitle);
+      }
+      if (tempContent) {
+        setContent(tempContent);
+      }
+
+      setChannelId(data.channel._id);
+    }
+  }, [data]);
 
   const handleUpdatePost = () => {
     const postToUpdate = {
@@ -53,32 +72,47 @@ const UpdatePost = () => {
       postId: postId,
       title: jsonToUpdate,
       image: null,
-      channelId: '63b5b7f5a87de522e8646d65', // 첫 번 쨰 채널
+      channelId: channelId,
     };
 
-    axios.put(`${END_POINT}/posts/update`, post, {
-      headers: {
-        Authorization: `bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    });
+    axios
+      .put(`${END_POINT}/posts/update`, post, {
+        headers: {
+          Authorization: `bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(() => {
+        localStorage.removeItem(`tempTitleInUpdatePost${postId}`);
+        localStorage.removeItem(`tempContentInUpdatePost${postId}`);
 
-    navigate(`/post/${postId}`);
+        navigate(`/post/${postId}`);
+      });
+
+    // mutate({
+    //   url: `${END_POINT}/posts/update`,
+    //   method: 'post',
+    //   data: {
+    //     ...post,
+    //   },
+    // }).then(() => {
+    //   localStorage.removeItem('tempTitleInUpdatePost');
+    //   localStorage.removeItem('tempContentInUpdatePost');
+
+    //   navigate(`/post/${postId}`);
+    // });
   };
 
   const handleDeletePost = () => {
-    axios.delete(`${END_POINT}/posts/delete`, {
+    mutate({
+      url: `${END_POINT}/posts/delete`,
+      method: 'delete',
       data: {
         id: postId,
       },
-      headers: {
-        Authorization: `bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    });
-
-    navigate(`/`);
+    }).then(() => navigate(`/channel/${channelId}`));
   };
+
   return (
     <Container>
       <h1>Update Post</h1>

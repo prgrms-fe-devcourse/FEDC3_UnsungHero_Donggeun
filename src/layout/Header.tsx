@@ -2,10 +2,14 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Logout } from '../auth';
 import { useUserId } from '../contexts/TokenProvider';
+import NotificationStatus from '../notification/NotificationStatus';
 import { IUserId } from '../types/useId';
+import { useToken } from '../contexts/TokenProvider';
 
 const Header = () => {
-  const userLogin = localStorage.getItem('token');
+  const tokenObject = useToken();
+  const userLogin = tokenObject?.token;
+
   const userIdContext: IUserId | null = useUserId();
   const id = userIdContext?.userId;
   const navigate = useNavigate();
@@ -14,13 +18,13 @@ const Header = () => {
   };
 
   return (
-    <>
+    <Wrapper>
       <HeaderWrapper>
-        <div>언성 히어로(로고)</div>
-        <div>검색창</div>
+        <div onClick={() => navigate('/')}>언성 히어로(로고)</div>
         <ButtonWrapper>
           {userLogin ? (
             <>
+              <NotificationStatus />
               <button onClick={() => handleMovePage('notifications')}>알림</button>
               <button onClick={() => handleMovePage('user', id)}>사용자</button>
               <Logout />
@@ -33,17 +37,28 @@ const Header = () => {
           )}
         </ButtonWrapper>
       </HeaderWrapper>
-    </>
+    </Wrapper>
   );
 };
 export default Header;
 
-export const HeaderWrapper = styled.header`
+const Wrapper = styled.div`
+  background-color: ${({ theme }) => theme.colors.primary};
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 64px;
+  position: fixed;
+`;
+
+const HeaderWrapper = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #1a237e;
   height: 64px;
+  width: 100%;
+  max-width: 1000px;
+  position: fixed;
 `;
 
-export const ButtonWrapper = styled.div``;
+const ButtonWrapper = styled.div``;
