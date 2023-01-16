@@ -23,14 +23,14 @@ interface IpostListContainerProps {
   postsInfo: IpostsInfo[];
   selectedSearchOption: string;
   inputSearchValue: string;
-  presentChannelId: string | undefined;
+  currentChannelId: string | undefined;
 }
 
 const PostListContainer = ({
   postsInfo,
   selectedSearchOption,
   inputSearchValue,
-  presentChannelId,
+  currentChannelId,
 }: IpostListContainerProps) => {
   const [page, setPage] = useState(1);
   const [checkedSorting, setCheckedSorting] = useState(true);
@@ -39,7 +39,7 @@ const PostListContainer = ({
 
   useEffect(() => {
     setCheckedSorting(true);
-  }, [presentChannelId]);
+  }, [currentChannelId]);
 
   const dividePosts = (posts: any) => {
     const result = posts.slice(offset, offset + limit);
@@ -101,13 +101,14 @@ const PostListContainer = ({
         filteredPostsInfo={dividePosts(filterPosts())}
         selectedSearchOption={selectedSearchOption}
         inputSearchValue={inputSearchValue}
+        currentChannelId={currentChannelId}
       />
       <Pagination
         limit={limit}
         page={page}
         totalPosts={filterPosts().length}
         setPage={setPage}
-        presentChannelId={presentChannelId}
+        currentChannelId={currentChannelId}
       />
     </>
   );
