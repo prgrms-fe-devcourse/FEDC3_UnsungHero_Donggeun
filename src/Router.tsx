@@ -22,8 +22,8 @@ function Router() {
           <Route path='/login' element={<Login />} />
           <Route path='/notifications' element={<NotificationList />} />
           <Route path='/user/:id' element={<User />} />
-          <Route path='/followers' element={<UserFollowers />} />
-          <Route path='/following' element={<UserFollowing />} />
+          <Route path='/followers/:id' element={<UserFollowers />} />
+          <Route path='/following/:id' element={<UserFollowing />} />
           <Route path='/post/:postId' element={<DetailPost />} />
           <Route path='/post/channelId/updatePost/:postId' element={<UpdatePost />} />
           <Route path='/post/create/:chnnalId' element={<CreatePost />} />
