@@ -11,30 +11,12 @@ import { useToken } from '../contexts/TokenProvider';
 const END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 const PROFIE_IMG_URL = 'https://ifh.cc/g/35RDD6.png';
 
-const Container = styled.div`
-  max-width: 50%;
-  display: flex;
-  flex-direction: column;
-`;
-
-interface Iauthor {
-  fullName: string;
-  image: string;
-  createAt: string;
-  _id: string;
-}
-
 const DetailPost = () => {
   const navigate = useNavigate();
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [author, setAuthor] = useState<Iauthor>({
-    fullName: '',
-    image: PROFIE_IMG_URL,
-    createAt: '',
-    _id: '',
-  });
+  const [image, setImage] = useState('');
 
   const { postId } = useParams();
 
@@ -52,18 +34,7 @@ const DetailPost = () => {
       setTitle(post.title);
       setContent(post.content);
 
-      const author = data?.author;
-      const fullName = author.fullName;
-      const image = author.image;
-      const _id = author._id;
-
-      const createAt = data.createdAt;
-      setAuthor({
-        fullName: fullName,
-        image: image ?? PROFIE_IMG_URL,
-        createAt: createAt,
-        _id: _id,
-      });
+      setImage(data.image || '');
     }
   }, [data]);
 
@@ -74,33 +45,57 @@ const DetailPost = () => {
   return (
     <ErrorBoundary>
       <Container>
-        <h1>{title}</h1>
-        <p>작성일: {author.createAt}</p>
-        <Author onClick={() => navigate(`/user/${author._id}`)}>
-          <p>작성자: {author.fullName}</p>
-          <ProfileImg src={author.image} />
-        </Author>
+        <H1>제목: {title}</H1>
+        <Div />
         <Textarea value={content} disabled rows={10} cols={100} />
-        <br />
-        {token ? <button onClick={handleOnClickToUpdatePage}>내용 수정 페이지로 가기</button> : null}
+        <Div />
+        {token ? <Button onClick={handleOnClickToUpdatePage}>내용 수정 페이지로 가기</Button> : null}
         <Comment />
         <Like />
       </Container>
+      <div>
+        <img src={image} alt='이미지!' />
+      </div>
     </ErrorBoundary>
   );
 };
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  border: solid 1px #c4c4c4;
+  border-radius: 3%;
+  margin: 5rem;
+  padding: 1rem;
+  max-width: 50%;
+  box-shadow: 12px 12px 2px 1px rgba(216, 216, 235, 0.2);
+`;
+
+const H1 = styled.h1``;
+
+const Div = styled.div`
+  width: 98%;
+  border: solid #c4c4c4 1px;
+  margin: 1rem 0;
+  justify-content: center;
+`;
+
 const Textarea = styled.textarea`
   resize: none;
+  border: none;
+  &:focus {
+    background-color: #f0f0f0;
+    outline: none;
+  }
 `;
 
-const Author = styled.div`
-  background-color: #e6dada;
-`;
-
-const ProfileImg = styled.img`
-  border-radius: 50%;
-  width: 50px;
+const Button = styled.button`
+  padding: 0.5rem;
+  align-self: end;
+  border: none;
+  border-radius: 5%;
+  background-color: #52d2a4;
+  color: #ffffff;
 `;
 
 export default DetailPost;
