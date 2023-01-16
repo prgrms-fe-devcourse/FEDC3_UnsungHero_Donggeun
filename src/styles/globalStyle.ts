@@ -4,7 +4,9 @@ import { normalize } from 'styled-normalize';
 const GlobalStyles = createGlobalStyle`
     ${normalize}
     html,
-    body
+    body {
+        background-color: #FAFAFA;
+    }
     #root {
     height: 100%;
     }
