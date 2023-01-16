@@ -18,10 +18,9 @@ const Header = () => {
   };
 
   return (
-    <>
+    <Wrapper>
       <HeaderWrapper>
         <div onClick={() => navigate('/')}>언성 히어로(로고)</div>
-        <div>검색창</div>
         <ButtonWrapper>
           {userLogin ? (
             <>
@@ -38,17 +37,28 @@ const Header = () => {
           )}
         </ButtonWrapper>
       </HeaderWrapper>
-    </>
+    </Wrapper>
   );
 };
 export default Header;
 
-export const HeaderWrapper = styled.header`
+const Wrapper = styled.div`
+  background-color: ${({ theme }) => theme.colors.primary};
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 64px;
+  position: fixed;
+`;
+
+const HeaderWrapper = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: #1a237e;
   height: 64px;
+  width: 100%;
+  max-width: 1000px;
+  position: fixed;
 `;
 
-export const ButtonWrapper = styled.div``;
+const ButtonWrapper = styled.div``;

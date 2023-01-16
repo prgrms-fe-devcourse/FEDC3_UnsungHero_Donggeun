@@ -76,7 +76,6 @@ const PostList = ({
       {selectPostsChannelTitle()}
       <ul>
         {filteredPostsInfo.map((postInfo, index) => {
-          // console.log(postInfo);
           const { title, _id, likes, createdAt } = postInfo;
           const { fullName, image } = postInfo.author; //fullName이 아니라 userName이 닉네임인 경우 변경해야함
           const postTitle = IsJsonString(title) ? JSON.parse(title).title : title;

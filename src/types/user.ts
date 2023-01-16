@@ -1,3 +1,4 @@
+import { IFollow } from './follow';
 import { ILike } from './like';
 import { IMessage } from './message';
 import { INotification } from './notification';
@@ -13,8 +14,8 @@ export interface IUser {
   posts: IPost[];
   likes: ILike[];
   comments: string[];
-  followers: [];
-  following: [];
+  followers: IFollow[];
+  following: IFollow[];
   notifications: INotification[];
   messages: IMessage[];
   _id: string;
