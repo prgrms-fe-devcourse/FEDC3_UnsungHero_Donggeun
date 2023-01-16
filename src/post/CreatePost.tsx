@@ -82,7 +82,7 @@ function CreatePost() {
       <input
         type='text'
         size={99}
-        onChange={(e) => handleChangeTitle(e)}
+        onChange={handleChangeTitle}
         value={initTitle}
         placeholder='제목을 입력하세요'
       />
