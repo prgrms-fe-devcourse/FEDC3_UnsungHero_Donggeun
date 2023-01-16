@@ -45,6 +45,7 @@ const MostLikesPosts = ({ postsInfo }: IMostLikesPostsProps) => {
 
   return (
     <div>
+      <h2>베스트 공감 글</h2>
       <ul>
         {filterMostLikesPosts().map((filteredPost) => {
           const { title, _id, likes, createdAt } = filteredPost;
