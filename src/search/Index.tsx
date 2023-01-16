@@ -1,5 +1,6 @@
 import SearchBox from './SearchBox';
 import PostListContainer from './PostListContainer';
+import MostLikesPosts from './MostLikesPosts';
 import { useState, useEffect } from 'react';
 import ErrorBoundary from '../api/ErrorBoundary';
 import axios from 'axios';
@@ -26,6 +27,8 @@ const Search = () => {
       getPostsList();
       setSelectedSearchOption('');
       setInputSearchValue('');
+    } else {
+      getEntirePostsList();
     }
   }, [currentChannelId]);
 
@@ -45,6 +48,7 @@ const Search = () => {
 
   return (
     <ErrorBoundary>
+      <MostLikesPosts postsInfo={postsInfo} currentChannelId={currentChannelId} />
       <SearchBox
         setSelectedSearchOption={setSelectedSearchOption}
         setInputSearchValue={setInputSearchValue}
@@ -56,7 +60,7 @@ const Search = () => {
         postsInfo={postsInfo}
         selectedSearchOption={selectedSearchOption}
         inputSearchValue={inputSearchValue}
-        presentChannelId={currentChannelId}
+        currentChannelId={currentChannelId}
       />
       <br />
       {channelId ? <button onClick={() => navigate(`/post/create/${channelId}`)}>글 쓰기</button> : null}
