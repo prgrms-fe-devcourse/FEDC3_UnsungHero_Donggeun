@@ -1,8 +1,9 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useToken } from '../contexts/TokenProvider';
+import useMutation from '../api/useMutation';
+
 const END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 
 const Container = styled.div`
@@ -16,14 +17,17 @@ function CreatePost() {
   const [content, setContent] = useState<string>('');
   const [image, setImage] = useState('');
 
-  const { chnnalId } = useParams();
+  const { channelId } = useParams<string>();
+
   const navigate = useNavigate();
 
   const tokenContextObj = useToken();
   const token = tokenContextObj?.token;
 
-  const initTitle = localStorage.getItem('tempTitleInCreatePost') || '';
-  const initContent = localStorage.getItem('tempContentInCreatePost') || '';
+  const { mutate } = useMutation();
+
+  const initTitle = localStorage.getItem(`tempTitleInCreatePost${channelId}`) || '';
+  const initContent = localStorage.getItem(`tempContentInCreatePost${channelId}`) || '';
   useEffect(() => {
     setTitle(initTitle);
     setContent(initContent);
@@ -31,11 +35,11 @@ function CreatePost() {
 
   const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
-    localStorage.setItem('tempTitleInCreatePost', e.target.value);
+    localStorage.setItem(`tempTitleInCreatePost${channelId}`, e.target.value);
   };
   const handleChangeContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
-    localStorage.setItem('tempContentInCreatePost', e.target.value);
+    localStorage.setItem(`tempContentInCreatePost${channelId}`, e.target.value);
   };
 
   const handleOnClickCreatePost = async () => {
@@ -45,31 +49,27 @@ function CreatePost() {
       title: title,
       content: content,
     };
-    const temp = JSON.stringify(newPost);
+    const newPostChangedToJson = JSON.stringify(newPost);
 
     const contentData = {
-      title: temp,
+      title: newPostChangedToJson,
       image: image,
-      channelId: chnnalId,
+      channelId: channelId,
     };
 
-    axios
-      .post(`${END_POINT}/posts/create`, contentData, {
-        headers: {
-          Authorization: `bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      })
-      .then((res) => {
-        localStorage.removeItem('tempTitleInCreatePost');
-        localStorage.removeItem('tempContentInCreatePost');
+    mutate({
+      url: `${END_POINT}/posts/create`,
+      method: 'post',
+      data: {
+        ...contentData,
+      },
+    }).then((res) => {
+      localStorage.removeItem(`tempTitleInCreatePost${channelId}`);
+      localStorage.removeItem(`tempContentInCreatePost${channelId}`);
 
-        const { _id } = res.data;
-        navigate(`/post/${_id}`);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+      const { _id } = res;
+      navigate(`/post/${_id}`);
+    });
   };
 
   const handleOnClickUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,7 +82,7 @@ function CreatePost() {
       <input
         type='text'
         size={99}
-        onChange={handleChangeTitle}
+        onChange={(e) => handleChangeTitle(e)}
         value={initTitle}
         placeholder='제목을 입력하세요'
       />

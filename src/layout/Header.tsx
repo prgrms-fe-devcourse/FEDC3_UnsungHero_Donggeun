@@ -17,7 +17,7 @@ const Header = () => {
   return (
     <>
       <HeaderWrapper>
-        <div>언성 히어로(로고)</div>
+        <div onClick={() => navigate('/')}>언성 히어로(로고)</div>
         <div>검색창</div>
         <ButtonWrapper>
           {userLogin ? (
