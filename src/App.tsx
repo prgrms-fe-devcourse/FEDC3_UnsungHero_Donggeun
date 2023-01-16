@@ -3,19 +3,16 @@ import TokenProvider from './contexts/TokenProvider';
 import Router from './Router';
 import GlobalStyles from './styles/globalStyle';
 import theme from './styles/theme';
-import TokenProvider from './contexts/TokenProvider';
 import NotificationStatusProvider from './contexts/NotificationStatusProvider';
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <TokenProvider>
-        <NotificationStatusProvider>
-          <GlobalStyles />
-          <Router />
-        </NotificationStatusProvider>
-      </TokenProvider>
-    </ThemeProvider>
+    <TokenProvider>
+      <ThemeProvider theme={theme}>
+        <GlobalStyles />
+        <Router />
+      </ThemeProvider>
+    </TokenProvider>
   );
 }
 
