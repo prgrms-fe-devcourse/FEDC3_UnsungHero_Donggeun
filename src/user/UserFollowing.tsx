@@ -32,7 +32,7 @@ const UserFollowing = () => {
       {followingsList &&
         followingsList.slice(offset, offset + limit).map((user: IUser) => (
           <div key={user._id} onClick={() => handleClickUser(user._id)}>
-            <img src={user.image && PROFIE_IMG_URL} width='80px' height='80px' alt='프로필 이미지' />
+            <img src={user.image || PROFIE_IMG_URL} width='80px' height='80px' alt='프로필 이미지' />
             <span>{user.fullName}</span>
             {followButton(user._id)}
           </div>
