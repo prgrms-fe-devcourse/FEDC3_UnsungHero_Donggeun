@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useToken } from '../contexts/TokenProvider';
@@ -36,7 +36,9 @@ function CreatePost() {
     localStorage.setItem(`tempContentInCreatePost${channelId}`, e.target.value);
   };
 
-  const handleOnClickCreatePost = async () => {
+  const handleOnClickCreatePost = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     if (!token) return;
 
     const newPost = {
@@ -45,26 +47,15 @@ function CreatePost() {
     };
     const newPostChangedToJson = JSON.stringify(newPost);
 
-    const contentData = {
-      title: newPostChangedToJson,
-      image: image,
-      channelId: channelId,
-    };
-
     const formData = new FormData();
-    if (channelId) {
-      formData.append('title', newPostChangedToJson);
-      formData.append('image', JSON.stringify(image));
-      formData.append('channelId', channelId);
-    }
-    console.log(formData);
+    formData.append('title', newPostChangedToJson);
+    formData.append('image', image as string);
+    formData.append('channelId', channelId as string);
 
     mutate({
       url: `${END_POINT}/posts/create`,
       method: 'post',
-      data: {
-        formData,
-      },
+      data: formData,
     }).then((res) => {
       localStorage.removeItem(`tempTitleInCreatePost${channelId}`);
       localStorage.removeItem(`tempContentInCreatePost${channelId}`);
@@ -81,13 +72,18 @@ function CreatePost() {
       const reader = new FileReader();
       reader.readAsDataURL(file);
 
-      console.log(reader);
-      setImage(file);
+      // onload는 읽기 동작이 성공적으로 완료되었을 때 발생함.
+      reader.onload = () => {
+        // 작업 완료.
+        if (reader.readyState === 2) {
+          setImage(file);
+        }
+      };
     }
   };
 
   return (
-    <Container>
+    <Form onSubmit={(e) => handleOnClickCreatePost(e)}>
       <TitleInput
         type='text'
         size={99}
@@ -114,12 +110,12 @@ function CreatePost() {
         onChange={handleOnClickUploadImage}
       />
       <Div />
-      <Button onClick={handleOnClickCreatePost}>저장</Button>
-    </Container>
+      <Button type='submit'>저장</Button>
+    </Form>
   );
 }
 
-const Container = styled.div`
+const Form = styled.form`
   display: flex;
   flex-direction: column;
   margin: 5rem;

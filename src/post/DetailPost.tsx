@@ -15,6 +15,7 @@ const DetailPost = () => {
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [image, setImage] = useState('');
 
   const { postId } = useParams();
 
@@ -31,6 +32,8 @@ const DetailPost = () => {
       const post = JSON.parse(data?.title as string);
       setTitle(post.title);
       setContent(post.content);
+
+      setImage(data.image || '');
     }
   }, [data]);
 
@@ -49,6 +52,9 @@ const DetailPost = () => {
         <Comment />
         <Like />
       </Container>
+      <div>
+        <img src={image} />
+      </div>
     </ErrorBoundary>
   );
 };
