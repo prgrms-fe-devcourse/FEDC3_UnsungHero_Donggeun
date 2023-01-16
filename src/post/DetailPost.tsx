@@ -11,12 +11,25 @@ import { useToken } from '../contexts/TokenProvider';
 const END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 const PROFIE_IMG_URL = 'https://ifh.cc/g/35RDD6.png';
 
+interface Iauthor {
+  fullName: string;
+  image: string;
+  createAt: string;
+  _id: string;
+}
+
 const DetailPost = () => {
   const navigate = useNavigate();
 
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [image, setImage] = useState('');
+  const [author, setAuthor] = useState<Iauthor>({
+    fullName: '',
+    image: PROFIE_IMG_URL,
+    createAt: '',
+    _id: '',
+  });
 
   const { postId } = useParams();
 
@@ -34,7 +47,19 @@ const DetailPost = () => {
       setTitle(post.title);
       setContent(post.content);
 
-      setImage(data.image || '');
+      const author = data?.author;
+      const fullName = author.fullName;
+      const image = author.image;
+      const _id = author._id;
+
+      const createAt = data.createdAt;
+      setAuthor({
+        fullName: fullName,
+        image: image ?? PROFIE_IMG_URL,
+        createAt: createAt,
+        _id: _id,
+      });
+      setImage(data.image as string);
     }
   }, [data]);
 
@@ -45,7 +70,13 @@ const DetailPost = () => {
   return (
     <ErrorBoundary>
       <Container>
-        <H1>제목: {title}</H1>
+        <h1>{title}</h1>
+        <p>작성일: {author.createAt}</p>
+        <Div />
+        <Author onClick={() => navigate(`/user/${author._id}`)}>
+          <p>작성자: {author.fullName}</p>
+          <ProfileImg src={author.image} />
+        </Author>
         <Div />
         <Textarea value={content} disabled rows={10} cols={100} />
         <Div />
@@ -71,7 +102,9 @@ const Container = styled.div`
   box-shadow: 12px 12px 2px 1px rgba(216, 216, 235, 0.2);
 `;
 
-const H1 = styled.h1``;
+const Author = styled.div`
+  background-color: #e6dada;
+`;
 
 const Div = styled.div`
   width: 98%;
@@ -96,6 +129,11 @@ const Button = styled.button`
   border-radius: 5%;
   background-color: #52d2a4;
   color: #ffffff;
+`;
+
+const ProfileImg = styled.img`
+  border-radius: 50%;
+  width: 50px;
 `;
 
 export default DetailPost;
