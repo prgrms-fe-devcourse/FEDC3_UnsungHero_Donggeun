@@ -61,7 +61,9 @@ const UpdatePost = () => {
     }
   }, [data]);
 
-  const handleUpdatePost = () => {
+  const handleUpdatePost = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
     const postToUpdate = {
       title: title,
       content: content,
@@ -114,22 +116,84 @@ const UpdatePost = () => {
   };
 
   return (
-    <Container>
-      <h1>Update Post</h1>
-      <input value={title} onChange={(e) => handleTitleOnChnage(e)} />
-      <br />
-      <textarea
+    <Form onSubmit={(e) => handleUpdatePost(e)}>
+      <TitleInput value={title} onChange={(e) => handleTitleOnChnage(e)} />
+      <Div />
+      <Textarea
         onChange={(e) => handleContentOnChnage(e)}
         rows={10}
         cols={100}
         value={content}
         placeholder='내용'
       />
-      <br />
-      <button onClick={handleUpdatePost}>내용 수정</button>
-      <button onClick={handleDeletePost}>글 삭제</button>
-    </Container>
+      <Div />
+      <Button type='submit'>내용 수정</Button>
+      <Button onClick={handleDeletePost} backgroundColor={'red'}>
+        글 삭제
+      </Button>
+    </Form>
   );
 };
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  margin: 5rem;
+  padding: 1rem;
+  max-width: 50%;
+  border: solid 1px #c4c4c4;
+  border-radius: 3%;
+  box-shadow: 12px 12px 2px 1px rgba(216, 216, 235, 0.2);
+`;
+
+const TitleInput = styled.input`
+  border: none;
+  font-size: 20px;
+  &:focus {
+    background-color: #fafafa;
+    outline: none;
+  }
+`;
+
+const Div = styled.div`
+  width: 98%;
+  border: solid #c4c4c4 1px;
+  margin: 1rem 0;
+  justify-content: center;
+`;
+
+const Textarea = styled.textarea`
+  resize: none;
+  border: none;
+  font-size: 16px;
+  &:focus {
+    background-color: #fafafa;
+    outline: none;
+  }
+`;
+
+const ImageInput = styled.input`
+  padding: 0.5rem;
+  background-color: #fafafa;
+  border-radius: 3%;
+  cursor: pointer;
+  &::file-selector-button {
+    cursor: pointer;
+    border: none;
+    /* background-color: #52d2a4; */
+  }
+`;
+
+const Button = styled.button<{ backgroundColor?: string }>`
+  width: 200px;
+  align-self: end;
+  margin: 0.5rem;
+  padding: 0.5rem;
+  background-color: ${(props) => (props.backgroundColor ? props.backgroundColor : '#52d2a4')};
+  color: #ffffff;
+  border: none;
+  border-radius: 5%;
+  cursor: pointer;
+`;
 
 export default UpdatePost;

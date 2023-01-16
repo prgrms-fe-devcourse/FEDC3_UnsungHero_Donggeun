@@ -88,13 +88,14 @@ const Textarea = styled.textarea`
   }
 `;
 
-const Button = styled.button`
+const Button = styled.button<{ backgroundColor?: string }>`
   padding: 0.5rem;
   align-self: end;
   border: none;
   border-radius: 5%;
   background-color: #52d2a4;
   color: #ffffff;
+  cursor: pointer;
 `;
 
 export default DetailPost;

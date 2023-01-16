@@ -27,8 +27,6 @@ const Header = () => {
             <>
               <NotificationStatus />
               <button onClick={() => handleMovePage('notifications')}>알림</button>
-              <Logout />
-
               <button onClick={() => handleMovePage('user', id)}>사용자</button>
               <Logout />
             </>

@@ -152,13 +152,6 @@ const Textarea = styled.textarea`
   }
 `;
 
-const Label = styled.label`
-  color: #ffffff;
-  padding: 0.5rem;
-  background-color: #52d2a4;
-  border-radius: 5%;
-`;
-
 const ImageInput = styled.input`
   padding: 0.5rem;
   background-color: #fafafa;
