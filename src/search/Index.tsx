@@ -1,5 +1,6 @@
 import SearchBox from './SearchBox';
 import PostListContainer from './PostListContainer';
+import MostLikesPosts from './MostLikesPosts';
 import { useState, useEffect } from 'react';
 import ErrorBoundary from '../api/ErrorBoundary';
 import axios from 'axios';
@@ -42,6 +43,7 @@ const Search = () => {
 
   return (
     <ErrorBoundary>
+      <MostLikesPosts postsInfo={postsInfo} />
       <SearchBox
         setSelectedSearchOption={setSelectedSearchOption}
         setInputSearchValue={setInputSearchValue}
