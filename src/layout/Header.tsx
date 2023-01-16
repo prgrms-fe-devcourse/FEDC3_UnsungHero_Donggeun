@@ -4,9 +4,13 @@ import { Logout } from '../auth';
 import { useUserId } from '../contexts/TokenProvider';
 import NotificationStatus from '../notification/NotificationStatus';
 import { IUserId } from '../types/useId';
+import { useToken } from '../contexts/TokenProvider';
+import { Logout } from '../auth';
 
 const Header = () => {
-  const userLogin = localStorage.getItem('token');
+  const tokenObject = useToken();
+  const userLogin = tokenObject?.token;
+
   const userIdContext: IUserId | null = useUserId();
   const id = userIdContext?.userId;
   const navigate = useNavigate();
@@ -27,6 +31,7 @@ const Header = () => {
               <Logout />
 
               <button onClick={() => handleMovePage('user', id)}>사용자</button>
+              <Logout />
             </>
           ) : (
             <>
