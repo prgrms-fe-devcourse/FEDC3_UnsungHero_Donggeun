@@ -24,6 +24,8 @@ const Search = () => {
       getPostsList();
       setSelectedSearchOption('');
       setInputSearchValue('');
+    } else {
+      getEntirePostsList();
     }
   }, [currentChannelId]);
 
@@ -43,7 +45,7 @@ const Search = () => {
 
   return (
     <ErrorBoundary>
-      <MostLikesPosts postsInfo={postsInfo} />
+      <MostLikesPosts postsInfo={postsInfo} currentChannelId={currentChannelId} />
       <SearchBox
         setSelectedSearchOption={setSelectedSearchOption}
         setInputSearchValue={setInputSearchValue}

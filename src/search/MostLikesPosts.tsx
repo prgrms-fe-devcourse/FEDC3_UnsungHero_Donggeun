@@ -19,9 +19,10 @@ interface IpostsInfo {
 
 interface IMostLikesPostsProps {
   postsInfo: IpostsInfo[];
+  currentChannelId: string | undefined;
 }
 
-const MostLikesPosts = ({ postsInfo }: IMostLikesPostsProps) => {
+const MostLikesPosts = ({ postsInfo, currentChannelId }: IMostLikesPostsProps) => {
   const navigatePost = useNavigate();
 
   const filterMostLikesPosts = () => {
@@ -43,9 +44,27 @@ const MostLikesPosts = ({ postsInfo }: IMostLikesPostsProps) => {
     return filteredMostLikesPosts;
   };
 
+  const pickMostLikesPostsTitle = () => {
+    let MostLikesPostsTitle = '';
+    switch (currentChannelId) {
+      case '63b5b7f5a87de522e8646d65':
+        MostLikesPostsTitle = '낚시 채널 베스트 공감';
+        break;
+      case '63b5b825a87de522e8646d6f':
+        MostLikesPostsTitle = '골프 채널 베스트 공감';
+        break;
+      case '63bbe845400746566c234d41':
+        MostLikesPostsTitle = '바둑 채널 베스트 공감';
+        break;
+      default:
+        MostLikesPostsTitle = '전체 채널 베스트 공감';
+    }
+    return <h2>{MostLikesPostsTitle}</h2>;
+  };
+
   return (
     <div>
-      <h2>베스트 공감 글</h2>
+      {pickMostLikesPostsTitle()}
       <ul>
         {filterMostLikesPosts().map((filteredPost) => {
           const { title, _id, likes, createdAt } = filteredPost;
