@@ -1,5 +1,5 @@
 import { IsJsonString } from './isJsonString';
-
+import { useNavigate } from 'react-router-dom';
 interface Ilikes {
   _id: string;
 }
@@ -22,6 +22,8 @@ interface IMostLikesPostsProps {
 }
 
 const MostLikesPosts = ({ postsInfo }: IMostLikesPostsProps) => {
+  const navigatePost = useNavigate();
+
   const filterMostLikesPosts = () => {
     const PostsInfo = [...postsInfo];
     const filteredMostLikesPosts = PostsInfo.sort((a, b) => {
@@ -50,7 +52,7 @@ const MostLikesPosts = ({ postsInfo }: IMostLikesPostsProps) => {
           const postTitle = IsJsonString(title) ? JSON.parse(title).title : title;
           const postContent = IsJsonString(title) ? JSON.parse(title).content : ' ';
           return (
-            <li>
+            <li key={_id} onClick={() => navigatePost(`/post/${_id}`)}>
               <div>제목: {postTitle}</div>
               <div>공감수: {likes.length}</div>
               <div>닉네임: {fullName}</div>
