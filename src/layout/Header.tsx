@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { Logout } from '../auth';
 import { useUserId } from '../contexts/TokenProvider';
 import { IUserId } from '../types/useId';
 
@@ -22,6 +23,7 @@ const Header = () => {
             <>
               <button onClick={() => handleMovePage('notifications')}>알림</button>
               <button onClick={() => handleMovePage('user', id)}>사용자</button>
+              <Logout />
             </>
           ) : (
             <>
