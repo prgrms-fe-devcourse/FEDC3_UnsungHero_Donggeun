@@ -5,7 +5,6 @@ import { useUserId } from '../contexts/TokenProvider';
 import NotificationStatus from '../notification/NotificationStatus';
 import { IUserId } from '../types/useId';
 import { useToken } from '../contexts/TokenProvider';
-import { Logout } from '../auth';
 
 const Header = () => {
   const tokenObject = useToken();
