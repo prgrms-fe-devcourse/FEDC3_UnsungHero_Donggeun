@@ -41,10 +41,11 @@ const DetailPost = () => {
   return (
     <ErrorBoundary>
       <Container>
-        <h1>제목: {title}</h1>
-        <textarea value={content} disabled rows={10} cols={100} />
-        <br />
-        {token ? <button onClick={handleOnClickToUpdatePage}>내용 수정 페이지로 가기</button> : null}
+        <H1>제목: {title}</H1>
+        <Div />
+        <Textarea value={content} disabled rows={10} cols={100} />
+        <Div />
+        {token ? <Button onClick={handleOnClickToUpdatePage}>내용 수정 페이지로 가기</Button> : null}
         <Comment />
         <Like />
       </Container>
@@ -53,9 +54,41 @@ const DetailPost = () => {
 };
 
 const Container = styled.div`
-  max-width: 50%;
   display: flex;
   flex-direction: column;
+  border: solid 1px #c4c4c4;
+  border-radius: 3%;
+  margin: 5rem;
+  padding: 1rem;
+  max-width: 50%;
+  box-shadow: 12px 12px 2px 1px rgba(216, 216, 235, 0.2);
+`;
+
+const H1 = styled.h1``;
+
+const Div = styled.div`
+  width: 98%;
+  border: solid #c4c4c4 1px;
+  margin: 1rem 0;
+  justify-content: center;
+`;
+
+const Textarea = styled.textarea`
+  resize: none;
+  border: none;
+  &:focus {
+    background-color: #f0f0f0;
+    outline: none;
+  }
+`;
+
+const Button = styled.button`
+  padding: 0.5rem;
+  align-self: end;
+  border: none;
+  border-radius: 5%;
+  background-color: #52d2a4;
+  color: #ffffff;
 `;
 
 export default DetailPost;

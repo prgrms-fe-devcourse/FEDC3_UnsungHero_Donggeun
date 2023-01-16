@@ -88,51 +88,101 @@ function CreatePost() {
 
   return (
     <Container>
-      <Title>글 작성 페이지</Title>
-      <input
+      <TitleInput
         type='text'
         size={99}
         onChange={(e) => handleChangeTitle(e)}
         value={initTitle}
-        placeholder='제목을 입력하세요'
+        placeholder='제목을 입력하세요.'
       />
-      <br />
+      <Div />
       <Textarea
-        rows={10}
+        rows={20}
         cols={100}
         onChange={handleChangeContent}
-        placeholder='내용을 입력하세요'
+        placeholder='내용을 입력하세요.'
         value={initContent}
       />
-      <br />
-      <input
+      <Div />
+      {/* <Label className='image-fill-upload-button' htmlFor='Image-file'>
+        이미지 업로드
+      </Label> */}
+      <ImageInput
+        id='Image-file'
         type='file'
         accept='image/jpg,impge/png,image/jpeg,image/gif'
         onChange={handleOnClickUploadImage}
       />
+      <Div />
       <Button onClick={handleOnClickCreatePost}>저장</Button>
     </Container>
   );
 }
 
-const Title = styled.h1``;
-
 const Container = styled.div`
-  margin: 5rem;
-  max-width: 50%;
   display: flex;
   flex-direction: column;
-  border: solid 1px black;
+  margin: 5rem;
+  padding: 1rem;
+  max-width: 50%;
+  border: solid 1px #c4c4c4;
+  border-radius: 3%;
+  box-shadow: 12px 12px 2px 1px rgba(216, 216, 235, 0.2);
+`;
+
+const TitleInput = styled.input`
+  border: none;
+  font-size: 20px;
+  &:focus {
+    background-color: #fafafa;
+    outline: none;
+  }
+`;
+
+const Div = styled.div`
+  width: 98%;
+  border: solid #c4c4c4 1px;
+  margin: 1rem 0;
+  justify-content: center;
 `;
 
 const Textarea = styled.textarea`
   resize: none;
   border: none;
+  font-size: 16px;
+  &:focus {
+    background-color: #fafafa;
+    outline: none;
+  }
+`;
+
+const Label = styled.label`
+  color: #ffffff;
+  padding: 0.5rem;
+  background-color: #52d2a4;
+  border-radius: 5%;
+`;
+
+const ImageInput = styled.input`
+  padding: 0.5rem;
+  background-color: #fafafa;
+  border-radius: 3%;
+  cursor: pointer;
+  &::file-selector-button {
+    cursor: pointer;
+    border: none;
+    /* background-color: #52d2a4; */
+  }
 `;
 
 const Button = styled.button`
+  margin: 0.5rem;
+  padding: 0.5rem;
+  width: 200px;
   align-self: end;
-  width: 10%;
+  border: none;
+  border-radius: 5%;
+
   background-color: #52d2a4;
   color: #ffffff;
 `;
