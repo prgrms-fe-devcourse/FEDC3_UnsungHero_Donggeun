@@ -57,7 +57,7 @@ const Search = () => {
         postsInfo={postsInfo}
         selectedSearchOption={selectedSearchOption}
         inputSearchValue={inputSearchValue}
-        presentChannelId={currentChannelId}
+        currentChannelId={currentChannelId}
       />
     </ErrorBoundary>
   );

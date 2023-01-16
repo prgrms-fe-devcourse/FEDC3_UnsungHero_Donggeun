@@ -1,5 +1,6 @@
 import { IsJsonString } from './isJsonString';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 interface Ilikes {
   _id: string;
 }
@@ -7,6 +8,7 @@ interface Ilikes {
 interface Iauthor {
   fullName: string;
   username: string;
+  image: string | undefined;
 }
 
 interface IpostsInfo {
@@ -44,7 +46,7 @@ const MostLikesPosts = ({ postsInfo, currentChannelId }: IMostLikesPostsProps) =
     return filteredMostLikesPosts;
   };
 
-  const pickMostLikesPostsTitle = () => {
+  const selectMostLikesPostsTitle = () => {
     let MostLikesPostsTitle = '';
     switch (currentChannelId) {
       case '63b5b7f5a87de522e8646d65':
@@ -57,25 +59,32 @@ const MostLikesPosts = ({ postsInfo, currentChannelId }: IMostLikesPostsProps) =
         MostLikesPostsTitle = '바둑 채널 베스트 공감';
         break;
       default:
-        MostLikesPostsTitle = '전체 채널 베스트 공감';
+        MostLikesPostsTitle = '전체 베스트 공감';
     }
     return <h2>{MostLikesPostsTitle}</h2>;
   };
 
   return (
     <div>
-      {pickMostLikesPostsTitle()}
+      {selectMostLikesPostsTitle()}
       <ul>
         {filterMostLikesPosts().map((filteredPost) => {
           const { title, _id, likes, createdAt } = filteredPost;
-          const { fullName } = filteredPost.author; //fullName이 아니라 userName이 닉네임인 경우 변경해야함
+          const { fullName, image } = filteredPost.author; //fullName이 아니라 userName이 닉네임인 경우 변경해야함
           const postTitle = IsJsonString(title) ? JSON.parse(title).title : title;
           const postContent = IsJsonString(title) ? JSON.parse(title).content : ' ';
           return (
             <li key={_id} onClick={() => navigatePost(`/post/${_id}`)}>
               <div>제목: {postTitle}</div>
               <div>공감수: {likes.length}</div>
-              <div>닉네임: {fullName}</div>
+              <div>
+                {image === undefined ? (
+                  <ProfileImg src='https://ifh.cc/g/35RDD6.png' alt='기본 프로필 이미지' />
+                ) : (
+                  <ProfileImg src={image} alt='프로필 이미지' />
+                )}
+                닉네임: {fullName}
+              </div>
               <div>작성일: {createdAt}</div>
               <div>내용: {postContent}</div>
             </li>
@@ -87,3 +96,9 @@ const MostLikesPosts = ({ postsInfo, currentChannelId }: IMostLikesPostsProps) =
 };
 
 export default MostLikesPosts;
+
+const ProfileImg = styled.img`
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+`;

@@ -6,7 +6,7 @@ interface IpaginationProps {
   page: number;
   totalPosts: number;
   setPage: (value: number) => void;
-  presentChannelId: string | undefined;
+  currentChannelId: string | undefined;
 }
 
 interface IButtonStyle {
@@ -14,12 +14,12 @@ interface IButtonStyle {
   i: number;
 }
 
-const Pagination = ({ totalPosts, limit, page, setPage, presentChannelId }: IpaginationProps) => {
+const Pagination = ({ totalPosts, limit, page, setPage, currentChannelId }: IpaginationProps) => {
   const totalPages = Math.ceil(totalPosts / limit);
 
   useEffect(() => {
     setPage(1);
-  }, [presentChannelId]);
+  }, [currentChannelId]);
 
   return (
     <>
