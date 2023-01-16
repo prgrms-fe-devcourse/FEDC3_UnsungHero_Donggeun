@@ -9,6 +9,7 @@ import { IPost } from '../types/post';
 import { useToken } from '../contexts/TokenProvider';
 
 const END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
+const PROFIE_IMG_URL = 'https://ifh.cc/g/35RDD6.png';
 
 const DetailPost = () => {
   const navigate = useNavigate();

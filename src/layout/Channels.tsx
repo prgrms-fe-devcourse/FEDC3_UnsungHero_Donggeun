@@ -39,22 +39,22 @@ const Channels = () => {
 
 export default Channels;
 
-export const Sidebar = styled.nav`
-  background-color: #e8eaf6;
+const Sidebar = styled.nav`
+  background-color: ${({ theme }) => theme.colors.white};
+  border: 1px solid ${({ theme }) => theme.colors.lightGray};
   position: fixed;
-  margin-top: 64px;
-  top: 0;
-  left: 0;
+  border-radius: 5px;
   display: flex;
   flex-direction: column;
-  width: 185px;
-  height: 100%;
+  width: 240px;
+  margin-top: 123px;
+  height: 100vh;
 `;
 
-export const ChannelTitle = styled.div`
+const ChannelTitle = styled.div`
   margin-bottom: 20px;
 `;
 
-export const Channel = styled.div`
+const Channel = styled.div`
   margin-bottom: 20px;
 `;
