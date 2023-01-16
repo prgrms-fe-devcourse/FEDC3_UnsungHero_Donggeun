@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useToken } from '../contexts/TokenProvider';
 
 const END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 
@@ -17,25 +18,44 @@ const UpdatePost = () => {
   const { postId } = useParams();
   const navigate = useNavigate();
 
-  const token = localStorage.getItem('TOKEN_KEY');
+  const tokenContextObj = useToken();
+  const token = tokenContextObj?.token;
 
   const handleTitleOnChnage = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
+    localStorage.setItem('tempTitleInUpdatePost', e.target.value);
   };
   const handleContentOnChnage = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
+    localStorage.setItem('tempContentInUpdatePost', e.target.value);
   };
 
   const fetchPost = async () => {
-    const result = await axios
-      .get(`${END_POINT}/posts/${postId}`)
-      .then((res) => res.data)
-      .catch((e) => {
-        console.log(e);
-      });
-    const post = JSON.parse(result.title);
-    setTitle(post.title);
-    setContent(post.content);
+    const tempTitle = localStorage.getItem('tempTitleInUpdatePost') || '';
+    const tempContent = localStorage.getItem('tempContentInUpdatePost') || '';
+
+    if (!tempTitle && !tempContent) {
+      console.log('패치함');
+      const result = await axios
+        .get(`${END_POINT}/posts/${postId}`)
+        .then((res) => res.data)
+        .catch((e) => {
+          console.log(e);
+        });
+      const post = JSON.parse(result.title);
+
+      setTitle(post.title);
+      setContent(post.content);
+      localStorage.setItem('tempTitleInUpdatePost', post.title);
+      localStorage.setItem('tempContentInUpdatePost', post.content);
+    }
+
+    if (tempTitle) {
+      setTitle(tempTitle);
+    }
+    if (tempContent) {
+      setContent(tempContent);
+    }
   };
 
   useEffect(() => {
@@ -56,12 +76,17 @@ const UpdatePost = () => {
       channelId: '63b5b7f5a87de522e8646d65', // 첫 번 쨰 채널
     };
 
-    axios.put(`${END_POINT}/posts/update`, post, {
-      headers: {
-        Authorization: `bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    });
+    axios
+      .put(`${END_POINT}/posts/update`, post, {
+        headers: {
+          Authorization: `bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(() => {
+        localStorage.removeItem('tempTitleInUpdatePost');
+        localStorage.removeItem('tempContentInUpdatePost');
+      });
 
     navigate(`/post/${postId}`);
   };

@@ -1,8 +1,8 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-
+import { useToken } from '../contexts/TokenProvider';
 const END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 
 const Container = styled.div`
@@ -12,19 +12,30 @@ const Container = styled.div`
 `;
 
 function CreatePost() {
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
+  const [title, setTitle] = useState<string>('');
+  const [content, setContent] = useState<string>('');
   const [image, setImage] = useState('');
 
   const { chnnalId } = useParams();
   const navigate = useNavigate();
-  const token = localStorage.getItem('TOKEN_KEY');
+
+  const tokenContextObj = useToken();
+  const token = tokenContextObj?.token;
+
+  const initTitle = localStorage.getItem('tempTitleInCreatePost') || '';
+  const initContent = localStorage.getItem('tempContentInCreatePost') || '';
+  useEffect(() => {
+    setTitle(initTitle);
+    setContent(initContent);
+  }, []);
 
   const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
+    localStorage.setItem('tempTitleInCreatePost', e.target.value);
   };
   const handleChangeContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
+    localStorage.setItem('tempContentInCreatePost', e.target.value);
   };
 
   const handleOnClickCreatePost = async () => {
@@ -50,6 +61,9 @@ function CreatePost() {
         },
       })
       .then((res) => {
+        localStorage.removeItem('tempTitleInCreatePost');
+        localStorage.removeItem('tempContentInCreatePost');
+
         const { _id } = res.data;
         navigate(`/post/${_id}`);
       })
@@ -65,9 +79,21 @@ function CreatePost() {
   return (
     <Container>
       <h1>글 작성 페이지</h1>
-      <input type='text' size={99} onChange={(e) => handleChangeTitle(e)} placeholder='제목을 입력하세요' />
+      <input
+        type='text'
+        size={99}
+        onChange={handleChangeTitle}
+        value={initTitle}
+        placeholder='제목을 입력하세요'
+      />
       <br />
-      <textarea rows={10} cols={100} onChange={handleChangeContent} placeholder='내용을 입력하세요' />
+      <textarea
+        rows={10}
+        cols={100}
+        onChange={handleChangeContent}
+        placeholder='내용을 입력하세요'
+        value={initContent}
+      />
       <br />
       <input
         type='file'
