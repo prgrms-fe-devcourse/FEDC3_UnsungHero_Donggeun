@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { Logout } from '../auth';
 import { useUserId } from '../contexts/TokenProvider';
 import NotificationStatus from '../notification/NotificationStatus';
 import { IUserId } from '../types/useId';
