@@ -1,12 +1,45 @@
 import { useNavigate } from 'react-router-dom';
 import { INotification } from '../types/notification';
 
-const NotificationListItem = ({ _id, seen, comment, like, author, post: postId }: INotification) => {
+const NotificationListItem = ({ _id, seen, comment, like, follow, author, post: postId }: INotification) => {
   const navigate = useNavigate();
+
+  const commentLikeFollowCheeck = like ?? comment ?? follow;
+
+  const renderText = (author: string | undefined) => {
+    if (!commentLikeFollowCheeck) return '유효하지 않은 알람입니다.';
+    if (comment) return author + '님이 댓글을 남기셨습니다.';
+    if (like) return author + '님이 공감을 하셨습니다.';
+    if (follow) return author + '님이 팔로우 하셨습니다.';
+  };
+
+  const renderTitle = () => {
+    const title = '글 제목 => ';
+    if (!commentLikeFollowCheeck) return;
+
+    if (comment) {
+      return title + JSON.parse(comment?.post.title).title;
+    }
+
+    if (like) {
+      return title + JSON.parse(like?.post.title as string).title;
+    }
+  };
+
+  const navigatePage = () => {
+    if (!commentLikeFollowCheeck) return;
+
+    if (comment || like) {
+      navigate(`/post/${postId}`);
+      return;
+    }
+
+    navigate(`/user/${author?._id}`);
+  };
 
   return (
     <div
-      onClick={() => navigate(`/post/${postId}`)}
+      onClick={navigatePage}
       style={{
         width: '200px',
         height: '200px',
@@ -16,13 +49,8 @@ const NotificationListItem = ({ _id, seen, comment, like, author, post: postId }
       }}
       key={_id}
     >
-      {seen ? <div>----확인 한 댓글----</div> : <div>----확인 전 댓글----</div>}
-      {
-        <div>
-          {author?.fullName}님이 {comment ? '댓글을 남기셨습니다' : '공감을 하셨습니다'}
-        </div>
-      }
-      {<div>글제목 : {comment ? comment?.post.title : like?.post.title}</div>}
+      {<div>{renderText(author?.fullName)}</div>}
+      {<div>{renderTitle()}</div>}
     </div>
   );
 };

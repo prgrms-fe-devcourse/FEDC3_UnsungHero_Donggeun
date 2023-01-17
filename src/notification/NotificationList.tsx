@@ -66,13 +66,14 @@ const NotificationList = () => {
         모든 알림 확인
       </button>
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-        {notificationList?.map(({ _id, seen: isCheck, comment, like, author, post }) => (
+        {notificationList?.map(({ _id, seen: isCheck, comment, like, follow, author, post }) => (
           <NotificationlistItem
             key={_id}
             _id={_id}
             seen={isCheck}
             comment={comment}
             like={like}
+            follow={follow}
             author={author}
             post={post}
           />
