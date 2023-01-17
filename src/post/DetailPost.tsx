@@ -43,7 +43,7 @@ const DetailPost = () => {
   const userObject = useUserId();
   const userId = userObject?.userId;
 
-  const { data } = useAxios<IPost>({
+  const { data, fetchData } = useAxios<IPost>({
     url: `${END_POINT}/posts/${postId}`,
     method: 'get',
   });
@@ -91,10 +91,11 @@ const DetailPost = () => {
         <Div />
         {image ? <ContentImage src={image} alt='이미지!' /> : null}
         <Textarea value={content} disabled rows={10} cols={100} />
+        <Like likeList={likes} userId={userId || ''} postId={postId || ''} />
         <Div />
         {token ? <Button onClick={handleOnClickToUpdatePage}>내용 수정 페이지로 가기</Button> : null}
+        <Div />
         <Comment commentList={comments} postId={postId || ''} />
-        <Like likeList={likes} userId={userId || ''} postId={postId || ''} />
       </Container>
     </ErrorBoundary>
   );
@@ -104,8 +105,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   border: solid 1px #c4c4c4;
-  border-radius: 3%;
-  /* margin: 5rem; */
   padding: 1rem;
   width: 725px;
   box-shadow: 12px 12px 2px 1px rgba(216, 216, 235, 0.2);
