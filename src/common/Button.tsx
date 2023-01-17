@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-interface IProps {
+interface IProps extends React.HTMLAttributes<HTMLElement> {
   text: string;
   color: string;
   onClick: () => void;
@@ -10,7 +10,6 @@ interface IProps {
 
 interface IButton {
   color: string;
-  onClick: () => void;
   width: number;
   height: number;
 }
@@ -19,9 +18,9 @@ interface IBtnType {
   default: string;
   white: string;
 }
-const Button = ({ text, color, onClick, width, height }: IProps) => {
+const Button = ({ text, color, onClick, width, height, ...props }: IProps) => {
   return (
-    <Btn onClick={onClick} color={color} width={width} height={height}>
+    <Btn onClick={onClick} color={color} width={width} height={height} style={{ ...props.style }}>
       {text}
     </Btn>
   );
