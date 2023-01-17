@@ -2,6 +2,7 @@ import PostList from './PostList';
 
 import { useState, useEffect } from 'react';
 import { IsJsonString } from './isJsonString';
+import styled from 'styled-components';
 import { Pagination } from '../common';
 
 interface Ilikes {
@@ -35,7 +36,7 @@ const PostListContainer = ({
 }: IpostListContainerProps) => {
   const [page, setPage] = useState(1);
   const [checkedSorting, setCheckedSorting] = useState(true);
-  const limit = 10;
+  const limit = 6;
   const offset = (page - 1) * limit;
 
   useEffect(() => {
@@ -90,14 +91,15 @@ const PostListContainer = ({
 
   return (
     <>
-      <div>
+      <ButtonContainer>
         <button onClick={handleClickRecent} disabled={checkedSorting}>
           최신순
         </button>
+        <div>{' | '}</div>
         <button onClick={handleClickSympathy} disabled={!checkedSorting}>
           공감순
         </button>
-      </div>
+      </ButtonContainer>
       <PostList
         filteredPostsInfo={dividePosts(filterPosts())}
         selectedSearchOption={selectedSearchOption}
@@ -116,3 +118,22 @@ const PostListContainer = ({
 };
 
 export default PostListContainer;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  width: 725px;
+  margin: 0 0 10px 40px;
+
+  button {
+    background: inherit;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+    overflow: visible;
+    cursor: pointer;
+    border-left: none;
+    font-size: 17px;
+  }
+`;
