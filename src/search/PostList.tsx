@@ -97,11 +97,6 @@ const PostList = ({
                 )}
                 <div className='postTitleContentContainer'>
                   <div className='postTitleDotContainer'>
-                    <img
-                      className='redDot'
-                      src='https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FlpwA9%2FbtrWw9zB4Ru%2FUaErr7skbrtVEXLCzMTKR1%2Fimg.png'
-                      alt='빨간 점'
-                    />
                     <div className='postTitle'>
                       {selectedSearchOption === '제목' || selectedSearchOption === '제목+내용'
                         ? highlightIncludedText(postTitle, inputSearchValue)
@@ -152,37 +147,40 @@ export default PostList;
 const WholeWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  margin-right: 2.5rem;
 
   .postListTitle {
-    width: 725px;
-    height: 50px;
-    padding: 15px 0 0 20px;
-    margin: 0 0 3px 40px;
-    font-size: 20px;
-    box-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.6);
-    border-radius: 3px;
+    width: 45.3125rem;
+    height: 3.125rem;
+    padding: 0.9375rem 0 0 1.25rem;
+    margin: 0 0 0.1875rem 0rem;
+    font-size: 1.25rem;
+    box-shadow: 0 0.0625rem 0.0938rem rgba(0, 0, 0, 0.6);
+    border-radius: 0.1875rem;
     background-color: #52d2a4;
   }
 `;
 
 const PostListWrapper = styled.ul`
+  padding: 0;
+  background-color: #fafafa;
   display: flex;
   flex-direction: column;
-  margin-top: 0px;
-  background-color: #ffffff;
+  margin-top: 0rem;
 `;
 
 const PostWrapper = styled.li`
   display: flex;
   flex-direction: column;
-  border-radius: 3px;
-  padding: 16px 20px;
-  gap: 0px;
+  border-radius: 0.1875rem;
+  padding: 1rem 1.25rem;
+  gap: 0rem;
   cursor: pointer;
-  width: 725px;
-  height: 200px;
-  margin-bottom: 15px;
-  box-shadow: 0 1px 1.5px rgba(0, 0, 0, 0.6);
+  width: 45.3125rem;
+  height: 12.5rem;
+  margin-bottom: 0.9375rem;
+  background-color: white;
+  box-shadow: 0 0.0625rem 0.0938rem rgba(0, 0, 0, 0.6);
 `;
 
 const PostTopWrapper = styled.div`
@@ -195,17 +193,20 @@ const PostTopWrapper = styled.div`
       display: flex;
       .redDot {
         align-self: center;
-        width: 4px;
-        height: 4px;
-        margin: 0 0 8px 20px;
+        width: 0.25rem;
+        height: 0.25rem;
+        margin: 0 0 0.5rem 1.25rem;
       }
 
       .postTitle {
-        margin: 10px 10px 10px 0px;
-        font-size: 18px;
+        margin: 0.625rem 0.625rem 0.625rem 1.875rem;
+        font-size: 1.125rem;
         font-weight: 500;
-        padding-left: 5px;
+        padding-left: 0.3125rem;
+        width: 35.625rem;
+        text-overflow: ellipsis;
         white-space: nowrap;
+        overflow: hidden;
 
         &:hover {
           text-decoration: underline;
@@ -215,40 +216,43 @@ const PostTopWrapper = styled.div`
   }
 
   .postContent {
-    margin: 8px 8px 8px 17px;
-    font-size: 15px;
+    margin: 0.5rem 0.5rem 0.5rem 1.375rem;
+    font-size: 0.9375rem;
     color: gray;
-    padding-left: 13px;
+    padding-left: 0.8125rem;
+    width: 36.25rem;
+    text-overflow: ellipsis;
     white-space: nowrap;
+    overflow: hidden;
   }
 `;
 
 const PostMiddleWrapper = styled.div`
   width: 100%;
-  height: 70px;
-  margin-bottom: 10px;
-  border-bottom: 1px solid #b1b1b1;
-  font-size: 15px;
+  height: 4.375rem;
+  margin-bottom: 0.625rem;
+  border-bottom: 0.0625rem solid #dce1e8;
+  font-size: 0.9375rem;
 
   .postAuthor {
     display: flex;
     justify-content: center;
     font-weight: 500;
-    margin-bottom: 20px;
-    width: 80px;
+    margin-bottom: 1.25rem;
+    width: 5rem;
   }
 
   .includedChannel {
     display: flex;
     justify-content: center;
-    width: 80px;
-    margin: 10px 0 25px 0px;
+    width: 5rem;
+    margin: 0.625rem 0 1.5625rem 0rem;
     color: #939393;
-    font-size: 12px;
-    line-height: 19px;
+    font-size: 0.75rem;
+    line-height: 1.1875rem;
     font-weight: 900;
-    padding: 4px 8px;
-    border-radius: 6px;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.375rem;
     color: rgb(48, 176, 153);
     background: rgb(245, 245, 245);
   }
@@ -263,21 +267,23 @@ const PostBottomWrapper = styled.div`
     width: 87%;
 
     .likesImg {
-      padding-top: 1px;
-      width: 17px;
-      height: 17px;
+      padding-top: 0.0625rem;
+      width: 1.0625rem;
+      height: 1.0625rem;
     }
     .commentsImg {
-      margin-left: 10px;
-      width: 18px;
-      height: 18px;
+      margin-left: 0.625rem;
+      width: 1.125rem;
+      height: 1.125rem;
     }
     .likesNumber {
-      margin-left: 2px;
+      width: 1.25rem;
+      margin-left: 0.125rem;
       color: #939393;
     }
     .commentsNumber {
-      margin-left: 2px;
+      width: 1.25rem;
+      margin-left: 0.125rem;
       color: #939393;
     }
   }
@@ -290,7 +296,7 @@ const PostBottomWrapper = styled.div`
 
 const ProfileImg = styled.img`
   border-radius: 50%;
-  margin-left: 10px;
-  width: 60px;
-  height: 60px;
+  margin-left: 0.625rem;
+  width: 3.75rem;
+  height: 3.75rem;
 `;

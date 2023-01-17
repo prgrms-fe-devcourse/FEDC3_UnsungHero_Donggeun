@@ -75,22 +75,23 @@ export default SearchBox;
 const SearchBoxForm = styled.form`
   display: flex;
   justify-content: center;
-  width: 725px;
-  margin: 40px 0 60px 40px;
+  width: 45.3125rem;
+  margin: 2.5rem 0 3.75rem 0rem;
 `;
 
 const SearchBoxSelect = styled.select`
-  width: 120px;
+  width: 7.5rem;
   padding: 0.8em 0.5em;
   font-family: inherit;
   background: url(https://farm1.staticflickr.com/379/19928272501_4ef877c265_t.jpg) no-repeat 95% 50%; /* 네이티브 화살표 대체 */
-  border: 1px solid #999;
+  border: 0.0625rem solid #999;
   color: gray;
-  border-radius: 0px;
+  border-radius: 0rem;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  box-shadow: 0 0.5px 0.5px rgba(0, 0, 0, 0.6);
+  background-color: white;
+  box-shadow: 0 0.0313rem 0.0313rem rgba(0, 0, 0, 0.6);
 
   &::-ms-expand {
     display: none;
@@ -99,15 +100,16 @@ const SearchBoxSelect = styled.select`
 
 const SearchBoxInput = styled.input`
   width: 30rem;
-  font-size: 16px;
-  padding-left: 5px;
-  border: 1px solid #999;
+  font-size: 1rem;
+  padding-left: 0.3125rem;
+  border: 0.0625rem solid #999;
   border-left: none;
   border-right: none;
-  box-shadow: 0 0.5px 0.5px rgba(0, 0, 0, 0.6);
+  background-color: white;
+  box-shadow: 0 0.0313rem 0.0313rem rgba(0, 0, 0, 0.6);
 
   &::placeholder {
-    font-size: 16px;
+    font-size: 1rem;
   }
 `;
 
@@ -119,14 +121,15 @@ const SearchBoxButton = styled.button`
   padding: 0;
   overflow: visible;
   cursor: pointer;
-  border: 1px solid #999;
+  border: 0.0625rem solid #999;
   border-left: none;
-  box-shadow: 0 0.5px 0.5px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0.0313rem 0.0313rem rgba(0, 0, 0, 0.6);
+  background-color: white;
 
   img {
-    width: 30px;
-    height: 30px;
-    margin: 0 5px;
+    width: 1.875rem;
+    height: 1.875rem;
+    margin: 0 0.3125rem;
   }
 
   &:hover {
