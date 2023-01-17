@@ -21,6 +21,8 @@ const UpdatePost = () => {
   const [channelId, setChannelId] = useState('');
   const { postId } = useParams();
   const navigate = useNavigate();
+  const [image, setImage] = useState({});
+  const [previewImage, setPreviewImage] = useState('');
 
   const tokenContextObj = useToken();
   const token = tokenContextObj?.token;
@@ -58,6 +60,8 @@ const UpdatePost = () => {
       }
 
       setChannelId(data.channel._id);
+
+      setImage(data.image as string);
     }
   }, [data]);
 
@@ -77,32 +81,22 @@ const UpdatePost = () => {
       channelId: channelId,
     };
 
-    axios
-      .put(`${END_POINT}/posts/update`, post, {
-        headers: {
-          Authorization: `bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      })
-      .then(() => {
-        localStorage.removeItem(`tempTitleInUpdatePost${postId}`);
-        localStorage.removeItem(`tempContentInUpdatePost${postId}`);
+    const formData = new FormData();
+    formData.append('postId', postId as string);
+    formData.append('title', jsonToUpdate);
+    formData.append('image', image as string);
+    formData.append('channelId', channelId as string);
 
-        navigate(`/post/${postId}`);
-      });
+    mutate({
+      url: `${END_POINT}/posts/update`,
+      method: 'put',
+      data: formData,
+    }).then(() => {
+      localStorage.removeItem('tempTitleInUpdatePost');
+      localStorage.removeItem('tempContentInUpdatePost');
 
-    // mutate({
-    //   url: `${END_POINT}/posts/update`,
-    //   method: 'post',
-    //   data: {
-    //     ...post,
-    //   },
-    // }).then(() => {
-    //   localStorage.removeItem('tempTitleInUpdatePost');
-    //   localStorage.removeItem('tempContentInUpdatePost');
-
-    //   navigate(`/post/${postId}`);
-    // });
+      navigate(`/post/${postId}`);
+    });
   };
 
   const handleDeletePost = () => {
@@ -115,10 +109,29 @@ const UpdatePost = () => {
     }).then(() => navigate(`/channel/${channelId}`));
   };
 
+  const handleOnClickUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.currentTarget.files) {
+      const file = e.currentTarget.files[0];
+
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+
+      // onload는 읽기 동작이 성공적으로 완료되었을 때 발생함.
+      reader.onload = () => {
+        // 작업 완료.
+        if (reader.readyState === 2) {
+          setImage(file);
+          setPreviewImage(reader.result as string);
+        }
+      };
+    }
+  };
+
   return (
     <Form onSubmit={(e) => handleUpdatePost(e)}>
       <TitleInput value={title} onChange={(e) => handleTitleOnChnage(e)} />
       <Div />
+      <Image src={previewImage ? previewImage : data?.image}></Image>
       <Textarea
         onChange={(e) => handleContentOnChnage(e)}
         rows={10}
@@ -127,6 +140,12 @@ const UpdatePost = () => {
         placeholder='내용'
       />
       <Div />
+      <ImageInput
+        id='Image-file'
+        type='file'
+        accept='image/jpg,impge/png,image/jpeg,image/gif'
+        onChange={handleOnClickUploadImage}
+      />
       <Button type='submit'>내용 수정</Button>
       <Button onClick={handleDeletePost} backgroundColor={'red'}>
         글 삭제
@@ -134,6 +153,8 @@ const UpdatePost = () => {
     </Form>
   );
 };
+
+const Image = styled.img``;
 
 const Form = styled.form`
   display: flex;
