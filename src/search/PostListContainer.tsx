@@ -1,8 +1,10 @@
 import PostList from './PostList';
-import Pagination from './Pagination';
+
 import { useState, useEffect } from 'react';
 import { IsJsonString } from './isJsonString';
 import styled from 'styled-components';
+import { Pagination } from '../common';
+
 
 interface Ilikes {
   _id: string;
@@ -108,7 +110,7 @@ const PostListContainer = ({
       <Pagination
         limit={limit}
         page={page}
-        totalPosts={filterPosts().length}
+        total={filterPosts().length}
         setPage={setPage}
         currentChannelId={currentChannelId}
       />

@@ -9,7 +9,7 @@ const UserIdContext = createContext<IUserId | null>(null);
 export const useToken = () => useContext(TokenContext);
 export const useUserId = () => useContext(UserIdContext);
 
-const TOKEN_KEY = 'token';
+export const TOKEN_KEY = 'token';
 const USERID_KEY = 'userId';
 
 const TokenProvider = ({ children }: { children: React.ReactNode }) => {

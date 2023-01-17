@@ -1,71 +1,41 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import useAxios from '../api/useAxios';
-import useMutation from '../api/useMutation';
 import { ILike } from '../types/like';
-import { IPost } from '../types/post';
+import { createLike, deleteLike } from './api';
 
-const tempData = {
-  baseUrl: 'http://kdt.frontend.3rd.programmers.co.kr:5006',
-  userId: '63be3977ad5c5114f90101aa',
-  token:
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjYzYmJiZjBkOGM2NWE5M2JlYmUyOWZiMiIsImVtYWlsIjoieWpAMTIzLmNvbSJ9LCJpYXQiOjE2NzMyNDg1MjV9.wHXuuSkuHKMKDbaD0weUnGJkRW9P0Ae_k74BlFMWiqY',
-};
+interface ILikeProps {
+  likeList?: ILike[];
+  userId: string;
+  postId: string;
+  // refetchPost: () => void;
+}
 
-const Like = () => {
-  const { postId } = useParams();
-
+const Like = ({ likeList, userId, postId }: ILikeProps) => {
   const [isLike, setIsLike] = useState(false);
-  const [likes, setLikes] = useState<ILike[]>([]);
-  const { data, fetchData } = useAxios<IPost>({
-    url: `${tempData.baseUrl}/posts/${postId}`,
-    method: 'get',
-  });
-  const { mutate } = useMutation();
 
-  const handleClickLike = () => {
-    isLike ? deleteLike() : createLike();
-  };
+  const handleClickLike = async () => {
+    const targetLike = likeList?.find(({ user }) => user === userId);
 
-  const createLike = async () => {
-    await mutate({
-      url: `${tempData.baseUrl}/likes/create`,
-      method: 'post',
-      data: {
-        postId: postId,
-      },
-    });
-
-    fetchData();
-  };
-
-  const deleteLike = async () => {
-    const targetLike = likes?.find(({ user }) => user === tempData.userId);
-
-    await mutate({
-      url: `${tempData.baseUrl}/likes/delete`,
-      method: 'delete',
-      data: { id: targetLike },
-    });
-
-    fetchData();
-  };
-
-  useEffect(() => {
-    setIsLike(likes?.findIndex(({ user }) => user === tempData.userId) > -1 ? true : false);
-  }, [likes]);
-
-  useEffect(() => {
-    if (data) {
-      setLikes(data.likes);
+    if (isLike && targetLike) {
+      await deleteLike(targetLike);
+    } else {
+      await createLike(postId);
     }
-  }, [data]);
+
+    // refetchPost();
+  };
+
+  useEffect(() => {
+    if (likeList) {
+      const userLikeIndex = likeList.findIndex(({ user }) => user === userId);
+      setIsLike(userLikeIndex > -1 ? true : false);
+    }
+  }, [likeList]);
 
   return (
     <>
       <div style={{ cursor: 'pointer', fontSize: '2rem' }} onClick={handleClickLike}>
         {isLike ? '❤️' : '🤍'}
-        {data?.likes.length}
+        {likeList?.length}
       </div>
     </>
   );
