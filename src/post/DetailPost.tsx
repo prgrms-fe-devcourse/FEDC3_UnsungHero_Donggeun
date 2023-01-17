@@ -91,9 +91,15 @@ const DetailPost = () => {
           <UserName>{author.fullName}</UserName>
         </Author>
         <Div />
-        {image ? <ContentImage src={image} alt='이미지!' /> : null}
+        {image && <ContentImage src={image} alt='이미지!' />}
         <Textarea value={content} disabled rows={10} cols={100} />
-        <Like likeList={likes} userId={userId || ''} postId={postId || ''} fetchData={fetchData} />
+        <Like
+          likeList={likes}
+          userId={userId || ''}
+          postuserId={data?.author._id || ''}
+          postId={postId || ''}
+          fetchData={fetchData}
+        />
         <Div />
         {token ? (
           <Button onClick={handleOnClickToUpdatePage} disabled={identification}>
@@ -101,7 +107,12 @@ const DetailPost = () => {
           </Button>
         ) : null}
         <Div />
-        <Comment commentList={comments} postId={postId || ''} fetchData={fetchData} />
+        <Comment
+          commentList={comments}
+          userId={data?.author._id || ''}
+          postId={postId || ''}
+          fetchData={fetchData}
+        />
       </Container>
     </ErrorBoundary>
   );

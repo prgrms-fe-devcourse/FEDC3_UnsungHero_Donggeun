@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import useAxios from '../api/useAxios';
 import useMutation from '../api/useMutation';
+import { Button } from '../common';
 import { useToken, useUserId } from '../contexts/TokenProvider';
 import { IFollow } from '../types/follow';
 import { IUser } from '../types/user';
@@ -29,6 +30,7 @@ const useFollow = (currentPageId: string) => {
     followers: [],
     following: [],
   });
+  const [firstClickCheck, setFirstClickCheck] = useState(false);
 
   useEffect(() => {
     const followerList = currentData?.followers.map((user: IFollow) => user.follower);
@@ -38,11 +40,31 @@ const useFollow = (currentPageId: string) => {
       followers: followerList as [],
       following: followingList as [],
     });
+
+    if (firstClickCheck) produceFollowNotification();
   }, [currentData, LoginUserData]);
 
   useEffect(() => {
     fetchCurrentData();
   }, [currentPageId]);
+
+  const produceFollowNotification = () => {
+    const body = {
+      notificationType: 'FOLLOW',
+      notificationTypeId: currentData?.followers[currentData?.followers.length - 1]._id,
+      userId: currentData?._id,
+      postId: null,
+    };
+
+    mutate({
+      url: `http://kdt.frontend.3rd.programmers.co.kr:5006/notifications/create`,
+      method: 'post',
+      data: {
+        ...body,
+      },
+    });
+    setFirstClickCheck(false);
+  };
 
   const handleClickFollow = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string) => {
     e.stopPropagation();
@@ -56,6 +78,7 @@ const useFollow = (currentPageId: string) => {
 
     await fetchCurrentData();
     await fetchLoginUserData();
+    setFirstClickCheck(true);
   };
 
   const handleClickUnFollow = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string) => {
@@ -86,9 +109,23 @@ const useFollow = (currentPageId: string) => {
 
     const following = LoginUserData?.following.map((user) => user.user);
     return following?.includes(id) ? (
-      <button onClick={(e) => handleClickUnFollow(e, id)}>언팔로우하기</button>
+      <Button
+        text={'언팔로우'}
+        color={'white'}
+        onClick={(e) => handleClickUnFollow(e, id)}
+        width={100}
+        height={30}
+        style={{ marginLeft: 'auto' }}
+      />
     ) : (
-      <button onClick={(e) => handleClickFollow(e, id)}>팔로우하기</button>
+      <Button
+        text={'팔로우'}
+        color={'default'}
+        onClick={(e) => handleClickFollow(e, id)}
+        width={100}
+        height={30}
+        style={{ marginLeft: 'auto' }}
+      />
     );
   };
 
