@@ -10,6 +10,7 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { AiOutlineMail, AiOutlineLock } from 'react-icons/ai';
+import Header from './Header';
 
 const TOKEN_KEY = 'token';
 const USERID_KEY = 'userId';
@@ -69,52 +70,56 @@ const Login = () => {
   }, []);
 
   return (
-    <form onSubmit={handleSubmit(onSubmitHandler)} style={{ display: 'flex', flexDirection: 'column' }}>
-      <LoginHeader>로그인</LoginHeader>
-      <LoginContainer>
-        <FormTitle>언성히어로에 어서오세요!</FormTitle>
-        <Label htmlFor='email'>이메일</Label>
-        <InputContainer>
-          <Input
-            type='email'
-            id='email'
-            {...register('email', {
-              required: '이메일 입력은 필수 입니다',
-              pattern: {
-                value: /\S+@\S+\.\S+/,
-                message: '이메일 형식에 맞지 않습니다.',
-              },
-            })}
-          />
-          <AiOutlineMail className='logo' />
-          <ErrorText>{errors?.email?.message}</ErrorText>
-        </InputContainer>
+    <>
+      {' '}
+      <Header />
+      <form onSubmit={handleSubmit(onSubmitHandler)} style={{ display: 'flex', flexDirection: 'column' }}>
+        <LoginHeader>로그인</LoginHeader>
+        <LoginContainer>
+          <FormTitle>언성히어로에 어서오세요!</FormTitle>
+          <Label htmlFor='email'>이메일</Label>
+          <InputContainer>
+            <Input
+              type='email'
+              id='email'
+              {...register('email', {
+                required: '이메일 입력은 필수 입니다',
+                pattern: {
+                  value: /\S+@\S+\.\S+/,
+                  message: '이메일 형식에 맞지 않습니다.',
+                },
+              })}
+            />
+            <AiOutlineMail className='logo' />
+            <ErrorText>{errors?.email?.message}</ErrorText>
+          </InputContainer>
 
-        <Label htmlFor='password'>비밀번호</Label>
-        <InputContainer>
-          <Input
-            type='password'
-            id='password'
-            {...register('password', {
-              required: '비밀번호 입력은 필수 입니다',
-              minLength: {
-                value: 7,
-                message: '7자리 이상의 비밀번호를 입력해주세요',
-              },
-            })}
-          />
-          <AiOutlineLock className='logo' />
-          <ErrorText>{errors?.password?.message}</ErrorText>
-        </InputContainer>
-        <CreateUserIntroduce>
-          <span>계정이 필요하신가요? </span>
-          <CreateUserLink to='/signup'>가입하기</CreateUserLink>
-        </CreateUserIntroduce>
-        <LoginButton type='submit' disabled={isSubmitting}>
-          로그인
-        </LoginButton>
-      </LoginContainer>
-    </form>
+          <Label htmlFor='password'>비밀번호</Label>
+          <InputContainer>
+            <Input
+              type='password'
+              id='password'
+              {...register('password', {
+                required: '비밀번호 입력은 필수 입니다',
+                minLength: {
+                  value: 7,
+                  message: '7자리 이상의 비밀번호를 입력해주세요',
+                },
+              })}
+            />
+            <AiOutlineLock className='logo' />
+            <ErrorText>{errors?.password?.message}</ErrorText>
+          </InputContainer>
+          <CreateUserIntroduce>
+            <span>계정이 필요하신가요? </span>
+            <CreateUserLink to='/signup'>가입하기</CreateUserLink>
+          </CreateUserIntroduce>
+          <LoginButton type='submit' disabled={isSubmitting}>
+            로그인
+          </LoginButton>
+        </LoginContainer>
+      </form>
+    </>
   );
 };
 
@@ -179,7 +184,7 @@ const ErrorText = styled.span`
 `;
 
 const LoginButton = styled.button`
-  background-color: #52d2a4;
+  background-color: ${({ theme }) => theme.colors.primary};
   color: #e6e6e6;
   border-radius: 0.313rem;
   border: none;
