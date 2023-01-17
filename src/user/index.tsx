@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { IUser } from '../types/user';
 import styled from 'styled-components';
 import useAxios from '../api/useAxios';
-import Pagination from './Pagination';
-import UserPostListItem from './UserPostListItem';
-
+import { IPost } from '../types/post';
+import UserPosts from './UserPosts';
+import { useUserId } from '../contexts/TokenProvider';
+import useFollow from '../follow/useFollow';
 interface IUserInfo {
   fullName: string | undefined;
   posts: [];
@@ -13,21 +14,18 @@ interface IUserInfo {
   coverImage: string;
 }
 
-interface IPost {
-  _id: string;
-  title: string;
-  likes: [];
-}
-
 const COVER_IMG_URL = 'https://ifh.cc/g/xBfBwB.png';
-const PROFIE_IMG_URL = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
+const PROFIE_IMG_URL = 'https://ifh.cc/g/35RDD6.png';
 const LIKE_IMG_URL = 'https://ifh.cc/g/vmscWK.png';
 const API_URL = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 
 const User = () => {
-  const { id } = useParams();
+  const { id: currentPageId } = useParams();
+  const userIdContext = useUserId();
+  const myUserId = userIdContext?.userId;
+  const navigate = useNavigate();
   const { data, fetchData } = useAxios<IUser>({
-    url: `${API_URL}/users/${id}`,
+    url: `${API_URL}/users/${currentPageId}`,
     method: 'get',
   });
   const [userInfo, setUserInfo] = useState<IUserInfo>({
@@ -36,10 +34,7 @@ const User = () => {
     image: '',
     coverImage: '',
   });
-  const [page, setPage] = useState(1);
-  const navigate = useNavigate();
-  const limit = 7;
-  const offset = (page - 1) * limit;
+  const { followButton, userFollow } = useFollow(currentPageId as string);
 
   useEffect(() => {
     setUserInfo({
@@ -52,33 +47,31 @@ const User = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [currentPageId]);
 
   const handlemoveEditPage = () => {
-    navigate(`/userEdit/${id}`);
+    navigate(`/userEdit/${currentPageId}`);
   };
-  const totalLikes =
-    userInfo.posts && userInfo.posts.reduce((acc, cur: Pick<IPost, 'likes'>) => acc + cur.likes.length, 0);
+  const totalLikes = userInfo?.posts?.reduce((acc, cur: Pick<IPost, 'likes'>) => acc + cur.likes.length, 0);
+
   return (
     <>
-      <CoverImg src={userInfo.coverImage} />
-      <ProfileImg src={userInfo.image} />
+      <CoverImg src={userInfo.coverImage} alt='커버 이미지' />
+      <ProfileImg src={userInfo.image} alt='프로필 이미지' />
       <div>{userInfo.fullName}</div>
       <div>
         <img src={LIKE_IMG_URL} />
         {totalLikes}
       </div>
-      <button onClick={handlemoveEditPage}>내 정보 수정</button>
-      {userInfo.posts &&
-        userInfo.posts
-          .slice(offset, offset + limit)
-          .map((post: IPost) => <UserPostListItem key={post._id} post={post} />)}
-      <Pagination
-        total={userInfo.posts && userInfo.posts.length}
-        limit={limit}
-        page={page}
-        setPage={setPage}
-      />
+      {currentPageId === myUserId ? (
+        <button onClick={handlemoveEditPage}>내 정보 수정</button>
+      ) : (
+        followButton(currentPageId as string)
+      )}
+
+      <Link to={`/following/${currentPageId}`}>팔로잉 {userFollow?.following?.length}</Link>
+      <Link to={`/followers/${currentPageId}`}>팔로워 {userFollow?.followers?.length}</Link>
+      {userInfo?.posts?.length > 0 && <UserPosts posts={userInfo.posts} />}
     </>
   );
 };

@@ -4,14 +4,16 @@ interface IsearchBoxProps {
   setSelectedSearchOption: (value: string) => void;
   setInputSearchValue: (value: string) => void;
   getPostsList: () => void;
-  channelId: string;
+  getEntirePostsList: () => void;
+  currentChannelId: string | undefined;
 }
 
 const SearchBox = ({
   setSelectedSearchOption,
   setInputSearchValue,
   getPostsList,
-  channelId,
+  getEntirePostsList,
+  currentChannelId,
 }: IsearchBoxProps) => {
   const [inputValue, setInputValue] = useState('');
   const [selectedOption, setSelectedOption] = useState('제목');
@@ -20,7 +22,7 @@ const SearchBox = ({
   useEffect(() => {
     setInputValue('');
     setSelectedOption('제목');
-  }, [channelId]);
+  }, [currentChannelId]);
 
   const handleChangeInput = useCallback((e: React.ChangeEvent<HTMLInputElement>): void => {
     setInputValue(e.target.value);
@@ -35,9 +37,13 @@ const SearchBox = ({
       e.preventDefault();
       setSelectedSearchOption(selectedOption);
       setInputSearchValue(inputValue);
-      getPostsList();
+      if (currentChannelId !== undefined) {
+        getPostsList();
+      } else if (currentChannelId === undefined) {
+        getEntirePostsList();
+      }
     },
-    [inputValue, selectedOption]
+    [inputValue, selectedOption, currentChannelId]
   );
 
   return (

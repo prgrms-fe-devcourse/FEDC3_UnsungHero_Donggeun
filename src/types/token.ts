@@ -1,5 +1,5 @@
 export interface IToken {
-  token: string | undefined;
+  token: string;
   addToken: (getToken: string) => void;
   removeToken: () => void;
 }

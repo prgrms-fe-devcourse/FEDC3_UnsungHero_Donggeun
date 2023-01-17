@@ -6,6 +6,7 @@ interface IpaginationProps {
   page: number;
   totalPosts: number;
   setPage: (value: number) => void;
+  currentChannelId: string | undefined;
 }
 
 interface IButtonStyle {
@@ -13,12 +14,12 @@ interface IButtonStyle {
   i: number;
 }
 
-const Pagination = ({ totalPosts, limit, page, setPage }: IpaginationProps) => {
+const Pagination = ({ totalPosts, limit, page, setPage, currentChannelId }: IpaginationProps) => {
   const totalPages = Math.ceil(totalPosts / limit);
 
   useEffect(() => {
     setPage(1);
-  }, [totalPosts]);
+  }, [currentChannelId]);
 
   return (
     <>
@@ -33,7 +34,7 @@ const Pagination = ({ totalPosts, limit, page, setPage }: IpaginationProps) => {
           } else if (page > totalPages - 3) {
             return i >= totalPages - 5;
           }
-          return i >= page - 2 && i <= page + 2;
+          return i >= page - 3 && i <= page + 1;
         })
         .map((i) => (
           <Button key={i + 1} onClick={() => setPage(i + 1)} page={page} i={i}>
