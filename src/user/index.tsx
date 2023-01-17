@@ -51,7 +51,6 @@ const User = () => {
     navigate(`/userEdit/${currentPageId}`);
   };
   const totalLikes = userInfo?.posts?.reduce((acc, cur: Pick<IPost, 'likes'>) => acc + cur.likes.length, 0);
-  console.log(userInfo?.posts?.length);
   return (
     <Wrapper>
       <CoverImg src={userInfo.coverImage} alt='커버 이미지' />
