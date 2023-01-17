@@ -5,7 +5,6 @@ import { IsJsonString } from './isJsonString';
 import styled from 'styled-components';
 import { Pagination } from '../common';
 
-
 interface Ilikes {
   _id: string;
 }

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import styled from 'styled-components';
 import { ILike } from '../types/like';
 import { createLike, deleteLike } from './api';
 
@@ -7,10 +8,11 @@ interface ILikeProps {
   userId: string;
   postId: string;
   postuserId: string;
+  fetchData: () => void;
   // refetchPost: () => void;
 }
 
-const Like = ({ likeList, userId, postId, postuserId }: ILikeProps) => {
+const Like = ({ likeList, userId, postId, postuserId, fetchData }: ILikeProps) => {
   const [isLike, setIsLike] = useState(false);
 
   const handleClickLike = async () => {
@@ -23,6 +25,7 @@ const Like = ({ likeList, userId, postId, postuserId }: ILikeProps) => {
     }
 
     // refetchPost();
+    fetchData();
   };
 
   useEffect(() => {
@@ -34,12 +37,19 @@ const Like = ({ likeList, userId, postId, postuserId }: ILikeProps) => {
 
   return (
     <>
-      <div style={{ cursor: 'pointer', fontSize: '2rem' }} onClick={handleClickLike}>
+      <LikeContainer onClick={handleClickLike}>
         {isLike ? '❤️' : '🤍'}
         {likeList?.length}
-      </div>
+      </LikeContainer>
     </>
   );
 };
+
+const LikeContainer = styled.div`
+  width: 7%;
+  box-sizing: content-box;
+  font-size: 22px;
+  cursor: pointer;
+`;
 
 export default Like;
