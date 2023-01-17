@@ -7,6 +7,10 @@ import { IToken } from '../types/token';
 import { IAuth } from '../types/auth';
 import { IUserId } from '../types/useId';
 import { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import { AiOutlineMail, AiOutlineLock } from 'react-icons/ai';
+import Header from './Header';
 
 const TOKEN_KEY = 'token';
 const USERID_KEY = 'userId';
@@ -66,37 +70,143 @@ const Login = () => {
   }, []);
 
   return (
-    <form onSubmit={handleSubmit(onSubmitHandler)} style={{ display: 'flex', flexDirection: 'column' }}>
-      <h1>로그인</h1>
-      <input
-        type='email'
-        placeholder='이메일을 입력해주세요'
-        {...register('email', {
-          required: '이메일 입력은 필수 입니다',
-          pattern: {
-            value: /\S+@\S+\.\S+/,
-            message: '이메일 형식에 맞지 않습니다.',
-          },
-        })}
-      />
-      <span>{errors?.email?.message}</span>
-      <input
-        type='password'
-        placeholder='비밀번호를 입력해주세요'
-        {...register('password', {
-          required: '비밀번호 입력은 필수 입니다',
-          minLength: {
-            value: 7,
-            message: '7자리 이상의 비밀번호를 입력해주세요',
-          },
-        })}
-      />
-      <span>{errors?.password?.message}</span>
-      <button type='submit' disabled={isSubmitting}>
-        로그인
-      </button>
-    </form>
+    <>
+      {' '}
+      <Header />
+      <form onSubmit={handleSubmit(onSubmitHandler)} style={{ display: 'flex', flexDirection: 'column' }}>
+        <LoginHeader>로그인</LoginHeader>
+        <LoginContainer>
+          <FormTitle>언성히어로에 어서오세요!</FormTitle>
+          <Label htmlFor='email'>이메일</Label>
+          <InputContainer>
+            <Input
+              type='email'
+              id='email'
+              {...register('email', {
+                required: '이메일 입력은 필수 입니다',
+                pattern: {
+                  value: /\S+@\S+\.\S+/,
+                  message: '이메일 형식에 맞지 않습니다.',
+                },
+              })}
+            />
+            <AiOutlineMail className='logo' />
+            <ErrorText>{errors?.email?.message}</ErrorText>
+          </InputContainer>
+
+          <Label htmlFor='password'>비밀번호</Label>
+          <InputContainer>
+            <Input
+              type='password'
+              id='password'
+              {...register('password', {
+                required: '비밀번호 입력은 필수 입니다',
+                minLength: {
+                  value: 7,
+                  message: '7자리 이상의 비밀번호를 입력해주세요',
+                },
+              })}
+            />
+            <AiOutlineLock className='logo' />
+            <ErrorText>{errors?.password?.message}</ErrorText>
+          </InputContainer>
+          <CreateUserIntroduce>
+            <span>계정이 필요하신가요? </span>
+            <CreateUserLink to='/signup'>가입하기</CreateUserLink>
+          </CreateUserIntroduce>
+          <LoginButton type='submit' disabled={isSubmitting}>
+            로그인
+          </LoginButton>
+        </LoginContainer>
+      </form>
+    </>
   );
 };
 
 export default Login;
+
+const LoginHeader = styled.h1`
+  text-align: center;
+  margin-top: 6.25rem;
+`;
+
+const LoginContainer = styled.div`
+  margin: 0 auto;
+  width: 30vw;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+  padding: 1.563rem 2.813rem;
+  border-radius: 5px;
+  border: none;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2), -1px -1px 5px rgba(0, 0, 0, 0.2);
+  background-color: white;
+`;
+
+const FormTitle = styled.div`
+  font-size: 1.125em;
+  font-weight: 700;
+  margin: 0.625rem auto 2.188rem auto;
+`;
+
+const Label = styled.label`
+  margin-bottom: 0.313rem;
+  font-weight: 700;
+  font-size: 0.875rem;
+`;
+
+const InputContainer = styled.div`
+  margin-bottom: 1.563rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  .logo {
+    position: absolute;
+    top: 0.813rem;
+    left: 0.625rem;
+    font-size: 1.625rem;
+  }
+`;
+
+const Input = styled.input`
+  height: 3.125rem;
+  margin-bottom: 0.313rem;
+  border-radius: 0.313rem;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  outline: none;
+  padding-left: 2.5rem;
+`;
+
+const ErrorText = styled.span`
+  font-size: 0.75rem;
+  color: #ff1f1f;
+`;
+
+const LoginButton = styled.button`
+  background-color: ${({ theme }) => theme.colors.primary};
+  color: #e6e6e6;
+  border-radius: 0.313rem;
+  border: none;
+  height: 2.5rem;
+  margin-top: 1.25rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.5s ease;
+
+  &:hover {
+    background-color: #e6e6e6;
+    color: #52d2a4;
+  }
+`;
+
+const CreateUserIntroduce = styled.div`
+  display: flex;
+  font-size: 0.75rem;
+  align-items: center;
+`;
+
+const CreateUserLink = styled(Link)`
+  color: blue;
+  margin-left: 0.3125rem;
+`;
