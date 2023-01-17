@@ -6,7 +6,7 @@ interface IProps {
   limit: number;
   page: number;
   setPage: (value: number) => void;
-  currentChannelId?: string | undefined;
+  currentChannelId?: string;
 }
 
 interface IButtonStyle {
@@ -52,8 +52,5 @@ const Pagination = ({ total = 0, limit, page, setPage, currentChannelId }: IProp
 export default Pagination;
 
 const Button = styled.button<IButtonStyle>`
-  &[currentPage] {
-    border: 2px solid red;
-  }
-  background-color: ${({ page, i }) => (page === i + 1 ? 'red' : null)};
+  background-color: ${({ page, i }) => page === i + 1 && 'red'};
 `;

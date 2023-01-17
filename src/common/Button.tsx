@@ -1,15 +1,9 @@
 import styled from 'styled-components';
 
 interface IProps extends React.HTMLAttributes<HTMLElement> {
-  text: string;
+  text?: string;
   color: string;
   onClick: () => void;
-  width: number;
-  height: number;
-}
-
-interface IButton {
-  color: string;
   width: number;
   height: number;
 }
@@ -33,7 +27,7 @@ const ButtonType: IBtnType = {
   white: '#FFFFFF',
 };
 
-const Btn = styled.button<IButton>`
+const Btn = styled.button<IProps>`
   cursor: pointer;
   height: ${({ height }) => `${height}px`};
   width: ${({ width }) => `${width}px`};
