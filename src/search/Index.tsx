@@ -52,8 +52,8 @@ const Search = () => {
       <SearchBox
         setSelectedSearchOption={setSelectedSearchOption}
         setInputSearchValue={setInputSearchValue}
-        getPostsList={getPostsList}
-        getEntirePostsList={getEntirePostsList}
+        // getPostsList={getPostsList}
+        // getEntirePostsList={getEntirePostsList}
         currentChannelId={currentChannelId}
       />
       <PostListContainer

@@ -4,16 +4,16 @@ import styled from 'styled-components';
 interface IsearchBoxProps {
   setSelectedSearchOption: (value: string) => void;
   setInputSearchValue: (value: string) => void;
-  getPostsList: () => void;
-  getEntirePostsList: () => void;
+  // getPostsList: () => void;
+  // getEntirePostsList: () => void;
   currentChannelId: string | undefined;
 }
 
 const SearchBox = ({
   setSelectedSearchOption,
   setInputSearchValue,
-  getPostsList,
-  getEntirePostsList,
+  // getPostsList,
+  // getEntirePostsList,
   currentChannelId,
 }: IsearchBoxProps) => {
   const [inputValue, setInputValue] = useState('');
