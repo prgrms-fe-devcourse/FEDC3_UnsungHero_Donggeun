@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import useAxios from '../api/useAxios';
+import { Avatar, Pagination } from '../common';
 import useFollow from '../follow/useFollow';
 import { IUser } from '../types/user';
-import Pagination from './Pagination';
 
 const API_URL = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
-const PROFIE_IMG_URL = 'https://ifh.cc/g/35RDD6.png';
 
 const UserFollowers = () => {
   const { id } = useParams();
@@ -33,7 +32,7 @@ const UserFollowers = () => {
         followersList.slice(offset, offset + limit).map((user: IUser) => (
           <div key={user._id} onClick={() => handleClickUser(user._id)}>
             <>
-              <img src={user.image || PROFIE_IMG_URL} width='80px' height='80px' alt='프로필 이미지' />
+              <Avatar src={user.image} width={80} height={80} />
               <span>{user.fullName}</span>
               {followButton(user._id)}
             </>

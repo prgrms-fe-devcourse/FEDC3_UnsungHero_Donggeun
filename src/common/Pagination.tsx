@@ -1,10 +1,12 @@
 import styled from 'styled-components';
+import { useEffect } from 'react';
 
 interface IProps {
   total: number;
   limit: number;
   page: number;
-  setPage: React.Dispatch<React.SetStateAction<number>>;
+  setPage: (value: number) => void;
+  currentChannelId?: string | undefined;
 }
 
 interface IButtonStyle {
@@ -12,11 +14,16 @@ interface IButtonStyle {
   i: number;
 }
 
-const Pagination = ({ total = 0, limit, page, setPage }: IProps) => {
+const Pagination = ({ total = 0, limit, page, setPage, currentChannelId }: IProps) => {
   const totalPages = Math.ceil(total / limit);
+
+  useEffect(() => {
+    setPage(1);
+  }, [currentChannelId]);
 
   return (
     <>
+      <button onClick={() => setPage(1)}>처음</button>
       <button onClick={() => setPage(page - 1)} disabled={page === 1}>
         이전
       </button>
@@ -37,6 +44,7 @@ const Pagination = ({ total = 0, limit, page, setPage }: IProps) => {
       <button onClick={() => setPage(page + 1)} disabled={page === totalPages}>
         다음
       </button>
+      <button onClick={() => setPage(totalPages)}>마지막</button>
     </>
   );
 };
