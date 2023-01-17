@@ -89,7 +89,7 @@ const DetailPost = () => {
           <UserName>{author.fullName}</UserName>
         </Author>
         <Div />
-        {image ? <ContentImage src={image} alt='이미지!' /> : null}
+        {image && <ContentImage src={image} alt='이미지!' />}
         <Textarea value={content} disabled rows={10} cols={100} />
         <Like likeList={likes} userId={userId || ''} postId={postId || ''} fetchData={fetchData} />
         <Div />

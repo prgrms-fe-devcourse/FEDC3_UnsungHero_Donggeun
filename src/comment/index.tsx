@@ -39,11 +39,11 @@ const Comment = ({ commentList, postId, fetchData }: ICommentProps) => {
 
   return (
     <>
-      <Form onSubmit={(e) => handleSubmitInput(e)}>
+      <CommentForm onSubmit={(e) => handleSubmitInput(e)}>
         <TextArea placeholder='댓글을 입력해주세요' onChange={handleInputValue} value={value} rows={3} />
         {/* <Input placeholder='댓글을 입력해주세요' onChange={handleInputValue} value={value} /> */}
         <Button type='submit'>전송</Button>
-      </Form>
+      </CommentForm>
       <Ul>
         {commentList?.map(({ _id, author, comment }: IComment) => (
           <Li key={_id}>
@@ -62,7 +62,7 @@ const Comment = ({ commentList, postId, fetchData }: ICommentProps) => {
   );
 };
 
-const Form = styled.form`
+const CommentForm = styled.form`
   display: flex;
 `;
 const TextArea = styled.textarea`
@@ -86,16 +86,17 @@ const Li = styled.li`
   list-style-type: none;
   border-bottom: solid #c4c4c4 1px;
   display: flex;
-  flex-direction: row;
 `;
 const AuthorContainer = styled.div`
   margin-top: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 80px;
 `;
 const AuthorImage = styled.img`
   width: 50px;
+  height: 50px;
   border-radius: 50%;
 `;
 const AuthorName = styled.p`
@@ -110,7 +111,6 @@ const CommentContainer = styled.div`
 `;
 const PCmoment = styled.p`
   font-size: 14px;
-  display: block;
 `;
 const ButtonX = styled.button`
   align-self: flex-end;
