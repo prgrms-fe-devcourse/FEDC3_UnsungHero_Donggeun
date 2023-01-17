@@ -7,15 +7,15 @@ import { IPost } from '../types/post';
 import UserPosts from './UserPosts';
 import { useUserId } from '../contexts/TokenProvider';
 import useFollow from '../follow/useFollow';
+import { Avatar, Button } from '../common';
+
 interface IUserInfo {
   fullName: string | undefined;
   posts: [];
-  image: string;
   coverImage: string;
 }
 
 const COVER_IMG_URL = 'https://ifh.cc/g/xBfBwB.png';
-const PROFIE_IMG_URL = 'https://ifh.cc/g/35RDD6.png';
 const LIKE_IMG_URL = 'https://ifh.cc/g/vmscWK.png';
 const API_URL = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 
@@ -31,7 +31,6 @@ const User = () => {
   const [userInfo, setUserInfo] = useState<IUserInfo>({
     fullName: '',
     posts: [],
-    image: '',
     coverImage: '',
   });
   const { followButton, userFollow } = useFollow(currentPageId as string);
@@ -40,7 +39,6 @@ const User = () => {
     setUserInfo({
       fullName: data?.fullName,
       posts: data?.posts as [],
-      image: data?.image ?? PROFIE_IMG_URL,
       coverImage: data?.coverImage ?? COVER_IMG_URL,
     });
   }, [data]);
@@ -57,14 +55,14 @@ const User = () => {
   return (
     <>
       <CoverImg src={userInfo.coverImage} alt='커버 이미지' />
-      <ProfileImg src={userInfo.image} alt='프로필 이미지' />
+      <Avatar src={data?.image} width={60} height={60} />
       <div>{userInfo.fullName}</div>
       <div>
         <img src={LIKE_IMG_URL} />
         {totalLikes}
       </div>
       {currentPageId === myUserId ? (
-        <button onClick={handlemoveEditPage}>내 정보 수정</button>
+        <Button text={'내정보 수정'} onClick={handlemoveEditPage} color='white' width={100} height={30} />
       ) : (
         followButton(currentPageId as string)
       )}
@@ -81,9 +79,4 @@ export default User;
 const CoverImg = styled.img`
   width: 200px;
   height: 100px;
-`;
-
-const ProfileImg = styled.img`
-  border-radius: 50%;
-  width: 50px;
 `;
