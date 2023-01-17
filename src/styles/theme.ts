@@ -12,6 +12,7 @@ const colors = {
   alert: '#FF1F1F',
   link: '#2853EB',
   placeholder: '#9E9E9E',
+  shadow: 'rgba(0, 0, 0, 0.25)',
 };
 
 const fontSize = {

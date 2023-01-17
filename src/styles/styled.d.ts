@@ -14,6 +14,7 @@ declare module 'styled-components' {
       alert: string;
       link: string;
       placeholder: string;
+      shadow: string;
     };
 
     fontSize: {
