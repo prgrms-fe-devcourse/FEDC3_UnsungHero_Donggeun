@@ -105,9 +105,9 @@ const Container = styled.div`
   flex-direction: column;
   border: solid 1px #c4c4c4;
   border-radius: 3%;
-  margin: 5rem;
+  /* margin: 5rem; */
   padding: 1rem;
-  max-width: 50%;
+  width: 725px;
   box-shadow: 12px 12px 2px 1px rgba(216, 216, 235, 0.2);
 `;
 
@@ -119,10 +119,12 @@ const CreateAt = styled.p``;
 
 const UserName = styled.p`
   font-size: 14px;
+  margin-left: 0.5rem;
 `;
 
 const Author = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 const ProfileImg = styled.img`
@@ -158,6 +160,7 @@ const Button = styled.button<{ backgroundColor?: string }>`
   border-radius: 5%;
   background-color: #52d2a4;
   color: #ffffff;
+  cursor: pointer;
 `;
 
 export default DetailPost;

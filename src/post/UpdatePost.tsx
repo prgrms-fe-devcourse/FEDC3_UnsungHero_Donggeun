@@ -132,9 +132,8 @@ const UpdatePost = () => {
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  margin: 5rem;
   padding: 1rem;
-  max-width: 50%;
+  width: 725px;
   border: solid 1px #c4c4c4;
   border-radius: 3%;
   box-shadow: 12px 12px 2px 1px rgba(216, 216, 235, 0.2);
