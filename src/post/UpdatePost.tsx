@@ -9,12 +9,6 @@ import { IPost } from '../types/post';
 
 const END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 
-const Container = styled.div`
-  max-width: 50%;
-  display: flex;
-  flex-direction: column;
-`;
-
 const UpdatePost = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');

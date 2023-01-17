@@ -71,7 +71,7 @@ const DetailPost = () => {
     <ErrorBoundary>
       <Container>
         <Title>{title}</Title>
-        <p>작성일: {author.createAt}</p>
+        <CreateAt>작성일: {author.createAt}</CreateAt>
         <Div />
         <Author onClick={() => navigate(`/user/${author._id}`)}>
           <ProfileImg src={author.image} />
@@ -104,6 +104,8 @@ const Container = styled.div`
 const Title = styled.h1`
   font-size: 20px;
 `;
+
+const CreateAt = styled.p``;
 
 const UserName = styled.p`
   font-size: 14px;
