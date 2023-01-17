@@ -1,5 +1,6 @@
-import { useState } from 'react';
 import styled from 'styled-components';
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { IComment } from '../types/comment';
 
 import { createComment, deleteComment } from './api';
@@ -9,11 +10,12 @@ const PROFIE_IMG_URL = 'https://ifh.cc/g/35RDD6.png';
 interface ICommentProps {
   commentList?: IComment[];
   postId: string;
+  userId: string;
   fetchData: () => void;
   //refetchPost: () => void;
 }
 
-const Comment = ({ commentList, postId, fetchData }: ICommentProps) => {
+const Comment = ({ commentList, userId, postId, fetchData }: ICommentProps) => {
   const [value, setValue] = useState('');
 
   const handleInputValue = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -22,8 +24,7 @@ const Comment = ({ commentList, postId, fetchData }: ICommentProps) => {
 
   const handleSubmitInput = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    await createComment(value, postId);
+    await createComment(value, userId, postId);
     //refetchPost();
     fetchData();
 

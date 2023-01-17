@@ -1,20 +1,16 @@
-import React from 'react';
 import Channels from './Channels';
-import Header from './Header';
 import styled from 'styled-components';
+import { Outlet } from 'react-router-dom';
 
-interface Props {
-  children: React.ReactNode;
-}
-
-const Layout = ({ children }: Props) => {
+const Layout = () => {
   return (
     <>
-      <Header />
       <Wrapper>
         <MainWrapper>
           <Channels />
-          <Main>{children}</Main>
+          <Main>
+            <Outlet />
+          </Main>
         </MainWrapper>
       </Wrapper>
     </>
@@ -36,7 +32,6 @@ const MainWrapper = styled.div`
   max-width: 1000px;
 `;
 const Wrapper = styled.div`
-  display: flex;
   justify-content: center;
   width: 100%;
 `;
