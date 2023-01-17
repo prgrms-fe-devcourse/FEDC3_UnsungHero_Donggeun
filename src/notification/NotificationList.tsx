@@ -5,10 +5,14 @@ import { INotification, INotificationStatus } from '../types/notification';
 import { useToken } from '../contexts/TokenProvider';
 import { IToken } from '../types/token';
 import { useNotificationStatus } from '../contexts/NotificationStatusProvider';
+import { Pagination } from '../common';
 
 const NotificationList = () => {
   const [notificationList, setNotificationlist] = useState<INotification[]>();
   const [notificationLength, setNotificationLength] = useState(0);
+  const [page, setPage] = useState(1);
+  const limit = 5;
+  const offset = (page - 1) * limit;
 
   const tokenContextObj: IToken | null = useToken();
   const notificationStatusContextObj: INotificationStatus | null = useNotificationStatus();
@@ -66,20 +70,23 @@ const NotificationList = () => {
         모든 알림 확인
       </button>
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-        {notificationList?.map(({ _id, seen: isCheck, comment, like, follow, author, post }) => (
-          <NotificationlistItem
-            key={_id}
-            _id={_id}
-            seen={isCheck}
-            comment={comment}
-            like={like}
-            follow={follow}
-            author={author}
-            post={post}
-          />
-        ))}
+        {notificationList
+          ?.slice(offset, offset + limit)
+          .map(({ _id, seen: isCheck, comment, like, follow, author, post }) => (
+            <NotificationlistItem
+              key={_id}
+              _id={_id}
+              seen={isCheck}
+              comment={comment}
+              like={like}
+              follow={follow}
+              author={author}
+              post={post}
+            />
+          ))}
       </div>
       <button onClick={fetchNotificationData}>실시간 알람 확인</button>
+      <Pagination total={notificationList?.length as number} limit={limit} page={page} setPage={setPage} />
     </>
   );
 };
