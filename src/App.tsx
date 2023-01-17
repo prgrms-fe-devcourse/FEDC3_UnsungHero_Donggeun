@@ -8,10 +8,12 @@ import NotificationStatusProvider from './contexts/NotificationStatusProvider';
 function App() {
   return (
     <TokenProvider>
-      <ThemeProvider theme={theme}>
-        <GlobalStyles />
-        <Router />
-      </ThemeProvider>
+      <NotificationStatusProvider>
+        <ThemeProvider theme={theme}>
+          <GlobalStyles />
+          <Router />
+        </ThemeProvider>
+      </NotificationStatusProvider>
     </TokenProvider>
   );
 }

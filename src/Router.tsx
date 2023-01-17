@@ -23,7 +23,6 @@ function Router() {
         <Routes>
           <Route path='/signup' element={<SignUp />} />
           <Route path='/login' element={<Login />} />
-          <Route path='/*' element={<NotFound />} />
           <Route element={<Layout />}>
             <Route path='/' element={<Post />} />
             <Route path='/notifications' element={<NotificationList />} />
@@ -36,6 +35,7 @@ function Router() {
             <Route path='/channel/:channelId' element={<Search />} />
             <Route path='/userEdit/:id' element={<UserEdit />} />
           </Route>
+          <Route path='/*' element={<NotFound />} />
         </Routes>
       </ErrorBoundary>
     </BrowserRouter>
