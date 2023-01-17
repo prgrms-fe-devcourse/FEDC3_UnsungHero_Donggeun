@@ -7,10 +7,11 @@ interface ILikeProps {
   likeList?: ILike[];
   userId: string;
   postId: string;
+  fetchData: () => void;
   // refetchPost: () => void;
 }
 
-const Like = ({ likeList, userId, postId }: ILikeProps) => {
+const Like = ({ likeList, userId, postId, fetchData }: ILikeProps) => {
   const [isLike, setIsLike] = useState(false);
 
   const handleClickLike = async () => {
@@ -23,6 +24,7 @@ const Like = ({ likeList, userId, postId }: ILikeProps) => {
     }
 
     // refetchPost();
+    fetchData();
   };
 
   useEffect(() => {

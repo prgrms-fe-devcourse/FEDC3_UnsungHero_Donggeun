@@ -91,11 +91,11 @@ const DetailPost = () => {
         <Div />
         {image ? <ContentImage src={image} alt='이미지!' /> : null}
         <Textarea value={content} disabled rows={10} cols={100} />
-        <Like likeList={likes} userId={userId || ''} postId={postId || ''} />
+        <Like likeList={likes} userId={userId || ''} postId={postId || ''} fetchData={fetchData} />
         <Div />
         {token ? <Button onClick={handleOnClickToUpdatePage}>내용 수정 페이지로 가기</Button> : null}
         <Div />
-        <Comment commentList={comments} postId={postId || ''} />
+        <Comment commentList={comments} postId={postId || ''} fetchData={fetchData} />
       </Container>
     </ErrorBoundary>
   );

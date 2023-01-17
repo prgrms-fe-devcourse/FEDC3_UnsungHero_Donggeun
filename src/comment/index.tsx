@@ -9,10 +9,11 @@ const PROFIE_IMG_URL = 'https://ifh.cc/g/35RDD6.png';
 interface ICommentProps {
   commentList?: IComment[];
   postId: string;
+  fetchData: () => void;
   //refetchPost: () => void;
 }
 
-const Comment = ({ commentList, postId }: ICommentProps) => {
+const Comment = ({ commentList, postId, fetchData }: ICommentProps) => {
   const [value, setValue] = useState('');
 
   const handleInputValue = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -24,6 +25,7 @@ const Comment = ({ commentList, postId }: ICommentProps) => {
 
     await createComment(value, postId);
     //refetchPost();
+    fetchData();
 
     setValue('');
   };
@@ -32,6 +34,7 @@ const Comment = ({ commentList, postId }: ICommentProps) => {
     await deleteComment(id);
 
     //refetchPost();
+    fetchData();
   };
 
   return (
