@@ -1,14 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { IComment } from '../types/comment';
 import { createComment, deleteComment } from './api';
 
 interface ICommentProps {
   commentList?: IComment[];
   postId: string;
+  userId: string;
   //refetchPost: () => void;
 }
 
-const Comment = ({ commentList, postId }: ICommentProps) => {
+const Comment = ({ commentList, userId, postId }: ICommentProps) => {
   const [value, setValue] = useState('');
 
   const handleInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -17,8 +19,7 @@ const Comment = ({ commentList, postId }: ICommentProps) => {
 
   const handleSubmitInput = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('handle submi t');
-    await createComment(value, postId);
+    await createComment(value, userId, postId);
     //refetchPost();
 
     setValue('');

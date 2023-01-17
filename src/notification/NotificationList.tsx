@@ -5,7 +5,6 @@ import { INotification, INotificationStatus } from '../types/notification';
 import { useToken } from '../contexts/TokenProvider';
 import { IToken } from '../types/token';
 import { useNotificationStatus } from '../contexts/NotificationStatusProvider';
-import ProduceNotification from './ProduceNotification';
 
 const NotificationList = () => {
   const [notificationList, setNotificationlist] = useState<INotification[]>();
@@ -53,7 +52,7 @@ const NotificationList = () => {
   };
 
   useEffect(() => {
-    tokenContextObj?.token !== null && fetchNotificationData();
+    tokenContextObj?.token !== '' && fetchNotificationData();
   }, []);
 
   // by 민형, notificationList state가 수정되는 경우(token이 있는 경우)에만 fetch 되므로 따로 token check x_230112
@@ -80,7 +79,6 @@ const NotificationList = () => {
         ))}
       </div>
       <button onClick={fetchNotificationData}>실시간 알람 확인</button>
-      <ProduceNotification />
     </>
   );
 };
