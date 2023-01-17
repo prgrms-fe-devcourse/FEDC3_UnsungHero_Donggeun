@@ -93,7 +93,12 @@ const DetailPost = () => {
         <Div />
         {token ? <Button onClick={handleOnClickToUpdatePage}>내용 수정 페이지로 가기</Button> : null}
         <Comment commentList={comments} userId={data?.author._id || ''} postId={postId || ''} />
-        <Like likeList={likes} userId={userId || ''} postId={postId || ''} />
+        <Like
+          likeList={likes}
+          userId={userId || ''}
+          postuserId={data?.author._id || ''}
+          postId={postId || ''}
+        />
       </Container>
       <div>
         <img src={image} alt='이미지!' />
