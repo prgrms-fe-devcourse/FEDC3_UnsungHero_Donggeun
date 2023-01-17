@@ -5,6 +5,7 @@ const GlobalStyles = createGlobalStyle`
     ${normalize}
     html,
     body {
+        font-size: 16px;
         background-color: #FAFAFA;
     }
     #root {

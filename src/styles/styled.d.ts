@@ -9,22 +9,20 @@ declare module 'styled-components' {
       background: string;
       lightGray: string;
       gray: string;
+      boxLine: string;
+      contentLine: string;
+      alert: string;
+      link: string;
+      placeholder: string;
+      shadow: string;
     };
 
     fontSize: {
-      title: number;
-      channelName: number;
-      likes: number;
-      subTitle: number;
-      content: number;
-      detailTitle: number;
-      detailContent: number;
-      detailUser: number;
-      detailLikse: number;
-      comment: number;
-      commentUser: number;
-      notification: number;
-      notificationContent: number;
+      larger: string;
+      large: string;
+      medium: string;
+      small: string;
+      smaller: string;
     };
   }
 }
