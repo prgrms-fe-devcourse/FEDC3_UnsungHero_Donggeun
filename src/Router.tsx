@@ -13,6 +13,7 @@ import { Login, SignUp } from './auth';
 import NotificationList from './notification/NotificationList';
 import Header from './layout/Header';
 import ErrorBoundary from './api/ErrorBoundary';
+import NotFound from './NotFound';
 
 function Router() {
   return (
@@ -34,6 +35,7 @@ function Router() {
             <Route path='/channel/:channelId' element={<Search />} />
             <Route path='/userEdit/:id' element={<UserEdit />} />
           </Route>
+          <Route path='/*' element={<NotFound />} />
         </Routes>
       </ErrorBoundary>
     </BrowserRouter>
