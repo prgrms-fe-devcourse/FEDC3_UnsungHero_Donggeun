@@ -38,11 +38,11 @@ const SearchBox = ({
       e.preventDefault();
       setSelectedSearchOption(selectedOption);
       setInputSearchValue(inputValue);
-      if (currentChannelId !== undefined) {
-        getPostsList();
-      } else if (currentChannelId === undefined) {
-        getEntirePostsList();
-      }
+      // if (currentChannelId !== undefined) {
+      //   getPostsList();
+      // } else if (currentChannelId === undefined) {
+      //   getEntirePostsList();
+      // }
     },
     [inputValue, selectedOption, currentChannelId]
   );
