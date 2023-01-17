@@ -49,6 +49,7 @@ const Wrapper = styled.div`
   width: 100%;
   height: 64px;
   position: fixed;
+  z-index: 1000;
 `;
 
 const HeaderWrapper = styled.header`
