@@ -11,6 +11,7 @@ import UserFollowers from './user/UserFollowers';
 import UserFollowing from './user/UserFollowing';
 import { Login, SignUp } from './auth';
 import NotificationList from './notification/NotificationList';
+import NotFound from './NotFound';
 
 import ErrorBoundary from './api/ErrorBoundary';
 
@@ -32,6 +33,7 @@ function Router() {
             <Route path='/post/create/:channelId' element={<CreatePost />} />
             <Route path='/channel/:channelId' element={<Search />} />
             <Route path='/userEdit/:id' element={<UserEdit />} />
+            <Route path='/*' element={<NotFound />} />
           </Routes>
         </ErrorBoundary>
       </Layout>
