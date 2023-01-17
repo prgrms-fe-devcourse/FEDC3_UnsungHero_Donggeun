@@ -58,6 +58,5 @@ const Btn = styled.button<IProps>`
       color === 'default' ? theme.colors.white : theme.colors.black};
     color: ${({ color }) => ButtonType[color as keyof IBtnType]};
     border: 2px solid ${({ theme }) => theme.colors.white};
-
   }
 `;
