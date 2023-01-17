@@ -4,12 +4,12 @@ import { ILike } from '../types/like';
 
 const { mutate } = useMutation();
 
-export const createLike = async () => {
+export const createLike = async (postId: string) => {
   await mutate({
     url: `${tempData.baseUrl}/likes/create`,
     method: 'post',
     data: {
-      postId: tempData.postId,
+      postId: postId,
     },
   });
 };

@@ -2,19 +2,19 @@ import { request } from '../api/request';
 import useMutation from '../api/useMutation';
 import { tempData } from './tempData';
 
-const { mutate } = useMutation();
-
 export const getPost = <T>(postId: string) => {
   return request<T>(`${tempData.baseUrl}/posts/${postId}`);
 };
 
-export const createComment = async (value: string) => {
+const { mutate } = useMutation();
+
+export const createComment = async (value: string, postId: string) => {
   await mutate({
     url: `${tempData.baseUrl}/comments/create`,
     method: 'post',
     data: {
       comment: value,
-      postId: tempData.postId,
+      postId: postId,
     },
   });
 };

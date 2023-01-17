@@ -4,10 +4,11 @@ import { createComment, deleteComment } from './api';
 
 interface ICommentProps {
   commentList?: IComment[];
-  refetchPost: () => void;
+  postId: string;
+  //refetchPost: () => void;
 }
 
-const Comment = ({ commentList, refetchPost }: ICommentProps) => {
+const Comment = ({ commentList, postId }: ICommentProps) => {
   const [value, setValue] = useState('');
 
   const handleInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -16,9 +17,9 @@ const Comment = ({ commentList, refetchPost }: ICommentProps) => {
 
   const handleSubmitInput = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    await createComment(value);
-    refetchPost();
+    console.log('handle submi t');
+    await createComment(value, postId);
+    //refetchPost();
 
     setValue('');
   };
@@ -26,7 +27,7 @@ const Comment = ({ commentList, refetchPost }: ICommentProps) => {
   const handleClickButton = async (id: string) => {
     await deleteComment(id);
 
-    refetchPost();
+    //refetchPost();
   };
 
   return (

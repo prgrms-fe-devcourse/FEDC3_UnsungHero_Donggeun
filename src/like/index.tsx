@@ -1,31 +1,32 @@
 import { useState, useEffect } from 'react';
-import { tempData } from '../comment/tempData';
 import { ILike } from '../types/like';
 import { createLike, deleteLike } from './api';
 
 interface ILikeProps {
   likeList?: ILike[];
-  refetchPost: () => void;
+  userId: string;
+  postId: string;
+  // refetchPost: () => void;
 }
 
-const Like = ({ likeList, refetchPost }: ILikeProps) => {
+const Like = ({ likeList, userId, postId }: ILikeProps) => {
   const [isLike, setIsLike] = useState(false);
 
   const handleClickLike = async () => {
-    const targetLike = likeList?.find(({ user }) => user === tempData.userId);
+    const targetLike = likeList?.find(({ user }) => user === userId);
 
     if (isLike && targetLike) {
       await deleteLike(targetLike);
     } else {
-      await createLike();
+      await createLike(postId);
     }
 
-    refetchPost();
+    // refetchPost();
   };
 
   useEffect(() => {
     if (likeList) {
-      const userLikeIndex = likeList.findIndex(({ user }) => user === tempData.userId);
+      const userLikeIndex = likeList.findIndex(({ user }) => user === userId);
       setIsLike(userLikeIndex > -1 ? true : false);
     }
   }, [likeList]);
