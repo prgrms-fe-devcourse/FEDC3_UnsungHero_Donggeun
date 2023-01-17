@@ -68,10 +68,15 @@ const TextArea = styled.textarea`
 `;
 const Button = styled.button`
   margin-left: 0.5rem;
-  background-color: #52d2a4;
-  border: none;
-  color: #ffffff;
+  background-color: #ffffff;
+  border: solid #52d2a4;
+  color: #000000;
   align-self: right;
+  cursor: pointer;
+  &:hover {
+    color: #ffffff;
+    background-color: #48b790;
+  }
 `;
 const Ul = styled.ul``;
 const Li = styled.li`

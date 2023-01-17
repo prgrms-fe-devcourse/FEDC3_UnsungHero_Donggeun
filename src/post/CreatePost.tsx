@@ -164,12 +164,16 @@ const Button = styled.button`
   padding: 0.5rem;
   width: 200px;
   align-self: end;
-  border: none;
+  border: solid #52d2a4;
   border-radius: 5%;
 
-  background-color: #52d2a4;
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #000000;
   cursor: pointer;
+  &:hover {
+    color: #ffffff;
+    background-color: #48b790;
+  }
 `;
 
 export default CreatePost;

@@ -121,7 +121,9 @@ const UpdatePost = () => {
         placeholder='내용'
       />
       <Div />
-      <Button type='submit'>내용 수정</Button>
+      <Button type='submit' backgroundColor={'#52D2A4'}>
+        내용 수정
+      </Button>
       <Button onClick={handleDeletePost} backgroundColor={'red'}>
         글 삭제
       </Button>
@@ -182,11 +184,15 @@ const Button = styled.button<{ backgroundColor?: string }>`
   align-self: end;
   margin: 0.5rem;
   padding: 0.5rem;
-  background-color: ${(props) => (props.backgroundColor ? props.backgroundColor : '#52d2a4')};
-  color: #ffffff;
-  border: none;
+  background-color: #ffffff;
+  color: #000000;
+  border: solid ${(props) => props.backgroundColor};
   border-radius: 5%;
   cursor: pointer;
+  &:hover {
+    color: #ffffff;
+    background-color: ${(props) => props.backgroundColor};
+  }
 `;
 
 export default UpdatePost;

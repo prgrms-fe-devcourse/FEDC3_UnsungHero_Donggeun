@@ -155,11 +155,15 @@ const Textarea = styled.textarea`
 const Button = styled.button<{ backgroundColor?: string }>`
   padding: 0.5rem;
   align-self: end;
-  border: none;
+  border: solid #52d2a4;
   border-radius: 5%;
-  background-color: #52d2a4;
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #000000;
   cursor: pointer;
+  &:hover {
+    color: #ffffff;
+    background-color: #48b790;
+  }
 `;
 
 export default DetailPost;
