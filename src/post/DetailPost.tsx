@@ -78,6 +78,8 @@ const DetailPost = () => {
     navigate(`/post/channelId/updatePost/${postId}`);
   };
 
+  const identification = author._id === userId ? false : true;
+
   return (
     <ErrorBoundary>
       <Container>
@@ -93,7 +95,11 @@ const DetailPost = () => {
         <Textarea value={content} disabled rows={10} cols={100} />
         <Like likeList={likes} userId={userId || ''} postId={postId || ''} fetchData={fetchData} />
         <Div />
-        {token ? <Button onClick={handleOnClickToUpdatePage}>내용 수정 페이지로 가기</Button> : null}
+        {token ? (
+          <Button onClick={handleOnClickToUpdatePage} disabled={identification}>
+            내용 수정
+          </Button>
+        ) : null}
         <Div />
         <Comment commentList={comments} postId={postId || ''} fetchData={fetchData} />
       </Container>
@@ -160,9 +166,17 @@ const Button = styled.button<{ backgroundColor?: string }>`
   background-color: #ffffff;
   color: #000000;
   cursor: pointer;
-  &:hover {
+  &:hover:enabled {
     color: #ffffff;
     background-color: #48b790;
+  }
+  &:disabled {
+    background-color: gray;
+    border: none;
+    cursor: not-allowed;
+    ::after {
+      content: '은작성자만 가능합니다';
+    }
   }
 `;
 
