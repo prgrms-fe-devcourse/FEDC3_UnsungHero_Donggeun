@@ -100,9 +100,6 @@ function CreatePost() {
         value={initContent}
       />
       <Div />
-      {/* <Label className='image-fill-upload-button' htmlFor='Image-file'>
-        이미지 업로드
-      </Label> */}
       <ImageInput
         id='Image-file'
         type='file'
@@ -118,9 +115,8 @@ function CreatePost() {
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  margin: 5rem;
   padding: 1rem;
-  max-width: 50%;
+  width: 725px;
   border: solid 1px #c4c4c4;
   border-radius: 3%;
   box-shadow: 12px 12px 2px 1px rgba(216, 216, 235, 0.2);
@@ -152,13 +148,6 @@ const Textarea = styled.textarea`
   }
 `;
 
-const Label = styled.label`
-  color: #ffffff;
-  padding: 0.5rem;
-  background-color: #52d2a4;
-  border-radius: 5%;
-`;
-
 const ImageInput = styled.input`
   padding: 0.5rem;
   background-color: #fafafa;
@@ -167,7 +156,6 @@ const ImageInput = styled.input`
   &::file-selector-button {
     cursor: pointer;
     border: none;
-    /* background-color: #52d2a4; */
   }
 `;
 
@@ -176,11 +164,16 @@ const Button = styled.button`
   padding: 0.5rem;
   width: 200px;
   align-self: end;
-  border: none;
+  border: solid #52d2a4;
   border-radius: 5%;
 
-  background-color: #52d2a4;
-  color: #ffffff;
+  background-color: #ffffff;
+  color: #000000;
+  cursor: pointer;
+  &:hover {
+    color: #ffffff;
+    background-color: #48b790;
+  }
 `;
 
 export default CreatePost;

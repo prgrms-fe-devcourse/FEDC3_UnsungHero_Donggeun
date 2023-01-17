@@ -9,12 +9,6 @@ import { IPost } from '../types/post';
 
 const END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 
-const Container = styled.div`
-  max-width: 50%;
-  display: flex;
-  flex-direction: column;
-`;
-
 const UpdatePost = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -159,9 +153,8 @@ const Image = styled.img``;
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  margin: 5rem;
   padding: 1rem;
-  max-width: 50%;
+  width: 725px;
   border: solid 1px #c4c4c4;
   border-radius: 3%;
   box-shadow: 12px 12px 2px 1px rgba(216, 216, 235, 0.2);
@@ -210,11 +203,15 @@ const Button = styled.button<{ backgroundColor?: string }>`
   align-self: end;
   margin: 0.5rem;
   padding: 0.5rem;
-  background-color: ${(props) => (props.backgroundColor ? props.backgroundColor : '#52d2a4')};
-  color: #ffffff;
-  border: none;
+  background-color: #ffffff;
+  color: #000000;
+  border: solid ${(props) => props.backgroundColor};
   border-radius: 5%;
   cursor: pointer;
+  &:hover {
+    color: #ffffff;
+    background-color: ${(props) => props.backgroundColor};
+  }
 `;
 
 export default UpdatePost;

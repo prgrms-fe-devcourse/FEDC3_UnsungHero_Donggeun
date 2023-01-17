@@ -1,5 +1,4 @@
 import PostList from './PostList';
-
 import { useState, useEffect } from 'react';
 import { IsJsonString } from './isJsonString';
 import styled from 'styled-components';
@@ -122,8 +121,8 @@ export default PostListContainer;
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
-  width: 725px;
-  margin: 0 0 10px 40px;
+  width: 45.3125rem;
+  margin: 0 0 0.625rem 0rem;
 
   button {
     background: inherit;
@@ -134,6 +133,6 @@ const ButtonContainer = styled.div`
     overflow: visible;
     cursor: pointer;
     border-left: none;
-    font-size: 17px;
+    font-size: 1.0625rem;
   }
 `;

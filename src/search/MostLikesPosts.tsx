@@ -1,6 +1,7 @@
 import { IsJsonString } from './isJsonString';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useToken } from '../contexts/TokenProvider';
 interface Ilikes {
   _id: string;
 }
@@ -69,6 +70,9 @@ const MostLikesPosts = ({ postsInfo, currentChannelId }: IMostLikesPostsProps) =
     return MostLikesPostsTitle;
   };
 
+  const tokenObject = useToken();
+  const token = tokenObject?.token;
+
   return (
     <WholeWrapper>
       <div className='bestPostsTitle'>#{selectMostLikesPostsTitle()}</div>
@@ -77,13 +81,17 @@ const MostLikesPosts = ({ postsInfo, currentChannelId }: IMostLikesPostsProps) =
           const { title, _id, likes, comments } = filteredPost;
           const postTitle = IsJsonString(title) ? JSON.parse(title).title : title;
           return (
-            <BestPostWrapper key={_id} onClick={() => navigatePost(`/post/${_id}`)}>
+            <BestPostWrapper
+              key={_id}
+              onClick={() => {
+                if (token) {
+                  navigatePost(`/post/${_id}`);
+                } else {
+                  navigatePost('/login');
+                }
+              }}
+            >
               <div className='bestPostTitleDotContainer'>
-                <img
-                  className='redDot'
-                  src='https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FlpwA9%2FbtrWw9zB4Ru%2FUaErr7skbrtVEXLCzMTKR1%2Fimg.png'
-                  alt='빨간 점'
-                />
                 <div className='bestPostTitle'>{postTitle}</div>
               </div>
               <div className='postInfoContainer'>
@@ -92,13 +100,13 @@ const MostLikesPosts = ({ postsInfo, currentChannelId }: IMostLikesPostsProps) =
                   src='https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fmdos4%2FbtrWuNYDtvi%2F7BdrJ7GO6iU7vuoCbMvhek%2Fimg.png'
                   alt='좋아요'
                 />
-                <div>{likes.length}</div>
+                <div className='likesNumber'>{likes.length}</div>
                 <img
                   className='commentsImg'
                   src='https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fk7UN0%2FbtrWu7bJfuo%2FPDforMZSQxfDA0lBp3eFE0%2Fimg.png'
                   alt='댓글아이콘'
                 />
-                <div>{comments.length}</div>
+                <div className='commentsNumber'>{comments.length}</div>
               </div>
             </BestPostWrapper>
           );
@@ -114,22 +122,24 @@ const WholeWrapper = styled.div`
   height: auto;
   display: flex;
   flex-direction: column;
-  margin: 30px 0 0 0;
+  margin: 1.875rem 0 0 0;
 
   .bestPostsTitle {
-    width: 725px;
-    height: 50px;
-    padding: 15px 0 0 20px;
-    margin: 0 0 0px 40px;
-    font-size: 20px;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
+    width: 45.3125rem;
+    height: 3.125rem;
+    padding: 0.9375rem 0 0 1.25rem;
+    margin: 0 0 0rem 0rem;
+    font-size: 1.25rem;
+    border-top-left-radius: 0.1875rem;
+    border-top-right-radius: 0.1875rem;
     background-color: #52d2a4;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 0.0625rem 0.0625rem rgba(0, 0, 0, 0.6);
   }
 `;
 
 const BestPostsEntireWrapper = styled.ul`
+  width: 45.3125rem;
+  padding: 0;
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -138,26 +148,32 @@ const BestPostsEntireWrapper = styled.ul`
 const BestPostWrapper = styled.li`
   display: flex;
   flex-direction: column;
-  width: 725px;
-  height: 75px;
-  border-radius: 0px;
-  padding: 16px 20px;
-  gap: 0px;
+  width: 45.3125rem;
+  height: 4.6875rem;
+  border-bottom: solid 0.0625rem #dce1e8;
+  border-radius: 0rem;
+  padding: 1rem 1.25rem;
+  gap: 0rem;
   cursor: pointer;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.6);
+  background-color: white;
+  box-shadow: 0 0.0625rem 0.0625rem rgba(0, 0, 0, 0.6);
 
   .bestPostTitleDotContainer {
     display: flex;
     .redDot {
       align-self: center;
-      width: 4px;
-      height: 4px;
-      margin-bottom: 17px;
+      width: 0.25rem;
+      height: 0.25rem;
+      margin-bottom: 1.0625rem;
     }
     .bestPostTitle {
-      font-size: 18px;
+      font-size: 1.125rem;
       font-weight: 500;
-      margin: 0 0 10px 5px;
+      margin: 0 0 0.625rem 0.3125rem;
+      width: 41.875rem;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
 
       &:hover {
         text-decoration: underline;
@@ -169,18 +185,25 @@ const BestPostWrapper = styled.li`
     display: flex;
     justify-content: end;
     color: #939393;
-    /* margin-top: 10px; */
 
     .likesImg {
-      margin-right: 2px;
-      padding-top: 1px;
-      width: 17px;
-      height: 17px;
+      margin-right: 0.125rem;
+      padding-top: 0.0625rem;
+      width: 1.0625rem;
+      height: 1.0625rem;
     }
     .commentsImg {
-      margin: 0 2px 0 10px;
-      width: 18px;
-      height: 18px;
+      margin: 0 0.125rem 0 0.625rem;
+      width: 1.125rem;
+      height: 1.125rem;
+    }
+
+    .commentsNumber {
+      width: 1.25rem;
+    }
+
+    .likesNumber {
+      width: 1.25rem;
     }
   }
 `;
