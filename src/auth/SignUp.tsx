@@ -142,7 +142,7 @@ export default SignUp;
 
 const SignUpHeader = styled.h1`
   text-align: center;
-  margin-top: 100px;
+  margin-top: 6.25rem;
 `;
 
 const SignUpContainer = styled.div`
@@ -151,7 +151,7 @@ const SignUpContainer = styled.div`
   display: flex;
   flex-direction: column;
   border: 1px solid black;
-  padding: 25px 45px;
+  padding: 1.563rem 2.813rem;
   border-radius: 5px;
   border: none;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2), -1px -1px 5px rgba(0, 0, 0, 0.2);
@@ -161,50 +161,50 @@ const SignUpContainer = styled.div`
 const FormTitle = styled.div`
   font-size: 1.125em;
   font-weight: 700;
-  margin: 10px auto 35px auto;
+  margin: 0.625rem auto 2.188rem auto;
 `;
 
 const Label = styled.label`
-  margin-bottom: 5px;
+  margin-bottom: 0.313rem;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 0.875rem;
 `;
 
 const InputContainer = styled.div`
-  margin-bottom: 25px;
+  margin-bottom: 1.563rem;
   display: flex;
   flex-direction: column;
   position: relative;
 
   .logo {
     position: absolute;
-    top: 13px;
-    left: 10px;
-    font-size: 26px;
+    top: 0.813rem;
+    left: 0.625rem;
+    font-size: 1.625rem;
   }
 `;
 
 const Input = styled.input`
-  height: 50px;
-  margin-bottom: 5px;
-  border-radius: 5px;
+  height: 3.125rem;
+  margin-bottom: 0.313rem;
+  border-radius: 0.313rem;
   border: 1px solid rgba(0, 0, 0, 0.12);
   outline: none;
-  padding-left: 40px;
+  padding-left: 2.5rem;
 `;
 
 const ErrorText = styled.span`
-  font-size: 12px;
+  font-size: 0.75rem;
   color: #ff1f1f;
 `;
 
 const SignUpButton = styled.button`
   background-color: #52d2a4;
   color: #e6e6e6;
-  border-radius: 5px;
+  border-radius: 0.313rem;
   border: none;
-  height: 40px;
-  margin-top: 20px;
+  height: 2.5rem;
+  margin-top: 1.25rem;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.5s ease;
@@ -216,7 +216,7 @@ const SignUpButton = styled.button`
 `;
 
 const IsUserLink = styled(Link)`
-  font-size: 12px;
+  font-size: 0.75rem;
   color: blue;
-  margin: 10px 0;
+  margin: 0.625rem 0;
 `;
