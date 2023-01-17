@@ -6,10 +6,11 @@ interface ILikeProps {
   likeList?: ILike[];
   userId: string;
   postId: string;
+  postuserId: string;
   // refetchPost: () => void;
 }
 
-const Like = ({ likeList, userId, postId }: ILikeProps) => {
+const Like = ({ likeList, userId, postId, postuserId }: ILikeProps) => {
   const [isLike, setIsLike] = useState(false);
 
   const handleClickLike = async () => {
@@ -18,7 +19,7 @@ const Like = ({ likeList, userId, postId }: ILikeProps) => {
     if (isLike && targetLike) {
       await deleteLike(targetLike);
     } else {
-      await createLike(postId);
+      await createLike(postId, postuserId);
     }
 
     // refetchPost();

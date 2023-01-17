@@ -29,6 +29,7 @@ const useFollow = (currentPageId: string) => {
     followers: [],
     following: [],
   });
+  const [firstClickCheck, setFirstClickCheck] = useState(false);
 
   useEffect(() => {
     const followerList = currentData?.followers.map((user: IFollow) => user.follower);
@@ -38,11 +39,31 @@ const useFollow = (currentPageId: string) => {
       followers: followerList as [],
       following: followingList as [],
     });
+
+    if (firstClickCheck) produceFollowNotification();
   }, [currentData, LoginUserData]);
 
   useEffect(() => {
     fetchCurrentData();
   }, [currentPageId]);
+
+  const produceFollowNotification = () => {
+    const body = {
+      notificationType: 'FOLLOW',
+      notificationTypeId: currentData?.followers[currentData?.followers.length - 1]._id,
+      userId: currentData?._id,
+      postId: null,
+    };
+
+    mutate({
+      url: `http://kdt.frontend.3rd.programmers.co.kr:5006/notifications/create`,
+      method: 'post',
+      data: {
+        ...body,
+      },
+    });
+    setFirstClickCheck(false);
+  };
 
   const handleClickFollow = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string) => {
     e.stopPropagation();
@@ -56,6 +77,7 @@ const useFollow = (currentPageId: string) => {
 
     await fetchCurrentData();
     await fetchLoginUserData();
+    setFirstClickCheck(true);
   };
 
   const handleClickUnFollow = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string) => {
