@@ -29,14 +29,21 @@ const ButtonType: IBtnType = {
 
 const Btn = styled.button<IProps>`
   cursor: pointer;
-  height: ${({ height }) => `${height}px`};
-  width: ${({ width }) => `${width}px`};
-  border: none;
-  height: 30px;
-  border-radius: 5px;
-  padding: 5px 10px;
-  font-size: 14px;
+  height: ${({ height }) => `${height}rem`};
+  width: ${({ width }) => `${width}rem`};
+  border-radius: 0.3125rem;
+  padding: 0.3125rem 0.625rem;
+  font-size: 0.875rem;
   background-color: ${({ color }) => ButtonType[color as keyof IBtnType]};
   border: 2px solid ${({ theme }) => theme.colors.primary};
   color: ${({ color, theme }) => (color === 'default' ? theme.colors.white : theme.colors.black)};
+  font-weight: 700;
+  transition: all 0.5s ease;
+
+  &:hover {
+    background-color: ${({ color, theme }) =>
+      color === 'default' ? theme.colors.white : theme.colors.black};
+    color: ${({ color }) => ButtonType[color as keyof IBtnType]};
+    border: 2px solid ${({ theme }) => theme.colors.white};
+  }
 `;

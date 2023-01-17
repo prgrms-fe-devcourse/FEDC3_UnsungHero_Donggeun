@@ -11,18 +11,20 @@ import UserFollowers from './user/UserFollowers';
 import UserFollowing from './user/UserFollowing';
 import { Login, SignUp } from './auth';
 import NotificationList from './notification/NotificationList';
-
+import Header from './layout/Header';
 import ErrorBoundary from './api/ErrorBoundary';
+import NotFound from './NotFound';
 
 function Router() {
   return (
     <BrowserRouter>
-      <Layout>
-        <ErrorBoundary>
-          <Routes>
+      <Header />
+      <ErrorBoundary>
+        <Routes>
+          <Route path='/signup' element={<SignUp />} />
+          <Route path='/login' element={<Login />} />
+          <Route element={<Layout />}>
             <Route path='/' element={<Post />} />
-            <Route path='/signup' element={<SignUp />} />
-            <Route path='/login' element={<Login />} />
             <Route path='/notifications' element={<NotificationList />} />
             <Route path='/user/:id' element={<User />} />
             <Route path='/followers/:id' element={<UserFollowers />} />
@@ -32,9 +34,10 @@ function Router() {
             <Route path='/post/create/:channelId' element={<CreatePost />} />
             <Route path='/channel/:channelId' element={<Search />} />
             <Route path='/userEdit/:id' element={<UserEdit />} />
-          </Routes>
-        </ErrorBoundary>
-      </Layout>
+          </Route>
+          <Route path='/*' element={<NotFound />} />
+        </Routes>
+      </ErrorBoundary>
     </BrowserRouter>
   );
 }
