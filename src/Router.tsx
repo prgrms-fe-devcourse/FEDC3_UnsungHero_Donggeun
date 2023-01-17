@@ -12,8 +12,8 @@ import UserFollowing from './user/UserFollowing';
 import { Login, SignUp } from './auth';
 import NotificationList from './notification/NotificationList';
 import Header from './layout/Header';
-import NotFound from './NotFound';
 import ErrorBoundary from './api/ErrorBoundary';
+import NotFound from './NotFound';
 
 function Router() {
   return (
@@ -24,7 +24,7 @@ function Router() {
           <Route path='/signup' element={<SignUp />} />
           <Route path='/login' element={<Login />} />
           <Route path='/*' element={<NotFound />} />
-          {/* <Route element={<Layout />}>
+          <Route element={<Layout />}>
             <Route path='/' element={<Post />} />
             <Route path='/notifications' element={<NotificationList />} />
             <Route path='/user/:id' element={<User />} />
@@ -35,7 +35,7 @@ function Router() {
             <Route path='/post/create/:channelId' element={<CreatePost />} />
             <Route path='/channel/:channelId' element={<Search />} />
             <Route path='/userEdit/:id' element={<UserEdit />} />
-          </Route> */}
+          </Route>
         </Routes>
       </ErrorBoundary>
     </BrowserRouter>
