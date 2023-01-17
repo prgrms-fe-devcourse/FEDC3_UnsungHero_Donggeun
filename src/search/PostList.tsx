@@ -205,6 +205,7 @@ const PostTopWrapper = styled.div`
         font-size: 18px;
         font-weight: 500;
         padding-left: 5px;
+        white-space: nowrap;
 
         &:hover {
           text-decoration: underline;
@@ -218,6 +219,7 @@ const PostTopWrapper = styled.div`
     font-size: 15px;
     color: gray;
     padding-left: 13px;
+    white-space: nowrap;
   }
 `;
 

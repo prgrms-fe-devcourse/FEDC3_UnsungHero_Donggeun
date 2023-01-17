@@ -94,6 +94,7 @@ const PostListContainer = ({
         <button onClick={handleClickRecent} disabled={checkedSorting}>
           최신순
         </button>
+        <div>{' | '}</div>
         <button onClick={handleClickSympathy} disabled={!checkedSorting}>
           공감순
         </button>
@@ -118,6 +119,20 @@ const PostListContainer = ({
 export default PostListContainer;
 
 const ButtonContainer = styled.div`
-  width: 725;
+  display: flex;
   justify-content: flex-end;
+  width: 725px;
+  margin: 0 0 10px 40px;
+
+  button {
+    background: inherit;
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+    overflow: visible;
+    cursor: pointer;
+    border-left: none;
+    font-size: 17px;
+  }
 `;

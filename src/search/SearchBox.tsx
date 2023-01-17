@@ -76,7 +76,7 @@ const SearchBoxForm = styled.form`
   display: flex;
   justify-content: center;
   width: 725px;
-  margin: 20px 0 60px 40px;
+  margin: 40px 0 60px 40px;
 `;
 
 const SearchBoxSelect = styled.select`
