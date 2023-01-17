@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import { Pagination } from '../common';
 import { IPost } from '../types/post';
-import Pagination from './Pagination';
+
 import UserPostListItem from './UserPostListItem';
 
 interface IProps {
