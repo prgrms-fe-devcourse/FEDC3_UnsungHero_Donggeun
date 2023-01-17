@@ -1,6 +1,9 @@
+
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+=======
+
 import { IComment } from '../types/comment';
 
 import { createComment, deleteComment } from './api';
@@ -11,6 +14,7 @@ interface ICommentProps {
   commentList?: IComment[];
   postId: string;
   userId: string;
+
   fetchData: () => void;
   //refetchPost: () => void;
 }
@@ -24,6 +28,7 @@ const Comment = ({ commentList, userId, postId, fetchData }: ICommentProps) => {
 
   const handleSubmitInput = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     await createComment(value, userId, postId);
     //refetchPost();
     fetchData();
