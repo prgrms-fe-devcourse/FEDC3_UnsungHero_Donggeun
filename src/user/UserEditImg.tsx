@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import useAxios from '../api/useAxios';
+import { Avatar } from '../common';
 import { IUser } from '../types/user';
 
 const COVER_IMG_URL = 'https://ifh.cc/g/ZSypny.png';
 const PROFIE_IMG_URL = 'https://ifh.cc/g/35RDD6.png';
 const API_URL = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
+const EDIT_IMG_URL = 'https://ifh.cc/g/2zSYKD.png';
 interface IProps {
   id: string | undefined;
   setimgFiles: React.Dispatch<React.SetStateAction<object>>;
@@ -63,8 +65,21 @@ const UserEditImg = ({ id, setimgFiles }: IProps) => {
 
   return (
     <Wrapper>
-      <CoverImg src={coverImage} onClick={() => coverInputRef.current?.click()} />
-      <ProfileImg src={profileImage} onClick={() => profileInputRef.current?.click()} />
+      <CoverImgWrapper onClick={() => coverInputRef.current?.click()}>
+        <CoverImg src={coverImage} />
+        <img src={EDIT_IMG_URL} />
+        <CoverFilter />
+      </CoverImgWrapper>
+      <ProfileImgWrapper onClick={() => profileInputRef.current?.click()}>
+        <Avatar
+          src={profileImage}
+          width={90}
+          height={90}
+          style={{ position: 'absolute', top: '0', left: '0', zIndex: '7' }}
+        />
+        <img src={EDIT_IMG_URL} />
+        <ImgFilter />
+      </ProfileImgWrapper>
       <input
         type='file'
         style={{ display: 'none' }}
@@ -92,13 +107,53 @@ const Wrapper = styled.div`
   flex-direction: column;
 `;
 
-const CoverImg = styled.img`
-  width: 400px;
-  height: 200px;
+const CoverImgWrapper = styled.div`
+  position: relative;
+  > img:last-of-type {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 10;
+  }
 `;
 
-const ProfileImg = styled.img`
+const CoverImg = styled.img`
+  display: block;
+  width: 100%;
+  height: 11.25rem;
+`;
+
+const CoverFilter = styled.div`
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 5;
+`;
+
+const ProfileImgWrapper = styled.div`
+  position: relative;
+  top: -1.25rem;
+  left: 1.25rem;
+  width: 5.625rem;
+  height: 5.625rem;
+  padding: 0.625rem 1.25rem;
+  > img:last-of-type {
+    position: absolute;
+    top: 35%;
+    left: 35%;
+    z-index: 10;
+  }
+`;
+
+const ImgFilter = styled.div`
+  position: absolute;
   border-radius: 50%;
-  width: 80px;
-  height: 80px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 9;
 `;

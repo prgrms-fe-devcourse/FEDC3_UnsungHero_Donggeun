@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import useAxios from '../api/useAxios';
 import useMutation from '../api/useMutation';
+import { Button } from '../common';
 import { useToken, useUserId } from '../contexts/TokenProvider';
 import { IFollow } from '../types/follow';
 import { IUser } from '../types/user';
@@ -108,9 +109,23 @@ const useFollow = (currentPageId: string) => {
 
     const following = LoginUserData?.following.map((user) => user.user);
     return following?.includes(id) ? (
-      <button onClick={(e) => handleClickUnFollow(e, id)}>언팔로우하기</button>
+      <Button
+        text={'언팔로우'}
+        color={'white'}
+        onClick={(e) => handleClickUnFollow(e, id)}
+        width={100}
+        height={30}
+        style={{ marginLeft: 'auto' }}
+      />
     ) : (
-      <button onClick={(e) => handleClickFollow(e, id)}>팔로우하기</button>
+      <Button
+        text={'팔로우'}
+        color={'default'}
+        onClick={(e) => handleClickFollow(e, id)}
+        width={100}
+        height={30}
+        style={{ marginLeft: 'auto' }}
+      />
     );
   };
 
