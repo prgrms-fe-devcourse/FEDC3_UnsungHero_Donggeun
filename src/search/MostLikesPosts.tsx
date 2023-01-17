@@ -1,6 +1,7 @@
 import { IsJsonString } from './isJsonString';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useToken } from '../contexts/TokenProvider';
 interface Ilikes {
   _id: string;
 }
@@ -69,6 +70,9 @@ const MostLikesPosts = ({ postsInfo, currentChannelId }: IMostLikesPostsProps) =
     return MostLikesPostsTitle;
   };
 
+  const tokenObject = useToken();
+  const token = tokenObject?.token;
+
   return (
     <WholeWrapper>
       <div className='bestPostsTitle'>#{selectMostLikesPostsTitle()}</div>
@@ -77,7 +81,16 @@ const MostLikesPosts = ({ postsInfo, currentChannelId }: IMostLikesPostsProps) =
           const { title, _id, likes, comments } = filteredPost;
           const postTitle = IsJsonString(title) ? JSON.parse(title).title : title;
           return (
-            <BestPostWrapper key={_id} onClick={() => navigatePost(`/post/${_id}`)}>
+            <BestPostWrapper
+              key={_id}
+              onClick={() => {
+                if (token) {
+                  navigatePost(`/post/${_id}`);
+                } else {
+                  navigatePost('/login');
+                }
+              }}
+            >
               <div className='bestPostTitleDotContainer'>
                 <div className='bestPostTitle'>{postTitle}</div>
               </div>

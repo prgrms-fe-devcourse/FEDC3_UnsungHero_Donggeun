@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { IsJsonString } from './isJsonString';
 import { useNavigate } from 'react-router-dom';
+import { useToken } from '../contexts/TokenProvider';
 
 interface Ilikes {
   _id: string;
@@ -40,7 +41,6 @@ const PostList = ({
   inputSearchValue,
   currentChannelId,
 }: IpostListProps) => {
-  console.log(Date());
   const navigatePost = useNavigate();
 
   const selectPostsChannelTitle = () => {
@@ -77,6 +77,9 @@ const PostList = ({
     return content;
   };
 
+  const tokenObject = useToken();
+  const token = tokenObject?.token;
+
   return (
     <WholeWrapper>
       <div className='postListTitle'>#{selectPostsChannelTitle()}</div>
@@ -88,7 +91,16 @@ const PostList = ({
           const postContent = IsJsonString(title) ? JSON.parse(title).content : ' ';
 
           return (
-            <PostWrapper key={_id} onClick={() => navigatePost(`/post/${_id}`)}>
+            <PostWrapper
+              key={_id}
+              onClick={() => {
+                if (token) {
+                  navigatePost(`/post/${_id}`);
+                } else {
+                  navigatePost('/login');
+                }
+              }}
+            >
               <PostTopWrapper>
                 {image === undefined ? (
                   <ProfileImg src='https://ifh.cc/g/35RDD6.png' alt='기본 프로필 이미지' />
