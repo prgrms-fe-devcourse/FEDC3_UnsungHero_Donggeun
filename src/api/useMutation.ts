@@ -1,19 +1,12 @@
-/* eslint-disable @typescript-eslint/ban-types */
-import { useEffect } from 'react';
 import axios from 'axios';
-import { useState } from 'react';
+import { TOKEN_KEY } from '../contexts/TokenProvider';
 import { IRequest } from '../types/request';
-import { IToken } from '../types/token';
-import { useToken } from '../contexts/TokenProvider';
 
 const useMutation = () => {
-  const [error, setError] = useState<Error>();
-  const tokenContextObj: IToken | null = useToken();
-
   const mutate = async ({ url, method, data }: IRequest) => {
     const config = {
       headers: {
-        Authorization: `bearer ${tokenContextObj?.token}`,
+        Authorization: `bearer ${JSON.parse(localStorage.getItem(TOKEN_KEY) || '')}`,
         'Content-Type': data instanceof FormData ? 'multipart/form-data' : 'application/json',
       },
       data,
@@ -21,7 +14,6 @@ const useMutation = () => {
 
     try {
       let response;
-
       if (method === 'delete') {
         response = await axios[method](url, config);
       } else {
@@ -31,16 +23,10 @@ const useMutation = () => {
       return response.data;
     } catch (e) {
       if (axios.isAxiosError(e)) {
-        setError(e);
+        throw new Error(e.message);
       }
     }
   };
-
-  useEffect(() => {
-    if (error) {
-      throw new Error(error.message);
-    }
-  }, [error]);
 
   return { mutate };
 };

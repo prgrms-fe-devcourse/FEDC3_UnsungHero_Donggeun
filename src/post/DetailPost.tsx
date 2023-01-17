@@ -6,7 +6,9 @@ import Comment from '../comment';
 import Like from '../like';
 import useAxios from '../api/useAxios';
 import { IPost } from '../types/post';
-import { useToken } from '../contexts/TokenProvider';
+import { useToken, useUserId } from '../contexts/TokenProvider';
+import { IComment } from '../types/comment';
+import { ILike } from '../types/like';
 
 const END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 const PROFIE_IMG_URL = 'https://ifh.cc/g/35RDD6.png';
@@ -30,11 +32,16 @@ const DetailPost = () => {
     createAt: '',
     _id: '',
   });
+  const [comments, setComments] = useState<IComment[]>([]);
+  const [likes, setLikes] = useState<ILike[]>([]);
 
   const { postId } = useParams();
 
   const tokenObject = useToken();
   const token = tokenObject?.token;
+
+  const userObject = useUserId();
+  const userId = userObject?.userId;
 
   const { data } = useAxios<IPost>({
     url: `${END_POINT}/posts/${postId}`,
@@ -60,6 +67,10 @@ const DetailPost = () => {
         _id: _id,
       });
       setImage(data.image as string);
+
+      setComments(data.comments);
+
+      setLikes(data.likes);
     }
   }, [data]);
 
@@ -81,8 +92,8 @@ const DetailPost = () => {
         <Textarea value={content} disabled rows={10} cols={100} />
         <Div />
         {token ? <Button onClick={handleOnClickToUpdatePage}>내용 수정 페이지로 가기</Button> : null}
-        <Comment />
-        <Like />
+        <Comment commentList={comments} postId={postId || ''} />
+        <Like likeList={likes} userId={userId || ''} postId={postId || ''} />
       </Container>
       <div>
         <img src={image} alt='이미지!' />

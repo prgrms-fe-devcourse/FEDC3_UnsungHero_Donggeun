@@ -1,59 +1,33 @@
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import useAxios from '../api/useAxios';
-import useMutation from '../api/useMutation';
-import { IPost } from '../types/post';
+import { IComment } from '../types/comment';
+import { createComment, deleteComment } from './api';
 
-const tempData = {
-  baseUrl: 'http://kdt.frontend.3rd.programmers.co.kr:5006',
-};
+interface ICommentProps {
+  commentList?: IComment[];
+  postId: string;
+  //refetchPost: () => void;
+}
 
-const Comment = () => {
-  const { postId } = useParams();
+const Comment = ({ commentList, postId }: ICommentProps) => {
   const [value, setValue] = useState('');
-  const { data, fetchData } = useAxios<IPost>({
-    url: `${tempData.baseUrl}/posts/${postId}`,
-    method: 'get',
-  });
-  const { mutate } = useMutation();
 
   const handleInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   };
 
-  const handleSubmitInput = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmitInput = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    createComment();
-  };
+    console.log('handle submi t');
+    await createComment(value, postId);
+    //refetchPost();
 
-  const handleClickButton = (id: string) => {
-    deleteComment(id);
-  };
-
-  const createComment = async () => {
-    await mutate({
-      url: `${tempData.baseUrl}/comments/create`,
-      method: 'post',
-      data: {
-        comment: value,
-        postId: postId,
-      },
-    });
-
-    fetchData();
     setValue('');
   };
 
-  const deleteComment = async (id: string) => {
-    await mutate({
-      url: `${tempData.baseUrl}/comments/delete`,
-      method: 'delete',
-      data: {
-        id,
-      },
-    });
+  const handleClickButton = async (id: string) => {
+    await deleteComment(id);
 
-    fetchData();
+    //refetchPost();
   };
 
   return (
@@ -63,7 +37,7 @@ const Comment = () => {
         <button>전송</button>
       </form>
       <ul>
-        {data?.comments.map(({ _id, comment }) => (
+        {commentList?.map(({ _id, comment }: IComment) => (
           <li key={_id}>
             {comment}
             <button onClick={() => handleClickButton(_id)}>❌</button>
