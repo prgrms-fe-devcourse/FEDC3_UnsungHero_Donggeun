@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const PROFIE_IMG_URL = 'https://ifh.cc/g/35RDD6.png';
+const PROFIE_IMG_URL = 'https://ifh.cc/g/rnhyjp.png';
 
 interface IProps extends React.HTMLAttributes<HTMLElement> {
   src: string | undefined;
