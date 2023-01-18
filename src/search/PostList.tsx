@@ -16,6 +16,10 @@ interface Iauthor {
   image: string | undefined;
 }
 
+interface IChannel {
+  _id: string;
+}
+
 interface IfilteredPostsInfo {
   title: string;
   _id: string;
@@ -23,6 +27,7 @@ interface IfilteredPostsInfo {
   likes: Ilikes[];
   createdAt: string;
   comments: IComments[];
+  channel: IChannel;
 }
 interface IpostListProps {
   filteredPostsInfo: IfilteredPostsInfo[];
@@ -43,9 +48,9 @@ const PostList = ({
 }: IpostListProps) => {
   const navigatePost = useNavigate();
 
-  const selectPostsChannelTitle = () => {
+  const selectPostsChannelTitle = (channelId: string | undefined) => {
     let PostsChannelTitle = '';
-    switch (currentChannelId) {
+    switch (channelId) {
       case '63c775d2a989ba6d232518ce':
         PostsChannelTitle = '바둑';
         break;
@@ -88,10 +93,11 @@ const PostList = ({
 
   return (
     <WholeWrapper>
-      <div className='postListTitle'>#{selectPostsChannelTitle()}</div>
+      <div className='postListTitle'>#{selectPostsChannelTitle(currentChannelId)}</div>
       <PostListWrapper>
-        {filteredPostsInfo.map((postInfo, index) => {
-          const { title, _id, likes, createdAt, comments } = postInfo;
+        {filteredPostsInfo.map((postInfo) => {
+          const { title, _id, likes, createdAt, comments, channel } = postInfo;
+          const channelId = channel._id;
           const { fullName, image } = postInfo.author; //fullName이 아니라 userName이 닉네임인 경우 변경해야함
           const postTitle = IsJsonString(title) ? JSON.parse(title).title : title;
           const postContent = IsJsonString(title) ? JSON.parse(title).content : ' ';
@@ -134,7 +140,7 @@ const PostList = ({
                     ? highlightIncludedText(fullName, inputSearchValue)
                     : fullName}
                 </div>
-                <div className='includedChannel'>{selectPostsChannelTitle()}</div>
+                <div className='includedChannel'>{selectPostsChannelTitle(channelId)}</div>
               </PostMiddleWrapper>
               <PostBottomWrapper>
                 <div className='likesCommentContatiner'>

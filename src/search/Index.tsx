@@ -70,7 +70,6 @@ const Search = () => {
         currentChannelId={currentChannelId}
       />
       <br />
-      {channelId ? <button onClick={() => navigate(`/post/create/${channelId}`)}>글 쓰기</button> : null}
     </ErrorBoundary>
   );
 };
