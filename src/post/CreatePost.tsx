@@ -4,8 +4,6 @@ import styled from 'styled-components';
 import { useToken } from '../contexts/TokenProvider';
 import useMutation from '../api/useMutation';
 
-const END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
-
 function CreatePost() {
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
@@ -53,7 +51,7 @@ function CreatePost() {
     formData.append('channelId', channelId as string);
 
     mutate({
-      url: `${END_POINT}/posts/create`,
+      url: `/posts/create`,
       method: 'post',
       data: formData,
     }).then((res) => {

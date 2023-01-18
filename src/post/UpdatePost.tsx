@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -6,8 +5,6 @@ import { useToken } from '../contexts/TokenProvider';
 import useMutation from '../api/useMutation';
 import useAxios from '../api/useAxios';
 import { IPost } from '../types/post';
-
-const END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 
 const UpdatePost = () => {
   const [title, setTitle] = useState('');
@@ -17,9 +14,6 @@ const UpdatePost = () => {
   const navigate = useNavigate();
   const [image, setImage] = useState({});
   const [previewImage, setPreviewImage] = useState('');
-
-  const tokenContextObj = useToken();
-  const token = tokenContextObj?.token;
 
   const { mutate } = useMutation();
 
@@ -33,7 +27,7 @@ const UpdatePost = () => {
   };
 
   const { data } = useAxios<IPost>({
-    url: `${END_POINT}/posts/${postId}`,
+    url: `/posts/${postId}`,
     method: 'get',
   });
 
@@ -68,13 +62,6 @@ const UpdatePost = () => {
     };
     const jsonToUpdate = JSON.stringify(postToUpdate);
 
-    const post = {
-      postId: postId,
-      title: jsonToUpdate,
-      image: null,
-      channelId: channelId,
-    };
-
     const formData = new FormData();
     formData.append('postId', postId as string);
     formData.append('title', jsonToUpdate);
@@ -82,7 +69,7 @@ const UpdatePost = () => {
     formData.append('channelId', channelId as string);
 
     mutate({
-      url: `${END_POINT}/posts/update`,
+      url: `/posts/update`,
       method: 'put',
       data: formData,
     }).then(() => {
@@ -95,7 +82,7 @@ const UpdatePost = () => {
 
   const handleDeletePost = () => {
     mutate({
-      url: `${END_POINT}/posts/delete`,
+      url: `/posts/delete`,
       method: 'delete',
       data: {
         id: postId,

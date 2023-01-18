@@ -12,7 +12,7 @@ const NotificationStatus = () => {
 
   const fetchNotificationData = async () => {
     await axios
-      .get('http://kdt.frontend.3rd.programmers.co.kr:5006/notifications', {
+      .get(`api/notifications`, {
         headers: { Authorization: `bearer ${tokenContextObj?.token}` },
       })
       .then((res) => {
