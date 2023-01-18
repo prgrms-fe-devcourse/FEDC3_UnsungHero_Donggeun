@@ -11,10 +11,11 @@ function Post() {
 
   return (
     <>
-      <ErrorBoundary>
+      <div>API TEST</div>
+      {/* <ErrorBoundary>
         <Search />
         <h1>언성히어로 최고🤗</h1>
-      </ErrorBoundary>
+      </ErrorBoundary> */}
     </>
   );
 }
