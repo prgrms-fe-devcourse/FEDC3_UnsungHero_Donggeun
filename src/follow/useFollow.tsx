@@ -57,7 +57,7 @@ const useFollow = (currentPageId: string) => {
     };
 
     mutate({
-      url: `http://kdt.frontend.3rd.programmers.co.kr:5006/notifications/create`,
+      url: `/notifications/create`,
       method: 'post',
       data: {
         ...body,
@@ -69,7 +69,7 @@ const useFollow = (currentPageId: string) => {
   const handleClickFollow = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string) => {
     e.stopPropagation();
     await mutate({
-      url: `${END_POINT}/follow/create`,
+      url: `/follow/create`,
       method: 'post',
       data: {
         userId: id,
@@ -84,7 +84,7 @@ const useFollow = (currentPageId: string) => {
   const handleClickUnFollow = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, id: string) => {
     e.stopPropagation();
     await axios
-      .get(`${END_POINT}/users/${id}`, {
+      .get(`/api/users/${id}`, {
         headers: {
           Authorization: `bearer ${tokenContext?.token}`,
         },
@@ -92,7 +92,7 @@ const useFollow = (currentPageId: string) => {
       .then(({ data }) => {
         const target = data?.followers.find(({ follower }: IFollow) => follower === userIdContext?.userId);
         mutate({
-          url: `${END_POINT}/follow/delete`,
+          url: `/follow/delete`,
           method: 'delete',
           data: {
             id: target?._id,
