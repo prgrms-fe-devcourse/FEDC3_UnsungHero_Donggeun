@@ -8,10 +8,19 @@ import { Link } from 'react-router-dom';
 import { AiOutlineMail, AiOutlineUser, AiOutlineLock, AiOutlineCheckCircle } from 'react-icons/ai';
 import Header from './Header';
 import { Button } from '../common';
+import { IToken } from '../types/token';
+import { useToken } from '../contexts/TokenProvider';
+import useAxios from '../api/useAxios';
+import { processSignUp } from './api';
 
 const SignUp = () => {
-  const [allFullNameList, setAllFullNameList] = useState<string>();
-  const [allEmailList, setAllEmailList] = useState<string>();
+  const [allFullNameList, setAllFullNameList] = useState<string[] | undefined>([]);
+  const [allEmailList, setAllEmailList] = useState<string[] | undefined>([]);
+  const tokenContextObj: IToken | null = useToken();
+  const { data: userData } = useAxios<IAuth[]>({
+    url: `/users/get-users`,
+    method: 'get',
+  });
 
   const {
     register,
@@ -37,28 +46,28 @@ const SignUp = () => {
       return;
     }
 
-    await axios
-      .post('http://kdt.frontend.3rd.programmers.co.kr:5006/signup', {
-        email,
-        fullName,
-        password,
-      })
-      .then(() => navigate('/login'));
+    try {
+      await processSignUp(email, fullName, password);
+      navigate('/login');
+    } catch (e) {
+      console.warn(e);
+    }
   };
 
   const getAllUserData = async () => {
-    await axios.get('http://kdt.frontend.3rd.programmers.co.kr:5006/users/get-users').then(({ data }) => {
-      const serverData = data;
-      const allFullNameData = serverData.map((data: IAuth) => data.fullName);
-      const allEmailData = serverData.map((data: IAuth) => data.email);
-      setAllFullNameList(allFullNameData);
-      setAllEmailList(allEmailData);
-    });
+    const allFullNameData = userData?.map((data: IAuth) => data.fullName);
+    const allEmailData = userData?.map((data: IAuth) => data.email);
+    setAllFullNameList(allFullNameData);
+    setAllEmailList(allEmailData);
   };
 
   useEffect(() => {
-    getAllUserData();
+    tokenContextObj?.token && navigate('/');
   }, []);
+
+  useEffect(() => {
+    getAllUserData();
+  }, [userData]);
 
   return (
     <>
@@ -95,6 +104,10 @@ const SignUp = () => {
                 minLength: {
                   value: 2,
                   message: '2자리 이상의 이름을 입력해주세요',
+                },
+                maxLength: {
+                  value: 10,
+                  message: '10자리 이하의 이름을 입력해주세요',
                 },
               })}
             />

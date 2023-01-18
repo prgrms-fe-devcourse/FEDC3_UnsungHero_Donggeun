@@ -5,8 +5,7 @@ import useAxios from '../api/useAxios';
 import { Avatar, Pagination } from '../common';
 import useFollow from '../follow/useFollow';
 import { IUser } from '../types/user';
-
-const API_URL = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
+import { END_POINT } from '../api/apiAddress';
 
 const UserFollowers = () => {
   const { id } = useParams();
@@ -17,7 +16,7 @@ const UserFollowers = () => {
   const offset = (page - 1) * limit;
 
   const { data } = useAxios<[]>({
-    url: `${API_URL}/users/get-users`,
+    url: `${END_POINT}/users/get-users`,
     method: 'get',
   });
 

@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import { IComment } from '../types/comment';
-
 import { createComment, deleteComment } from './api';
 import { Avatar, Button } from '../common';
 
@@ -9,21 +8,25 @@ interface ICommentProps {
   commentList?: IComment[];
   postId: string;
   userId: string;
+
   fetchData: () => void;
-  //refetchPost: () => void;
 }
 
 const Comment = ({ commentList, userId, postId, fetchData }: ICommentProps) => {
   const [value, setValue] = useState('');
 
   const handleInputValue = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    if (e.target.value.length > 300) {
+      e.target.value = e.target.value.slice(0, 300);
+    }
+
     setValue(e.target.value);
   };
 
   const handleSubmitInput = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     await createComment(value, userId, postId);
-    //refetchPost();
     fetchData();
 
     setValue('');
@@ -32,7 +35,6 @@ const Comment = ({ commentList, userId, postId, fetchData }: ICommentProps) => {
   const handleClickButton = async (id: string) => {
     await deleteComment(id);
 
-    //refetchPost();
     fetchData();
   };
 

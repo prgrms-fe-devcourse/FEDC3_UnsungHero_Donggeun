@@ -10,8 +10,7 @@ import { useToken, useUserId } from '../contexts/TokenProvider';
 import { IComment } from '../types/comment';
 import { ILike } from '../types/like';
 import { Avatar, Button } from '../common';
-
-const END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
+import { END_POINT } from '../api/apiAddress';
 
 interface Iauthor {
   fullName: string;
@@ -78,6 +77,8 @@ const DetailPost = () => {
     navigate(`/post/channelId/updatePost/${postId}`);
   };
 
+  const identification = author._id === userId ? false : true;
+
   return (
     <ErrorBoundary>
       <Container>
@@ -85,7 +86,7 @@ const DetailPost = () => {
           <TitleWrapper>
             <Title>
               <div>{title}</div>
-              <CreateAt>작성일: {author.createAt}</CreateAt>
+              <CreateAt>작성일: {author.createAt.slice(0, 10)}</CreateAt>
             </Title>
             {token ? (
               <Button
@@ -159,6 +160,7 @@ const Title = styled.div`
   font-size: 1.375rem;
   > div {
     font-weight: bold;
+    word-wrap: break-word;
   }
 `;
 
@@ -183,6 +185,8 @@ const Author = styled.div`
 `;
 
 const ContentImage = styled.img`
+  max-height: 31.25rem;
+  max-width: 43.75rem;
   margin: 1rem 0;
 `;
 

@@ -6,18 +6,18 @@ import { useNavigate } from 'react-router-dom';
 import { IToken } from '../types/token';
 import { IAuth } from '../types/auth';
 import { IUserId } from '../types/useId';
-import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { AiOutlineMail, AiOutlineLock } from 'react-icons/ai';
 import Header from './Header';
 import { Button } from '../common';
+import { useEffect } from 'react';
+import { processLogin } from './api';
 
 const TOKEN_KEY = 'token';
 const USERID_KEY = 'userId';
 
 const Login = () => {
-  const [allOnlineEmail, setAllOnlineEmail] = useState<string>();
   const {
     register,
     handleSubmit,
@@ -32,42 +32,24 @@ const Login = () => {
   const navigate = useNavigate();
 
   const onSubmitHandler: SubmitHandler<IAuth> = async ({ email, password }) => {
-    if (allOnlineEmail?.indexOf(email) !== -1) {
-      setError('email', { message: '현재 접속중인 email 입니다.' }, { shouldFocus: true });
-      return;
+    try {
+      const { data: userData } = await processLogin(email, password);
+      setValue(userData.token);
+      setUserId(userData.user._id);
+      tokenContextObj?.addToken(userData.token);
+      userIdContext?.addUserId(userData.user._id);
+      navigate('/');
+    } catch (e) {
+      setError(
+        'password',
+        { message: '아이디나 비밀번호 정보가 일치하지 않습니다. 다시 한번 확인해주세요.' },
+        { shouldFocus: true }
+      );
     }
-
-    await axios
-      .post('http://kdt.frontend.3rd.programmers.co.kr:5006/login', {
-        email,
-        password,
-      })
-      .then(({ data }) => {
-        setValue(data.token);
-        setUserId(data.user._id);
-        tokenContextObj?.addToken(data.token);
-        userIdContext?.addUserId(data.user._id);
-        navigate('/');
-      })
-      .catch(() => {
-        setError(
-          'password',
-          { message: '아이디나 비밀번호 정보가 일치하지 않습니다. 다시 한번 확인해주세요.' },
-          { shouldFocus: true }
-        );
-      });
-  };
-
-  const getAllOnlineEmailData = async () => {
-    await axios.get('http://kdt.frontend.3rd.programmers.co.kr:5006/users/online-users').then(({ data }) => {
-      const serverData = data;
-      const allFullNameData = serverData.map((data: IAuth) => data.email);
-      setAllOnlineEmail(allFullNameData);
-    });
   };
 
   useEffect(() => {
-    getAllOnlineEmailData();
+    tokenContextObj?.token && navigate('/');
   }, []);
 
   return (
@@ -110,6 +92,7 @@ const Login = () => {
             <AiOutlineLock className='logo' />
             <ErrorText>{errors?.password?.message}</ErrorText>
           </InputContainer>
+
           <CreateUserIntroduce>
             <span>계정이 필요하신가요? </span>
             <CreateUserLink to='/signup'>가입하기</CreateUserLink>

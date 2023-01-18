@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { IChannel } from '../types/channel';
 import { AiOutlineRight } from 'react-icons/ai';
-const API_URL = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
+import { END_POINT } from '../api/apiAddress';
 
 interface Channel {
   _id: string;
@@ -19,7 +19,7 @@ const Channels = () => {
   }, []);
 
   const getChannelList = async () => {
-    return await axios.get(`${API_URL}/channels`).then(({ data }) => setChannelList(data));
+    return await axios.get(`${END_POINT}/channels`).then(({ data }) => setChannelList(data));
   };
 
   const handleClickMoveChannel = (id: string) => {

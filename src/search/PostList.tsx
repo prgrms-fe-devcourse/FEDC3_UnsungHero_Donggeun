@@ -17,6 +17,10 @@ interface Iauthor {
   image: string | undefined;
 }
 
+interface IChannel {
+  _id: string;
+}
+
 interface IfilteredPostsInfo {
   title: string;
   _id: string;
@@ -24,6 +28,7 @@ interface IfilteredPostsInfo {
   likes: Ilikes[];
   createdAt: string;
   comments: IComments[];
+  channel: IChannel;
 }
 interface IpostListProps {
   filteredPostsInfo: IfilteredPostsInfo[];
@@ -44,17 +49,23 @@ const PostList = ({
 }: IpostListProps) => {
   const navigatePost = useNavigate();
 
-  const selectPostsChannelTitle = () => {
+  const selectPostsChannelTitle = (channelId: string | undefined) => {
     let PostsChannelTitle = '';
-    switch (currentChannelId) {
-      case '63b5b7f5a87de522e8646d65':
-        PostsChannelTitle = '낚시채널';
+    switch (channelId) {
+      case '63c775d2a989ba6d232518ce':
+        PostsChannelTitle = '바둑';
         break;
-      case '63b5b825a87de522e8646d6f':
-        PostsChannelTitle = '골프채널';
+      case '63c775dba989ba6d232518d3':
+        PostsChannelTitle = '골프';
         break;
-      case '63bbe845400746566c234d41':
-        PostsChannelTitle = '바둑채널';
+      case '63c775e0a989ba6d232518dc':
+        PostsChannelTitle = '낚시';
+        break;
+      case '63c775f3a989ba6d232518ef':
+        PostsChannelTitle = '육아';
+        break;
+      case '63c775fea989ba6d23251905':
+        PostsChannelTitle = '잡담';
         break;
       default:
         PostsChannelTitle = '전체 채널';
@@ -83,10 +94,11 @@ const PostList = ({
 
   return (
     <WholeWrapper>
-      <div className='postListTitle'>#{selectPostsChannelTitle()}</div>
+      <div className='postListTitle'>#{selectPostsChannelTitle(currentChannelId)}</div>
       <PostListWrapper>
-        {filteredPostsInfo.map((postInfo, index) => {
-          const { title, _id, likes, createdAt, comments } = postInfo;
+        {filteredPostsInfo.map((postInfo) => {
+          const { title, _id, likes, createdAt, comments, channel } = postInfo;
+          const channelId = channel._id;
           const { fullName, image } = postInfo.author; //fullName이 아니라 userName이 닉네임인 경우 변경해야함
           const postTitle = IsJsonString(title) ? JSON.parse(title).title : title;
           const postContent = IsJsonString(title) ? JSON.parse(title).content : ' ';
@@ -125,7 +137,7 @@ const PostList = ({
                     ? highlightIncludedText(fullName, inputSearchValue)
                     : fullName}
                 </div>
-                <div className='includedChannel'>{selectPostsChannelTitle()}</div>
+                <div className='includedChannel'>{selectPostsChannelTitle(channelId)}</div>
               </PostMiddleWrapper>
               <PostBottomWrapper>
                 <div className='likesCommentContatiner'>
@@ -164,7 +176,6 @@ const WholeWrapper = styled.div`
     padding: 0.9375rem 0 0 1.25rem;
     margin: 0 0 0.1875rem 0rem;
     font-size: ${({ theme }) => theme.fontSize.larger};
-    box-shadow: ${({ theme }) => theme.shadow.boxShadow};
     border-radius: 0.3125rem;
     background-color: ${({ theme }) => theme.colors.primary};
     font-weight: bold;
@@ -205,12 +216,6 @@ const PostTopWrapper = styled.div`
 
     .postTitleDotContainer {
       display: flex;
-      .redDot {
-        align-self: center;
-        width: 0.25rem;
-        height: 0.25rem;
-        margin: 0 0 0.5rem 1.25rem;
-      }
 
       .postTitle {
         margin: 0.3125rem 0.625rem 0.625rem 1rem;
@@ -259,7 +264,6 @@ const PostMiddleWrapper = styled.div`
     justify-content: center;
     width: 3.75rem;
     margin: 0.625rem 0 1.5625rem 0rem;
-    color: #939393;
     font-size: 0.75rem;
     line-height: 1.1875rem;
     font-weight: 900;

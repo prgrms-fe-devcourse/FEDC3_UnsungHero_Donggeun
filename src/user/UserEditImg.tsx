@@ -3,11 +3,12 @@ import styled from 'styled-components';
 import useAxios from '../api/useAxios';
 import { Avatar } from '../common';
 import { IUser } from '../types/user';
+import { END_POINT } from '../api/apiAddress';
 
 const COVER_IMG_URL = 'https://ifh.cc/g/ZSypny.png';
 const PROFIE_IMG_URL = 'https://ifh.cc/g/35RDD6.png';
-const API_URL = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 const EDIT_IMG_URL = 'https://ifh.cc/g/2zSYKD.png';
+
 interface IProps {
   id: string | undefined;
   setimgFiles: React.Dispatch<React.SetStateAction<object>>;
@@ -20,7 +21,7 @@ interface IImage {
 
 const UserEditImg = ({ id, setimgFiles }: IProps) => {
   const { data } = useAxios<IUser>({
-    url: `${API_URL}/users/${id}`,
+    url: `${END_POINT}/users/${id}`,
     method: 'get',
   });
 

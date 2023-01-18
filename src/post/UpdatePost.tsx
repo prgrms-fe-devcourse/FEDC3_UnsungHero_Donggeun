@@ -1,14 +1,11 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { useToken } from '../contexts/TokenProvider';
 import useMutation from '../api/useMutation';
 import useAxios from '../api/useAxios';
 import { IPost } from '../types/post';
 import { Button } from '../common';
-
-const END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
+import { END_POINT } from '../api/apiAddress';
 
 const UpdatePost = () => {
   const [title, setTitle] = useState('');
@@ -16,9 +13,8 @@ const UpdatePost = () => {
   const [channelId, setChannelId] = useState('');
   const { postId } = useParams();
   const navigate = useNavigate();
-
-  const tokenContextObj = useToken();
-  const token = tokenContextObj?.token;
+  const [image, setImage] = useState({});
+  const [previewImage, setPreviewImage] = useState('');
 
   const { mutate } = useMutation();
 
@@ -53,6 +49,8 @@ const UpdatePost = () => {
       }
 
       setChannelId(data.channel._id);
+
+      setImage(data.image as string);
     }
   }, [data]);
 
@@ -65,39 +63,22 @@ const UpdatePost = () => {
     };
     const jsonToUpdate = JSON.stringify(postToUpdate);
 
-    const post = {
-      postId: postId,
-      title: jsonToUpdate,
-      image: null,
-      channelId: channelId,
-    };
+    const formData = new FormData();
+    formData.append('postId', postId as string);
+    formData.append('title', jsonToUpdate);
+    formData.append('image', image as string);
+    formData.append('channelId', channelId as string);
 
-    axios
-      .put(`${END_POINT}/posts/update`, post, {
-        headers: {
-          Authorization: `bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      })
-      .then(() => {
-        localStorage.removeItem(`tempTitleInUpdatePost${postId}`);
-        localStorage.removeItem(`tempContentInUpdatePost${postId}`);
+    mutate({
+      url: `${END_POINT}/posts/update`,
+      method: 'put',
+      data: formData,
+    }).then(() => {
+      localStorage.removeItem('tempTitleInUpdatePost');
+      localStorage.removeItem('tempContentInUpdatePost');
 
-        navigate(`/post/${postId}`);
-      });
-
-    // mutate({
-    //   url: `${END_POINT}/posts/update`,
-    //   method: 'post',
-    //   data: {
-    //     ...post,
-    //   },
-    // }).then(() => {
-    //   localStorage.removeItem('tempTitleInUpdatePost');
-    //   localStorage.removeItem('tempContentInUpdatePost');
-
-    //   navigate(`/post/${postId}`);
-    // });
+      navigate(`/post/${postId}`);
+    });
   };
 
   const handleDeletePost = () => {
@@ -110,18 +91,37 @@ const UpdatePost = () => {
     }).then(() => navigate(`/channel/${channelId}`));
   };
 
+  const handleOnClickUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.currentTarget.files) {
+      const file = e.currentTarget.files[0];
+
+      const reader = new FileReader();
+
+      // onload는 읽기 동작이 성공적으로 완료되었을 때 발생함.
+      reader.onload = () => {
+        reader.readAsDataURL(file);
+        // 작업 완료.
+        if (reader.readyState === 2) {
+          setImage(file);
+          setPreviewImage(reader.result as string);
+        }
+      };
+    }
+  };
+
   return (
-    <Form onSubmit={(e) => handleUpdatePost(e)}>
-      <TitleInput value={title} onChange={(e) => handleTitleOnChnage(e)} />
+    <Form onSubmit={handleUpdatePost}>
+      <TitleInput value={title} onChange={handleTitleOnChnage} />
       <Content>
-        <Textarea
-          onChange={(e) => handleContentOnChnage(e)}
-          rows={10}
-          cols={100}
-          value={content}
-          placeholder='내용'
-        />
+        <Image src={previewImage ? previewImage : data?.image}></Image>
+        <Textarea onChange={handleContentOnChnage} rows={10} cols={100} value={content} placeholder='내용' />
       </Content>
+      <ImageInput
+        id='Image-file'
+        type='file'
+        accept='image/jpg,impge/png,image/jpeg,image/gif'
+        onChange={handleOnClickUploadImage}
+      />
       <ButtonContainer>
         <Button
           text='내용 수정'
@@ -135,6 +135,8 @@ const UpdatePost = () => {
     </Form>
   );
 };
+
+const Image = styled.img``;
 
 const Form = styled.form`
   display: flex;

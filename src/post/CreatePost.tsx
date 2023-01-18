@@ -4,14 +4,15 @@ import styled from 'styled-components';
 import { useToken } from '../contexts/TokenProvider';
 import useMutation from '../api/useMutation';
 import { Button } from '../common';
-
-const END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
+import { END_POINT } from '../api/apiAddress';
 
 function CreatePost() {
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
   const [image, setImage] = useState({});
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [previewImage, setPreviewImage] = useState('');
+
   const { channelId } = useParams<string>();
 
   const navigate = useNavigate();
@@ -29,6 +30,10 @@ function CreatePost() {
   }, []);
 
   const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value.length > 75) {
+      e.target.value = e.target.value.slice(0, 75);
+    }
+
     setTitle(e.target.value);
     localStorage.setItem(`tempTitleInCreatePost${channelId}`, e.target.value);
   };
@@ -75,24 +80,30 @@ function CreatePost() {
 
       // onload는 읽기 동작이 성공적으로 완료되었을 때 발생함.
       reader.onload = () => {
+        console.log(reader.result);
         // 작업 완료.
         if (reader.readyState === 2) {
           setImage(file);
+          setPreviewImage(reader.result as string);
         }
+      };
+      reader.onerror = () => {
+        console.log('error');
       };
     }
   };
 
   return (
-    <Form onSubmit={(e) => handleOnClickCreatePost(e)}>
+    <Form onSubmit={handleOnClickCreatePost}>
       <TitleInput
         type='text'
         size={99}
-        onChange={(e) => handleChangeTitle(e)}
+        onChange={handleChangeTitle}
         value={initTitle}
         placeholder='제목을 입력하세요.'
       />
       <Content>
+        <Image src={previewImage ? previewImage : ''}></Image>
         <Textarea
           rows={20}
           cols={100}
@@ -118,6 +129,7 @@ function CreatePost() {
     </Form>
   );
 }
+const Image = styled.img``;
 
 const Form = styled.form`
   display: flex;

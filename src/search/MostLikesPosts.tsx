@@ -55,14 +55,20 @@ const MostLikesPosts = ({ postsInfo, currentChannelId }: IMostLikesPostsProps) =
   const selectMostLikesPostsTitle = () => {
     let MostLikesPostsTitle = '';
     switch (currentChannelId) {
-      case '63b5b7f5a87de522e8646d65':
-        MostLikesPostsTitle = '낚시채널 베스트';
+      case '63c775d2a989ba6d232518ce':
+        MostLikesPostsTitle = '바둑 베스트';
         break;
-      case '63b5b825a87de522e8646d6f':
-        MostLikesPostsTitle = '골프채널 베스트';
+      case '63c775dba989ba6d232518d3':
+        MostLikesPostsTitle = '골프 베스트';
         break;
-      case '63bbe845400746566c234d41':
-        MostLikesPostsTitle = '바둑채널 베스트';
+      case '63c775e0a989ba6d232518dc':
+        MostLikesPostsTitle = '낚시 베스트';
+        break;
+      case '63c775f3a989ba6d232518ef':
+        MostLikesPostsTitle = '육아 베스트';
+        break;
+      case '63c775fea989ba6d23251905':
+        MostLikesPostsTitle = '잡담 베스트';
         break;
       default:
         MostLikesPostsTitle = '전체베스트';
@@ -130,8 +136,8 @@ const WholeWrapper = styled.div`
     padding: 0.9375rem 0 0 1.25rem;
     margin: 0 0 0rem 0rem;
     font-size: 1.25rem;
-    border-top-left-radius: 0.1875rem;
-    border-top-right-radius: 0.1875rem;
+    border-top-left-radius: 0.3125rem;
+    border-top-right-radius: 0.3125rem;
     background-color: ${({ theme }) => theme.colors.primary};
     box-shadow: 0 0.0625rem 0.0625rem ${({ theme }) => theme.colors.shadow};
     font-weight: bold;

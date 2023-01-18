@@ -6,8 +6,7 @@ import UserEditImg from './UserEditImg';
 import useMutation from '../api/useMutation';
 import styled from 'styled-components';
 import { Button } from '../common';
-
-const API_URL = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
+import { END_POINT } from '../api/apiAddress';
 
 interface IFormValue {
   fullName: string;
@@ -26,7 +25,7 @@ const UserEdit = () => {
     formState: { errors, dirtyFields, isSubmitting },
   } = useForm<IFormValue>({
     defaultValues: () =>
-      axios.get(`${API_URL}/users/${id}`).then(({ data }) => {
+      axios.get(`${END_POINT}/users/${id}`).then(({ data }) => {
         return {
           fullName: data.fullName,
           password: '',
@@ -49,7 +48,7 @@ const UserEdit = () => {
 
   const getChangeImg = async (formdata: FormData) => {
     return await mutate({
-      url: `${API_URL}/users/upload-photo`,
+      url: `${END_POINT}/users/upload-photo`,
       method: 'post',
       data: formdata,
     });
@@ -57,7 +56,7 @@ const UserEdit = () => {
 
   const getChangePassword = async (password: string) => {
     return await mutate({
-      url: `${API_URL}/settings/update-password`,
+      url: `${END_POINT}/settings/update-password`,
       method: 'put',
       data: {
         password,
@@ -67,7 +66,7 @@ const UserEdit = () => {
 
   const getChangeUserName = async (fullName: string) => {
     return await mutate({
-      url: `${API_URL}/settings/update-user`,
+      url: `${END_POINT}/settings/update-user`,
       method: 'put',
       data: {
         fullName,

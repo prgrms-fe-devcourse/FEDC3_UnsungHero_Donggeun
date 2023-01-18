@@ -9,6 +9,7 @@ import { Pagination } from '../common';
 import styled from 'styled-components';
 import { IoMdNotificationsOutline } from 'react-icons/io';
 import { Button } from '../common';
+import { END_POINT } from '../api/apiAddress';
 
 const NotificationList = () => {
   const [notificationList, setNotificationlist] = useState<INotification[]>();
@@ -25,7 +26,7 @@ const NotificationList = () => {
 
     await axios
       .put(
-        'http://kdt.frontend.3rd.programmers.co.kr:5006/notifications/seen',
+        `${END_POINT}/notifications/seen`,
         {},
         {
           headers: { Authorization: `bearer ${tokenContextObj?.token}` },
@@ -38,7 +39,7 @@ const NotificationList = () => {
 
   const fetchNotificationData = async () => {
     await axios
-      .get('http://kdt.frontend.3rd.programmers.co.kr:5006/notifications', {
+      .get(`${END_POINT}/notifications`, {
         headers: { Authorization: `bearer ${tokenContextObj?.token}` },
       })
       .then((res) => {

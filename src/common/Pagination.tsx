@@ -76,6 +76,14 @@ const Button = styled.button`
   &:hover {
     background-color: ${({ disabled }) => !disabled && '#e2e2e2'};
   }
+
+  &:first-child {
+    width: 60px;
+  }
+
+  &:last-child {
+    width: 60px;
+  }
 `;
 const Wrapper = styled.div`
   position: absolute;
