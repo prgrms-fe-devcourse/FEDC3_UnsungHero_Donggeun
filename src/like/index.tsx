@@ -9,7 +9,6 @@ interface ILikeProps {
   postId: string;
   postuserId: string;
   fetchData: () => void;
-  // refetchPost: () => void;
 }
 
 const Like = ({ likeList, userId, postId, postuserId, fetchData }: ILikeProps) => {
@@ -24,7 +23,6 @@ const Like = ({ likeList, userId, postId, postuserId, fetchData }: ILikeProps) =
       await createLike(postId, postuserId);
     }
 
-    // refetchPost();
     fetchData();
   };
 
