@@ -1,0 +1,2 @@
+/api/* http://kdt.frontend.3rd.programmers.co.kr:5006/:splat 200
+fetch(`http://kdt.frontend.3rd.programmers.co.kr:5006`)
