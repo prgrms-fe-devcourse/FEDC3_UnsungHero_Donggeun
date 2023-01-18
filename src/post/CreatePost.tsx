@@ -10,6 +10,7 @@ function CreatePost() {
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
   const [image, setImage] = useState({});
+  const [previewImage, setPreviewImage] = useState('');
 
   const { channelId } = useParams<string>();
 
@@ -77,6 +78,7 @@ function CreatePost() {
         // 작업 완료.
         if (reader.readyState === 2) {
           setImage(file);
+          setPreviewImage(reader.result as string);
         }
       };
     }
@@ -92,6 +94,7 @@ function CreatePost() {
         placeholder='제목을 입력하세요.'
       />
       <Div />
+      <Image src={previewImage ? previewImage : ''}></Image>
       <Textarea
         rows={20}
         cols={100}
@@ -111,6 +114,7 @@ function CreatePost() {
     </Form>
   );
 }
+const Image = styled.img``;
 
 const Form = styled.form`
   display: flex;

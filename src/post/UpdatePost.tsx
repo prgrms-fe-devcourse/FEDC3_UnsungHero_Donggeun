@@ -1,8 +1,6 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { useToken } from '../contexts/TokenProvider';
 import useMutation from '../api/useMutation';
 import useAxios from '../api/useAxios';
 import { IPost } from '../types/post';
@@ -17,9 +15,6 @@ const UpdatePost = () => {
   const navigate = useNavigate();
   const [image, setImage] = useState({});
   const [previewImage, setPreviewImage] = useState('');
-
-  const tokenContextObj = useToken();
-  const token = tokenContextObj?.token;
 
   const { mutate } = useMutation();
 
@@ -67,13 +62,6 @@ const UpdatePost = () => {
       content: content,
     };
     const jsonToUpdate = JSON.stringify(postToUpdate);
-
-    const post = {
-      postId: postId,
-      title: jsonToUpdate,
-      image: null,
-      channelId: channelId,
-    };
 
     const formData = new FormData();
     formData.append('postId', postId as string);
