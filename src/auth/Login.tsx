@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 import { AiOutlineMail, AiOutlineLock } from 'react-icons/ai';
 import Header from './Header';
 import { useEffect } from 'react';
+import { processLogin } from './api';
 
 const TOKEN_KEY = 'token';
 const USERID_KEY = 'userId';
@@ -30,25 +31,20 @@ const Login = () => {
   const navigate = useNavigate();
 
   const onSubmitHandler: SubmitHandler<IAuth> = async ({ email, password }) => {
-    await axios
-      .post('http://kdt.frontend.3rd.programmers.co.kr:5006/login', {
-        email,
-        password,
-      })
-      .then(({ data }) => {
-        setValue(data.token);
-        setUserId(data.user._id);
-        tokenContextObj?.addToken(data.token);
-        userIdContext?.addUserId(data.user._id);
-        navigate('/');
-      })
-      .catch(() => {
-        setError(
-          'password',
-          { message: '아이디나 비밀번호 정보가 일치하지 않습니다. 다시 한번 확인해주세요.' },
-          { shouldFocus: true }
-        );
-      });
+    try {
+      const { data: userData } = await processLogin(email, password);
+      setValue(userData.token);
+      setUserId(userData.user._id);
+      tokenContextObj?.addToken(userData.token);
+      userIdContext?.addUserId(userData.user._id);
+      navigate('/');
+    } catch (e) {
+      setError(
+        'password',
+        { message: '아이디나 비밀번호 정보가 일치하지 않습니다. 다시 한번 확인해주세요.' },
+        { shouldFocus: true }
+      );
+    }
   };
 
   useEffect(() => {

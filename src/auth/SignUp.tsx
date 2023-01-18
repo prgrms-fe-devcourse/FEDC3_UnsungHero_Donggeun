@@ -10,12 +10,13 @@ import Header from './Header';
 import { IToken } from '../types/token';
 import { useToken } from '../contexts/TokenProvider';
 import useAxios from '../api/useAxios';
+import { processSignUp } from './api';
 
 const SignUp = () => {
   const [allFullNameList, setAllFullNameList] = useState<string[] | undefined>([]);
   const [allEmailList, setAllEmailList] = useState<string[] | undefined>([]);
   const tokenContextObj: IToken | null = useToken();
-  const { data: userData, fetchData: fetchUserData } = useAxios<IAuth[]>({
+  const { data: userData } = useAxios<IAuth[]>({
     url: `http://kdt.frontend.3rd.programmers.co.kr:5006/users/get-users`,
     method: 'get',
   });
@@ -44,13 +45,12 @@ const SignUp = () => {
       return;
     }
 
-    await axios
-      .post('http://kdt.frontend.3rd.programmers.co.kr:5006/signup', {
-        email,
-        fullName,
-        password,
-      })
-      .then(() => navigate('/login'));
+    try {
+      await processSignUp(email, fullName, password);
+      navigate('/login');
+    } catch (e) {
+      console.warn(e);
+    }
   };
 
   const getAllUserData = async () => {
