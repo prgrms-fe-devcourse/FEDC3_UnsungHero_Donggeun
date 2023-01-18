@@ -43,7 +43,7 @@ export const produceCommentNotification = (commentData: IPost, userId: string, p
   };
 
   mutate({
-    url: `/create`,
+    url: `/notifications/create`,
     method: 'post',
     data: {
       ...body,
