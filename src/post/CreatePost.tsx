@@ -28,6 +28,10 @@ function CreatePost() {
   }, []);
 
   const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value.length > 75) {
+      e.target.value = e.target.value.slice(0, 75);
+    }
+
     setTitle(e.target.value);
     localStorage.setItem(`tempTitleInCreatePost${channelId}`, e.target.value);
   };
@@ -71,6 +75,7 @@ function CreatePost() {
 
       const reader = new FileReader();
       reader.readAsDataURL(file);
+      console.log(reader.result);
 
       // onload는 읽기 동작이 성공적으로 완료되었을 때 발생함.
       reader.onload = () => {
@@ -83,11 +88,11 @@ function CreatePost() {
   };
 
   return (
-    <Form onSubmit={(e) => handleOnClickCreatePost(e)}>
+    <Form onSubmit={handleOnClickCreatePost}>
       <TitleInput
         type='text'
         size={99}
-        onChange={(e) => handleChangeTitle(e)}
+        onChange={handleChangeTitle}
         value={initTitle}
         placeholder='제목을 입력하세요.'
       />

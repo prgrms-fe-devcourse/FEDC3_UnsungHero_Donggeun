@@ -129,6 +129,7 @@ const Container = styled.div`
 
 const Title = styled.h1`
   font-size: 20px;
+  word-wrap: break-word;
 `;
 
 const CreateAt = styled.p``;

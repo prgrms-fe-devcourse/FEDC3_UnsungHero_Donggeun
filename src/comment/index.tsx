@@ -11,7 +11,6 @@ interface ICommentProps {
   userId: string;
 
   fetchData: () => void;
-  //refetchPost: () => void;
 }
 
 const Comment = ({ commentList, userId, postId, fetchData }: ICommentProps) => {
@@ -25,7 +24,6 @@ const Comment = ({ commentList, userId, postId, fetchData }: ICommentProps) => {
     e.preventDefault();
 
     await createComment(value, userId, postId);
-    //refetchPost();
     fetchData();
 
     setValue('');
@@ -34,7 +32,6 @@ const Comment = ({ commentList, userId, postId, fetchData }: ICommentProps) => {
   const handleClickButton = async (id: string) => {
     await deleteComment(id);
 
-    //refetchPost();
     fetchData();
   };
 
@@ -42,7 +39,6 @@ const Comment = ({ commentList, userId, postId, fetchData }: ICommentProps) => {
     <>
       <CommentForm onSubmit={(e) => handleSubmitInput(e)}>
         <TextArea placeholder='댓글을 입력해주세요' onChange={handleInputValue} value={value} rows={3} />
-        {/* <Input placeholder='댓글을 입력해주세요' onChange={handleInputValue} value={value} /> */}
         <Button type='submit'>전송</Button>
       </CommentForm>
       <Ul>

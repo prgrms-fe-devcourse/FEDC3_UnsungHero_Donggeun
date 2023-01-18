@@ -68,13 +68,6 @@ const UpdatePost = () => {
     };
     const jsonToUpdate = JSON.stringify(postToUpdate);
 
-    const post = {
-      postId: postId,
-      title: jsonToUpdate,
-      image: null,
-      channelId: channelId,
-    };
-
     const formData = new FormData();
     formData.append('postId', postId as string);
     formData.append('title', jsonToUpdate);
@@ -122,17 +115,11 @@ const UpdatePost = () => {
   };
 
   return (
-    <Form onSubmit={(e) => handleUpdatePost(e)}>
-      <TitleInput value={title} onChange={(e) => handleTitleOnChnage(e)} />
+    <Form onSubmit={handleUpdatePost}>
+      <TitleInput value={title} onChange={handleTitleOnChnage} />
       <Div />
       <Image src={previewImage ? previewImage : data?.image}></Image>
-      <Textarea
-        onChange={(e) => handleContentOnChnage(e)}
-        rows={10}
-        cols={100}
-        value={content}
-        placeholder='내용'
-      />
+      <Textarea onChange={handleContentOnChnage} rows={10} cols={100} value={content} placeholder='내용' />
       <Div />
       <ImageInput
         id='Image-file'
