@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useState } from 'react';
 import { IComment } from '../types/comment';
 import { createComment, deleteComment } from './api';
 
