@@ -278,7 +278,9 @@ const PostMiddleWrapper = styled.div`
   .postAuthor {
     display: flex;
     justify-content: center;
+    text-overflow: ellipsis;
     white-space: nowrap;
+    overflow: hidden;
     font-weight: 500;
     margin-bottom: 1.25rem;
     height: 1.125rem;
