@@ -80,16 +80,15 @@ function CreatePost() {
 
       // onload는 읽기 동작이 성공적으로 완료되었을 때 발생함.
       reader.onload = () => {
-        console.log(reader.result);
         // 작업 완료.
         if (reader.readyState === 2) {
           setImage(file);
           setPreviewImage(reader.result as string);
         }
       };
-      reader.onerror = () => {
-        console.log('error');
-      };
+      // reader.onerror = () => {
+      //   console.log('error');
+      // };
     }
   };
 
