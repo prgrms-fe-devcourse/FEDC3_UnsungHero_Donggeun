@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useToken } from '../contexts/TokenProvider';
 import useMutation from '../api/useMutation';
+import { Button } from '../common';
 
 const END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 
@@ -10,7 +11,7 @@ function CreatePost() {
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
   const [image, setImage] = useState({});
-
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const { channelId } = useParams<string>();
 
   const navigate = useNavigate();
@@ -91,23 +92,29 @@ function CreatePost() {
         value={initTitle}
         placeholder='제목을 입력하세요.'
       />
-      <Div />
-      <Textarea
-        rows={20}
-        cols={100}
-        onChange={handleChangeContent}
-        placeholder='내용을 입력하세요.'
-        value={initContent}
-      />
-      <Div />
+      <Content>
+        <Textarea
+          rows={20}
+          cols={100}
+          onChange={handleChangeContent}
+          placeholder='내용을 입력하세요.'
+          value={initContent}
+          ref={textareaRef}
+        />
+      </Content>
       <ImageInput
         id='Image-file'
         type='file'
         accept='image/jpg,impge/png,image/jpeg,image/gif'
         onChange={handleOnClickUploadImage}
       />
-      <Div />
-      <Button type='submit'>저장</Button>
+      <Button
+        text='저장'
+        color='default'
+        width={10}
+        height={2.5}
+        style={{ marginLeft: 'auto', margin: '16px 0 16px auto' }}
+      />
     </Form>
   );
 }
@@ -115,64 +122,66 @@ function CreatePost() {
 const Form = styled.form`
   display: flex;
   flex-direction: column;
+  background-color: ${({ theme }) => theme.colors.white};
   padding: 1rem;
-  width: 725px;
-  border: solid 1px #c4c4c4;
-  border-radius: 3%;
-  box-shadow: 12px 12px 2px 1px rgba(216, 216, 235, 0.2);
+  width: 45.3125rem;
+  border-radius: 5px;
+  box-shadow: ${({ theme }) => theme.shadow.boxShadow};
 `;
 
 const TitleInput = styled.input`
   border: none;
-  font-size: 20px;
+  font-size: ${({ theme }) => theme.fontSize.larger};
+  font-weight: bold;
+  margin: 0.625rem;
+  padding-bottom: 0.625rem;
   &:focus {
-    background-color: #fafafa;
     outline: none;
   }
-`;
-
-const Div = styled.div`
-  width: 98%;
-  border: solid #c4c4c4 1px;
-  margin: 1rem 0;
-  justify-content: center;
 `;
 
 const Textarea = styled.textarea`
   resize: none;
   border: none;
-  font-size: 16px;
+  font-size: ${({ theme }) => theme.fontSize.medium};
+  width: 100%;
+  min-height: 32.5rem;
+  margin: 0.625rem;
+  padding-bottom: 0.625rem;
   &:focus {
-    background-color: #fafafa;
     outline: none;
   }
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #60606080;
+    border-radius: 10px;
+  }
+`;
+
+const Content = styled.div`
+  min-height: 32.5rem;
+  padding: 1rem 0;
+  border-top: 1px solid ${({ theme }) => theme.colors.contentLine};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.contentLine};
 `;
 
 const ImageInput = styled.input`
-  padding: 0.5rem;
-  background-color: #fafafa;
+  padding: 1rem 0;
+  background-color: ${({ theme }) => theme.colors.white};
   border-radius: 3%;
   cursor: pointer;
   &::file-selector-button {
+    padding: 0.5rem;
     cursor: pointer;
     border: none;
-  }
-`;
-
-const Button = styled.button`
-  margin: 0.5rem;
-  padding: 0.5rem;
-  width: 200px;
-  align-self: end;
-  border: solid #52d2a4;
-  border-radius: 5%;
-
-  background-color: #ffffff;
-  color: #000000;
-  cursor: pointer;
-  &:hover {
-    color: #ffffff;
-    background-color: #48b790;
+    border-radius: 5px;
+    transition: all 0.2s ease;
+    &:hover {
+      background-color: ${({ theme }) => `${theme.colors.lightGray}80`};
+    }
   }
 `;
 
