@@ -1,5 +1,4 @@
 import useMutation from '../api/useMutation';
-import { tempData } from '../comment/tempData';
 import { ILike } from '../types/like';
 import { IPost } from '../types/post';
 import { END_POINT } from '../api/apiAddress';
