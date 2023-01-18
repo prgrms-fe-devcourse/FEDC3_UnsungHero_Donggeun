@@ -75,7 +75,6 @@ function CreatePost() {
 
       const reader = new FileReader();
       reader.readAsDataURL(file);
-      console.log(reader.result);
 
       // onload는 읽기 동작이 성공적으로 완료되었을 때 발생함.
       reader.onload = () => {
