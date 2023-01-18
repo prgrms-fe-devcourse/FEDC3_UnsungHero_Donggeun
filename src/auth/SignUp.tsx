@@ -9,11 +9,16 @@ import { AiOutlineMail, AiOutlineUser, AiOutlineLock, AiOutlineCheckCircle } fro
 import Header from './Header';
 import { IToken } from '../types/token';
 import { useToken } from '../contexts/TokenProvider';
+import useAxios from '../api/useAxios';
 
 const SignUp = () => {
-  const [allFullNameList, setAllFullNameList] = useState<string>();
-  const [allEmailList, setAllEmailList] = useState<string>();
+  const [allFullNameList, setAllFullNameList] = useState<string[] | undefined>([]);
+  const [allEmailList, setAllEmailList] = useState<string[] | undefined>([]);
   const tokenContextObj: IToken | null = useToken();
+  const { data: userData, fetchData: fetchUserData } = useAxios<IAuth[]>({
+    url: `http://kdt.frontend.3rd.programmers.co.kr:5006/users/get-users`,
+    method: 'get',
+  });
 
   const {
     register,
@@ -49,22 +54,19 @@ const SignUp = () => {
   };
 
   const getAllUserData = async () => {
-    await axios.get('http://kdt.frontend.3rd.programmers.co.kr:5006/users/get-users').then(({ data }) => {
-      const serverData = data;
-      const allFullNameData = serverData.map((data: IAuth) => data.fullName);
-      const allEmailData = serverData.map((data: IAuth) => data.email);
-      setAllFullNameList(allFullNameData);
-      setAllEmailList(allEmailData);
-    });
+    const allFullNameData = userData?.map((data: IAuth) => data.fullName);
+    const allEmailData = userData?.map((data: IAuth) => data.email);
+    setAllFullNameList(allFullNameData);
+    setAllEmailList(allEmailData);
   };
-
-  useEffect(() => {
-    getAllUserData();
-  }, []);
 
   useEffect(() => {
     tokenContextObj?.token && navigate('/');
   }, []);
+
+  useEffect(() => {
+    getAllUserData();
+  }, [userData]);
 
   return (
     <>
