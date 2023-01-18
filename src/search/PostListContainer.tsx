@@ -105,13 +105,15 @@ const PostListContainer = ({
         inputSearchValue={inputSearchValue}
         currentChannelId={currentChannelId}
       />
-      <Pagination
-        limit={limit}
-        page={page}
-        total={filterPosts().length}
-        setPage={setPage}
-        currentChannelId={currentChannelId}
-      />
+      <PaginationContainer>
+        <Pagination
+          limit={limit}
+          page={page}
+          total={filterPosts().length}
+          setPage={setPage}
+          currentChannelId={currentChannelId}
+        />
+      </PaginationContainer>
     </>
   );
 };
@@ -135,4 +137,8 @@ const ButtonContainer = styled.div`
     border-left: none;
     font-size: 1.0625rem;
   }
+`;
+
+const PaginationContainer = styled.div`
+  position: relative;
 `;
