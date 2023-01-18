@@ -2,10 +2,9 @@ import axios from 'axios';
 import ErrorBoundary from '../api/ErrorBoundary';
 import Search from '../search/Index';
 
-const END_POINT = `http://kdt.frontend.3rd.programmers.co.kr:5006`;
 function Post() {
   const APItest = () => {
-    axios.get(END_POINT).then((res) => console.log(`response is here ${res}`));
+    fetch(`/api/channels`).then((res) => console.log(res));
   };
   APItest();
 
