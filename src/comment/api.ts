@@ -1,11 +1,9 @@
-import { request } from '../api/request';
 import useMutation from '../api/useMutation';
-import { tempData } from './tempData';
 import { IPost } from '../types/post';
 
-export const getPost = <T>(postId: string) => {
-  return request<T>(`${tempData.baseUrl}/posts/${postId}`);
-};
+// export const getPost = <T>(postId: string) => {
+//   return request<T>(`${tempData.baseUrl}/posts/${postId}`);
+// };
 
 const { mutate } = useMutation();
 
