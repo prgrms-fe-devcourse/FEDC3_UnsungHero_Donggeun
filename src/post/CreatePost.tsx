@@ -3,8 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useToken } from '../contexts/TokenProvider';
 import useMutation from '../api/useMutation';
-
-const END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
+import { END_POINT } from '../api/apiAddress';
 
 function CreatePost() {
   const [title, setTitle] = useState<string>('');
@@ -79,11 +78,15 @@ function CreatePost() {
 
       // onload는 읽기 동작이 성공적으로 완료되었을 때 발생함.
       reader.onload = () => {
+        console.log(reader.result);
         // 작업 완료.
         if (reader.readyState === 2) {
           setImage(file);
           setPreviewImage(reader.result as string);
         }
+      };
+      reader.onerror = () => {
+        console.log('error');
       };
     }
   };

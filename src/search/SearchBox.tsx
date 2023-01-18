@@ -4,18 +4,10 @@ import styled from 'styled-components';
 interface IsearchBoxProps {
   setSelectedSearchOption: (value: string) => void;
   setInputSearchValue: (value: string) => void;
-  // getPostsList: () => void;
-  // getEntirePostsList: () => void;
   currentChannelId: string | undefined;
 }
 
-const SearchBox = ({
-  setSelectedSearchOption,
-  setInputSearchValue,
-  // getPostsList,
-  // getEntirePostsList,
-  currentChannelId,
-}: IsearchBoxProps) => {
+const SearchBox = ({ setSelectedSearchOption, setInputSearchValue, currentChannelId }: IsearchBoxProps) => {
   const [inputValue, setInputValue] = useState('');
   const [selectedOption, setSelectedOption] = useState('제목');
   const inputRef = useRef<HTMLInputElement>(null);
@@ -38,11 +30,6 @@ const SearchBox = ({
       e.preventDefault();
       setSelectedSearchOption(selectedOption);
       setInputSearchValue(inputValue);
-      // if (currentChannelId !== undefined) {
-      //   getPostsList();
-      // } else if (currentChannelId === undefined) {
-      //   getEntirePostsList();
-      // }
     },
     [inputValue, selectedOption, currentChannelId]
   );

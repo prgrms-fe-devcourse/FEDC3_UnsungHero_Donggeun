@@ -9,8 +9,8 @@ import { IPost } from '../types/post';
 import { useToken, useUserId } from '../contexts/TokenProvider';
 import { IComment } from '../types/comment';
 import { ILike } from '../types/like';
+import { END_POINT } from '../api/apiAddress';
 
-const END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 const PROFIE_IMG_URL = 'https://ifh.cc/g/35RDD6.png';
 
 interface Iauthor {

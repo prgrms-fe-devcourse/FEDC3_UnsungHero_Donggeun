@@ -2,6 +2,7 @@ import { request } from '../api/request';
 import useMutation from '../api/useMutation';
 import { tempData } from './tempData';
 import { IPost } from '../types/post';
+import { END_POINT } from '../api/apiAddress';
 
 export const getPost = <T>(postId: string) => {
   return request<T>(`${tempData.baseUrl}/posts/${postId}`);
@@ -11,7 +12,7 @@ const { mutate } = useMutation();
 
 export const createComment = async (value: string, userId: string, postId: string) => {
   const commentData = await mutate({
-    url: `${tempData.baseUrl}/comments/create`,
+    url: `${END_POINT}/comments/create`,
     method: 'post',
     data: {
       comment: value,
@@ -25,7 +26,7 @@ export const createComment = async (value: string, userId: string, postId: strin
 export const deleteComment = async (id: string) => {
   try {
     await mutate({
-      url: `${tempData.baseUrl}/comments/delete`,
+      url: `${END_POINT}/comments/delete`,
       method: 'delete',
       data: {
         id,
@@ -45,7 +46,7 @@ export const produceCommentNotification = (commentData: IPost, userId: string, p
   };
 
   mutate({
-    url: `http://kdt.frontend.3rd.programmers.co.kr:5006/notifications/create`,
+    url: `${END_POINT}/notifications/create`,
     method: 'post',
     data: {
       ...body,

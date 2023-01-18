@@ -17,6 +17,10 @@ const Comment = ({ commentList, userId, postId, fetchData }: ICommentProps) => {
   const [value, setValue] = useState('');
 
   const handleInputValue = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    if (e.target.value.length > 300) {
+      e.target.value = e.target.value.slice(0, 300);
+    }
+
     setValue(e.target.value);
   };
 

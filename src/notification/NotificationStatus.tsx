@@ -4,6 +4,7 @@ import { IToken } from '../types/token';
 import { useNotificationStatus } from '../contexts/NotificationStatusProvider';
 import { INotification, INotificationStatus } from '../types/notification';
 import { useState, useEffect } from 'react';
+import { END_POINT } from '../api/apiAddress';
 
 const NotificationStatus = () => {
   const [notificationStatusList, setNotificationStatusList] = useState<boolean[]>([]);
@@ -12,7 +13,7 @@ const NotificationStatus = () => {
 
   const fetchNotificationData = async () => {
     await axios
-      .get('http://kdt.frontend.3rd.programmers.co.kr:5006/notifications', {
+      .get(`${END_POINT}/notifications`, {
         headers: { Authorization: `bearer ${tokenContextObj?.token}` },
       })
       .then((res) => {

@@ -4,8 +4,7 @@ import styled from 'styled-components';
 import useMutation from '../api/useMutation';
 import useAxios from '../api/useAxios';
 import { IPost } from '../types/post';
-
-const END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
+import { END_POINT } from '../api/apiAddress';
 
 const UpdatePost = () => {
   const [title, setTitle] = useState('');
@@ -96,10 +95,10 @@ const UpdatePost = () => {
       const file = e.currentTarget.files[0];
 
       const reader = new FileReader();
-      reader.readAsDataURL(file);
 
       // onload는 읽기 동작이 성공적으로 완료되었을 때 발생함.
       reader.onload = () => {
+        reader.readAsDataURL(file);
         // 작업 완료.
         if (reader.readyState === 2) {
           setImage(file);

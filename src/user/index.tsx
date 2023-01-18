@@ -8,6 +8,7 @@ import UserPosts from './UserPosts';
 import { useUserId } from '../contexts/TokenProvider';
 import useFollow from '../follow/useFollow';
 import { Avatar, Button } from '../common';
+import { END_POINT } from '../api/apiAddress';
 
 interface IUserInfo {
   fullName: string | undefined;
@@ -17,7 +18,6 @@ interface IUserInfo {
 
 const COVER_IMG_URL = 'https://ifh.cc/g/XbvQvj.png';
 const LIKE_IMG_URL = 'https://ifh.cc/g/vmscWK.png';
-const API_URL = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 
 const User = () => {
   const { id: currentPageId } = useParams();
@@ -25,7 +25,7 @@ const User = () => {
   const myUserId = userIdContext?.userId;
   const navigate = useNavigate();
   const { data, fetchData } = useAxios<IUser>({
-    url: `${API_URL}/users/${currentPageId}`,
+    url: `${END_POINT}/users/${currentPageId}`,
     method: 'get',
   });
   const [userInfo, setUserInfo] = useState<IUserInfo>({

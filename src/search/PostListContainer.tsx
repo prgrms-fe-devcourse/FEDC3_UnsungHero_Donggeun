@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { IsJsonString } from './isJsonString';
 import styled from 'styled-components';
 import { Pagination } from '../common';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 interface Ilikes {
   _id: string;
