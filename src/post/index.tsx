@@ -4,7 +4,11 @@ import Search from '../search/Index';
 
 function Post() {
   const APItest = () => {
-    fetch(`/api/channels`).then((res) => console.log(res));
+    // fetch(`/api/channels`).then((res) => console.log(res));
+    axios({
+      method: 'get',
+      url: `/api/channels`,
+    }).then((res) => console.log(res.data));
   };
   APItest();
 
