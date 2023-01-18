@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-const API_URL = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
+const API_URL = 'https://kdt.frontend.3rd.programmers.co.kr:5006';
 
 interface Channel {
   _id: string;
@@ -11,15 +12,10 @@ interface Channel {
 }
 
 const Channels = () => {
-  const [channelList, setChannelList] = useState([]);
+  const { data: channelData, isLoading: channelDataLoading } = useQuery('channelData', async () => {
+    return axios.get(`${API_URL}/channels`).then(({ data }) => data);
+  });
   const navigate = useNavigate();
-  useEffect(() => {
-    getChannelList();
-  }, []);
-
-  const getChannelList = async () => {
-    return await axios.get(`${API_URL}/channels`).then(({ data }) => setChannelList(data));
-  };
 
   const handleClickMoveChannel = (id: string) => {
     navigate(`/channel/${id}`);
@@ -28,11 +24,12 @@ const Channels = () => {
   return (
     <Sidebar>
       <ChannelTitle>채널목록</ChannelTitle>
-      {channelList.map(({ _id, name }: Channel) => (
-        <Channel key={_id} onClick={() => handleClickMoveChannel(_id)}>
-          {name}
-        </Channel>
-      ))}
+      {channelData &&
+        channelData.map(({ _id, name }: Channel) => (
+          <Channel key={_id} onClick={() => handleClickMoveChannel(_id)}>
+            {name}
+          </Channel>
+        ))}
     </Sidebar>
   );
 };
