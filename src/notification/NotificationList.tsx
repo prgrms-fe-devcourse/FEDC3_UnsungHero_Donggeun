@@ -111,7 +111,9 @@ const NotificationList = () => {
         </Button>
       </NotificationConfirmContainer>
 
-      <Pagination total={notificationList?.length as number} limit={limit} page={page} setPage={setPage} />
+      <PaginationContainer>
+        <Pagination total={notificationList?.length as number} limit={limit} page={page} setPage={setPage} />
+      </PaginationContainer>
     </>
   );
 };
@@ -143,4 +145,8 @@ const NotificationListContainer = styled.div`
 const NotificationConfirmContainer = styled.div`
   display: flex;
   justify-content: space-around;
+`;
+
+const PaginationContainer = styled.div`
+  position: relative;
 `;
