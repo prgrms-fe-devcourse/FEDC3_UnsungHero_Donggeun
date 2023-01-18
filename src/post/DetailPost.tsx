@@ -84,7 +84,7 @@ const DetailPost = () => {
     <ErrorBoundary>
       <Container>
         <Title>{title}</Title>
-        <CreateAt>작성일: {author.createAt}</CreateAt>
+        <CreateAt>작성일: {author.createAt.slice(0, 10)}</CreateAt>
         <Div />
         <Author onClick={() => navigate(`/user/${author._id}`)}>
           <ProfileImg src={author.image} />
