@@ -7,10 +7,13 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { AiOutlineMail, AiOutlineUser, AiOutlineLock, AiOutlineCheckCircle } from 'react-icons/ai';
 import Header from './Header';
+import { IToken } from '../types/token';
+import { useToken } from '../contexts/TokenProvider';
 
 const SignUp = () => {
   const [allFullNameList, setAllFullNameList] = useState<string>();
   const [allEmailList, setAllEmailList] = useState<string>();
+  const tokenContextObj: IToken | null = useToken();
 
   const {
     register,
@@ -57,6 +60,10 @@ const SignUp = () => {
 
   useEffect(() => {
     getAllUserData();
+  }, []);
+
+  useEffect(() => {
+    tokenContextObj?.token && navigate('/');
   }, []);
 
   return (

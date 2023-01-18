@@ -10,6 +10,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { AiOutlineMail, AiOutlineLock } from 'react-icons/ai';
 import Header from './Header';
+import { useEffect } from 'react';
 
 const TOKEN_KEY = 'token';
 const USERID_KEY = 'userId';
@@ -49,6 +50,10 @@ const Login = () => {
         );
       });
   };
+
+  useEffect(() => {
+    tokenContextObj?.token && navigate('/');
+  }, []);
 
   return (
     <>
