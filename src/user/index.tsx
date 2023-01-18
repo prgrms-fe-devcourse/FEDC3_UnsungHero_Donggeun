@@ -23,6 +23,7 @@ const User = () => {
   const userIdContext = useUserId();
   const myUserId = userIdContext?.userId;
   const navigate = useNavigate();
+  console.log(`currentPageId: ${currentPageId}`);
   const { data, fetchData } = useAxios<IUser>({
     url: `/users/${currentPageId}`,
     method: 'get',
