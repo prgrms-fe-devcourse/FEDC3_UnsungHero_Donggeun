@@ -8,6 +8,7 @@ import UserPosts from './UserPosts';
 import { useUserId } from '../contexts/TokenProvider';
 import useFollow from '../follow/useFollow';
 import { Avatar, Button } from '../common';
+import axios from 'axios';
 
 interface IUserInfo {
   fullName: string | undefined;
@@ -24,10 +25,16 @@ const User = () => {
   const myUserId = userIdContext?.userId;
   const navigate = useNavigate();
 
-  const { data, fetchData } = useAxios<IUser>({
-    url: `/users/${id}`,
+  // const { data, fetchData } = useAxios<IUser>({
+  //   url: `/users/${id}`,
+  //   method: 'get',
+  // });
+
+  console.log(`userPage id: ${id}`);
+  axios({
+    url: `/api/users/${id}`,
     method: 'get',
-  });
+  }).then((res) => console.log(res));
 
   // const [userInfo, setUserInfo] = useState<IUserInfo>({
   //   fullName: '',
@@ -45,10 +52,10 @@ const User = () => {
   //   });
   // }, [data]);
 
-  useEffect(() => {
-    fetchData();
-    console.log(data);
-  }, [id]);
+  // useEffect(() => {
+  //   fetchData();
+  //   console.log(data);
+  // }, [id]);
 
   // const handlemoveEditPage = () => {
   //   navigate(`/userEdit/${currentPageId}`);
