@@ -45,9 +45,9 @@ const User = () => {
   //   });
   // }, [data]);
 
-  // useEffect(() => {
-  //   fetchData();
-  // }, [currentPageId]);
+  useEffect(() => {
+    fetchData();
+  }, [currentPageId]);
 
   // const handlemoveEditPage = () => {
   //   navigate(`/userEdit/${currentPageId}`);
