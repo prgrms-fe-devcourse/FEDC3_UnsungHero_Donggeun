@@ -11,7 +11,7 @@ const { mutate } = useMutation();
 
 export const createComment = async (value: string, userId: string, postId: string) => {
   const commentData = await mutate({
-    url: `${tempData.baseUrl}/comments/create`,
+    url: `/comments/create`,
     method: 'post',
     data: {
       comment: value,
@@ -25,7 +25,7 @@ export const createComment = async (value: string, userId: string, postId: strin
 export const deleteComment = async (id: string) => {
   try {
     await mutate({
-      url: `${tempData.baseUrl}/comments/delete`,
+      url: `/comments/delete`,
       method: 'delete',
       data: {
         id,
@@ -45,7 +45,7 @@ export const produceCommentNotification = (commentData: IPost, userId: string, p
   };
 
   mutate({
-    url: `http://kdt.frontend.3rd.programmers.co.kr:5006/notifications/create`,
+    url: `/create`,
     method: 'post',
     data: {
       ...body,

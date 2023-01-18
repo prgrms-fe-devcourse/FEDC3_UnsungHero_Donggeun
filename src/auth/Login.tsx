@@ -37,7 +37,7 @@ const Login = () => {
     }
 
     await axios
-      .post('http://kdt.frontend.3rd.programmers.co.kr:5006/login', {
+      .post(`/api/login`, {
         email,
         password,
       })
@@ -58,7 +58,7 @@ const Login = () => {
   };
 
   const getAllOnlineEmailData = async () => {
-    await axios.get('http://kdt.frontend.3rd.programmers.co.kr:5006/users/online-users').then(({ data }) => {
+    await axios.get(`/api/users/online-users`).then(({ data }) => {
       const serverData = data;
       const allFullNameData = serverData.map((data: IAuth) => data.email);
       setAllOnlineEmail(allFullNameData);

@@ -37,7 +37,7 @@ const SignUp = () => {
     }
 
     await axios
-      .post('http://kdt.frontend.3rd.programmers.co.kr:5006/signup', {
+      .post(`/api/signup`, {
         email,
         fullName,
         password,
@@ -46,7 +46,7 @@ const SignUp = () => {
   };
 
   const getAllUserData = async () => {
-    await axios.get('http://kdt.frontend.3rd.programmers.co.kr:5006/users/get-users').then(({ data }) => {
+    await axios.get(`/api/users/get-users`).then(({ data }) => {
       const serverData = data;
       const allFullNameData = serverData.map((data: IAuth) => data.fullName);
       const allEmailData = serverData.map((data: IAuth) => data.email);
