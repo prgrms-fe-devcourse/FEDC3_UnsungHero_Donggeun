@@ -4,34 +4,33 @@ import { IToken } from '../types/token';
 import { useNotificationStatus } from '../contexts/NotificationStatusProvider';
 import { INotification, INotificationStatus } from '../types/notification';
 import { useState, useEffect } from 'react';
+import { useQuery } from 'react-query';
 
 const NotificationStatus = () => {
   const [notificationStatusList, setNotificationStatusList] = useState<boolean[]>([]);
   const tokenContextObj: IToken | null = useToken();
   const notificationStatusContextObj: INotificationStatus | null = useNotificationStatus();
 
-  const fetchNotificationData = async () => {
-    await axios
-      .get('http://kdt.frontend.3rd.programmers.co.kr:5006/notifications', {
-        headers: { Authorization: `bearer ${tokenContextObj?.token}` },
-      })
-      .then((res) => {
-        const serverData = res.data;
+  useQuery(
+    'notificationStatusData',
+    async () => {
+      return await axios
+        .get('https://kdt.frontend.3rd.programmers.co.kr:5006/notifications', {
+          headers: { Authorization: `bearer ${tokenContextObj?.token}` },
+        })
+        .then(({ data }) => data);
+    },
+    {
+      onSuccess: (serverData) => {
         const allSeenCheckData = serverData.map((data: INotification) => data.seen);
         setNotificationStatusList(allSeenCheckData);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+      },
+    }
+  );
 
   const checkNotificationStatus = () => {
     if (notificationStatusList.includes(false)) notificationStatusContextObj?.setNotification(true);
   };
-
-  useEffect(() => {
-    fetchNotificationData();
-  }, []);
 
   useEffect(() => {
     checkNotificationStatus();

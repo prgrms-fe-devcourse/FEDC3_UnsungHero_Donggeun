@@ -9,10 +9,9 @@ import { Pagination } from '../common';
 import styled from 'styled-components';
 import { IoMdNotificationsOutline } from 'react-icons/io';
 import { Button } from '../common';
+import { useQuery } from 'react-query';
 
 const NotificationList = () => {
-  const [notificationList, setNotificationlist] = useState<INotification[]>();
-  const [notificationLength, setNotificationLength] = useState(0);
   const [page, setPage] = useState(1);
   const limit = 5;
   const offset = (page - 1) * limit;
@@ -20,35 +19,34 @@ const NotificationList = () => {
   const tokenContextObj: IToken | null = useToken();
   const notificationStatusContextObj: INotificationStatus | null = useNotificationStatus();
 
+  const { data: notificationList, refetch: refetchNotificationList } = useQuery<INotification[]>(
+    'notificationListData',
+    async () => {
+      return await axios
+        .get('https://kdt.frontend.3rd.programmers.co.kr:5006/notifications', {
+          headers: { Authorization: `bearer ${tokenContextObj?.token}` },
+        })
+        .then(({ data }) => data);
+    },
+    {
+      refetchOnMount: true,
+      staleTime: 2000,
+    }
+  );
+
   const confirmNotificationlist = async () => {
     if (!notificationStatusContextObj?.notificationStatus) return;
 
     await axios
       .put(
-        'http://kdt.frontend.3rd.programmers.co.kr:5006/notifications/seen',
+        'https://kdt.frontend.3rd.programmers.co.kr:5006/notifications/seen',
         {},
         {
           headers: { Authorization: `bearer ${tokenContextObj?.token}` },
         }
       )
       .then(() => {
-        fetchNotificationData();
-      });
-  };
-
-  const fetchNotificationData = async () => {
-    await axios
-      .get('http://kdt.frontend.3rd.programmers.co.kr:5006/notifications', {
-        headers: { Authorization: `bearer ${tokenContextObj?.token}` },
-      })
-      .then((res) => {
-        if (notificationLength !== res.data.length || notificationStatusContextObj?.notificationStatus) {
-          setNotificationlist(res.data);
-          setNotificationLength(res.data.length);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
+        refetchNotificationList();
       });
   };
 
@@ -59,7 +57,7 @@ const NotificationList = () => {
   };
 
   useEffect(() => {
-    tokenContextObj?.token !== '' && fetchNotificationData();
+    tokenContextObj?.token && refetchNotificationList();
   }, []);
 
   // by 민형, notificationList state가 수정되는 경우(token이 있는 경우)에만 fetch 되므로 따로 token check x_230112
@@ -105,7 +103,7 @@ const NotificationList = () => {
           color={'default'}
           width={12.5}
           height={2.5}
-          onClick={fetchNotificationData}
+          onClick={refetchNotificationList}
         >
           모든 알림 확인
         </Button>
