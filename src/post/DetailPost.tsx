@@ -44,7 +44,7 @@ const DetailPost = () => {
   const userId = userObject?.userId;
 
   const { data, fetchData } = useAxios<IPost>({
-    url: `${END_POINT}/posts/${postId}`,
+    url: `/posts/${postId}`,
     method: 'get',
   });
 

@@ -9,7 +9,7 @@ const useAxios = <T>({ url, params = {} }: IRequest): IResponse<T> => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(url, { params });
+      const response = await axios.get(`/api${url}`, { params });
 
       setData(response.data);
     } catch (e) {

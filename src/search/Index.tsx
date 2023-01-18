@@ -36,7 +36,7 @@ const Search = () => {
 
   const getPostsList = async () => {
     setIsLoading(true);
-    axios.get(`${API_END_POINT}/posts/channel/${currentChannelId}`).then((response) => {
+    axios.get(`/api/posts/channel/${currentChannelId}`).then((response) => {
       const { data } = response;
       setPostsInfo(data);
       setIsLoading(false);
@@ -45,7 +45,7 @@ const Search = () => {
 
   const getEntirePostsList = async () => {
     setIsLoading(true);
-    axios.get(`${API_END_POINT}/posts`).then((response) => {
+    axios.get(`/api/posts`).then((response) => {
       const { data } = response;
       setPostsInfo(data);
       setIsLoading(false);
