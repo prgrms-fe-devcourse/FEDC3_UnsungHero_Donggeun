@@ -4,6 +4,7 @@ import { IToken } from '../types/token';
 import { useNotificationStatus } from '../contexts/NotificationStatusProvider';
 import { INotification, INotificationStatus } from '../types/notification';
 import { useState, useEffect } from 'react';
+import styled from 'styled-components';
 
 const NotificationStatus = () => {
   const [notificationStatusList, setNotificationStatusList] = useState<boolean[]>([]);
@@ -37,13 +38,17 @@ const NotificationStatus = () => {
     checkNotificationStatus();
   }, [notificationStatusList]);
 
-  return (
-    <>
-      {notificationStatusContextObj?.notificationStatus && (
-        <div style={{ width: '30px', height: '30px', borderRadius: '50%', backgroundColor: 'green' }}></div>
-      )}
-    </>
-  );
+  return <>{notificationStatusContextObj?.notificationStatus && <NotificationDot></NotificationDot>}</>;
 };
 
 export default NotificationStatus;
+
+const NotificationDot = styled.div`
+  position: absolute;
+  top: -0.1875rem;
+  border-radius: 50%;
+  width: 0.875rem;
+  height: 0.875rem;
+  background-color: #4caf50;
+  box-shadow: 0px 0px 3px #4caf50;
+`;
