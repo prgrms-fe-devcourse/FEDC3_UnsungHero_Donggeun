@@ -68,8 +68,8 @@ const User = () => {
             text={'내정보 수정'}
             onClick={handlemoveEditPage}
             color='white'
-            width={100}
-            height={30}
+            width={6.25}
+            height={1.875}
             style={{ marginLeft: 'auto' }}
           />
         ) : (
@@ -102,11 +102,9 @@ const CoverImg = styled.img`
 const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.white};
   max-width: 45.313rem;
-  border: 1px solid black;
   height: 100%;
   min-height: 640px;
-  border: 1px solid ${({ theme }) => theme.colors.boxLine};
-  box-shadow: 0px 4px 4px ${({ theme }) => theme.colors.shadow};
+  box-shadow: ${({ theme }) => theme.shadow.boxShadow};
   border-radius: 5px;
   position: relative;
   z-index: 5;

@@ -53,25 +53,24 @@ export default UserFollowers;
 const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.white};
   max-width: 45.313rem;
-  border: 1px solid black;
   height: 100%;
-  min-height: 640px;
-  border: 1px solid ${({ theme }) => theme.colors.boxLine};
-  box-shadow: 0px 4px 4px ${({ theme }) => theme.colors.shadow};
+  min-height: 40rem;
+  box-shadow: ${({ theme }) => theme.shadow.boxShadow};
   border-radius: 5px;
   position: relative;
   z-index: 5;
 `;
 
 const Title = styled.h2`
-  padding: 1rem 1rem;
-  margin-bottom: 0;
-  padding-bottom: 1.25rem;
+  padding: 1.25rem 1rem;
+  margin: 0;
   border-bottom: 1px solid ${({ theme }) => theme.colors.contentLine};
 `;
 
 const Nothing = styled.p`
-  padding: 16px;
+  text-align: center;
+  color: ${({ theme }) => theme.colors.gray};
+  padding: 1rem;
 `;
 
 const UserWrapper = styled.div`
@@ -81,7 +80,7 @@ const UserWrapper = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.contentLine};
   cursor: pointer;
   &:hover {
-    background-color: ${({ theme }) => theme.colors.background};
+    background-color: ${({ theme }) => theme.colors.grayHover};
   }
 `;
 

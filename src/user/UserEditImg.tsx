@@ -77,7 +77,6 @@ const UserEditImg = ({ id, setimgFiles }: IProps) => {
           height={90}
           style={{ position: 'absolute', top: '0', left: '0', zIndex: '7' }}
         />
-        <img src={EDIT_IMG_URL} />
         <ImgFilter />
       </ProfileImgWrapper>
       <input
@@ -139,12 +138,6 @@ const ProfileImgWrapper = styled.div`
   width: 5.625rem;
   height: 5.625rem;
   padding: 0.625rem 1.25rem;
-  > img:last-of-type {
-    position: absolute;
-    top: 35%;
-    left: 35%;
-    z-index: 10;
-  }
 `;
 
 const ImgFilter = styled.div`

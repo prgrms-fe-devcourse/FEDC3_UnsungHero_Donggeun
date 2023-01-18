@@ -113,8 +113,8 @@ const useFollow = (currentPageId: string) => {
         text={'언팔로우'}
         color={'white'}
         onClick={(e) => handleClickUnFollow(e, id)}
-        width={100}
-        height={30}
+        width={6.25}
+        height={1.875}
         style={{ marginLeft: 'auto' }}
       />
     ) : (
@@ -122,8 +122,8 @@ const useFollow = (currentPageId: string) => {
         text={'팔로우'}
         color={'default'}
         onClick={(e) => handleClickFollow(e, id)}
-        width={100}
-        height={30}
+        width={6.25}
+        height={1.875}
         style={{ marginLeft: 'auto' }}
       />
     );
