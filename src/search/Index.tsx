@@ -7,8 +7,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../api/Loading';
-
-const API_END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
+import { END_POINT } from '../api/apiAddress';
 
 const Search = () => {
   const [postsInfo, setPostsInfo] = useState([]);
@@ -36,7 +35,7 @@ const Search = () => {
 
   const getPostsList = async () => {
     setIsLoading(true);
-    axios.get(`${API_END_POINT}/posts/channel/${currentChannelId}`).then((response) => {
+    axios.get(`${END_POINT}/posts/channel/${currentChannelId}`).then((response) => {
       const { data } = response;
       setPostsInfo(data);
       setIsLoading(false);
@@ -45,7 +44,7 @@ const Search = () => {
 
   const getEntirePostsList = async () => {
     setIsLoading(true);
-    axios.get(`${API_END_POINT}/posts`).then((response) => {
+    axios.get(`${END_POINT}/posts`).then((response) => {
       const { data } = response;
       setPostsInfo(data);
       setIsLoading(false);

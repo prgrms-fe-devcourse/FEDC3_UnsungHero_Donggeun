@@ -71,9 +71,9 @@ const NotificationItem = styled.div<{ seen: boolean | undefined }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: ${(props) => (props.seen ? props.theme.colors.shadow : props.theme.colors.white)};
+  background-color: ${(props) => (props.seen ? props.theme.colors.grayHover : props.theme.colors.white)};
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  transition: background-color 0.5s ease;
+  transition: background-color 0.2s ease;
   cursor: pointer;
 
   & .logo {
@@ -82,19 +82,19 @@ const NotificationItem = styled.div<{ seen: boolean | undefined }>`
 
   &:first-child {
     padding-top: 3rem;
-    border-top-left-radius: 1.875rem;
-    border-top-right-radius: 1.875rem;
+    border-top-left-radius: 0.3125rem;
+    border-top-right-radius: 0.3125rem;
   }
 
   &:last-child {
     border-bottom: none;
     margin-bottom: 2rem;
-    border-bottom-left-radius: 1.875rem;
-    border-bottom-right-radius: 1.875rem;
+    border-bottom-left-radius: 0.3125rem;
+    border-bottom-right-radius: 0.3125rem;
   }
 
   &:hover {
-    background-color: ${(props) => !props.seen && props.theme.colors.shadow};
+    background-color: ${(props) => !props.seen && props.theme.colors.grayHover};
   }
 `;
 

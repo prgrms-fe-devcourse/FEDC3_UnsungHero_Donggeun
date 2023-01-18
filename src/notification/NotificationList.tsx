@@ -9,6 +9,7 @@ import { Pagination } from '../common';
 import styled from 'styled-components';
 import { IoMdNotificationsOutline } from 'react-icons/io';
 import { Button } from '../common';
+import { END_POINT } from '../api/apiAddress';
 
 const NotificationList = () => {
   const [notificationList, setNotificationlist] = useState<INotification[]>();
@@ -25,7 +26,7 @@ const NotificationList = () => {
 
     await axios
       .put(
-        'http://kdt.frontend.3rd.programmers.co.kr:5006/notifications/seen',
+        `${END_POINT}/notifications/seen`,
         {},
         {
           headers: { Authorization: `bearer ${tokenContextObj?.token}` },
@@ -38,7 +39,7 @@ const NotificationList = () => {
 
   const fetchNotificationData = async () => {
     await axios
-      .get('http://kdt.frontend.3rd.programmers.co.kr:5006/notifications', {
+      .get(`${END_POINT}/notifications`, {
         headers: { Authorization: `bearer ${tokenContextObj?.token}` },
       })
       .then((res) => {
@@ -97,18 +98,14 @@ const NotificationList = () => {
           width={12.5}
           height={2.5}
           onClick={confirmNotificationlist}
-        >
-          모든 알림 확인
-        </Button>
+        />
         <Button
           text={'실시간 알람 확인'}
           color={'default'}
           width={12.5}
           height={2.5}
           onClick={fetchNotificationData}
-        >
-          모든 알림 확인
-        </Button>
+        />
       </NotificationConfirmContainer>
 
       <Pagination total={notificationList?.length as number} limit={limit} page={page} setPage={setPage} />
@@ -122,7 +119,6 @@ const NotificationHeader = styled.div`
   display: flex;
   align-items: center;
   font-size: 1.5rem;
-  margin-top: -0.625rem;
   margin-bottom: 0.9375rem;
 
   & .logo {
@@ -134,9 +130,9 @@ const NotificationListContainer = styled.div`
   display: 'flex';
   flex-direction: column;
   width: 45.3125rem;
-  border-radius: 1.875rem;
+  border-radius: 0.3125rem;
   border: none;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2), -1px -1px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: ${({ theme }) => theme.shadow.boxShadow};
   background-color: ${(props) => props.theme.colors.white};
 `;
 

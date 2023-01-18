@@ -1,17 +1,50 @@
 import styled from 'styled-components';
 
 const Loading = () => {
+  const sizeStyle = {
+    width: 100,
+    height: 100,
+  };
   return (
     <LoadingBackground>
-      <img
-        src='https://cdn.inflearn.com/public/files/courses/327297/28b360d6-a7b2-48c4-a695-c9550427debd/season2-02-01-keyframes.gif'
-        alt='로딩이미지'
-      />
+      <Icon>
+        <svg viewBox='0 0 38 38' xmlns='https://www.w3.org/2000/svg' style={sizeStyle}>
+          <g fill='none' fillRule='evenodd'>
+            <g transform='translate(1 1)'>
+              <path d='M36 18c0-9.94-8.06-18-18-18' stroke={'#919EAB'} strokeWidth='2'>
+                <animateTransform
+                  attributeName='transform'
+                  type='rotate'
+                  from='0 18 18'
+                  to='360 18 18'
+                  dur='0.9s'
+                  repeatCount='indefinite'
+                />
+              </path>
+              <circle fill={'#919EAB'} cx='36' cy='18' r='1'>
+                <animateTransform
+                  attributeName='transform'
+                  type='rotate'
+                  from='0 18 18'
+                  to='360 18 18'
+                  dur='0.9s'
+                  repeatCount='indefinite'
+                />
+              </circle>
+            </g>
+          </g>
+        </svg>
+      </Icon>
     </LoadingBackground>
   );
 };
 
 export default Loading;
+
+const Icon = styled.i`
+  display: inline-block;
+  vertical-align: middle;
+`;
 
 const LoadingBackground = styled.div`
   position: absolute;
@@ -20,7 +53,7 @@ const LoadingBackground = styled.div`
   top: 0;
   left: 0;
   background: #ffffffb7;
-  z-index: 999;
+  z-index: 1000;
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -8,6 +8,7 @@ import UserPosts from './UserPosts';
 import { useUserId } from '../contexts/TokenProvider';
 import useFollow from '../follow/useFollow';
 import { Avatar, Button } from '../common';
+import { END_POINT } from '../api/apiAddress';
 
 interface IUserInfo {
   fullName: string | undefined;
@@ -17,7 +18,6 @@ interface IUserInfo {
 
 const COVER_IMG_URL = 'https://ifh.cc/g/XbvQvj.png';
 const LIKE_IMG_URL = 'https://ifh.cc/g/vmscWK.png';
-const API_URL = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 
 const User = () => {
   const { id: currentPageId } = useParams();
@@ -25,7 +25,7 @@ const User = () => {
   const myUserId = userIdContext?.userId;
   const navigate = useNavigate();
   const { data, fetchData } = useAxios<IUser>({
-    url: `${API_URL}/users/${currentPageId}`,
+    url: `${END_POINT}/users/${currentPageId}`,
     method: 'get',
   });
   const [userInfo, setUserInfo] = useState<IUserInfo>({
@@ -68,8 +68,8 @@ const User = () => {
             text={'내정보 수정'}
             onClick={handlemoveEditPage}
             color='white'
-            width={100}
-            height={30}
+            width={6.25}
+            height={1.875}
             style={{ marginLeft: 'auto' }}
           />
         ) : (
@@ -102,11 +102,9 @@ const CoverImg = styled.img`
 const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.white};
   max-width: 45.313rem;
-  border: 1px solid black;
   height: 100%;
   min-height: 640px;
-  border: 1px solid ${({ theme }) => theme.colors.boxLine};
-  box-shadow: 0px 4px 4px ${({ theme }) => theme.colors.shadow};
+  box-shadow: ${({ theme }) => theme.shadow.boxShadow};
   border-radius: 5px;
   position: relative;
   z-index: 5;

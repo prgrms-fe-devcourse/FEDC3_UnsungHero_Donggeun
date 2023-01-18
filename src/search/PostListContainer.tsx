@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { IsJsonString } from './isJsonString';
 import styled from 'styled-components';
 import { Pagination } from '../common';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 interface Ilikes {
   _id: string;
@@ -132,7 +132,7 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
   width: 45.3125rem;
-  margin: 0 0 0.625rem 0rem;
+  margin-bottom: 0.625rem;
 
   .recentLikesButtonContainer {
     display: flex;
@@ -141,7 +141,7 @@ const ButtonContainer = styled.div`
     button {
       width: 5rem;
       margin: 0.625rem 0 1.5625rem 0rem;
-      font-size: 1rem;
+      font-size: ${({ theme }) => theme.fontSize.medium};
       line-height: 1.1875rem;
       font-weight: 900;
       padding: 0.25rem 0.5rem;
@@ -159,9 +159,8 @@ const ButtonContainer = styled.div`
       }
     }
   }
-
   .writePostButton {
-    width: 6rem;
+    width: 6.625rem;
     margin: 0.625rem 0 1.5625rem 0rem;
     font-size: 1rem;
     line-height: 1.1875rem;

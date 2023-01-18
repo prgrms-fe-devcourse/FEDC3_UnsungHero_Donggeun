@@ -6,8 +6,7 @@ import UserEditImg from './UserEditImg';
 import useMutation from '../api/useMutation';
 import styled from 'styled-components';
 import { Button } from '../common';
-
-const API_URL = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
+import { END_POINT } from '../api/apiAddress';
 
 interface IFormValue {
   fullName: string;
@@ -26,7 +25,7 @@ const UserEdit = () => {
     formState: { errors, dirtyFields, isSubmitting },
   } = useForm<IFormValue>({
     defaultValues: () =>
-      axios.get(`${API_URL}/users/${id}`).then(({ data }) => {
+      axios.get(`${END_POINT}/users/${id}`).then(({ data }) => {
         return {
           fullName: data.fullName,
           password: '',
@@ -49,7 +48,7 @@ const UserEdit = () => {
 
   const getChangeImg = async (formdata: FormData) => {
     return await mutate({
-      url: `${API_URL}/users/upload-photo`,
+      url: `${END_POINT}/users/upload-photo`,
       method: 'post',
       data: formdata,
     });
@@ -57,7 +56,7 @@ const UserEdit = () => {
 
   const getChangePassword = async (password: string) => {
     return await mutate({
-      url: `${API_URL}/settings/update-password`,
+      url: `${END_POINT}/settings/update-password`,
       method: 'put',
       data: {
         password,
@@ -67,7 +66,7 @@ const UserEdit = () => {
 
   const getChangeUserName = async (fullName: string) => {
     return await mutate({
-      url: `${API_URL}/settings/update-user`,
+      url: `${END_POINT}/settings/update-user`,
       method: 'put',
       data: {
         fullName,
@@ -80,19 +79,25 @@ const UserEdit = () => {
     <Wrapper>
       <UserEditImg id={id} setimgFiles={setimgFiles} />
       <Form onSubmit={handleSubmit(handleChangeUserInfo)}>
-        <Label>유저네임</Label>
-        <Input
-          type='text'
-          {...register('fullName', {
-            minLength: {
-              value: 2,
-              message: '2자리 이상의 이름을 입력해주세요',
-            },
-          })}
-        />
-
+        <UserName>
+          <Label>유저네임</Label>
+          <Input
+            type='text'
+            {...register('fullName', {
+              minLength: {
+                value: 2,
+                message: '2자리 이상의 이름을 입력해주세요',
+              },
+              maxLength: {
+                value: 10,
+                message: '최대 10글자까지 가능합니다.',
+              },
+            })}
+          />
+          <Error>{errors?.fullName?.message}</Error>
+        </UserName>
         <Label>비밀번호</Label>
-        <PasswordInput
+        <Input
           type='password'
           {...register('password', {
             minLength: {
@@ -105,8 +110,8 @@ const UserEdit = () => {
         <Button
           text={'저장'}
           color={'default'}
-          width={100}
-          height={30}
+          width={6.25}
+          height={1.875}
           disabled={isSubmitting}
           style={{ position: 'absolute', top: '29%', right: '2%' }}
         />
@@ -120,11 +125,9 @@ export default UserEdit;
 const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.white};
   max-width: 45.313rem;
-  border: 1px solid black;
   height: 100%;
   min-height: 40rem;
-  border: 1px solid ${({ theme }) => theme.colors.boxLine};
-  box-shadow: 0px 4px 4px ${({ theme }) => theme.colors.shadow};
+  box-shadow: ${({ theme }) => theme.shadow.boxShadow};
   border-radius: 5px;
   position: relative;
   z-index: 5;
@@ -139,23 +142,23 @@ const Form = styled.form`
   height: 23.125rem;
 `;
 
+const UserName = styled.div`
+  height: 150px;
+`;
+
 const Input = styled.input`
   display: block;
   width: 24.375rem;
   height: 2.5rem;
-  margin-bottom: 5rem;
+  margin-top: 0.625rem;
+  margin-bottom: 0.625rem;
   border-radius: 8px;
   border: 1px solid ${({ theme }) => theme.colors.contentLine};
-`;
-
-const PasswordInput = styled(Input)`
-  margin-bottom: 10px;
 `;
 
 const Label = styled.label`
   font-weight: bold;
   font-size: ${({ theme }) => theme.fontSize.large};
-  padding-bottom: 0.625rem;
   width: 24.375rem;
 `;
 
