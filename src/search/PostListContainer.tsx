@@ -122,17 +122,14 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   width: 45.3125rem;
-  margin: 0 0 0.625rem 0rem;
+  margin-bottom: 0.625rem;
 
   button {
     background: inherit;
     border: none;
-    box-shadow: none;
-    border-radius: 0;
-    padding: 0;
     overflow: visible;
     cursor: pointer;
     border-left: none;
-    font-size: 1.0625rem;
+    font-size: ${({ theme }) => theme.fontSize.medium};
   }
 `;
