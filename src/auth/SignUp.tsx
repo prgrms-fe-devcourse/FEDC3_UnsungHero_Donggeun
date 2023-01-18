@@ -17,7 +17,7 @@ const SignUp = () => {
   const [allEmailList, setAllEmailList] = useState<string[] | undefined>([]);
   const tokenContextObj: IToken | null = useToken();
   const { data: userData } = useAxios<IAuth[]>({
-    url: `http://kdt.frontend.3rd.programmers.co.kr:5006/users/get-users`,
+    url: `/users/get-users`,
     method: 'get',
   });
 
