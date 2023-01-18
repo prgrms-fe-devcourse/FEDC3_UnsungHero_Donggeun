@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import { IToken } from '../types/token';
 import { IAuth } from '../types/auth';
 import { IUserId } from '../types/useId';
-import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { AiOutlineMail, AiOutlineLock } from 'react-icons/ai';
@@ -16,7 +15,6 @@ const TOKEN_KEY = 'token';
 const USERID_KEY = 'userId';
 
 const Login = () => {
-  const [allOnlineEmail, setAllOnlineEmail] = useState<string>();
   const {
     register,
     handleSubmit,
@@ -31,11 +29,6 @@ const Login = () => {
   const navigate = useNavigate();
 
   const onSubmitHandler: SubmitHandler<IAuth> = async ({ email, password }) => {
-    if (allOnlineEmail?.indexOf(email) !== -1) {
-      setError('email', { message: '현재 접속중인 email 입니다.' }, { shouldFocus: true });
-      return;
-    }
-
     await axios
       .post('http://kdt.frontend.3rd.programmers.co.kr:5006/login', {
         email,
@@ -57,21 +50,8 @@ const Login = () => {
       });
   };
 
-  const getAllOnlineEmailData = async () => {
-    await axios.get('http://kdt.frontend.3rd.programmers.co.kr:5006/users/online-users').then(({ data }) => {
-      const serverData = data;
-      const allFullNameData = serverData.map((data: IAuth) => data.email);
-      setAllOnlineEmail(allFullNameData);
-    });
-  };
-
-  useEffect(() => {
-    getAllOnlineEmailData();
-  }, []);
-
   return (
     <>
-      {' '}
       <Header />
       <form onSubmit={handleSubmit(onSubmitHandler)} style={{ display: 'flex', flexDirection: 'column' }}>
         <LoginHeader>로그인</LoginHeader>
@@ -110,6 +90,7 @@ const Login = () => {
             <AiOutlineLock className='logo' />
             <ErrorText>{errors?.password?.message}</ErrorText>
           </InputContainer>
+
           <CreateUserIntroduce>
             <span>계정이 필요하신가요? </span>
             <CreateUserLink to='/signup'>가입하기</CreateUserLink>

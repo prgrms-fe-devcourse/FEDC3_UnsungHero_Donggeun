@@ -95,6 +95,10 @@ const SignUp = () => {
                   value: 2,
                   message: '2자리 이상의 이름을 입력해주세요',
                 },
+                maxLength: {
+                  value: 10,
+                  message: '10자리 이하의 이름을 입력해주세요',
+                },
               })}
             />
             <AiOutlineUser className='logo' />
