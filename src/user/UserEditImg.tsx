@@ -1,12 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import useAxios from '../api/useAxios';
 import { Avatar } from '../common';
-import { IUser } from '../types/user';
+import useFollow from '../follow/useFollow';
 
 const COVER_IMG_URL = 'https://ifh.cc/g/ZSypny.png';
 const PROFIE_IMG_URL = 'https://ifh.cc/g/35RDD6.png';
-const API_URL = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
 const EDIT_IMG_URL = 'https://ifh.cc/g/2zSYKD.png';
 interface IProps {
   id: string | undefined;
@@ -19,10 +17,7 @@ interface IImage {
 }
 
 const UserEditImg = ({ id, setimgFiles }: IProps) => {
-  const { data } = useAxios<IUser>({
-    url: `${API_URL}/users/${id}`,
-    method: 'get',
-  });
+  const { currentData: myData } = useFollow(id as string);
 
   const [profileImage, setProfileImage] = useState('');
   const [coverImage, setCoverImage] = useState('');
@@ -34,9 +29,9 @@ const UserEditImg = ({ id, setimgFiles }: IProps) => {
   });
 
   useEffect(() => {
-    setCoverImage(data?.coverImage ?? COVER_IMG_URL);
-    setProfileImage(data?.image ?? PROFIE_IMG_URL);
-  }, [data]);
+    setCoverImage(myData?.coverImage ?? COVER_IMG_URL);
+    setProfileImage(myData?.image ?? PROFIE_IMG_URL);
+  }, [myData]);
 
   const handleChangeImg = (e: React.ChangeEvent<HTMLInputElement>, type: string) => {
     if (e.currentTarget.files !== null) {

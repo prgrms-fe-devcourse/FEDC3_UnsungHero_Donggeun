@@ -6,8 +6,9 @@ import UserEditImg from './UserEditImg';
 import useMutation from '../api/useMutation';
 import styled from 'styled-components';
 import { Button } from '../common';
+import useFollow from '../follow/useFollow';
 
-const API_URL = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
+const API_URL = 'https://kdt.frontend.3rd.programmers.co.kr:5006';
 
 interface IFormValue {
   fullName: string;
@@ -20,19 +21,13 @@ const UserEdit = () => {
   const [imgFiles, setimgFiles] = useState({});
   const navigate = useNavigate();
 
+  const { currentData: myData } = useFollow(id as string);
+
   const {
     register,
     handleSubmit,
     formState: { errors, dirtyFields, isSubmitting },
-  } = useForm<IFormValue>({
-    defaultValues: () =>
-      axios.get(`${API_URL}/users/${id}`).then(({ data }) => {
-        return {
-          fullName: data.fullName,
-          password: '',
-        };
-      }),
-  });
+  } = useForm<IFormValue>();
 
   const handleChangeUserInfo: SubmitHandler<IFormValue> = async ({ fullName, password }) => {
     if (dirtyFields.fullName) await getChangeUserName(fullName);
@@ -89,6 +84,7 @@ const UserEdit = () => {
               message: '2자리 이상의 이름을 입력해주세요',
             },
           })}
+          defaultValue={myData?.fullName}
         />
 
         <Label>비밀번호</Label>
@@ -105,8 +101,8 @@ const UserEdit = () => {
         <Button
           text={'저장'}
           color={'default'}
-          width={100}
-          height={30}
+          width={10}
+          height={3}
           disabled={isSubmitting}
           style={{ position: 'absolute', top: '29%', right: '2%' }}
         />

@@ -8,7 +8,7 @@ import { useToken, useUserId } from '../contexts/TokenProvider';
 import { IFollow } from '../types/follow';
 import { IUser } from '../types/user';
 
-const END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
+const END_POINT = 'https://kdt.frontend.3rd.programmers.co.kr:5006';
 
 interface IFollowList {
   followers: string[];
@@ -65,7 +65,7 @@ const useFollow = (currentPageId: string) => {
     };
 
     mutate({
-      url: `http://kdt.frontend.3rd.programmers.co.kr:5006/notifications/create`,
+      url: `https://kdt.frontend.3rd.programmers.co.kr:5006/notifications/create`,
       method: 'post',
       data: {
         ...body,
@@ -137,7 +137,7 @@ const useFollow = (currentPageId: string) => {
     );
   };
 
-  return { followButton, userFollow };
+  return { followButton, userFollow, currentData, fetchCurrentData };
 };
 
 export default useFollow;
