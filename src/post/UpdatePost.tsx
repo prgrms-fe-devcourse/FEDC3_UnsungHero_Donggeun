@@ -6,8 +6,9 @@ import { useToken } from '../contexts/TokenProvider';
 import useMutation from '../api/useMutation';
 import useAxios from '../api/useAxios';
 import { IPost } from '../types/post';
+import { useQuery } from 'react-query';
 
-const END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
+const END_POINT = 'https://kdt.frontend.3rd.programmers.co.kr:5006';
 
 const UpdatePost = () => {
   const [title, setTitle] = useState('');
@@ -32,14 +33,13 @@ const UpdatePost = () => {
     localStorage.setItem(`tempContentInUpdatePost${postId}`, e.target.value);
   };
 
-  const { data } = useAxios<IPost>({
-    url: `${END_POINT}/posts/${postId}`,
-    method: 'get',
+  const { data: updatePost } = useQuery<IPost>('updatePost', async () => {
+    return axios.get(`${END_POINT}/posts/${postId}`).then(({ data }) => data);
   });
 
   useEffect(() => {
-    if (typeof data === 'object') {
-      const post = JSON.parse(data?.title as string);
+    if (typeof updatePost === 'object') {
+      const post = JSON.parse(updatePost?.title as string);
       setTitle(post.title);
       setContent(post.content);
 
@@ -53,11 +53,11 @@ const UpdatePost = () => {
         setContent(tempContent);
       }
 
-      setChannelId(data.channel._id);
+      setChannelId(updatePost.channel._id);
 
-      setImage(data.image as string);
+      setImage(updatePost.image as string);
     }
-  }, [data]);
+  }, [updatePost]);
 
   const handleUpdatePost = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -125,7 +125,7 @@ const UpdatePost = () => {
     <Form onSubmit={(e) => handleUpdatePost(e)}>
       <TitleInput value={title} onChange={(e) => handleTitleOnChnage(e)} />
       <Div />
-      <Image src={previewImage ? previewImage : data?.image}></Image>
+      <Image src={previewImage ? previewImage : updatePost?.image}></Image>
       <Textarea
         onChange={(e) => handleContentOnChnage(e)}
         rows={10}

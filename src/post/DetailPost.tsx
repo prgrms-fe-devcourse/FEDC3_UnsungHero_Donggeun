@@ -9,8 +9,10 @@ import { IPost } from '../types/post';
 import { useToken, useUserId } from '../contexts/TokenProvider';
 import { IComment } from '../types/comment';
 import { ILike } from '../types/like';
+import { useQuery } from 'react-query';
+import axios from 'axios';
 
-const END_POINT = 'http://kdt.frontend.3rd.programmers.co.kr:5006';
+const END_POINT = 'https://kdt.frontend.3rd.programmers.co.kr:5006';
 const PROFIE_IMG_URL = 'https://ifh.cc/g/35RDD6.png';
 
 interface Iauthor {
@@ -43,36 +45,42 @@ const DetailPost = () => {
   const userObject = useUserId();
   const userId = userObject?.userId;
 
-  const { data, fetchData } = useAxios<IPost>({
-    url: `${END_POINT}/posts/${postId}`,
-    method: 'get',
-  });
+  const { data: postData, refetch: fetchPostData } = useQuery<IPost>(
+    'postData',
+    async () => {
+      return axios.get(`${END_POINT}/posts/${postId}`).then(({ data }) => data);
+    },
+    {
+      refetchOnMount: true,
+      staleTime: 2000,
+    }
+  );
 
   useEffect(() => {
-    if (typeof data === 'object') {
-      const post = JSON.parse(data?.title as string);
+    if (typeof postData === 'object') {
+      const post = JSON.parse(postData?.title as string);
       setTitle(post.title);
       setContent(post.content);
 
-      const author = data?.author;
+      const author = postData?.author;
       const fullName = author.fullName;
       const image = author.image;
       const _id = author._id;
 
-      const createAt = data.createdAt;
+      const createAt = postData.createdAt;
       setAuthor({
         fullName: fullName,
         image: image ?? PROFIE_IMG_URL,
         createAt: createAt,
         _id: _id,
       });
-      setImage(data.image as string);
+      setImage(postData.image as string);
 
-      setComments(data.comments);
+      setComments(postData.comments);
 
-      setLikes(data.likes);
+      setLikes(postData.likes);
     }
-  }, [data]);
+  }, [postData]);
 
   const handleOnClickToUpdatePage = () => {
     navigate(`/post/channelId/updatePost/${postId}`);
@@ -96,9 +104,9 @@ const DetailPost = () => {
         <Like
           likeList={likes}
           userId={userId || ''}
-          postuserId={data?.author._id || ''}
+          postuserId={postData?.author._id || ''}
           postId={postId || ''}
-          fetchData={fetchData}
+          fetchData={fetchPostData}
         />
         <Div />
         {token ? (
@@ -109,9 +117,9 @@ const DetailPost = () => {
         <Div />
         <Comment
           commentList={comments}
-          userId={data?.author._id || ''}
+          userId={postData?.author._id || ''}
           postId={postId || ''}
-          fetchData={fetchData}
+          fetchData={fetchPostData}
         />
       </Container>
     </ErrorBoundary>
