@@ -1,11 +1,7 @@
-
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-=======
-
 import { IComment } from '../types/comment';
-
 import { createComment, deleteComment } from './api';
 
 const PROFIE_IMG_URL = 'https://ifh.cc/g/35RDD6.png';
