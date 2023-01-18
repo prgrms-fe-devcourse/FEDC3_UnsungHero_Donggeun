@@ -4,6 +4,7 @@ import { IRequest } from '../types/request';
 
 const useMutation = () => {
   const mutate = async ({ url, method, data }: IRequest) => {
+    console.log(`localStorage ${localStorage.getItem(TOKEN_KEY)}`);
     const config = {
       headers: {
         Authorization: `bearer ${JSON.parse(localStorage.getItem(TOKEN_KEY) || '')}`,
