@@ -19,13 +19,13 @@ const COVER_IMG_URL = 'https://ifh.cc/g/XbvQvj.png';
 const LIKE_IMG_URL = 'https://ifh.cc/g/vmscWK.png';
 
 const User = () => {
-  const { id: currentPageId } = useParams();
+  const { id } = useParams();
   const userIdContext = useUserId();
   const myUserId = userIdContext?.userId;
   const navigate = useNavigate();
 
   const { data, fetchData } = useAxios<IUser>({
-    url: `/users/${currentPageId}`,
+    url: `/users/${id}`,
     method: 'get',
   });
 
@@ -47,7 +47,8 @@ const User = () => {
 
   useEffect(() => {
     fetchData();
-  }, [currentPageId]);
+    console.log(data);
+  }, [id]);
 
   // const handlemoveEditPage = () => {
   //   navigate(`/userEdit/${currentPageId}`);
