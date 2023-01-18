@@ -95,8 +95,7 @@ const PostList = ({
     <WholeWrapper>
       <div className='postListTitle'>#{selectPostsChannelTitle(currentChannelId)}</div>
       <PostListWrapper>
-        {filteredPostsInfo.map((postInfo, index) => {
-          console.log(postInfo);
+        {filteredPostsInfo.map((postInfo) => {
           const { title, _id, likes, createdAt, comments, channel } = postInfo;
           const channelId = channel._id;
           const { fullName, image } = postInfo.author; //fullName이 아니라 userName이 닉네임인 경우 변경해야함
