@@ -23,37 +23,41 @@ const User = () => {
   const userIdContext = useUserId();
   const myUserId = userIdContext?.userId;
   const navigate = useNavigate();
-  console.log(`currentPageId: ${currentPageId}`);
+
   const { data, fetchData } = useAxios<IUser>({
     url: `/users/${currentPageId}`,
     method: 'get',
   });
-  const [userInfo, setUserInfo] = useState<IUserInfo>({
-    fullName: '',
-    posts: [],
-    coverImage: '',
-  });
-  const { followButton, userFollow } = useFollow(currentPageId as string);
 
-  useEffect(() => {
-    setUserInfo({
-      fullName: data?.fullName,
-      posts: data?.posts as [],
-      coverImage: data?.coverImage ?? COVER_IMG_URL,
-    });
-  }, [data]);
+  // const [userInfo, setUserInfo] = useState<IUserInfo>({
+  //   fullName: '',
+  //   posts: [],
+  //   coverImage: '',
+  // });
 
-  useEffect(() => {
-    fetchData();
-  }, [currentPageId]);
+  // const { followButton, userFollow } = useFollow(currentPageId as string);
 
-  const handlemoveEditPage = () => {
-    navigate(`/userEdit/${currentPageId}`);
-  };
-  const totalLikes = userInfo?.posts?.reduce((acc, cur: Pick<IPost, 'likes'>) => acc + cur.likes.length, 0);
+  // useEffect(() => {
+  //   setUserInfo({
+  //     fullName: data?.fullName,
+  //     posts: data?.posts as [],
+  //     coverImage: data?.coverImage ?? COVER_IMG_URL,
+  //   });
+  // }, [data]);
+
+  // useEffect(() => {
+  //   fetchData();
+  // }, [currentPageId]);
+
+  // const handlemoveEditPage = () => {
+  //   navigate(`/userEdit/${currentPageId}`);
+  // };
+
+  // const totalLikes = userInfo?.posts?.reduce((acc, cur: Pick<IPost, 'likes'>) => acc + cur.likes.length, 0);
+
   return (
     <Wrapper>
-      <CoverImg src={userInfo.coverImage} alt='커버 이미지' />
+      {/* <CoverImg src={userInfo.coverImage} alt='커버 이미지' />
       <UserWrapper>
         <Avatar src={data?.image} width={90} height={90} style={{ position: 'relative', top: '-1.875rem' }} />
         <InfoWrapper>
@@ -86,7 +90,7 @@ const User = () => {
       </Follow>
       <List>
         {userInfo?.posts?.length > 0 ? <UserPosts posts={userInfo.posts} /> : <p>작성한 글이 없습니다.</p>}
-      </List>
+      </List> */}
     </Wrapper>
   );
 };

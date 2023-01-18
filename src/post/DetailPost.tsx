@@ -18,7 +18,7 @@ interface Iauthor {
   createAt: string;
   _id: string;
 }
-
+// 커밋용 주석
 const DetailPost = () => {
   const navigate = useNavigate();
 
