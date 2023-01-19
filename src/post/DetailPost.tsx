@@ -122,14 +122,7 @@ const DetailPost = () => {
               </Author>
               <Content>
                 <ImageWarpper>{image && <ContentImage src={image} alt='이미지!' />}</ImageWarpper>
-                <Textarea
-                  value={content}
-                  disabled
-                  rows={10}
-                  cols={100}
-                  ref={textareaRef}
-                  scrollHeight={textareaRef.current?.scrollHeight}
-                />
+                <ContentText>{content}</ContentText>
               </Content>
             </>
           )}
@@ -224,10 +217,9 @@ const Content = styled.div`
   min-height: 32.5rem;
 `;
 
-const Textarea = styled.textarea<ITextarea>`
-  height: auto;
-  height: ${({ scrollHeight }) => `${scrollHeight}px`};
-  resize: none;
+const ContentText = styled.div`
+  line-height: 180%;
+  white-space: pre-wrap;
   border: none;
   width: 100%;
 
