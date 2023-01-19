@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import useAxios from '../api/useAxios';
+import { useQuery } from 'react-query';
 import useMutation from '../api/useMutation';
 import { Button } from '../common';
 import { useToken, useUserId } from '../contexts/TokenProvider';
@@ -16,14 +16,25 @@ interface IFollowList {
 const useFollow = (currentPageId: string) => {
   const userIdContext = useUserId();
   const tokenContext = useToken();
-  const { data: LoginUserData, fetchData: fetchLoginUserData } = useAxios<IUser>({
-    url: `${END_POINT}/users/${userIdContext?.userId}`,
-    method: 'get',
-  });
-  const { data: currentData, fetchData: fetchCurrentData } = useAxios<IUser>({
-    url: `${END_POINT}/users/${currentPageId}`,
-    method: 'get',
-  });
+
+  const { data: loginUserData, refetch: fetchLoginUserData } = useQuery<IUser>(
+    ['userPage', 'loginUserId'],
+    async () => {
+      return axios.get(`${END_POINT}/users/${userIdContext?.userId}`).then(({ data }) => data);
+    }
+  );
+
+  const { data: currentData, refetch: fetchCurrentData } = useQuery<IUser>(
+    ['userPage', 'currentUserId'],
+    async () => {
+      return axios.get(`${END_POINT}/users/${currentPageId}`).then(({ data }) => data);
+    },
+    {
+      refetchOnMount: true,
+      staleTime: 3000,
+    }
+  );
+
   const { mutate } = useMutation();
   const [userFollow, setUserFollow] = useState<IFollowList>({
     followers: [],
@@ -41,11 +52,7 @@ const useFollow = (currentPageId: string) => {
     });
 
     if (firstClickCheck) produceFollowNotification();
-  }, [currentData, LoginUserData]);
-
-  useEffect(() => {
-    fetchCurrentData();
-  }, [currentPageId]);
+  }, [currentData, loginUserData]);
 
   const produceFollowNotification = () => {
     const body = {
@@ -106,7 +113,7 @@ const useFollow = (currentPageId: string) => {
   const followButton = (id: string) => {
     if (id === userIdContext?.userId) return;
 
-    const following = LoginUserData?.following.map((user) => user.user);
+    const following = loginUserData?.following.map((user) => user.user);
     return following?.includes(id) ? (
       <Button
         text={'언팔로우'}
@@ -128,7 +135,7 @@ const useFollow = (currentPageId: string) => {
     );
   };
 
-  return { followButton, userFollow };
+  return { followButton, userFollow, currentData, fetchCurrentData };
 };
 
 export default useFollow;

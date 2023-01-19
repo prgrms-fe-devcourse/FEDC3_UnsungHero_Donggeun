@@ -1,14 +1,11 @@
 import { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { IUser } from '../types/user';
 import styled from 'styled-components';
-import useAxios from '../api/useAxios';
 import { IPost } from '../types/post';
 import UserPosts from './UserPosts';
 import { useUserId } from '../contexts/TokenProvider';
 import useFollow from '../follow/useFollow';
 import { Avatar, Button } from '../common';
-import { END_POINT } from '../api/apiAddress';
 
 interface IUserInfo {
   fullName: string | undefined;
@@ -25,27 +22,30 @@ const User = () => {
   const userIdRef = useRef(currentPageId);
   const myUserId = userIdContext?.userId;
   const navigate = useNavigate();
-  const { data, fetchData } = useAxios<IUser>({
-    url: `${END_POINT}/users/${currentPageId}`,
-    method: 'get',
-  });
   const [userInfo, setUserInfo] = useState<IUserInfo>({
     fullName: '',
     posts: [],
     coverImage: '',
   });
-  const { followButton, userFollow } = useFollow(currentPageId as string);
+
+  const {
+    followButton,
+    userFollow,
+    currentData: userData,
+    fetchCurrentData: refetchUserData,
+  } = useFollow(currentPageId as string);
+
   useEffect(() => {
     setUserInfo({
-      fullName: data?.fullName,
-      posts: data?.posts as [],
-      coverImage: data?.coverImage ?? COVER_IMG_URL,
+      fullName: userData?.fullName,
+      posts: userData?.posts as [],
+      coverImage: userData?.coverImage ?? COVER_IMG_URL,
     });
-  }, [data]);
+  }, [userData]);
 
   useEffect(() => {
     if (userIdRef.current !== currentPageId) {
-      fetchData();
+      refetchUserData();
     }
   }, [currentPageId]);
 
@@ -57,7 +57,12 @@ const User = () => {
     <Wrapper>
       <CoverImg src={userInfo.coverImage} alt='커버 이미지' />
       <UserWrapper>
-        <Avatar src={data?.image} width={90} height={90} style={{ position: 'relative', top: '-1.875rem' }} />
+        <Avatar
+          src={userData?.image}
+          width={90}
+          height={90}
+          style={{ position: 'relative', top: '-1.875rem' }}
+        />
         <InfoWrapper>
           <UserName>{userInfo.fullName}</UserName>
           <Likes>

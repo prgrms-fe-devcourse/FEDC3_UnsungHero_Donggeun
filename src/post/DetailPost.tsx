@@ -4,11 +4,12 @@ import styled from 'styled-components';
 import ErrorBoundary from '../api/ErrorBoundary';
 import Comment from '../comment';
 import Like from '../like';
-import useAxios from '../api/useAxios';
 import { IPost } from '../types/post';
-import { useToken, useUserId } from '../contexts/TokenProvider';
+import { useUserId } from '../contexts/TokenProvider';
 import { IComment } from '../types/comment';
 import { ILike } from '../types/like';
+import { useQuery } from 'react-query';
+import axios from 'axios';
 import { Avatar, Button } from '../common';
 import { END_POINT } from '../api/apiAddress';
 
@@ -38,46 +39,49 @@ const DetailPost = () => {
 
   const { postId } = useParams();
 
-  const tokenObject = useToken();
-  const token = tokenObject?.token;
-
   const userObject = useUserId();
   const userId = userObject?.userId;
 
-  const { data, fetchData } = useAxios<IPost>({
-    url: `${END_POINT}/posts/${postId}`,
-    method: 'get',
-  });
+  const { data: postData, refetch: fetchData } = useQuery<IPost>(
+    'postData',
+    async () => {
+      return axios.get(`${END_POINT}/posts/${postId}`).then(({ data }) => data);
+    },
+    {
+      refetchOnMount: true,
+      staleTime: 2000,
+    }
+  );
 
   useEffect(() => {
-    if (typeof data === 'object') {
-      const post = JSON.parse(data?.title as string);
+    if (typeof postData === 'object') {
+      const post = JSON.parse(postData?.title as string);
       setTitle(post.title);
       setContent(post.content);
 
-      const author = data?.author;
+      const author = postData?.author;
       const fullName = author.fullName;
       const _id = author._id;
 
-      const createAt = data.createdAt;
+      const createAt = postData.createdAt;
       setAuthor({
         fullName: fullName,
         createAt: createAt,
         _id: _id,
       });
-      setImage(data.image as string);
+      setImage(postData.image as string);
 
-      setComments(data.comments);
+      setComments(postData.comments);
 
-      setLikes(data.likes);
+      setLikes(postData.likes);
     }
-  }, [data]);
+  }, [postData]);
 
   const handleOnClickToUpdatePage = () => {
     navigate(`/post/channelId/updatePost/${postId}`);
   };
 
-  const identification = author._id === userId ? false : true;
+  const identification = author._id === userId ? true : false;
 
   return (
     <ErrorBoundary>
@@ -99,7 +103,7 @@ const DetailPost = () => {
             ) : null}
           </TitleWrapper>
           <Author onClick={() => navigate(`/user/${author._id}`)}>
-            <Avatar src={data?.author.image} width={60} height={60} />
+            <Avatar src={postData?.author.image} width={60} height={60} />
             <UserName>{author.fullName}</UserName>
           </Author>
           <Content>
@@ -116,7 +120,7 @@ const DetailPost = () => {
           <Like
             likeList={likes}
             userId={userId || ''}
-            postuserId={data?.author._id || ''}
+            postuserId={postData?.author._id || ''}
             postId={postId || ''}
             fetchData={fetchData}
           />
@@ -124,7 +128,7 @@ const DetailPost = () => {
       </Container>
       <Comment
         commentList={comments}
-        userId={data?.author._id || ''}
+        userId={postData?.author._id || ''}
         postId={postId || ''}
         fetchData={fetchData}
       />

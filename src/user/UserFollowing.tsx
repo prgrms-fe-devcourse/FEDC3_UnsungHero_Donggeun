@@ -1,7 +1,8 @@
+import axios from 'axios';
 import { useState } from 'react';
+import { useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import useAxios from '../api/useAxios';
 import { Avatar, Pagination } from '../common';
 import useFollow from '../follow/useFollow';
 import { IUser } from '../types/user';
@@ -15,12 +16,18 @@ const UserFollowing = () => {
   const limit = 10;
   const offset = (page - 1) * limit;
 
-  const { data } = useAxios<[]>({
-    url: `${END_POINT}/users/get-users`,
-    method: 'get',
-  });
+  const { data: followingData } = useQuery(
+    'followingData',
+    async () => {
+      return axios.get(`${END_POINT}/users/get-users`).then(({ data }) => data);
+    },
+    {
+      refetchOnMount: true,
+      staleTime: 3000,
+    }
+  );
 
-  const followingsList = data?.filter((user: IUser) => userFollow?.following?.includes(user._id));
+  const followingsList = followingData?.filter((user: IUser) => userFollow?.following?.includes(user._id));
   const handleClickUser = (id: string) => {
     navigate(`/user/${id}`);
   };

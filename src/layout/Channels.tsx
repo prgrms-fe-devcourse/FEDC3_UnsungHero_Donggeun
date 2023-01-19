@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { IChannel } from '../types/channel';
@@ -12,28 +12,23 @@ interface Channel {
 }
 
 const Channels = () => {
-  const [channelList, setChannelList] = useState([]);
+  const { data: channelData } = useQuery('channelData', async () => {
+    return axios.get(`${END_POINT}/channels`).then(({ data }) => data);
+  });
   const navigate = useNavigate();
-  useEffect(() => {
-    getChannelList();
-  }, []);
-
-  const getChannelList = async () => {
-    return await axios.get(`${END_POINT}/channels`).then(({ data }) => setChannelList(data));
-  };
 
   const handleClickMoveChannel = (id: string) => {
     navigate(`/channel/${id}`);
   };
-  const hobbyChannel = channelList.filter((channel: IChannel) => channel.description === '취미');
-  const familyChannel = channelList.filter((channel: IChannel) => channel.description === '가족');
-  const etcChannel = channelList.filter((channel: IChannel) => channel.description === '기타');
+  const hobbyChannel = channelData?.filter((channel: IChannel) => channel.description === '취미');
+  const familyChannel = channelData?.filter((channel: IChannel) => channel.description === '가족');
+  const etcChannel = channelData?.filter((channel: IChannel) => channel.description === '기타');
   return (
     <Wrapper>
       <Sidebar>
         <ChannelTitle>취미</ChannelTitle>
         <ChannelWrapper>
-          {hobbyChannel.map(({ _id, name }: Channel) => (
+          {hobbyChannel?.map(({ _id, name }: Channel) => (
             <Channel key={_id} onClick={() => handleClickMoveChannel(_id)}>
               {name}
               <AiOutlineRight />
@@ -44,7 +39,7 @@ const Channels = () => {
       <Sidebar>
         <ChannelTitle>가족</ChannelTitle>
         <ChannelWrapper>
-          {familyChannel.map(({ _id, name }: Channel) => (
+          {familyChannel?.map(({ _id, name }: Channel) => (
             <Channel key={_id} onClick={() => handleClickMoveChannel(_id)}>
               {name}
               <AiOutlineRight />
@@ -55,7 +50,7 @@ const Channels = () => {
       <Sidebar>
         <ChannelTitle>기타</ChannelTitle>
         <ChannelWrapper>
-          {etcChannel.map(({ _id, name }: Channel) => (
+          {etcChannel?.map(({ _id, name }: Channel) => (
             <Channel key={_id} onClick={() => handleClickMoveChannel(_id)}>
               {name}
               <AiOutlineRight />
