@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { IPost } from '../types/post';
@@ -19,7 +19,6 @@ const LIKE_IMG_URL = 'https://ifh.cc/g/vmscWK.png';
 const User = () => {
   const { id: currentPageId } = useParams();
   const userIdContext = useUserId();
-  const userIdRef = useRef(currentPageId);
   const myUserId = userIdContext?.userId;
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState<IUserInfo>({
@@ -44,9 +43,7 @@ const User = () => {
   }, [userData]);
 
   useEffect(() => {
-    if (userIdRef.current !== currentPageId) {
-      refetchUserData();
-    }
+    refetchUserData();
   }, [currentPageId]);
 
   const handlemoveEditPage = () => {
