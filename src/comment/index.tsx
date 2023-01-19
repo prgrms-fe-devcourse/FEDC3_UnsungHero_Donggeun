@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { IComment } from '../types/comment';
 import { createComment, deleteComment } from './api';
 import { Avatar, Button } from '../common';
+import { useNavigate } from 'react-router-dom';
+import { IUser } from '../types/user';
 
 interface ICommentProps {
   commentList?: IComment[];
@@ -38,6 +40,12 @@ const Comment = ({ commentList, userId, postId, fetchData }: ICommentProps) => {
     fetchData();
   };
 
+  const navigate = useNavigate();
+
+  const handleOnClickMoveToUserPage = (author: IUser) => {
+    navigate(`/user/${author._id}`);
+  };
+
   return (
     <>
       <CommentForm onSubmit={(e) => handleSubmitInput(e)}>
@@ -55,7 +63,7 @@ const Comment = ({ commentList, userId, postId, fetchData }: ICommentProps) => {
         {commentList && commentList?.length > 0 ? (
           commentList?.map(({ _id, author, comment }: IComment) => (
             <Li key={_id}>
-              <AuthorContainer>
+              <AuthorContainer onClick={() => handleOnClickMoveToUserPage(author)}>
                 <Avatar src={author.image} width={60} height={60} />
                 <AuthorName>{author.fullName}</AuthorName>
               </AuthorContainer>
