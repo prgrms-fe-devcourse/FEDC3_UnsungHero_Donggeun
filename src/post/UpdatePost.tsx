@@ -57,6 +57,10 @@ const UpdatePost = () => {
   const handleUpdatePost = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (title.length === 0) {
+      return alert('제목은 필수입니다!');
+    }
+
     const postToUpdate = {
       title: title,
       content: content,

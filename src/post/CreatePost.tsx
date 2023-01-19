@@ -50,6 +50,11 @@ function CreatePost() {
 
   const handleOnClickCreatePost = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (title.length === 0) {
+      return alert('제목은 필수 입니다!');
+    }
+
     setIsLoading(true);
     if (!token) return;
 
@@ -93,9 +98,6 @@ function CreatePost() {
           setPreviewImage(reader.result as string);
         }
       };
-      // reader.onerror = () => {
-      //   console.log('error');
-      // };
     }
   };
 
