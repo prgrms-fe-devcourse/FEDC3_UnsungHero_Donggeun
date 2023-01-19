@@ -7,7 +7,7 @@ import { Button } from '../common';
 import { END_POINT } from '../api/apiAddress';
 import Loading from '../api/Loading';
 
-interface ILoading {
+export interface ILoading {
   isLoading: boolean;
 }
 
@@ -144,9 +144,7 @@ function CreatePost() {
 export default CreatePost;
 
 const Wrapper = styled.div<ILoading>`
-  position: relative;
-  height: 100%;
-  overflow: ${({ isLoading }) => isLoading && 'hidden'};
+  position: ${({ isLoading }) => isLoading && 'fixed'};
   margin-top: 1.875rem;
 `;
 

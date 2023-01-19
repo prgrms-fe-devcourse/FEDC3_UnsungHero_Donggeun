@@ -7,6 +7,8 @@ import { useQuery } from 'react-query';
 import { Button } from '../common';
 import { END_POINT } from '../api/apiAddress';
 import axios from 'axios';
+import Loading from '../api/Loading';
+import { ILoading } from './CreatePost';
 
 const UpdatePost = () => {
   const [title, setTitle] = useState('');
@@ -16,6 +18,7 @@ const UpdatePost = () => {
   const navigate = useNavigate();
   const [image, setImage] = useState({});
   const [previewImage, setPreviewImage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const { mutate } = useMutation();
 
@@ -55,6 +58,7 @@ const UpdatePost = () => {
   }, [updatePost]);
 
   const handleUpdatePost = (e: React.FormEvent<HTMLFormElement>) => {
+    setIsLoading(true);
     e.preventDefault();
 
     const postToUpdate = {
@@ -76,7 +80,7 @@ const UpdatePost = () => {
     }).then(() => {
       localStorage.removeItem('tempTitleInUpdatePost');
       localStorage.removeItem('tempContentInUpdatePost');
-
+      setIsLoading(false);
       navigate(`/post/${postId}`, { replace: true });
     });
   };
@@ -110,33 +114,46 @@ const UpdatePost = () => {
   };
 
   return (
-    <Form onSubmit={handleUpdatePost}>
-      <TitleInput value={title} onChange={handleTitleOnChnage} />
-      <Content>
-        <ImageWarpper>
-          <Image src={previewImage ? previewImage : updatePost?.image}></Image>
-        </ImageWarpper>
-        <Textarea onChange={handleContentOnChnage} rows={10} cols={100} value={content} placeholder='내용' />
-      </Content>
-      <ImageInput
-        id='Image-file'
-        type='file'
-        accept='image/jpg,impge/png,image/jpeg,image/gif'
-        onChange={handleOnClickUploadImage}
-      />
-      <ButtonContainer>
-        <Button
-          text='내용 수정'
-          color='default'
-          width={8}
-          height={1.875}
-          style={{ marginRight: '2.25rem' }}
+    <Wrapper isLoading={isLoading}>
+      {isLoading && <Loading />}
+      <Form onSubmit={handleUpdatePost}>
+        <TitleInput value={title} onChange={handleTitleOnChnage} />
+        <Content>
+          <ImageWarpper>
+            <Image src={previewImage ? previewImage : updatePost?.image}></Image>
+          </ImageWarpper>
+          <Textarea
+            onChange={handleContentOnChnage}
+            rows={10}
+            cols={100}
+            value={content}
+            placeholder='내용'
+          />
+        </Content>
+        <ImageInput
+          id='Image-file'
+          type='file'
+          accept='image/jpg,impge/png,image/jpeg,image/gif'
+          onChange={handleOnClickUploadImage}
         />
-        <Button text='글 삭제' color='delete' onClick={handleDeletePost} width={8} height={1.875} />
-      </ButtonContainer>
-    </Form>
+        <ButtonContainer>
+          <Button
+            text='내용 수정'
+            color='default'
+            width={8}
+            height={1.875}
+            style={{ marginRight: '2.25rem' }}
+          />
+          <Button text='글 삭제' color='delete' onClick={handleDeletePost} width={8} height={1.875} />
+        </ButtonContainer>
+      </Form>
+    </Wrapper>
   );
 };
+const Wrapper = styled.div<ILoading>`
+  position: ${({ isLoading }) => isLoading && 'fixed'};
+  margin-top: 1.875rem;
+`;
 
 const Image = styled.img`
   max-height: 31.25rem;
