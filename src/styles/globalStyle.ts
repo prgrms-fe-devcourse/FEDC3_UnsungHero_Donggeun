@@ -9,7 +9,6 @@ const GlobalStyles = createGlobalStyle`
     body {
         font-size: 16px;
         background-color: #FAFAFA;
-        /* overflow: overlay; */
         height: 100vh;
         width: 100vw;
         font-family: 'GmarketSansMedium', sans-serif;

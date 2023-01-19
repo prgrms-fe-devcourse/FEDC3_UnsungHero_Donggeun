@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { IsJsonString } from './isJsonString';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useToken } from '../contexts/TokenProvider';
 import { Avatar } from '../common';
 
@@ -19,6 +19,7 @@ interface Iauthor {
 
 interface IChannel {
   _id: string;
+  name: string;
 }
 
 interface IfilteredPostsInfo {
@@ -35,6 +36,7 @@ interface IpostListProps {
   selectedSearchOption: string;
   inputSearchValue: string;
   currentChannelId: string | undefined;
+  channelName?: string;
 }
 
 const Span = styled.span`
@@ -47,30 +49,15 @@ const PostList = ({
   selectedSearchOption,
   inputSearchValue,
   currentChannelId,
+  channelName,
 }: IpostListProps) => {
   const navigatePost = useNavigate();
 
   const selectPostsChannelTitle = (channelId: string | undefined) => {
     let PostsChannelTitle = '';
-    switch (channelId) {
-      case '63c775d2a989ba6d232518ce':
-        PostsChannelTitle = '바둑';
-        break;
-      case '63c775dba989ba6d232518d3':
-        PostsChannelTitle = '골프';
-        break;
-      case '63c775e0a989ba6d232518dc':
-        PostsChannelTitle = '낚시';
-        break;
-      case '63c775f3a989ba6d232518ef':
-        PostsChannelTitle = '육아';
-        break;
-      case '63c775fea989ba6d23251905':
-        PostsChannelTitle = '잡담';
-        break;
-      default:
-        PostsChannelTitle = '전체 채널';
-    }
+    if (!channelId) PostsChannelTitle = '전체';
+    else PostsChannelTitle = channelName as string;
+
     return PostsChannelTitle;
   };
 
@@ -127,7 +114,6 @@ const PostList = ({
       <PostListWrapper>
         {filteredPostsInfo.map((postInfo) => {
           const { title, _id, likes, createdAt, comments, channel } = postInfo;
-          const channelId = channel._id;
           const { fullName, image } = postInfo.author; //fullName이 아니라 userName이 닉네임인 경우 변경해야함
           const postTitle = IsJsonString(title) ? JSON.parse(title).title : title;
           const postContent = IsJsonString(title) ? JSON.parse(title).content : ' ';
@@ -166,7 +152,7 @@ const PostList = ({
                     ? highlightIncludedText(fullName, inputSearchValue)
                     : fullName}
                 </div>
-                <div className='includedChannel'>{selectPostsChannelTitle(channelId)}</div>
+                <div className='includedChannel'>{channel?.name}</div>
               </PostMiddleWrapper>
               <PostBottomWrapper>
                 <div className='likesCommentContatiner'>
