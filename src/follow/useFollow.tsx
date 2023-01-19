@@ -24,8 +24,12 @@ const useFollow = (currentPageId: string) => {
     }
   );
 
-  const { data: currentData, refetch: fetchCurrentData } = useQuery<IUser>(
-    ['userPage', 'currentUserId'],
+  const {
+    data: currentData,
+    refetch: fetchCurrentData,
+    isLoading,
+  } = useQuery<IUser>(
+    ['userPage', currentPageId],
     async () => {
       return axios.get(`${END_POINT}/users/${currentPageId}`).then(({ data }) => data);
     },
@@ -135,7 +139,7 @@ const useFollow = (currentPageId: string) => {
     );
   };
 
-  return { followButton, userFollow, currentData, fetchCurrentData };
+  return { followButton, userFollow, currentData, fetchCurrentData, isLoading };
 };
 
 export default useFollow;
