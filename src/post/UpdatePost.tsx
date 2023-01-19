@@ -43,12 +43,14 @@ const UpdatePost = () => {
 
       const tempTitle = localStorage.getItem(`tempTitleInUpdatePost${postId}`) || '';
       const tempContent = localStorage.getItem(`tempContentInUpdatePost${postId}`) || '';
-
-      if (tempTitle) {
-        setTitle(tempTitle);
-      }
-      if (tempContent) {
-        setContent(tempContent);
+      if (tempTitle !== '' || tempContent !== '') {
+        if (confirm('수정중인 글을 불러올까요?')) {
+          if (tempTitle !== '') setTitle(tempTitle);
+          if (tempContent !== '') setContent(tempContent);
+        } else {
+          localStorage.removeItem(`tempTitleInUpdatePost${postId}`);
+          localStorage.removeItem(`tempContentInUpdatePost${postId}`);
+        }
       }
 
       setChannelId(updatePost.channel._id);
@@ -60,6 +62,10 @@ const UpdatePost = () => {
   const handleUpdatePost = (e: React.FormEvent<HTMLFormElement>) => {
     setIsLoading(true);
     e.preventDefault();
+
+    if (title.length === 0) {
+      return alert('제목은 필수입니다!');
+    }
 
     const postToUpdate = {
       title: title,
@@ -78,8 +84,8 @@ const UpdatePost = () => {
       method: 'put',
       data: formData,
     }).then(() => {
-      localStorage.removeItem('tempTitleInUpdatePost');
-      localStorage.removeItem('tempContentInUpdatePost');
+      localStorage.removeItem(`tempTitleInUpdatePost${postId}`);
+      localStorage.removeItem(`tempContentInUpdatePost${postId}`);
       setIsLoading(false);
       navigate(`/post/${postId}`, { replace: true });
     });

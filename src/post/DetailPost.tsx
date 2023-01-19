@@ -49,7 +49,7 @@ const DetailPost = () => {
     },
     {
       refetchOnMount: true,
-      staleTime: 2000,
+      staleTime: 0,
     }
   );
 

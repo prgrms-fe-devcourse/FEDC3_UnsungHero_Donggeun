@@ -30,10 +30,20 @@ function CreatePost() {
 
   const initTitle = localStorage.getItem(`tempTitleInCreatePost${channelId}`) || '';
   const initContent = localStorage.getItem(`tempContentInCreatePost${channelId}`) || '';
+
   useEffect(() => {
-    setTitle(initTitle);
-    setContent(initContent);
-  }, []);
+    if (initTitle !== '' || initContent !== '') {
+      if (confirm('작성중인 글이 존재합니다. 불러오시겠습니까?')) {
+        if (initTitle !== '') setTitle(initTitle);
+        if (initContent !== '') setContent(initContent);
+      } else {
+        localStorage.removeItem(`tempTitleInCreatePost${channelId}`);
+        localStorage.removeItem(`tempContentInCreatePost${channelId}`);
+        setTitle('');
+        setContent('');
+      }
+    }
+  }, [channelId]);
 
   const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length > 75) {
@@ -50,6 +60,11 @@ function CreatePost() {
 
   const handleOnClickCreatePost = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (title.length === 0) {
+      return alert('제목은 필수 입니다!');
+    }
+
     setIsLoading(true);
     if (!token) return;
 
@@ -93,9 +108,6 @@ function CreatePost() {
           setPreviewImage(reader.result as string);
         }
       };
-      // reader.onerror = () => {
-      //   console.log('error');
-      // };
     }
   };
 
@@ -107,7 +119,7 @@ function CreatePost() {
           type='text'
           size={99}
           onChange={handleChangeTitle}
-          value={initTitle}
+          value={title}
           placeholder='제목을 입력하세요.'
         />
         <Content>
@@ -119,7 +131,7 @@ function CreatePost() {
             cols={100}
             onChange={handleChangeContent}
             placeholder='내용을 입력하세요.'
-            value={initContent}
+            value={content}
             ref={textareaRef}
           />
         </Content>
