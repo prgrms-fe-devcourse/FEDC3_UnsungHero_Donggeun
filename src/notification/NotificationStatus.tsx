@@ -23,6 +23,8 @@ const NotificationStatus = () => {
         .then(({ data }) => data);
     },
     {
+      refetchOnMount: true,
+      staleTime: 3000,
       onSuccess: (serverData) => {
         const allSeenCheckData = serverData.map((data: INotification) => data.seen);
         setNotificationStatusList(allSeenCheckData);
@@ -31,7 +33,9 @@ const NotificationStatus = () => {
   );
 
   const checkNotificationStatus = () => {
-    if (notificationStatusList.includes(false)) notificationStatusContextObj?.setNotification(true);
+    notificationStatusList.includes(false)
+      ? notificationStatusContextObj?.setNotification(true)
+      : notificationStatusContextObj?.setNotification(false);
   };
 
   useEffect(() => {
