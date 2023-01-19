@@ -12,13 +12,14 @@ import { IToken } from '../types/token';
 import { useToken } from '../contexts/TokenProvider';
 import useAxios from '../api/useAxios';
 import { processSignUp } from './api';
+import { END_POINT } from '../api/apiAddress';
 
 const SignUp = () => {
   const [allFullNameList, setAllFullNameList] = useState<string[] | undefined>([]);
   const [allEmailList, setAllEmailList] = useState<string[] | undefined>([]);
   const tokenContextObj: IToken | null = useToken();
   const { data: userData } = useAxios<IAuth[]>({
-    url: `/users/get-users`,
+    url: `${END_POINT}/users/get-users`,
     method: 'get',
   });
 

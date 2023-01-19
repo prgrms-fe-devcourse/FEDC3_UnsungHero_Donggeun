@@ -8,6 +8,7 @@ import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../api/Loading';
 import { END_POINT } from '../api/apiAddress';
+import Message from '../message';
 
 const Search = () => {
   const [postsInfo, setPostsInfo] = useState([]);
@@ -68,6 +69,7 @@ const Search = () => {
         inputSearchValue={inputSearchValue}
         currentChannelId={currentChannelId}
       />
+      <Message></Message>
       <br />
     </ErrorBoundary>
   );
