@@ -96,10 +96,10 @@ const UpdatePost = () => {
       const file = e.currentTarget.files[0];
 
       const reader = new FileReader();
+      reader.readAsDataURL(file);
 
       // onload는 읽기 동작이 성공적으로 완료되었을 때 발생함.
       reader.onload = () => {
-        reader.readAsDataURL(file);
         // 작업 완료.
         if (reader.readyState === 2) {
           setImage(file);

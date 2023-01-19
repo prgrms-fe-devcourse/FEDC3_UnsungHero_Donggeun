@@ -88,7 +88,7 @@ const DetailPost = () => {
               <div>{title}</div>
               <CreateAt>작성일: {author.createAt.slice(0, 10)}</CreateAt>
             </Title>
-            {token ? (
+            {identification ? (
               <Button
                 text='내용 수정'
                 color='default'

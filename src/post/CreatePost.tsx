@@ -93,9 +93,9 @@ function CreatePost() {
           setPreviewImage(reader.result as string);
         }
       };
-      reader.onerror = () => {
-        console.log('error');
-      };
+      // reader.onerror = () => {
+      //   console.log('error');
+      // };
     }
   };
 

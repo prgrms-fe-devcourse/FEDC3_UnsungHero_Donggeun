@@ -26,8 +26,8 @@ const Search = () => {
   useEffect(() => {
     if (currentChannelId !== undefined) {
       getPostsList();
-      setSelectedSearchOption('');
-      setInputSearchValue('');
+      // setSelectedSearchOption('');
+      // setInputSearchValue('');
     } else {
       getEntirePostsList();
     }
