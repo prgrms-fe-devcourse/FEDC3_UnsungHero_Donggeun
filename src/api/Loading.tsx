@@ -47,11 +47,13 @@ const Icon = styled.i`
 `;
 
 const LoadingBackground = styled.div`
-  position: absolute;
+  position: fixed;
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   top: 0;
   left: 0;
+  bottom: 0;
+  right: 0;
   background: #ffffffb7;
   z-index: 1000;
   display: flex;

@@ -5,6 +5,11 @@ import { useToken } from '../contexts/TokenProvider';
 import useMutation from '../api/useMutation';
 import { Button } from '../common';
 import { END_POINT } from '../api/apiAddress';
+import Loading from '../api/Loading';
+
+interface ILoading {
+  isLoading: boolean;
+}
 
 function CreatePost() {
   const [title, setTitle] = useState<string>('');
@@ -12,6 +17,7 @@ function CreatePost() {
   const [image, setImage] = useState({});
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [previewImage, setPreviewImage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const { channelId } = useParams<string>();
 
@@ -44,7 +50,7 @@ function CreatePost() {
 
   const handleOnClickCreatePost = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
+    setIsLoading(true);
     if (!token) return;
 
     const newPost = {
@@ -67,7 +73,8 @@ function CreatePost() {
       localStorage.removeItem(`tempContentInCreatePost${channelId}`);
 
       const { _id } = res;
-      navigate(`/post/${_id}`);
+      setIsLoading(false);
+      navigate(`/post/${_id}`, { replace: true });
     });
   };
 
@@ -80,7 +87,6 @@ function CreatePost() {
 
       // onload는 읽기 동작이 성공적으로 완료되었을 때 발생함.
       reader.onload = () => {
-        console.log(reader.result);
         // 작업 완료.
         if (reader.readyState === 2) {
           setImage(file);
@@ -94,42 +100,61 @@ function CreatePost() {
   };
 
   return (
-    <Form onSubmit={handleOnClickCreatePost}>
-      <TitleInput
-        type='text'
-        size={99}
-        onChange={handleChangeTitle}
-        value={initTitle}
-        placeholder='제목을 입력하세요.'
-      />
-      <Content>
-        <Image src={previewImage ? previewImage : ''}></Image>
-        <Textarea
-          rows={20}
-          cols={100}
-          onChange={handleChangeContent}
-          placeholder='내용을 입력하세요.'
-          value={initContent}
-          ref={textareaRef}
+    <Wrapper isLoading={isLoading}>
+      {isLoading && <Loading />}
+      <Form onSubmit={handleOnClickCreatePost}>
+        <TitleInput
+          type='text'
+          size={99}
+          onChange={handleChangeTitle}
+          value={initTitle}
+          placeholder='제목을 입력하세요.'
         />
-      </Content>
-      <ImageInput
-        id='Image-file'
-        type='file'
-        accept='image/jpg,impge/png,image/jpeg,image/gif'
-        onChange={handleOnClickUploadImage}
-      />
-      <Button
-        text='저장'
-        color='default'
-        width={10}
-        height={2.5}
-        style={{ marginLeft: 'auto', margin: '16px 0 16px auto' }}
-      />
-    </Form>
+        <Content>
+          <ImageWarpper>
+            <Image src={previewImage ? previewImage : ''}></Image>
+          </ImageWarpper>
+          <Textarea
+            rows={20}
+            cols={100}
+            onChange={handleChangeContent}
+            placeholder='내용을 입력하세요.'
+            value={initContent}
+            ref={textareaRef}
+          />
+        </Content>
+        <ImageInput
+          id='Image-file'
+          type='file'
+          accept='image/jpg,impge/png,image/jpeg,image/gif'
+          onChange={handleOnClickUploadImage}
+        />
+        <Button
+          text='저장'
+          color='default'
+          width={10}
+          height={2.5}
+          style={{ marginLeft: 'auto', margin: '16px 0 16px auto' }}
+        />
+      </Form>
+    </Wrapper>
   );
 }
-const Image = styled.img``;
+
+export default CreatePost;
+
+const Wrapper = styled.div<ILoading>`
+  position: relative;
+  height: 100%;
+  overflow: ${({ isLoading }) => isLoading && 'hidden'};
+  margin-top: 1.875rem;
+`;
+
+const Image = styled.img`
+  max-height: 31.25rem;
+  max-width: 43.3125rem;
+  margin: 1rem 0;
+`;
 
 const Form = styled.form`
   display: flex;
@@ -180,6 +205,12 @@ const Content = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.contentLine};
 `;
 
+const ImageWarpper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const ImageInput = styled.input`
   padding: 1rem 0;
   background-color: ${({ theme }) => theme.colors.white};
@@ -196,5 +227,3 @@ const ImageInput = styled.input`
     }
   }
 `;
-
-export default CreatePost;
