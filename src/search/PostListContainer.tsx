@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Pagination } from '../common';
 import { useNavigate } from 'react-router-dom';
 import { IChannel } from '../types/channel';
+import { useToken } from '../contexts/TokenProvider';
 
 interface Ilikes {
   _id: string;
@@ -93,6 +94,8 @@ const PostListContainer = ({
   };
 
   const channelName = postsInfo[0]?.channel.name;
+  const tokenObject = useToken();
+  const token = tokenObject?.token;
 
   return (
     <>
@@ -105,7 +108,7 @@ const PostListContainer = ({
             공감순
           </button>
         </div>
-        {currentChannelId ? (
+        {currentChannelId && token ? (
           <button className='writePostButton' onClick={() => navigate(`/post/create/${currentChannelId}`)}>
             글 작성하기
           </button>
