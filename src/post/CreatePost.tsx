@@ -190,6 +190,7 @@ const TitleInput = styled.input`
 const Textarea = styled.textarea`
   resize: none;
   border: none;
+  line-height: 180%;
   font-size: ${({ theme }) => theme.fontSize.medium};
   width: 100%;
   min-height: 32.5rem;
