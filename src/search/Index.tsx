@@ -17,9 +17,16 @@ const Search = () => {
   const { channelId } = useParams();
 
   // 캐싱 안되게끔.
-  const { data: totalPostData, isLoading: totalPostDataLoading } = useQuery('totalPostData', async () => {
-    return axios.get(`${END_POINT}/posts`).then(({ data }) => data);
-  });
+  const { data: totalPostData, isLoading: totalPostDataLoading } = useQuery(
+    'totalPostData',
+    async () => {
+      return axios.get(`${END_POINT}/posts`).then(({ data }) => data);
+    },
+    {
+      refetchOnMount: true,
+      staleTime: 2000,
+    }
+  );
 
   const getPostsList = async () => {
     setIsLoading(true);
