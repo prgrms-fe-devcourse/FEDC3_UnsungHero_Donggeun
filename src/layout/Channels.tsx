@@ -25,6 +25,19 @@ const Channels = () => {
   const etcChannel = channelData?.filter((channel: IChannel) => channel.description === '기타');
   return (
     <Wrapper>
+      <EntireViewSidebar>
+        <ChannelTitle>Unsung Hero</ChannelTitle>
+        <ChannelWrapper>
+          <Channel
+            onClick={() => {
+              navigate('/');
+            }}
+          >
+            전체 글
+            <AiOutlineRight />
+          </Channel>
+        </ChannelWrapper>
+      </EntireViewSidebar>
       <Sidebar>
         <ChannelTitle>취미</ChannelTitle>
         <ChannelWrapper>
@@ -97,6 +110,18 @@ const ChannelWrapper = styled.div`
     border-radius: 10px;
   }
 `;
+
+const EntireViewSidebar = styled.div`
+  background-color: ${({ theme }) => theme.colors.white};
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  width: 15rem;
+  min-height: 90px;
+  height: 8%;
+  box-shadow: ${({ theme }) => theme.shadow.boxShadow};
+`;
+
 const ChannelTitle = styled.div`
   text-align: center;
   margin: 1rem 1rem 0.5rem 1rem;
