@@ -71,7 +71,7 @@ const MostLikesPosts = ({ postsInfo, currentChannelId }: IMostLikesPostsProps) =
         MostLikesPostsTitle = '잡담 베스트';
         break;
       default:
-        MostLikesPostsTitle = '전체베스트';
+        MostLikesPostsTitle = '전체 베스트';
     }
     return MostLikesPostsTitle;
   };
@@ -131,6 +131,7 @@ const WholeWrapper = styled.div`
   margin-top: 1.875rem;
 
   .bestPostsTitle {
+    font-family: 'HANNA', sans-serif;
     width: 45.3125rem;
     height: 50px;
     padding: 0.9375rem 0 0 1rem;

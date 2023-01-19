@@ -200,16 +200,17 @@ const WholeWrapper = styled.div`
   margin-right: 2.5rem;
 
   .postListTitle {
+    font-family: 'HANNA', sans-serif;
     width: 725px;
     height: 3.125rem;
     padding: 0.9375rem 0 0 1.25rem;
-    /* margin-bottom: -5px; */
     font-size: ${({ theme }) => theme.fontSize.larger};
     border-top-left-radius: 0.3125rem;
     border-top-right-radius: 0.3125rem;
     background-color: ${({ theme }) => theme.colors.primary};
-    font-weight: bold;
     z-index: 10;
+    /* font-size: 22px; */
+    font-weight: bold;
   }
 `;
 
@@ -341,7 +342,7 @@ const PostBottomWrapper = styled.div`
   }
 
   .createdAt {
-    align-self: flex-end;
+    margin-left: auto;
     color: ${({ theme }) => theme.colors.lightGray};
   }
 `;
