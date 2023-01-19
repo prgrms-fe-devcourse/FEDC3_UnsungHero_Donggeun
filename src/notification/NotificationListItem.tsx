@@ -67,7 +67,7 @@ export default NotificationListItem;
 
 const NotificationItem = styled.div<{ seen: boolean | undefined }>`
   width: 100%;
-  padding: 1rem 1.25rem 3.5em 1.25rem;
+  padding: 1rem 1.25rem 4rem 1.25rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -81,14 +81,13 @@ const NotificationItem = styled.div<{ seen: boolean | undefined }>`
   }
 
   &:first-child {
-    padding-top: 3rem;
     border-top-left-radius: 0.3125rem;
     border-top-right-radius: 0.3125rem;
   }
 
   &:last-child {
     border-bottom: none;
-    margin-bottom: 2rem;
+    padding-bottom: -2rem;
     border-bottom-left-radius: 0.3125rem;
     border-bottom-right-radius: 0.3125rem;
   }
