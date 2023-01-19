@@ -92,13 +92,15 @@ const UpdatePost = () => {
   };
 
   const handleDeletePost = () => {
-    mutate({
-      url: `${END_POINT}/posts/delete`,
-      method: 'delete',
-      data: {
-        id: postId,
-      },
-    }).then(() => navigate(`/channel/${channelId}`, { replace: true }));
+    if (confirm('글을 삭제하시겠습니까?')) {
+      mutate({
+        url: `${END_POINT}/posts/delete`,
+        method: 'delete',
+        data: {
+          id: postId,
+        },
+      }).then(() => navigate(`/channel/${channelId}`, { replace: true }));
+    }
   };
 
   const handleOnClickUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
