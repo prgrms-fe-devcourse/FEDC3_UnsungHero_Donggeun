@@ -125,5 +125,6 @@ const SearchBoxButton = styled.button`
 
   &:hover {
     background-color: ${({ theme }) => theme.colors.grayHover};
+    transition: all 0.2s ease;
   }
 `;

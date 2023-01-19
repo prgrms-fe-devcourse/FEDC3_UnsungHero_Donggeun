@@ -24,8 +24,21 @@ const Pagination = ({ total = 0, limit, page, setPage, currentChannelId }: IProp
   return (
     <PaginationWrapper>
       <Wrapper>
-        <Button onClick={() => setPage(1)}>처음</Button>
-        <Button onClick={() => setPage(page - 1)} disabled={page === 1}>
+        <Button
+          onClick={() => {
+            setPage(1);
+            window.scrollTo(0, 0);
+          }}
+        >
+          처음
+        </Button>
+        <Button
+          onClick={() => {
+            setPage(page - 1);
+            window.scrollTo(0, 0);
+          }}
+          disabled={page === 1}
+        >
           {'<'}
         </Button>
         {Array.from(new Array(totalPages), (_, i) => i)
@@ -38,14 +51,35 @@ const Pagination = ({ total = 0, limit, page, setPage, currentChannelId }: IProp
             return i >= page - 3 && i <= page + 1;
           })
           .map((i) => (
-            <PageButton key={i + 1} onClick={() => setPage(i + 1)} page={page} i={i}>
+            <PageButton
+              key={i + 1}
+              onClick={() => {
+                setPage(i + 1);
+                window.scrollTo(0, 0);
+              }}
+              page={page}
+              i={i}
+            >
               {i + 1}
             </PageButton>
           ))}
-        <Button onClick={() => setPage(page + 1)} disabled={page === totalPages}>
+        <Button
+          onClick={() => {
+            setPage(page + 1);
+            window.scrollTo(0, 0);
+          }}
+          disabled={page === totalPages}
+        >
           {'>'}
         </Button>
-        <Button onClick={() => setPage(totalPages)}>마지막</Button>
+        <Button
+          onClick={() => {
+            setPage(totalPages);
+            window.scrollTo(0, 0);
+          }}
+        >
+          마지막
+        </Button>
       </Wrapper>
     </PaginationWrapper>
   );

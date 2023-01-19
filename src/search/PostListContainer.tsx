@@ -150,6 +150,8 @@ const ButtonContainer = styled.div`
       background: rgb(245, 245, 245);
       cursor: pointer;
       box-shadow: 0px 2px 1px ${({ theme }) => theme.colors.shadow};
+      transition: all 0.2s ease;
+
       &:disabled {
         background: rgb(48, 176, 153);
         color: white;
@@ -175,6 +177,7 @@ const ButtonContainer = styled.div`
       background: rgb(48, 176, 153);
       color: white;
       box-shadow: none;
+      transition: all 0.2s ease;
     }
   }
 `;
