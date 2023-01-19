@@ -79,10 +79,10 @@ const NotificationList = () => {
       </NotificationHeader>
 
       <NotificationContainer>
-        <NotNotificationContainer dataview={!!notificationList?.length}>
-          <IoMdNotificationsOff size={80} className='logo' />
+        <NoNotificationContainer dataview={!!notificationList?.length}>
+          <IoMdNotificationsOff size={80} className='notlogo' />
           <h3>알람이 없습니다.</h3>
-        </NotNotificationContainer>
+        </NoNotificationContainer>
 
         <NotificationListContainer dataview={!!notificationList?.length}>
           {notificationList
@@ -155,17 +155,17 @@ const NotificationContainer = styled.div`
 
   position: relative;
 
-  & .logo {
+  & .notlogo {
     font-size: 5rem;
   }
 
-  & .logo,
+  & .notlogo,
   & h3 {
     opacity: 0.5;
   }
 `;
 
-const NotNotificationContainer = styled.div<{ dataview: boolean }>`
+const NoNotificationContainer = styled.div<{ dataview: boolean }>`
   display: ${(props) => (props.dataview ? 'none' : 'flex')};
   flex-direction: column;
   align-items: center;
