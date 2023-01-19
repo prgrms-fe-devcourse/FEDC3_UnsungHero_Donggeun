@@ -28,7 +28,7 @@ const Header = () => {
           onClick={() => navigate('/')}
           alt='로고'
         />
-        <CatchImg src={process.env.PUBLIC_URL + '/Catchphrase.png'} height={50} />
+        <CatchImg src={process.env.PUBLIC_URL + '/Catchphrase.png'} height={50} alt='사이트 한 줄 소개' />
         <ButtonWrapper>
           {userLogin ? (
             <>

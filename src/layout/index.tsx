@@ -23,6 +23,7 @@ const Main = styled.div`
   margin-top: 5.75rem;
   margin-left: 17.1875rem;
   width: 45.3125rem;
+  height: 100%;
 `;
 
 const MainWrapper = styled.div`

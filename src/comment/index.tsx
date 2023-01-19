@@ -150,6 +150,7 @@ const PCmoment = styled.p`
 `;
 const ButtonX = styled.button`
   margin-left: 1rem;
+  padding: 0.4375rem 0.4375rem 0.3125rem 0.4375rem;
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: 0.3125rem;
   border: none;

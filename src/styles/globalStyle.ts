@@ -9,16 +9,23 @@ const GlobalStyles = createGlobalStyle`
     body {
         font-size: 16px;
         background-color: #FAFAFA;
-        font-display: block;
+        /* overflow: overlay; */
+        height: 100vh;
+        width: 100vw;
         font-family: 'GmarketSansMedium', sans-serif;
     }
     body::-webkit-scrollbar{
         width: 10px;
         height: 10px;
+        background: transparent;
         }
     body::-webkit-scrollbar-thumb{
         background-color: #60606080;
         border-radius: 10px;
+        
+        }
+        body::-webkit-scrollbar-track{
+            background-color: #eeeeee;
         }
     #root {
     height: 100%;
@@ -35,12 +42,14 @@ const GlobalStyles = createGlobalStyle`
         src: local('BMHANNAPro'), local('BMHANNAPro');
         font-style: normal;
         src: url(${BMHANNAPro}) format('truetype');
+        font-display: block;
   }
   @font-face {
         font-family: 'GmarketSansMedium';
         src: local('GmarketSansMedium'), local('GmarketSansMedium');
         font-style: normal;
         src: url(${GmarketSansMedium}) format('truetype');
+        font-display: block;
   }
 `;
 
