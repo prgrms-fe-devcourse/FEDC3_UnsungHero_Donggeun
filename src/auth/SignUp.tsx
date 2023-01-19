@@ -7,10 +7,20 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { AiOutlineMail, AiOutlineUser, AiOutlineLock, AiOutlineCheckCircle } from 'react-icons/ai';
 import Header from './Header';
+import { Button } from '../common';
+import { IToken } from '../types/token';
+import { useToken } from '../contexts/TokenProvider';
+import useAxios from '../api/useAxios';
+import { processSignUp } from './api';
 
 const SignUp = () => {
-  const [allFullNameList, setAllFullNameList] = useState<string>();
-  const [allEmailList, setAllEmailList] = useState<string>();
+  const [allFullNameList, setAllFullNameList] = useState<string[] | undefined>([]);
+  const [allEmailList, setAllEmailList] = useState<string[] | undefined>([]);
+  const tokenContextObj: IToken | null = useToken();
+  const { data: userData } = useAxios<IAuth[]>({
+    url: `/users/get-users`,
+    method: 'get',
+  });
 
   const {
     register,
@@ -36,28 +46,28 @@ const SignUp = () => {
       return;
     }
 
-    await axios
-      .post('http://kdt.frontend.3rd.programmers.co.kr:5006/signup', {
-        email,
-        fullName,
-        password,
-      })
-      .then(() => navigate('/login'));
+    try {
+      await processSignUp(email, fullName, password);
+      navigate('/login');
+    } catch (e) {
+      console.warn(e);
+    }
   };
 
   const getAllUserData = async () => {
-    await axios.get('http://kdt.frontend.3rd.programmers.co.kr:5006/users/get-users').then(({ data }) => {
-      const serverData = data;
-      const allFullNameData = serverData.map((data: IAuth) => data.fullName);
-      const allEmailData = serverData.map((data: IAuth) => data.email);
-      setAllFullNameList(allFullNameData);
-      setAllEmailList(allEmailData);
-    });
+    const allFullNameData = userData?.map((data: IAuth) => data.fullName);
+    const allEmailData = userData?.map((data: IAuth) => data.email);
+    setAllFullNameList(allFullNameData);
+    setAllEmailList(allEmailData);
   };
 
   useEffect(() => {
-    getAllUserData();
+    tokenContextObj?.token && navigate('/');
   }, []);
+
+  useEffect(() => {
+    getAllUserData();
+  }, [userData]);
 
   return (
     <>
@@ -95,6 +105,10 @@ const SignUp = () => {
                   value: 2,
                   message: '2자리 이상의 이름을 입력해주세요',
                 },
+                maxLength: {
+                  value: 10,
+                  message: '10자리 이하의 이름을 입력해주세요',
+                },
               })}
             />
             <AiOutlineUser className='logo' />
@@ -131,10 +145,7 @@ const SignUp = () => {
             <AiOutlineCheckCircle className='logo' />
             <ErrorText>{errors?.passwordConfrim?.message}</ErrorText>
           </InputContainer>
-
-          <SignUpButton type='submit' disabled={isSubmitting}>
-            가입하기
-          </SignUpButton>
+          <Button text='가입하기' color='default' height={2.5} disabled={isSubmitting} />
           <IsUserLink to='/login'>이미 계정이 있으신가요?</IsUserLink>
         </SignUpContainer>
       </form>
@@ -151,6 +162,7 @@ const SignUpHeader = styled.h1`
 
 const SignUpContainer = styled.div`
   margin: 0 auto;
+  min-width: 420px;
   width: 30vw;
   display: flex;
   flex-direction: column;
@@ -158,12 +170,12 @@ const SignUpContainer = styled.div`
   padding: 1.563rem 2.813rem;
   border-radius: 5px;
   border: none;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2), -1px -1px 5px rgba(0, 0, 0, 0.2);
-  background-color: white;
+  box-shadow: ${({ theme }) => theme.shadow.boxShadow};
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const FormTitle = styled.div`
-  font-size: 1.125em;
+  font-size: ${({ theme }) => theme.fontSize.large};
   font-weight: 700;
   margin: 0.625rem auto 2.188rem auto;
 `;
@@ -171,7 +183,7 @@ const FormTitle = styled.div`
 const Label = styled.label`
   margin-bottom: 0.313rem;
   font-weight: 700;
-  font-size: 0.875rem;
+  font-size: ${({ theme }) => theme.fontSize.small};
 `;
 
 const InputContainer = styled.div`
@@ -199,28 +211,11 @@ const Input = styled.input`
 
 const ErrorText = styled.span`
   font-size: 0.75rem;
-  color: #ff1f1f;
-`;
-
-const SignUpButton = styled.button`
-  background-color: ${({ theme }) => theme.colors.primary};
-  color: #e6e6e6;
-  border-radius: 0.313rem;
-  border: none;
-  height: 2.5rem;
-  margin-top: 1.25rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.5s ease;
-
-  &:hover {
-    background-color: #e6e6e6;
-    color: #52d2a4;
-  }
+  color: ${({ theme }) => theme.colors.alert};
 `;
 
 const IsUserLink = styled(Link)`
-  font-size: 0.75rem;
-  color: blue;
+  font-size: ${({ theme }) => theme.fontSize.smaller};
+  color: ${({ theme }) => theme.colors.link};
   margin: 0.625rem 0;
 `;

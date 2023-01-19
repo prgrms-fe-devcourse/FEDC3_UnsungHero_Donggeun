@@ -6,17 +6,18 @@ import { useNavigate } from 'react-router-dom';
 import { IToken } from '../types/token';
 import { IAuth } from '../types/auth';
 import { IUserId } from '../types/useId';
-import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { AiOutlineMail, AiOutlineLock } from 'react-icons/ai';
 import Header from './Header';
+import { Button } from '../common';
+import { useEffect } from 'react';
+import { processLogin } from './api';
 
 const TOKEN_KEY = 'token';
 const USERID_KEY = 'userId';
 
 const Login = () => {
-  const [allOnlineEmail, setAllOnlineEmail] = useState<string>();
   const {
     register,
     handleSubmit,
@@ -31,47 +32,28 @@ const Login = () => {
   const navigate = useNavigate();
 
   const onSubmitHandler: SubmitHandler<IAuth> = async ({ email, password }) => {
-    if (allOnlineEmail?.indexOf(email) !== -1) {
-      setError('email', { message: '현재 접속중인 email 입니다.' }, { shouldFocus: true });
-      return;
+    try {
+      const { data: userData } = await processLogin(email, password);
+      setValue(userData.token);
+      setUserId(userData.user._id);
+      tokenContextObj?.addToken(userData.token);
+      userIdContext?.addUserId(userData.user._id);
+      navigate('/');
+    } catch (e) {
+      setError(
+        'password',
+        { message: '아이디나 비밀번호 정보가 일치하지 않습니다. 다시 한번 확인해주세요.' },
+        { shouldFocus: true }
+      );
     }
-
-    await axios
-      .post('http://kdt.frontend.3rd.programmers.co.kr:5006/login', {
-        email,
-        password,
-      })
-      .then(({ data }) => {
-        setValue(data.token);
-        setUserId(data.user._id);
-        tokenContextObj?.addToken(data.token);
-        userIdContext?.addUserId(data.user._id);
-        navigate('/');
-      })
-      .catch(() => {
-        setError(
-          'password',
-          { message: '아이디나 비밀번호 정보가 일치하지 않습니다. 다시 한번 확인해주세요.' },
-          { shouldFocus: true }
-        );
-      });
-  };
-
-  const getAllOnlineEmailData = async () => {
-    await axios.get('http://kdt.frontend.3rd.programmers.co.kr:5006/users/online-users').then(({ data }) => {
-      const serverData = data;
-      const allFullNameData = serverData.map((data: IAuth) => data.email);
-      setAllOnlineEmail(allFullNameData);
-    });
   };
 
   useEffect(() => {
-    getAllOnlineEmailData();
+    tokenContextObj?.token && navigate('/');
   }, []);
 
   return (
     <>
-      {' '}
       <Header />
       <form onSubmit={handleSubmit(onSubmitHandler)} style={{ display: 'flex', flexDirection: 'column' }}>
         <LoginHeader>로그인</LoginHeader>
@@ -110,13 +92,12 @@ const Login = () => {
             <AiOutlineLock className='logo' />
             <ErrorText>{errors?.password?.message}</ErrorText>
           </InputContainer>
+
           <CreateUserIntroduce>
             <span>계정이 필요하신가요? </span>
             <CreateUserLink to='/signup'>가입하기</CreateUserLink>
           </CreateUserIntroduce>
-          <LoginButton type='submit' disabled={isSubmitting}>
-            로그인
-          </LoginButton>
+          <Button text='로그인' color='default' height={2.5} disabled={isSubmitting} />
         </LoginContainer>
       </form>
     </>
@@ -132,6 +113,7 @@ const LoginHeader = styled.h1`
 
 const LoginContainer = styled.div`
   margin: 0 auto;
+  min-width: 26.25rem;
   width: 30vw;
   display: flex;
   flex-direction: column;
@@ -139,12 +121,12 @@ const LoginContainer = styled.div`
   padding: 1.563rem 2.813rem;
   border-radius: 5px;
   border: none;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2), -1px -1px 5px rgba(0, 0, 0, 0.2);
-  background-color: white;
+  box-shadow: ${({ theme }) => theme.shadow.boxShadow};
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const FormTitle = styled.div`
-  font-size: 1.125em;
+  font-size: ${({ theme }) => theme.fontSize.large};
   font-weight: 700;
   margin: 0.625rem auto 2.188rem auto;
 `;
@@ -152,7 +134,7 @@ const FormTitle = styled.div`
 const Label = styled.label`
   margin-bottom: 0.313rem;
   font-weight: 700;
-  font-size: 0.875rem;
+  font-size: ${({ theme }) => theme.fontSize.small};
 `;
 
 const InputContainer = styled.div`
@@ -179,34 +161,19 @@ const Input = styled.input`
 `;
 
 const ErrorText = styled.span`
+  height: 1rem;
   font-size: 0.75rem;
-  color: #ff1f1f;
-`;
-
-const LoginButton = styled.button`
-  background-color: ${({ theme }) => theme.colors.primary};
-  color: #e6e6e6;
-  border-radius: 0.313rem;
-  border: none;
-  height: 2.5rem;
-  margin-top: 1.25rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.5s ease;
-
-  &:hover {
-    background-color: #e6e6e6;
-    color: #52d2a4;
-  }
+  color: ${({ theme }) => theme.colors.alert};
 `;
 
 const CreateUserIntroduce = styled.div`
   display: flex;
   font-size: 0.75rem;
   align-items: center;
+  margin-bottom: 0.3125rem;
 `;
 
 const CreateUserLink = styled(Link)`
-  color: blue;
+  color: ${({ theme }) => theme.colors.link};
   margin-left: 0.3125rem;
 `;

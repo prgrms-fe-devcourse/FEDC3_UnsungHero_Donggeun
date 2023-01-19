@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { IsJsonString } from './isJsonString';
 import styled from 'styled-components';
 import { Pagination } from '../common';
+import { useNavigate } from 'react-router-dom';
 
 interface Ilikes {
   _id: string;
@@ -37,6 +38,7 @@ const PostListContainer = ({
   const [checkedSorting, setCheckedSorting] = useState(true);
   const limit = 6;
   const offset = (page - 1) * limit;
+  const navigate = useNavigate();
 
   useEffect(() => {
     setCheckedSorting(true);
@@ -91,13 +93,19 @@ const PostListContainer = ({
   return (
     <>
       <ButtonContainer>
-        <button onClick={handleClickRecent} disabled={checkedSorting}>
-          최신순
-        </button>
-        <div>{' | '}</div>
-        <button onClick={handleClickSympathy} disabled={!checkedSorting}>
-          공감순
-        </button>
+        <div className='recentLikesButtonContainer'>
+          <button onClick={handleClickRecent} disabled={checkedSorting}>
+            최신순
+          </button>
+          <button onClick={handleClickSympathy} disabled={!checkedSorting}>
+            공감순
+          </button>
+        </div>
+        {currentChannelId ? (
+          <button className='writePostButton' onClick={() => navigate(`/post/create/${currentChannelId}`)}>
+            글 작성하기
+          </button>
+        ) : null}
       </ButtonContainer>
       <PostList
         filteredPostsInfo={dividePosts(filterPosts())}
@@ -122,20 +130,54 @@ export default PostListContainer;
 
 const ButtonContainer = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   width: 45.3125rem;
-  margin: 0 0 0.625rem 0rem;
+  margin-bottom: 0.625rem;
 
-  button {
-    background: inherit;
-    border: none;
-    box-shadow: none;
-    border-radius: 0;
-    padding: 0;
-    overflow: visible;
+  .recentLikesButtonContainer {
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+      width: 5rem;
+      margin: 0.625rem 0 1.5625rem 0rem;
+      font-size: ${({ theme }) => theme.fontSize.medium};
+      line-height: 1.1875rem;
+      font-weight: 900;
+      padding: 0.25rem 0.5rem;
+      border: solid 1px rgb(245, 245, 245);
+      border-radius: 0.375rem;
+      color: rgb(48, 176, 153);
+      background: rgb(245, 245, 245);
+      cursor: pointer;
+      box-shadow: 0 1.4px 2px rgba(0, 0, 0, 0.6);
+
+      &:disabled {
+        background: rgb(48, 176, 153);
+        color: white;
+        box-shadow: none;
+      }
+    }
+  }
+  .writePostButton {
+    width: 6.625rem;
+    margin: 0.625rem 0 1.5625rem 0rem;
+    font-size: 1rem;
+    line-height: 1.1875rem;
+    font-weight: 900;
+    padding: 0.25rem 0.5rem;
+    border: solid 1px rgb(245, 245, 245);
+    border-radius: 0.375rem;
+    color: rgb(48, 176, 153);
+    background: rgb(245, 245, 245);
     cursor: pointer;
-    border-left: none;
-    font-size: 1.0625rem;
+    box-shadow: 0 1.4px 2px rgba(0, 0, 0, 0.6);
+
+    &:hover {
+      background: rgb(48, 176, 153);
+      color: white;
+      box-shadow: none;
+    }
   }
 `;
 

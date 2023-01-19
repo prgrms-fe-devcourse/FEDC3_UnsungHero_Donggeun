@@ -1,10 +1,8 @@
 import styled from 'styled-components';
-import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useState } from 'react';
 import { IComment } from '../types/comment';
 import { createComment, deleteComment } from './api';
-
-const PROFIE_IMG_URL = 'https://ifh.cc/g/35RDD6.png';
+import { Avatar, Button } from '../common';
 
 interface ICommentProps {
   commentList?: IComment[];
@@ -12,13 +10,16 @@ interface ICommentProps {
   userId: string;
 
   fetchData: () => void;
-  //refetchPost: () => void;
 }
 
 const Comment = ({ commentList, userId, postId, fetchData }: ICommentProps) => {
   const [value, setValue] = useState('');
 
   const handleInputValue = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    if (e.target.value.length > 300) {
+      e.target.value = e.target.value.slice(0, 300);
+    }
+
     setValue(e.target.value);
   };
 
@@ -26,7 +27,6 @@ const Comment = ({ commentList, userId, postId, fetchData }: ICommentProps) => {
     e.preventDefault();
 
     await createComment(value, userId, postId);
-    //refetchPost();
     fetchData();
 
     setValue('');
@@ -35,7 +35,6 @@ const Comment = ({ commentList, userId, postId, fetchData }: ICommentProps) => {
   const handleClickButton = async (id: string) => {
     await deleteComment(id);
 
-    //refetchPost();
     fetchData();
   };
 
@@ -43,49 +42,79 @@ const Comment = ({ commentList, userId, postId, fetchData }: ICommentProps) => {
     <>
       <CommentForm onSubmit={(e) => handleSubmitInput(e)}>
         <TextArea placeholder='댓글을 입력해주세요' onChange={handleInputValue} value={value} rows={3} />
-        {/* <Input placeholder='댓글을 입력해주세요' onChange={handleInputValue} value={value} /> */}
-        <Button type='submit'>전송</Button>
+        <Button
+          text='전송'
+          color='white'
+          width={5}
+          height={1.875}
+          style={{ marginTop: '0.875rem', marginLeft: 'auto' }}
+        />
       </CommentForm>
       <Ul>
-        {commentList?.map(({ _id, author, comment }: IComment) => (
-          <Li key={_id}>
-            <AuthorContainer>
-              <AuthorImage src={author.image || PROFIE_IMG_URL} />
-              <AuthorName>{author.fullName}</AuthorName>
-            </AuthorContainer>
-            <CommentContainer>
-              <PCmoment>{comment}</PCmoment>
-              <ButtonX onClick={() => handleClickButton(_id)}>X</ButtonX>
-            </CommentContainer>
-          </Li>
-        ))}
+        <CommentTitle>전체 댓글</CommentTitle>
+        {commentList && commentList?.length > 0 ? (
+          commentList?.map(({ _id, author, comment }: IComment) => (
+            <Li key={_id}>
+              <AuthorContainer>
+                <Avatar src={author.image} width={60} height={60} />
+                <AuthorName>{author.fullName}</AuthorName>
+              </AuthorContainer>
+              <CommentContainer>
+                <PCmoment>{comment}</PCmoment>
+                <ButtonX onClick={() => handleClickButton(_id)}>X</ButtonX>
+              </CommentContainer>
+            </Li>
+          ))
+        ) : (
+          <Nothing>댓글이 없습니다.</Nothing>
+        )}
       </Ul>
     </>
   );
 };
 
 const CommentForm = styled.form`
+  background-color: ${({ theme }) => theme.colors.white};
+  border-radius: 5px;
+  box-shadow: ${({ theme }) => theme.shadow.boxShadow};
   display: flex;
-`;
-const TextArea = styled.textarea`
-  width: 700px;
-  resize: none;
-`;
-const Button = styled.button`
-  margin-left: 0.5rem;
-  background-color: #ffffff;
-  border: solid #52d2a4;
-  color: #000000;
-  align-self: right;
-  cursor: pointer;
-  &:hover {
-    color: #ffffff;
-    background-color: #48b790;
+  flex-direction: column;
+  align-items: center;
+
+  & button {
+    margin-right: 1.125rem;
+    margin-bottom: 1.125rem;
   }
 `;
-const Ul = styled.ul``;
+const TextArea = styled.textarea`
+  border: none;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.contentLine};
+  padding: 1.25rem 0.625rem 0.625rem 0.625rem;
+  width: 95%;
+  min-height: 7.5rem;
+  resize: none;
+  &:focus {
+    outline: none;
+  }
+`;
+
+const Ul = styled.ul`
+  width: 100%;
+  padding: 0;
+  background-color: ${({ theme }) => theme.colors.white};
+  border-radius: 5px;
+  box-shadow: ${({ theme }) => theme.shadow.boxShadow};
+`;
+
+const CommentTitle = styled.p`
+  margin: 0 1.25rem;
+  padding: 1.5rem 0;
+  font-weight: bold;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.contentLine};
+`;
 const Li = styled.li`
   list-style-type: none;
+  padding: 0.625rem 1.25rem;
   border-bottom: solid #c4c4c4 1px;
   display: flex;
 `;
@@ -94,35 +123,38 @@ const AuthorContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 80px;
+  width: 5rem;
 `;
-const AuthorImage = styled.img`
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-`;
+
 const AuthorName = styled.p`
-  font-size: 12px;
+  font-size: ${({ theme }) => theme.fontSize.smaller};
   text-decoration: underline;
 `;
 const CommentContainer = styled.div`
   width: 100%;
   margin-left: 1rem;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
 `;
 const PCmoment = styled.p`
-  font-size: 14px;
+  font-size: ${({ theme }) => theme.fontSize.medium};
 `;
 const ButtonX = styled.button`
-  align-self: flex-end;
   margin-left: 1rem;
-  background-color: #fafafa;
+  background-color: ${({ theme }) => theme.colors.white};
+  border-radius: 0.3125rem;
   border: none;
   cursor: pointer;
   &:hover {
-    background: #48b790;
+    background: ${({ theme }) => theme.colors.grayHover};
   }
+`;
+
+const Nothing = styled.p`
+  text-align: center;
+  color: ${({ theme }) => theme.colors.lightGray};
+  padding: 0.625rem 0 1.25rem 0;
 `;
 
 export default Comment;

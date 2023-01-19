@@ -128,7 +128,7 @@ const WholeWrapper = styled.div`
   height: auto;
   display: flex;
   flex-direction: column;
-  margin: 1.875rem 0 0 0;
+  margin-top: 1.875rem;
 
   .bestPostsTitle {
     width: 45.3125rem;
@@ -136,10 +136,11 @@ const WholeWrapper = styled.div`
     padding: 0.9375rem 0 0 1.25rem;
     margin: 0 0 0rem 0rem;
     font-size: 1.25rem;
-    border-top-left-radius: 0.1875rem;
-    border-top-right-radius: 0.1875rem;
-    background-color: #52d2a4;
-    box-shadow: 0 0.0625rem 0.0625rem rgba(0, 0, 0, 0.6);
+    border-top-left-radius: 0.3125rem;
+    border-top-right-radius: 0.3125rem;
+    background-color: ${({ theme }) => theme.colors.primary};
+    box-shadow: 0 0.0625rem 0.0625rem ${({ theme }) => theme.colors.shadow};
+    font-weight: bold;
   }
 `;
 
@@ -157,12 +158,10 @@ const BestPostWrapper = styled.li`
   width: 45.3125rem;
   height: 4.6875rem;
   border-bottom: solid 0.0625rem #dce1e8;
-  border-radius: 0rem;
   padding: 1rem 1.25rem;
-  gap: 0rem;
   cursor: pointer;
   background-color: white;
-  box-shadow: 0 0.0625rem 0.0625rem rgba(0, 0, 0, 0.6);
+  box-shadow: 0px 4px 4px ${({ theme }) => theme.colors.shadow};
 
   .bestPostTitleDotContainer {
     display: flex;
@@ -180,8 +179,10 @@ const BestPostWrapper = styled.li`
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
+    }
 
-      &:hover {
+    &:hover {
+      .bestPostTitle {
         text-decoration: underline;
       }
     }
@@ -190,7 +191,7 @@ const BestPostWrapper = styled.li`
   .postInfoContainer {
     display: flex;
     justify-content: end;
-    color: #939393;
+    color: ${({ theme }) => theme.colors.lightGray};
 
     .likesImg {
       margin-right: 0.125rem;
