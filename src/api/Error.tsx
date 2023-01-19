@@ -26,8 +26,9 @@ const Error404Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 0px;
+  width: 50%;
   height: 1200px;
+  position: fixed;
 `;
 
 const Error404Image = styled.img`
