@@ -1,6 +1,5 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
-import axios from 'axios';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { IAuth } from '../types/auth';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -10,18 +9,12 @@ import Header from './Header';
 import { Button } from '../common';
 import { IToken } from '../types/token';
 import { useToken } from '../contexts/TokenProvider';
-import useAxios from '../api/useAxios';
 import { processSignUp } from './api';
+import useOverlapConfirm from './useOverlapConfirm';
 
 const SignUp = () => {
-  const [allFullNameList, setAllFullNameList] = useState<string[] | undefined>([]);
-  const [allEmailList, setAllEmailList] = useState<string[] | undefined>([]);
   const tokenContextObj: IToken | null = useToken();
-  const { data: userData } = useAxios<IAuth[]>({
-    url: `/users/get-users`,
-    method: 'get',
-  });
-
+  const { CheckOverlapEmail, CheckOverlapName } = useOverlapConfirm();
   const {
     register,
     handleSubmit,
@@ -36,12 +29,12 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   const onSubmitHandler: SubmitHandler<IAuth> = async ({ email, fullName, password }) => {
-    if (allFullNameList?.indexOf(fullName) !== -1) {
+    if (CheckOverlapName(fullName)) {
       setError('fullName', { message: '이미 사용중인 nickname 입니다.' }, { shouldFocus: true });
       return;
     }
 
-    if (allEmailList?.indexOf(email) !== -1) {
+    if (CheckOverlapEmail(email)) {
       setError('email', { message: '이미 사용중인 email 입니다.' }, { shouldFocus: true });
       return;
     }
@@ -54,20 +47,9 @@ const SignUp = () => {
     }
   };
 
-  const getAllUserData = async () => {
-    const allFullNameData = userData?.map((data: IAuth) => data.fullName);
-    const allEmailData = userData?.map((data: IAuth) => data.email);
-    setAllFullNameList(allFullNameData);
-    setAllEmailList(allEmailData);
-  };
-
   useEffect(() => {
     tokenContextObj?.token && navigate('/');
   }, []);
-
-  useEffect(() => {
-    getAllUserData();
-  }, [userData]);
 
   return (
     <>

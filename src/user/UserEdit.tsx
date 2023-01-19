@@ -7,6 +7,8 @@ import useMutation from '../api/useMutation';
 import styled from 'styled-components';
 import { Button } from '../common';
 import { END_POINT } from '../api/apiAddress';
+import useOverlapConfirm from '../auth/useOverlapConfirm';
+import Loading from '../api/Loading';
 
 interface IFormValue {
   fullName: string;
@@ -18,10 +20,13 @@ const UserEdit = () => {
   const { mutate } = useMutation();
   const [imgFiles, setimgFiles] = useState({});
   const navigate = useNavigate();
+  const { CheckOverlapName } = useOverlapConfirm();
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, dirtyFields, isSubmitting },
   } = useForm<IFormValue>({
     defaultValues: () =>
@@ -34,7 +39,12 @@ const UserEdit = () => {
   });
 
   const handleChangeUserInfo: SubmitHandler<IFormValue> = async ({ fullName, password }) => {
-    if (dirtyFields.fullName) await getChangeUserName(fullName);
+    setIsLoading(true);
+
+    if (dirtyFields.fullName) {
+      if (!CheckUserName(fullName)) return;
+      await getChangeUserName(fullName);
+    }
     if (dirtyFields.password) await getChangePassword(password);
 
     for (const formdata of Object.values(imgFiles)) {
@@ -43,7 +53,17 @@ const UserEdit = () => {
       }
     }
 
+    setIsLoading(false);
     navigate(`/user/${id}`, { replace: true });
+  };
+
+  const CheckUserName = (fullName: string) => {
+    if (CheckOverlapName(fullName)) {
+      setIsLoading(false);
+      setError('fullName', { message: '이미 사용중인 nickname 입니다.' }, { shouldFocus: true });
+      return false;
+    }
+    return true;
   };
 
   const getChangeImg = async (formdata: FormData) => {
@@ -76,53 +96,57 @@ const UserEdit = () => {
   };
 
   return (
-    <Wrapper>
-      <UserEditImg id={id} setimgFiles={setimgFiles} />
-      <Form onSubmit={handleSubmit(handleChangeUserInfo)}>
-        <UserName>
-          <Label>유저네임</Label>
+    <>
+      {isLoading && <Loading />}
+      <Wrapper>
+        <UserEditImg id={id} setimgFiles={setimgFiles} />
+        <Form onSubmit={handleSubmit(handleChangeUserInfo)}>
+          <UserName>
+            <Label>유저네임</Label>
+            <Input
+              type='text'
+              {...register('fullName', {
+                minLength: {
+                  value: 2,
+                  message: '2자리 이상의 이름을 입력해주세요',
+                },
+                maxLength: {
+                  value: 10,
+                  message: '최대 10글자까지 가능합니다.',
+                },
+              })}
+            />
+            <Error>{errors?.fullName?.message}</Error>
+          </UserName>
+          <Label>비밀번호</Label>
           <Input
-            type='text'
-            {...register('fullName', {
+            type='password'
+            {...register('password', {
               minLength: {
-                value: 2,
-                message: '2자리 이상의 이름을 입력해주세요',
-              },
-              maxLength: {
-                value: 10,
-                message: '최대 10글자까지 가능합니다.',
+                value: 7,
+                message: '7자리 이상의 비밀번호를 입력해주세요.',
               },
             })}
           />
-          <Error>{errors?.fullName?.message}</Error>
-        </UserName>
-        <Label>비밀번호</Label>
-        <Input
-          type='password'
-          {...register('password', {
-            minLength: {
-              value: 7,
-              message: '7자리 이상의 비밀번호를 입력해주세요.',
-            },
-          })}
-        />
-        <Error>{errors?.password?.message}</Error>
-        <Button
-          text={'저장'}
-          color={'default'}
-          width={6.25}
-          height={1.875}
-          disabled={isSubmitting}
-          style={{ position: 'absolute', top: '29%', right: '2%' }}
-        />
-      </Form>
-    </Wrapper>
+          <Error>{errors?.password?.message}</Error>
+          <Button
+            text={'저장'}
+            color={'default'}
+            width={6.25}
+            height={1.875}
+            disabled={isSubmitting}
+            style={{ position: 'absolute', top: '29%', right: '2%' }}
+          />
+        </Form>
+      </Wrapper>
+    </>
   );
 };
 
 export default UserEdit;
 
 const Wrapper = styled.div`
+  margin-top: 1.875rem;
   background-color: ${({ theme }) => theme.colors.white};
   max-width: 45.313rem;
   height: 100%;
