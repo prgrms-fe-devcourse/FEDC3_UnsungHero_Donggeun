@@ -5,70 +5,58 @@ import { useState, useEffect } from 'react';
 import ErrorBoundary from '../api/ErrorBoundary';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
 import Loading from '../api/Loading';
+import { useQuery } from 'react-query';
 import { END_POINT } from '../api/apiAddress';
 
 const Search = () => {
-  const [postsInfo, setPostsInfo] = useState([]);
   const [selectedSearchOption, setSelectedSearchOption] = useState('');
   const [inputSearchValue, setInputSearchValue] = useState('');
-  const [currentChannelId, setCurrentChannelId] = useState<string | undefined>('');
+  const [specificPostData, setSpecificPostData] = useState([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { channelId } = useParams();
 
-  const navigate = useNavigate();
-
-  if (channelId !== currentChannelId) {
-    setCurrentChannelId(channelId);
-  }
-
-  useEffect(() => {
-    if (currentChannelId !== undefined) {
-      getPostsList();
-      // setSelectedSearchOption('');
-      // setInputSearchValue('');
-    } else {
-      getEntirePostsList();
-    }
-  }, [currentChannelId]);
+  // 캐싱 안되게끔.
+  const { data: totalPostData, isLoading: totalPostDataLoading } = useQuery('totalPostData', async () => {
+    return axios.get(`${END_POINT}/posts`).then(({ data }) => data);
+  });
 
   const getPostsList = async () => {
     setIsLoading(true);
-    axios.get(`${END_POINT}/posts/channel/${currentChannelId}`).then((response) => {
+    axios.get(`${END_POINT}/posts/channel/${channelId}`).then((response) => {
       const { data } = response;
-      setPostsInfo(data);
+      setSpecificPostData(data);
       setIsLoading(false);
     });
   };
 
-  const getEntirePostsList = async () => {
-    setIsLoading(true);
-    axios.get(`${END_POINT}/posts`).then((response) => {
-      const { data } = response;
-      setPostsInfo(data);
-      setIsLoading(false);
-    });
-  };
+  useEffect(() => {
+    channelId && getPostsList();
+  }, [channelId]);
+
+  const loading = channelId ? isLoading : totalPostDataLoading;
+  const postsInfo = channelId ? specificPostData : totalPostData;
 
   return (
     <ErrorBoundary>
-      {isLoading ? <Loading /> : null}
-      <MostLikesPosts postsInfo={postsInfo} currentChannelId={currentChannelId} />
-      <SearchBox
-        setSelectedSearchOption={setSelectedSearchOption}
-        setInputSearchValue={setInputSearchValue}
-        // getPostsList={getPostsList}
-        // getEntirePostsList={getEntirePostsList}
-        currentChannelId={currentChannelId}
-      />
-      <PostListContainer
-        postsInfo={postsInfo}
-        selectedSearchOption={selectedSearchOption}
-        inputSearchValue={inputSearchValue}
-        currentChannelId={currentChannelId}
-      />
-      <br />
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <MostLikesPosts postsInfo={postsInfo} currentChannelId={channelId} />
+          <SearchBox
+            setSelectedSearchOption={setSelectedSearchOption}
+            setInputSearchValue={setInputSearchValue}
+            currentChannelId={channelId}
+          />
+          <PostListContainer
+            postsInfo={postsInfo}
+            selectedSearchOption={selectedSearchOption}
+            inputSearchValue={inputSearchValue}
+            currentChannelId={channelId}
+          />
+        </>
+      )}
     </ErrorBoundary>
   );
 };

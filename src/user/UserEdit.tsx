@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -6,6 +5,7 @@ import UserEditImg from './UserEditImg';
 import useMutation from '../api/useMutation';
 import styled from 'styled-components';
 import { Button } from '../common';
+import useFollow from '../follow/useFollow';
 import { END_POINT } from '../api/apiAddress';
 import useOverlapConfirm from '../auth/useOverlapConfirm';
 import Loading from '../api/Loading';
@@ -23,20 +23,14 @@ const UserEdit = () => {
   const { CheckOverlapName } = useOverlapConfirm();
   const [isLoading, setIsLoading] = useState(false);
 
+  const { currentData: myData } = useFollow(id as string);
+
   const {
     register,
     handleSubmit,
     setError,
     formState: { errors, dirtyFields, isSubmitting },
-  } = useForm<IFormValue>({
-    defaultValues: () =>
-      axios.get(`${END_POINT}/users/${id}`).then(({ data }) => {
-        return {
-          fullName: data.fullName,
-          password: '',
-        };
-      }),
-  });
+  } = useForm<IFormValue>();
 
   const handleChangeUserInfo: SubmitHandler<IFormValue> = async ({ fullName, password }) => {
     setIsLoading(true);
@@ -115,6 +109,7 @@ const UserEdit = () => {
                   message: '최대 10글자까지 가능합니다.',
                 },
               })}
+              defaultValue={myData?.fullName}
             />
             <Error>{errors?.fullName?.message}</Error>
           </UserName>

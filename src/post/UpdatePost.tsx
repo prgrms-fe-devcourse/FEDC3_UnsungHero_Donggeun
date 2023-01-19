@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import useMutation from '../api/useMutation';
-import useAxios from '../api/useAxios';
 import { IPost } from '../types/post';
+import { useQuery } from 'react-query';
 import { Button } from '../common';
 import { END_POINT } from '../api/apiAddress';
+import axios from 'axios';
 
 const UpdatePost = () => {
   const [title, setTitle] = useState('');
@@ -27,14 +28,13 @@ const UpdatePost = () => {
     localStorage.setItem(`tempContentInUpdatePost${postId}`, e.target.value);
   };
 
-  const { data } = useAxios<IPost>({
-    url: `${END_POINT}/posts/${postId}`,
-    method: 'get',
+  const { data: updatePost } = useQuery<IPost>('updatePost', async () => {
+    return axios.get(`${END_POINT}/posts/${postId}`).then(({ data }) => data);
   });
 
   useEffect(() => {
-    if (typeof data === 'object') {
-      const post = JSON.parse(data?.title as string);
+    if (typeof updatePost === 'object') {
+      const post = JSON.parse(updatePost?.title as string);
       setTitle(post.title);
       setContent(post.content);
 
@@ -48,11 +48,11 @@ const UpdatePost = () => {
         setContent(tempContent);
       }
 
-      setChannelId(data.channel._id);
+      setChannelId(updatePost.channel._id);
 
-      setImage(data.image as string);
+      setImage(updatePost.image as string);
     }
-  }, [data]);
+  }, [updatePost]);
 
   const handleUpdatePost = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -114,7 +114,7 @@ const UpdatePost = () => {
       <TitleInput value={title} onChange={handleTitleOnChnage} />
       <Content>
         <ImageWarpper>
-          <Image src={previewImage ? previewImage : data?.image}></Image>
+          <Image src={previewImage ? previewImage : updatePost?.image}></Image>
         </ImageWarpper>
         <Textarea onChange={handleContentOnChnage} rows={10} cols={100} value={content} placeholder='내용' />
       </Content>
