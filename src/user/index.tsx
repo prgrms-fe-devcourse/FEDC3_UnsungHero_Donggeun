@@ -129,7 +129,6 @@ const Wrapper = styled.div`
   margin-top: 1.875rem;
   background-color: ${({ theme }) => theme.colors.white};
   max-width: 45.313rem;
-  height: 100%;
   min-height: 640px;
   box-shadow: ${({ theme }) => theme.shadow.boxShadow};
   border-radius: 5px;

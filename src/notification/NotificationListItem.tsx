@@ -13,17 +13,18 @@ const NotificationListItem = ({ _id, seen, comment, like, follow, author, post: 
   const commentLikeFollowCheeck = like ?? comment ?? follow;
 
   const renderText = (author: string | undefined) => {
-    if (!commentLikeFollowCheeck) return '유효하지 않은 알람입니다.';
+    if (!commentLikeFollowCheeck || comment?.post === null || like?.post === null)
+      return '유효하지 않은 알림입니다.';
     if (comment) return author + '님이 댓글을 남기셨습니다.';
     if (like) return author + '님이 공감을 하셨습니다.';
     if (follow) return author + '님이 팔로우 하셨습니다.';
   };
 
   const renderTitle = () => {
-    if (!commentLikeFollowCheeck) return;
+    if (!commentLikeFollowCheeck || comment?.post === null || like?.post === null) return;
 
     if (comment) {
-      return JSON.parse(comment?.post.title).title;
+      return JSON.parse(comment?.post.title as string).title;
     }
 
     if (like) {
@@ -32,7 +33,8 @@ const NotificationListItem = ({ _id, seen, comment, like, follow, author, post: 
   };
 
   const renderIcon = () => {
-    if (!commentLikeFollowCheeck) return <ImCancelCircle className='logo' />;
+    if (!commentLikeFollowCheeck || comment?.post === null || like?.post === null)
+      return <ImCancelCircle className='logo' />;
     if (comment) return <BiComment className='logo' />;
     if (like) return <AiOutlineHeart className='logo' />;
     if (follow) return <SlUserFollow className='logo' />;

@@ -110,7 +110,7 @@ const PostList = ({
 
   return (
     <WholeWrapper>
-      <div className='postListTitle'>⚪{selectPostsChannelTitle(currentChannelId)}</div>
+      <div className='postListTitle'>📃{selectPostsChannelTitle(currentChannelId)}</div>
       <PostListWrapper>
         {filteredPostsInfo.map((postInfo) => {
           const { title, _id, likes, createdAt, comments, channel } = postInfo;
@@ -187,7 +187,7 @@ const WholeWrapper = styled.div`
 
   .postListTitle {
     font-family: 'BMHANNAPro';
-    font-size: 24px;
+    font-size: 1.5rem;
     font-weight: bold;
     width: 725px;
     height: 3.125rem;
