@@ -12,6 +12,7 @@ import { Button } from '../common';
 import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { END_POINT } from '../api/apiAddress';
+import { IoMdNotificationsOff } from 'react-icons/io';
 
 const NotificationList = () => {
   const [page, setPage] = useState(1);
@@ -77,30 +78,37 @@ const NotificationList = () => {
         <div>알림</div>
       </NotificationHeader>
 
-      <NotificationListContainer dataview={!!notificationList?.length}>
-        {notificationList
-          ?.slice(offset, offset + limit)
-          .map(({ _id, seen: isCheck, comment, like, follow, author, post }) => (
-            <NotificationlistItem
-              key={_id}
-              _id={_id}
-              seen={isCheck}
-              comment={comment}
-              like={like}
-              follow={follow}
-              author={author}
-              post={post}
+      <NotificationContainer>
+        <NotNotificationContainer dataview={!!notificationList?.length}>
+          <IoMdNotificationsOff size={80} className='logo' />
+          <h3>알람이 없습니다.</h3>
+        </NotNotificationContainer>
+
+        <NotificationListContainer dataview={!!notificationList?.length}>
+          {notificationList
+            ?.slice(offset, offset + limit)
+            .map(({ _id, seen: isCheck, comment, like, follow, author, post }) => (
+              <NotificationlistItem
+                key={_id}
+                _id={_id}
+                seen={isCheck}
+                comment={comment}
+                like={like}
+                follow={follow}
+                author={author}
+                post={post}
+              />
+            ))}
+          <PaginationContainer>
+            <Pagination
+              total={notificationList?.length as number}
+              limit={limit}
+              page={page}
+              setPage={setPage}
             />
-          ))}
-        <PaginationContainer>
-          <Pagination
-            total={notificationList?.length as number}
-            limit={limit}
-            page={page}
-            setPage={setPage}
-          />
-        </PaginationContainer>
-      </NotificationListContainer>
+          </PaginationContainer>
+        </NotificationListContainer>
+      </NotificationContainer>
 
       <NotificationConfirmContainer dataview={!!notificationList?.length}>
         <Button
@@ -136,17 +144,37 @@ const NotificationHeader = styled.div`
   }
 `;
 
-const NotificationListContainer = styled.div<{ dataview: boolean }>`
-  display: ${(props) => (props.dataview ? 'flex' : 'none')};
-  flex-direction: column;
+const NotificationContainer = styled.div`
+  min-height: 40rem;
   width: 45.3125rem;
   border-radius: 0.3125rem;
   border: none;
   box-shadow: ${({ theme }) => theme.shadow.boxShadow};
   background-color: ${(props) => props.theme.colors.white};
   margin-bottom: 1.875rem;
-  min-height: 40rem;
+
   position: relative;
+
+  & .logo {
+    font-size: 5rem;
+  }
+
+  & .logo,
+  & h3 {
+    opacity: 0.5;
+  }
+`;
+
+const NotNotificationContainer = styled.div<{ dataview: boolean }>`
+  display: ${(props) => (props.dataview ? 'none' : 'flex')};
+  flex-direction: column;
+  align-items: center;
+  padding-top: 6.25rem;
+`;
+
+const NotificationListContainer = styled.div<{ dataview: boolean }>`
+  display: ${(props) => (props.dataview ? 'flex' : 'none')};
+  flex-direction: column;
 `;
 
 const NotificationConfirmContainer = styled.div<{ dataview: boolean }>`
