@@ -24,11 +24,11 @@ const useOverlapConfirm = () => {
   }, [userData]);
 
   const CheckOverlapEmail = (email: string) => {
-    return allEmailList?.indexOf(email) !== -1;
+    return allEmailList?.includes(email);
   };
 
   const CheckOverlapName = (fullName: string) => {
-    return allFullNameList?.indexOf(fullName) !== -1;
+    return allFullNameList?.includes(fullName);
   };
 
   return { CheckOverlapEmail, CheckOverlapName };
