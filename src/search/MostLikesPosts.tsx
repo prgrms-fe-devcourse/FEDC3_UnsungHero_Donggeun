@@ -124,10 +124,11 @@ const WholeWrapper = styled.div`
   margin-top: 1.875rem;
 
   .bestPostsTitle {
+    font-family: 'BMHANNAPro';
+    font-size: 24px;
     width: 45.3125rem;
     height: 50px;
     padding: 0.9375rem 0 0 1rem;
-    font-size: 1.25rem;
     border-top-left-radius: 0.3125rem;
     border-top-right-radius: 0.3125rem;
     background-color: ${({ theme }) => theme.colors.primary};

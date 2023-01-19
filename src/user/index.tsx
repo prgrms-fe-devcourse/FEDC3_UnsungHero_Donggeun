@@ -6,6 +6,7 @@ import UserPosts from './UserPosts';
 import { useUserId } from '../contexts/TokenProvider';
 import useFollow from '../follow/useFollow';
 import { Avatar, Button } from '../common';
+import Skeleton from '../common/Skeleton';
 
 interface IUserInfo {
   fullName: string | undefined;
@@ -32,6 +33,7 @@ const User = () => {
     userFollow,
     currentData: userData,
     fetchCurrentData: refetchUserData,
+    isLoading,
   } = useFollow(currentPageId as string);
 
   useEffect(() => {
@@ -53,44 +55,64 @@ const User = () => {
   return (
     <Wrapper>
       <CoverImg src={userInfo.coverImage} alt='커버 이미지' />
-      <UserWrapper>
-        <Avatar
-          src={userData?.image}
-          width={90}
-          height={90}
-          style={{ position: 'relative', top: '-1.875rem' }}
-        />
-        <InfoWrapper>
-          <UserName>{userInfo.fullName}</UserName>
-          <Likes>
-            <img src={LIKE_IMG_URL} width='18px' height='18px' />
-            {totalLikes}
-          </Likes>
-        </InfoWrapper>
-        {currentPageId === myUserId ? (
-          <Button
-            text={'내정보 수정'}
-            onClick={handlemoveEditPage}
-            color='white'
-            width={6.25}
-            height={1.875}
-            style={{ marginLeft: 'auto' }}
-          />
-        ) : (
-          followButton(currentPageId as string)
-        )}
-      </UserWrapper>
-      <Follow>
-        <Link to={`/following/${currentPageId}`}>
-          팔로잉 <span>{userFollow?.following?.length}</span>
-        </Link>
-        <Link to={`/followers/${currentPageId}`}>
-          팔로워 <span>{userFollow?.followers?.length}</span>
-        </Link>
-      </Follow>
-      <List>
-        {userInfo?.posts?.length > 0 ? <UserPosts posts={userInfo.posts} /> : <p>작성한 글이 없습니다.</p>}
-      </List>
+      {isLoading ? (
+        <>
+          <UserWrapper>
+            <Skeleton.Circle size={90} />
+            <InfoWrapper>
+              <UserName>{userInfo.fullName}</UserName>
+            </InfoWrapper>
+          </UserWrapper>
+          <List>
+            <Skeleton.Box width={650} height={400} />
+          </List>
+        </>
+      ) : (
+        <>
+          <UserWrapper>
+            <Avatar
+              src={userData?.image}
+              width={90}
+              height={90}
+              style={{ position: 'relative', top: '-1.875rem' }}
+            />
+            <InfoWrapper>
+              <UserName>{userInfo.fullName}</UserName>
+              <Likes>
+                <img src={LIKE_IMG_URL} width='18px' height='18px' />
+                {totalLikes}
+              </Likes>
+            </InfoWrapper>
+            {currentPageId === myUserId ? (
+              <Button
+                text={'내정보 수정'}
+                onClick={handlemoveEditPage}
+                color='white'
+                width={6.25}
+                height={1.875}
+                style={{ marginLeft: 'auto' }}
+              />
+            ) : (
+              followButton(currentPageId as string)
+            )}
+          </UserWrapper>
+          <Follow>
+            <Link to={`/following/${currentPageId}`}>
+              팔로잉 <span>{userFollow?.following?.length}</span>
+            </Link>
+            <Link to={`/followers/${currentPageId}`}>
+              팔로워 <span>{userFollow?.followers?.length}</span>
+            </Link>
+          </Follow>
+          <List>
+            {userInfo?.posts?.length > 0 ? (
+              <UserPosts posts={userInfo.posts} />
+            ) : (
+              <p>작성한 글이 없습니다.</p>
+            )}
+          </List>
+        </>
+      )}
     </Wrapper>
   );
 };

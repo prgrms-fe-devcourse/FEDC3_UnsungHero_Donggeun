@@ -1,5 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
 import { normalize } from 'styled-normalize';
+import BMHANNAPro from '../font/BMHANNAPro.ttf';
+import GmarketSansMedium from '../font/GmarketSansMedium.otf';
 
 const GlobalStyles = createGlobalStyle`
     ${normalize}
@@ -7,7 +9,8 @@ const GlobalStyles = createGlobalStyle`
     body {
         font-size: 16px;
         background-color: #FAFAFA;
-        font-family: 'Noto Sans KR', sans-serif;
+        font-display: block;
+        font-family: 'GmarketSansMedium', sans-serif;
     }
     body::-webkit-scrollbar{
         width: 10px;
@@ -27,6 +30,18 @@ const GlobalStyles = createGlobalStyle`
     color: inherit;
     text-decoration: none;
     }
+    @font-face {
+        font-family: 'BMHANNAPro';
+        src: local('BMHANNAPro'), local('BMHANNAPro');
+        font-style: normal;
+        src: url(${BMHANNAPro}) format('truetype');
+  }
+  @font-face {
+        font-family: 'GmarketSansMedium';
+        src: local('GmarketSansMedium'), local('GmarketSansMedium');
+        font-style: normal;
+        src: url(${GmarketSansMedium}) format('truetype');
+  }
 `;
 
 export default GlobalStyles;

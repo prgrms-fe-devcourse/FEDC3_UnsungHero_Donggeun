@@ -12,6 +12,7 @@ import { useQuery } from 'react-query';
 import axios from 'axios';
 import { Avatar, Button } from '../common';
 import { END_POINT } from '../api/apiAddress';
+import Skeleton from '../common/Skeleton';
 
 interface Iauthor {
   fullName: string;
@@ -42,10 +43,14 @@ const DetailPost = () => {
   const userObject = useUserId();
   const userId = userObject?.userId;
 
-  const { data: postData, refetch: fetchData } = useQuery<IPost>(
-    'postData',
+  const {
+    data: postData,
+    refetch: fetchData,
+    isLoading,
+  } = useQuery<IPost>(
+    [postId],
     async () => {
-      return axios.get(`${END_POINT}/posts/${postId}`).then(({ data }) => data);
+      return await axios.get(`${END_POINT}/posts/${postId}`).then(({ data }) => data);
     },
     {
       refetchOnMount: true,
@@ -70,9 +75,7 @@ const DetailPost = () => {
         _id: _id,
       });
       setImage(postData.image as string);
-
       setComments(postData.comments);
-
       setLikes(postData.likes);
     }
   }, [postData]);
@@ -87,36 +90,49 @@ const DetailPost = () => {
     <ErrorBoundary>
       <Container>
         <Post>
-          <TitleWrapper>
-            <Title>
-              <div>{title}</div>
-              <CreateAt>작성일: {author.createAt.slice(0, 10)}</CreateAt>
-            </Title>
-            {identification ? (
-              <Button
-                text='내용 수정'
-                color='default'
-                onClick={handleOnClickToUpdatePage}
-                width={6.25}
-                height={1.875}
-              />
-            ) : null}
-          </TitleWrapper>
-          <Author onClick={() => navigate(`/user/${author._id}`)}>
-            <Avatar src={postData?.author.image} width={60} height={60} />
-            <UserName>{author.fullName}</UserName>
-          </Author>
-          <Content>
-            <ImageWarpper>{image && <ContentImage src={image} alt='이미지!' />}</ImageWarpper>
-            <Textarea
-              value={content}
-              disabled
-              rows={10}
-              cols={100}
-              ref={textareaRef}
-              scrollHeight={textareaRef.current?.scrollHeight}
-            />
-          </Content>
+          {isLoading ? (
+            <>
+              <Skeleton.Paragraph line={3} />
+              <Author>
+                <Skeleton.Circle size={60} />
+              </Author>
+              <Skeleton.Box width={600} height={400} />
+              <Skeleton.Paragraph line={3} />
+            </>
+          ) : (
+            <>
+              <TitleWrapper>
+                <Title>
+                  <div>{title}</div>
+                  <CreateAt>작성일: {author.createAt.slice(0, 10)}</CreateAt>
+                </Title>
+                {identification ? (
+                  <Button
+                    text='내용 수정'
+                    color='default'
+                    onClick={handleOnClickToUpdatePage}
+                    width={6.25}
+                    height={1.875}
+                  />
+                ) : null}
+              </TitleWrapper>
+              <Author onClick={() => navigate(`/user/${author._id}`)}>
+                <Avatar src={postData?.author.image} width={60} height={60} />
+                <UserName>{author.fullName}</UserName>
+              </Author>
+              <Content>
+                <ImageWarpper>{image && <ContentImage src={image} alt='이미지!' />}</ImageWarpper>
+                <Textarea
+                  value={content}
+                  disabled
+                  rows={10}
+                  cols={100}
+                  ref={textareaRef}
+                  scrollHeight={textareaRef.current?.scrollHeight}
+                />
+              </Content>
+            </>
+          )}
           <Like
             likeList={likes}
             userId={userId || ''}
