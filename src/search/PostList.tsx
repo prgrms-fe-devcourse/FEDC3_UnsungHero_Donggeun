@@ -89,6 +89,34 @@ const PostList = ({
     return content;
   };
 
+  const checkWrittenPostTime = (createdAt: string) => {
+    const today = new Date();
+    const timeValue = new Date(createdAt);
+    const elapsedTime = Math.trunc((today.getTime() - timeValue.getTime()) / 1000);
+
+    const seconds = 1;
+    const minute = seconds * 60;
+    const hour = minute * 60;
+    const day = hour * 24;
+
+    let elapsedText = '';
+    if (elapsedTime < seconds) {
+      elapsedText = '방금 전';
+    } else if (elapsedTime < minute) {
+      elapsedText = elapsedTime + '초 전';
+    } else if (elapsedTime < hour) {
+      elapsedText = Math.trunc(elapsedTime / minute) + '분 전';
+    } else if (elapsedTime < day) {
+      elapsedText = Math.trunc(elapsedTime / hour) + '시간 전';
+    } else if (elapsedTime < day * 15) {
+      elapsedText = Math.trunc(elapsedTime / day) + '일 전';
+    } else {
+      elapsedText = createdAt.slice(0, 10);
+    }
+
+    return elapsedText;
+  };
+
   const tokenObject = useToken();
   const token = tokenObject?.token;
 
@@ -154,7 +182,7 @@ const PostList = ({
                   />
                   <div className='commentsNumber'>{comments.length}</div>
                 </div>
-                <div className='createdAt'>{createdAt.slice(0, 10)}</div>
+                <div className='createdAt'>{checkWrittenPostTime(createdAt)}</div>
               </PostBottomWrapper>
             </PostWrapper>
           );

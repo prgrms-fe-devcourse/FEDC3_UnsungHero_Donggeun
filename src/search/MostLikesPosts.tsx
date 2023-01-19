@@ -165,12 +165,6 @@ const BestPostWrapper = styled.li`
 
   .bestPostTitleDotContainer {
     display: flex;
-    .redDot {
-      align-self: center;
-      width: 0.25rem;
-      height: 0.25rem;
-      margin-bottom: 1.0625rem;
-    }
     .bestPostTitle {
       font-size: 1.125rem;
       font-weight: 500;
