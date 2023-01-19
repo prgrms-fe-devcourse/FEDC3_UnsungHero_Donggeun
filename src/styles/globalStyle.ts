@@ -7,7 +7,7 @@ const GlobalStyles = createGlobalStyle`
     body {
         font-size: 16px;
         background-color: #FAFAFA;
-        font-family: 'Nanum', sans-serif;
+        font-family: 'Noto Sans KR', sans-serif;
     }
     body::-webkit-scrollbar{
         width: 10px;
