@@ -130,6 +130,7 @@ const ChannelTitle = styled.div`
 `;
 
 const Channel = styled.div`
+  cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;

@@ -192,6 +192,7 @@ const Input = styled.input`
 `;
 
 const ErrorText = styled.span`
+  height: 1rem;
   font-size: 0.75rem;
   color: ${({ theme }) => theme.colors.alert};
 `;

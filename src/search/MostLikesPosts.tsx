@@ -75,7 +75,7 @@ const MostLikesPosts = ({ postsInfo, currentChannelId }: IMostLikesPostsProps) =
         MostLikesPostsTitle = '잡담 베스트';
         break;
       default:
-        MostLikesPostsTitle = '전체베스트';
+        MostLikesPostsTitle = '전체 베스트';
     }
     return MostLikesPostsTitle;
   };

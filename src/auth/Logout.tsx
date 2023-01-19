@@ -29,6 +29,7 @@ const Logout = () => {
 export default Logout;
 
 const LogoutButton = styled.button`
+  cursor: pointer;
   background-color: transparent;
   border: none;
   margin-right: 0.625rem;

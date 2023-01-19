@@ -28,6 +28,7 @@ const Header = () => {
           onClick={() => navigate('/')}
           alt='로고'
         />
+        <CatchImg src={process.env.PUBLIC_URL + '/Catchphrase.png'} height={50} />
         <ButtonWrapper>
           {userLogin ? (
             <>
@@ -96,6 +97,7 @@ const ButtonWrapper = styled.div`
 const Logo = styled.img`
   cursor: pointer;
   height: 64px;
+  width: auto;
   padding: 0.1875rem;
 `;
 
@@ -118,4 +120,8 @@ const NotificationButton = styled(UserButton)`
 
 const NotificationWarpper = styled.div`
   position: relative;
+`;
+
+const CatchImg = styled.img`
+  padding-left: 80px;
 `;

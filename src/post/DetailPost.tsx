@@ -136,6 +136,8 @@ const DetailPost = () => {
   );
 };
 
+export default DetailPost;
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -207,17 +209,18 @@ const Content = styled.div`
 `;
 
 const Textarea = styled.textarea<ITextarea>`
+  height: auto;
+  height: ${({ scrollHeight }) => `${scrollHeight}px`};
   resize: none;
   border: none;
   width: 100%;
-  height: auto;
+
   font-size: ${({ theme }) => theme.fontSize.medium};
   background-color: ${({ theme }) => theme.colors.white};
   &:focus {
     background-color: #f0f0f0;
     outline: none;
   }
-  height: ${({ scrollHeight }) => `${scrollHeight}px`};
-`;
 
-export default DetailPost;
+  overflow: hidden;
+`;
