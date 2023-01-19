@@ -30,10 +30,20 @@ function CreatePost() {
 
   const initTitle = localStorage.getItem(`tempTitleInCreatePost${channelId}`) || '';
   const initContent = localStorage.getItem(`tempContentInCreatePost${channelId}`) || '';
+
   useEffect(() => {
-    setTitle(initTitle);
-    setContent(initContent);
-  }, []);
+    if (initTitle !== '' || initContent !== '') {
+      if (confirm('작성중인 글이 존재합니다. 불러오시겠습니까?')) {
+        setTitle(initTitle);
+        setContent(initContent);
+      } else {
+        localStorage.removeItem(`tempTitleInCreatePost${channelId}`);
+        localStorage.removeItem(`tempContentInCreatePost${channelId}`);
+        setTitle('');
+        setContent('');
+      }
+    }
+  }, [channelId]);
 
   const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length > 75) {
@@ -121,7 +131,7 @@ function CreatePost() {
             cols={100}
             onChange={handleChangeContent}
             placeholder='내용을 입력하세요.'
-            value={initContent}
+            value={content}
             ref={textareaRef}
           />
         </Content>
