@@ -34,8 +34,8 @@ function CreatePost() {
   useEffect(() => {
     if (initTitle !== '' || initContent !== '') {
       if (confirm('작성중인 글이 존재합니다. 불러오시겠습니까?')) {
-        setTitle(initTitle);
-        setContent(initContent);
+        if (initTitle !== '') setTitle(initTitle);
+        if (initContent !== '') setContent(initContent);
       } else {
         localStorage.removeItem(`tempTitleInCreatePost${channelId}`);
         localStorage.removeItem(`tempContentInCreatePost${channelId}`);
@@ -119,7 +119,7 @@ function CreatePost() {
           type='text'
           size={99}
           onChange={handleChangeTitle}
-          value={initTitle}
+          value={title}
           placeholder='제목을 입력하세요.'
         />
         <Content>
