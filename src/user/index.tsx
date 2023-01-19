@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { IUser } from '../types/user';
 import styled from 'styled-components';
@@ -22,6 +22,7 @@ const LIKE_IMG_URL = 'https://ifh.cc/g/vmscWK.png';
 const User = () => {
   const { id: currentPageId } = useParams();
   const userIdContext = useUserId();
+  const userIdRef = useRef(currentPageId);
   const myUserId = userIdContext?.userId;
   const navigate = useNavigate();
   const { data, fetchData } = useAxios<IUser>({
@@ -34,7 +35,6 @@ const User = () => {
     coverImage: '',
   });
   const { followButton, userFollow } = useFollow(currentPageId as string);
-
   useEffect(() => {
     setUserInfo({
       fullName: data?.fullName,
@@ -44,7 +44,9 @@ const User = () => {
   }, [data]);
 
   useEffect(() => {
-    fetchData();
+    if (userIdRef.current !== currentPageId) {
+      fetchData();
+    }
   }, [currentPageId]);
 
   const handlemoveEditPage = () => {
@@ -100,6 +102,7 @@ const CoverImg = styled.img`
 `;
 
 const Wrapper = styled.div`
+  margin-top: 1.875rem;
   background-color: ${({ theme }) => theme.colors.white};
   max-width: 45.313rem;
   height: 100%;
