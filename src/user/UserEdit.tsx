@@ -52,16 +52,17 @@ const UserEdit = () => {
         await getChangeImg(formdata);
       }
     }
+
     setIsLoading(false);
     navigate(`/user/${id}`, { replace: true });
   };
 
   const CheckUserName = (fullName: string) => {
     if (CheckOverlapName(fullName)) {
+      setIsLoading(false);
       setError('fullName', { message: '이미 사용중인 nickname 입니다.' }, { shouldFocus: true });
       return false;
     }
-
     return true;
   };
 
