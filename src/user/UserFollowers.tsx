@@ -52,6 +52,7 @@ export default UserFollowers;
 const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.white};
   max-width: 45.313rem;
+  margin-top: 1.875rem;
   height: 100%;
   min-height: 40rem;
   box-shadow: ${({ theme }) => theme.shadow.boxShadow};
