@@ -7,7 +7,7 @@ const Header = () => {
     <Wrapper>
       <HeaderWrapper>
         <div onClick={() => navigate('/')}>
-          <img height={64} src={process.env.PUBLIC_URL + '/logo.png'} alt='로고' />
+          <Logo height={64} width='auto' src={process.env.PUBLIC_URL + '/logo.png'} alt='로고' />
         </div>
       </HeaderWrapper>
     </Wrapper>
@@ -35,4 +35,11 @@ const HeaderWrapper = styled.header`
   width: 100%;
   max-width: 1000px;
   position: fixed;
+`;
+
+const Logo = styled.img`
+  cursor: pointer;
+  height: 64px;
+  width: auto;
+  padding: 0.1875rem;
 `;
