@@ -40,7 +40,7 @@ const Wrapper = styled.div`
   padding: 0 0.5rem 0 1.25rem;
   display: flex;
   flex-direction: column;
-  height: 5.625rem;
+  height: 6.875rem;
   &:hover {
     background-color: ${({ theme }) => theme.colors.background};
     cursor: pointer;
@@ -48,18 +48,27 @@ const Wrapper = styled.div`
 `;
 
 const Title = styled.div`
+  height: 38px;
   font-size: large;
   font-weight: bold;
   padding-top: 0.625rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `;
 
 const Content = styled.div`
+  height: 36px;
   font-size: medium;
   padding-top: 0.3125rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `;
 
 const Reaction = styled.div`
   padding-top: 0.625rem;
+  color: ${({ theme }) => theme.colors.lightGray};
   margin-left: auto;
   display: flex;
   align-items: center;

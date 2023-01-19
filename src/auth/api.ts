@@ -1,14 +1,15 @@
 import axios from 'axios';
+import { END_POINT } from '../api/apiAddress';
 
 export const processLogin = async (email: string, password: string) => {
-  return await axios.post('http://kdt.frontend.3rd.programmers.co.kr:5006/login', {
+  return await axios.post(`${END_POINT}/login`, {
     email,
     password,
   });
 };
 
 export const processSignUp = async (email: string, fullName: string, password: string) => {
-  return await axios.post('http://kdt.frontend.3rd.programmers.co.kr:5006/signup', {
+  return await axios.post(`${END_POINT}/signup`, {
     email,
     fullName,
     password,

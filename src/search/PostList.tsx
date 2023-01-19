@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { IsJsonString } from './isJsonString';
 import { useNavigate } from 'react-router-dom';
 import { useToken } from '../contexts/TokenProvider';
+import { Avatar } from '../common';
 
 interface Ilikes {
   _id: string;
@@ -37,7 +38,8 @@ interface IpostListProps {
 }
 
 const Span = styled.span`
-  font-weight: 900;
+  background-color: #a6ffc6;
+  border-radius: 5px;
 `;
 
 const PostList = ({
@@ -88,12 +90,40 @@ const PostList = ({
     return content;
   };
 
+  const checkWrittenPostTime = (createdAt: string) => {
+    const today = new Date();
+    const timeValue = new Date(createdAt);
+    const elapsedTime = Math.trunc((today.getTime() - timeValue.getTime()) / 1000);
+
+    const seconds = 1;
+    const minute = seconds * 60;
+    const hour = minute * 60;
+    const day = hour * 24;
+
+    let elapsedText = '';
+    if (elapsedTime < seconds) {
+      elapsedText = '방금 전';
+    } else if (elapsedTime < minute) {
+      elapsedText = elapsedTime + '초 전';
+    } else if (elapsedTime < hour) {
+      elapsedText = Math.trunc(elapsedTime / minute) + '분 전';
+    } else if (elapsedTime < day) {
+      elapsedText = Math.trunc(elapsedTime / hour) + '시간 전';
+    } else if (elapsedTime < day * 15) {
+      elapsedText = Math.trunc(elapsedTime / day) + '일 전';
+    } else {
+      elapsedText = createdAt.slice(0, 10);
+    }
+
+    return elapsedText;
+  };
+
   const tokenObject = useToken();
   const token = tokenObject?.token;
 
   return (
     <WholeWrapper>
-      <div className='postListTitle'>#{selectPostsChannelTitle(currentChannelId)}</div>
+      <div className='postListTitle'>⚪{selectPostsChannelTitle(currentChannelId)}</div>
       <PostListWrapper>
         {filteredPostsInfo.map((postInfo) => {
           const { title, _id, likes, createdAt, comments, channel } = postInfo;
@@ -114,11 +144,7 @@ const PostList = ({
               }}
             >
               <PostTopWrapper>
-                {image === undefined ? (
-                  <ProfileImg src='https://ifh.cc/g/35RDD6.png' alt='기본 프로필 이미지' />
-                ) : (
-                  <ProfileImg src={image} alt='프로필 이미지' />
-                )}
+                <Avatar src={image} width={60} height={60} />
                 <div className='postTitleContentContainer'>
                   <div className='postTitleDotContainer'>
                     <div className='postTitle'>
@@ -157,7 +183,7 @@ const PostList = ({
                   />
                   <div className='commentsNumber'>{comments.length}</div>
                 </div>
-                <div className='createdAt'>{createdAt.slice(0, 10)}</div>
+                <div className='createdAt'>{checkWrittenPostTime(createdAt)}</div>
               </PostBottomWrapper>
             </PostWrapper>
           );
@@ -174,20 +200,21 @@ const WholeWrapper = styled.div`
   margin-right: 2.5rem;
 
   .postListTitle {
-    width: 45.3125rem;
+    width: 725px;
     height: 3.125rem;
     padding: 0.9375rem 0 0 1.25rem;
-    margin: 0 0 0.1875rem 0rem;
-    font-size: 1.25rem;
-    box-shadow: 0 0.0625rem 0.0938rem rgba(0, 0, 0, 0.6);
-    border-radius: 0.1875rem;
-    background-color: #52d2a4;
+    /* margin-bottom: -5px; */
+    font-size: ${({ theme }) => theme.fontSize.larger};
+    border-top-left-radius: 0.3125rem;
+    border-top-right-radius: 0.3125rem;
+    background-color: ${({ theme }) => theme.colors.primary};
+    font-weight: bold;
+    z-index: 10;
   }
 `;
 
 const PostListWrapper = styled.ul`
   padding: 0;
-  background-color: #fafafa;
   display: flex;
   flex-direction: column;
   margin-top: 0rem;
@@ -196,7 +223,7 @@ const PostListWrapper = styled.ul`
 const PostWrapper = styled.li`
   display: flex;
   flex-direction: column;
-  border-radius: 0.1875rem;
+  border-radius: 0.3125rem;
   padding: 1rem 1.25rem;
   gap: 0rem;
   cursor: pointer;
@@ -204,7 +231,17 @@ const PostWrapper = styled.li`
   height: 12.5rem;
   margin-bottom: 0.9375rem;
   background-color: white;
-  box-shadow: 0 0.0625rem 0.0938rem rgba(0, 0, 0, 0.6);
+  box-shadow: ${({ theme }) => theme.shadow.boxShadow};
+  &:hover {
+    .postTitle {
+      text-decoration: underline;
+    }
+  }
+  &:first-child {
+    border-radius: 0;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
 `;
 
 const PostTopWrapper = styled.div`
@@ -217,27 +254,21 @@ const PostTopWrapper = styled.div`
       display: flex;
 
       .postTitle {
-        margin: 0.625rem 0.625rem 0.625rem 1.875rem;
-        font-size: 1.125rem;
+        margin: 0.3125rem 0.625rem 0.625rem 1rem;
+        font-size: ${({ theme }) => theme.fontSize.large};
         font-weight: 500;
-        padding-left: 0.3125rem;
         width: 35.625rem;
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
-
-        &:hover {
-          text-decoration: underline;
-        }
       }
     }
   }
 
   .postContent {
-    margin: 0.5rem 0.5rem 0.5rem 1.375rem;
+    margin: 0.5rem 0.5rem 0.5rem 1rem;
     font-size: 0.9375rem;
-    color: gray;
-    padding-left: 0.8125rem;
+    color: ${({ theme }) => theme.colors.gray};
     width: 36.25rem;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -249,28 +280,30 @@ const PostMiddleWrapper = styled.div`
   width: 100%;
   height: 4.375rem;
   margin-bottom: 0.625rem;
-  border-bottom: 0.0625rem solid #dce1e8;
+  border-bottom: 0.0625rem solid ${({ theme }) => theme.colors.contentLine};
   font-size: 0.9375rem;
 
   .postAuthor {
     display: flex;
     justify-content: center;
+    white-space: nowrap;
     font-weight: 500;
     margin-bottom: 1.25rem;
-    width: 5rem;
-    white-space: nowrap;
+    height: 1.125rem;
+    width: 3.75rem;
+    max-width: 97px;
+    font-size: 14px;
   }
 
   .includedChannel {
     display: flex;
     justify-content: center;
-    width: 5rem;
+    width: 3.75rem;
     margin: 0.625rem 0 1.5625rem 0rem;
-    color: #939393;
     font-size: 0.75rem;
     line-height: 1.1875rem;
     font-weight: 900;
-    padding: 0.25rem 0.5rem;
+    padding: 0.25rem 0.375rem;
     border-radius: 0.375rem;
     color: rgb(48, 176, 153);
     background: rgb(245, 245, 245);
@@ -298,24 +331,17 @@ const PostBottomWrapper = styled.div`
     .likesNumber {
       width: 1.25rem;
       margin-left: 0.125rem;
-      color: #939393;
+      color: ${({ theme }) => theme.colors.lightGray};
     }
     .commentsNumber {
       width: 1.25rem;
       margin-left: 0.125rem;
-      color: #939393;
+      color: ${({ theme }) => theme.colors.lightGray};
     }
   }
 
   .createdAt {
     align-self: flex-end;
-    color: #939393;
+    color: ${({ theme }) => theme.colors.lightGray};
   }
-`;
-
-const ProfileImg = styled.img`
-  border-radius: 50%;
-  margin-left: 0.625rem;
-  width: 3.75rem;
-  height: 3.75rem;
 `;

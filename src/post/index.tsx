@@ -5,7 +5,6 @@ function Post() {
     <>
       <ErrorBoundary>
         <Search />
-        <h1>언성히어로 최고🤗</h1>
       </ErrorBoundary>
     </>
   );

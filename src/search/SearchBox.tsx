@@ -1,21 +1,13 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
-
+import { AiOutlineDown } from 'react-icons/ai';
 interface IsearchBoxProps {
   setSelectedSearchOption: (value: string) => void;
   setInputSearchValue: (value: string) => void;
-  // getPostsList: () => void;
-  // getEntirePostsList: () => void;
   currentChannelId: string | undefined;
 }
 
-const SearchBox = ({
-  setSelectedSearchOption,
-  setInputSearchValue,
-  // getPostsList,
-  // getEntirePostsList,
-  currentChannelId,
-}: IsearchBoxProps) => {
+const SearchBox = ({ setSelectedSearchOption, setInputSearchValue, currentChannelId }: IsearchBoxProps) => {
   const [inputValue, setInputValue] = useState('');
   const [selectedOption, setSelectedOption] = useState('제목');
   const inputRef = useRef<HTMLInputElement>(null);
@@ -38,11 +30,6 @@ const SearchBox = ({
       e.preventDefault();
       setSelectedSearchOption(selectedOption);
       setInputSearchValue(inputValue);
-      // if (currentChannelId !== undefined) {
-      //   getPostsList();
-      // } else if (currentChannelId === undefined) {
-      //   getEntirePostsList();
-      // }
     },
     [inputValue, selectedOption, currentChannelId]
   );
@@ -76,38 +63,41 @@ const SearchBoxForm = styled.form`
   display: flex;
   justify-content: center;
   width: 45.3125rem;
-  margin: 2.5rem 0 3.75rem 0rem;
+  margin: 2rem 0;
 `;
 
 const SearchBoxSelect = styled.select`
-  width: 7.5rem;
-  padding: 0.8em 0.5em;
+  cursor: pointer;
+  width: 8rem;
+  padding: 0.625rem;
   font-family: inherit;
+  border-radius: 10%;
   background: url(https://farm1.staticflickr.com/379/19928272501_4ef877c265_t.jpg) no-repeat 95% 50%; /* 네이티브 화살표 대체 */
-  border: 0.0625rem solid #999;
-  color: gray;
+  border: 0.0625rem solid ${({ theme }) => theme.colors.contentLine};
+  color: ${({ theme }) => theme.colors.lightGray};
   border-radius: 0rem;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  background-color: white;
-  box-shadow: 0 0.0313rem 0.0313rem rgba(0, 0, 0, 0.6);
-
+  background-color: ${({ theme }) => theme.colors.white};
+  box-shadow: 0px 2px 3px ${({ theme }) => theme.colors.shadow};
+  margin-right: 1rem;
+  border-radius: 0.3125rem;
   &::-ms-expand {
     display: none;
   }
 `;
 
 const SearchBoxInput = styled.input`
-  width: 30rem;
+  width: 37rem;
   font-size: 1rem;
   padding-left: 0.3125rem;
-  border: 0.0625rem solid #999;
-  border-left: none;
+  border: 0.0625rem solid ${({ theme }) => theme.colors.contentLine};
   border-right: none;
-  background-color: white;
-  box-shadow: 0 0.0313rem 0.0313rem rgba(0, 0, 0, 0.6);
-
+  background-color: ${({ theme }) => theme.colors.white};
+  box-shadow: 0px 2px 3px ${({ theme }) => theme.colors.shadow};
+  border-top-left-radius: 0.3125rem;
+  border-bottom-left-radius: 0.3125rem;
   &::placeholder {
     font-size: 1rem;
   }
@@ -121,11 +111,12 @@ const SearchBoxButton = styled.button`
   padding: 0;
   overflow: visible;
   cursor: pointer;
-  border: 0.0625rem solid #999;
+  border: 0.0625rem solid ${({ theme }) => theme.colors.contentLine};
   border-left: none;
-  box-shadow: 0 0.0313rem 0.0313rem rgba(0, 0, 0, 0.6);
-  background-color: white;
-
+  box-shadow: 0px 2px 3px ${({ theme }) => theme.colors.shadow};
+  background-color: ${({ theme }) => theme.colors.white};
+  border-top-right-radius: 0.3125rem;
+  border-bottom-right-radius: 0.3125rem;
   img {
     width: 1.875rem;
     height: 1.875rem;
@@ -133,6 +124,6 @@ const SearchBoxButton = styled.button`
   }
 
   &:hover {
-    background-color: #d3d3d3;
+    background-color: ${({ theme }) => theme.colors.grayHover};
   }
 `;

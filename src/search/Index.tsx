@@ -7,8 +7,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Loading from '../api/Loading';
 import { useQuery } from 'react-query';
-
-const API_END_POINT = 'https://kdt.frontend.3rd.programmers.co.kr:5006';
+import { END_POINT } from '../api/apiAddress';
 
 const Search = () => {
   const [selectedSearchOption, setSelectedSearchOption] = useState('');
@@ -17,13 +16,14 @@ const Search = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { channelId } = useParams();
 
+  // 캐싱 안되게끔.
   const { data: totalPostData, isLoading: totalPostDataLoading } = useQuery('totalPostData', async () => {
-    return axios.get(`${API_END_POINT}/posts`).then(({ data }) => data);
+    return axios.get(`${END_POINT}/posts`).then(({ data }) => data);
   });
 
   const getPostsList = async () => {
     setIsLoading(true);
-    axios.get(`${API_END_POINT}/posts/channel/${channelId}`).then((response) => {
+    axios.get(`${END_POINT}/posts/channel/${channelId}`).then((response) => {
       const { data } = response;
       setSpecificPostData(data);
       setIsLoading(false);

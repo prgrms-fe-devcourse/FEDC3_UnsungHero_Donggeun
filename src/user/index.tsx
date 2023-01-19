@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { IPost } from '../types/post';
@@ -19,9 +19,9 @@ const LIKE_IMG_URL = 'https://ifh.cc/g/vmscWK.png';
 const User = () => {
   const { id: currentPageId } = useParams();
   const userIdContext = useUserId();
+  const userIdRef = useRef(currentPageId);
   const myUserId = userIdContext?.userId;
   const navigate = useNavigate();
-
   const [userInfo, setUserInfo] = useState<IUserInfo>({
     fullName: '',
     posts: [],
@@ -44,7 +44,9 @@ const User = () => {
   }, [userData]);
 
   useEffect(() => {
-    refetchUserData();
+    if (userIdRef.current !== currentPageId) {
+      refetchUserData();
+    }
   }, [currentPageId]);
 
   const handlemoveEditPage = () => {
@@ -73,8 +75,8 @@ const User = () => {
             text={'내정보 수정'}
             onClick={handlemoveEditPage}
             color='white'
-            width={100}
-            height={30}
+            width={6.25}
+            height={1.875}
             style={{ marginLeft: 'auto' }}
           />
         ) : (
@@ -105,13 +107,12 @@ const CoverImg = styled.img`
 `;
 
 const Wrapper = styled.div`
+  margin-top: 1.875rem;
   background-color: ${({ theme }) => theme.colors.white};
   max-width: 45.313rem;
-  border: 1px solid black;
   height: 100%;
   min-height: 640px;
-  border: 1px solid ${({ theme }) => theme.colors.boxLine};
-  box-shadow: 0px 4px 4px ${({ theme }) => theme.colors.shadow};
+  box-shadow: ${({ theme }) => theme.shadow.boxShadow};
   border-radius: 5px;
   position: relative;
   z-index: 5;

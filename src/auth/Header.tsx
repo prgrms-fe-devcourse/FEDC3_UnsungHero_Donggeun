@@ -6,7 +6,9 @@ const Header = () => {
   return (
     <Wrapper>
       <HeaderWrapper>
-        <div onClick={() => navigate('/')}>언성 히어로(로고)</div>
+        <div onClick={() => navigate('/')}>
+          <img height={64} src={process.env.PUBLIC_URL + '/logo.png'} alt='로고' />
+        </div>
       </HeaderWrapper>
     </Wrapper>
   );
@@ -19,15 +21,17 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
-  height: 64px;
+  height: 4.75rem;
   position: fixed;
+  z-index: 1000;
 `;
 
 const HeaderWrapper = styled.header`
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 64px;
+  height: 4.75rem;
   width: 100%;
   max-width: 1000px;
   position: fixed;

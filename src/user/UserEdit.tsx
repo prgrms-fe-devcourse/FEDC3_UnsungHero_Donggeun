@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -7,8 +6,9 @@ import useMutation from '../api/useMutation';
 import styled from 'styled-components';
 import { Button } from '../common';
 import useFollow from '../follow/useFollow';
-
-const API_URL = 'https://kdt.frontend.3rd.programmers.co.kr:5006';
+import { END_POINT } from '../api/apiAddress';
+import useOverlapConfirm from '../auth/useOverlapConfirm';
+import Loading from '../api/Loading';
 
 interface IFormValue {
   fullName: string;
@@ -20,17 +20,25 @@ const UserEdit = () => {
   const { mutate } = useMutation();
   const [imgFiles, setimgFiles] = useState({});
   const navigate = useNavigate();
+  const { CheckOverlapName } = useOverlapConfirm();
+  const [isLoading, setIsLoading] = useState(false);
 
   const { currentData: myData } = useFollow(id as string);
 
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, dirtyFields, isSubmitting },
   } = useForm<IFormValue>();
 
   const handleChangeUserInfo: SubmitHandler<IFormValue> = async ({ fullName, password }) => {
-    if (dirtyFields.fullName) await getChangeUserName(fullName);
+    setIsLoading(true);
+
+    if (dirtyFields.fullName) {
+      if (!CheckUserName(fullName)) return;
+      await getChangeUserName(fullName);
+    }
     if (dirtyFields.password) await getChangePassword(password);
 
     for (const formdata of Object.values(imgFiles)) {
@@ -39,12 +47,22 @@ const UserEdit = () => {
       }
     }
 
+    setIsLoading(false);
     navigate(`/user/${id}`, { replace: true });
+  };
+
+  const CheckUserName = (fullName: string) => {
+    if (CheckOverlapName(fullName)) {
+      setIsLoading(false);
+      setError('fullName', { message: '이미 사용중인 nickname 입니다.' }, { shouldFocus: true });
+      return false;
+    }
+    return true;
   };
 
   const getChangeImg = async (formdata: FormData) => {
     return await mutate({
-      url: `${API_URL}/users/upload-photo`,
+      url: `${END_POINT}/users/upload-photo`,
       method: 'post',
       data: formdata,
     });
@@ -52,7 +70,7 @@ const UserEdit = () => {
 
   const getChangePassword = async (password: string) => {
     return await mutate({
-      url: `${API_URL}/settings/update-password`,
+      url: `${END_POINT}/settings/update-password`,
       method: 'put',
       data: {
         password,
@@ -62,7 +80,7 @@ const UserEdit = () => {
 
   const getChangeUserName = async (fullName: string) => {
     return await mutate({
-      url: `${API_URL}/settings/update-user`,
+      url: `${END_POINT}/settings/update-user`,
       method: 'put',
       data: {
         fullName,
@@ -72,55 +90,63 @@ const UserEdit = () => {
   };
 
   return (
-    <Wrapper>
-      <UserEditImg id={id} setimgFiles={setimgFiles} />
-      <Form onSubmit={handleSubmit(handleChangeUserInfo)}>
-        <Label>유저네임</Label>
-        <Input
-          type='text'
-          {...register('fullName', {
-            minLength: {
-              value: 2,
-              message: '2자리 이상의 이름을 입력해주세요',
-            },
-          })}
-          defaultValue={myData?.fullName}
-        />
-
-        <Label>비밀번호</Label>
-        <PasswordInput
-          type='password'
-          {...register('password', {
-            minLength: {
-              value: 7,
-              message: '7자리 이상의 비밀번호를 입력해주세요.',
-            },
-          })}
-        />
-        <Error>{errors?.password?.message}</Error>
-        <Button
-          text={'저장'}
-          color={'default'}
-          width={10}
-          height={3}
-          disabled={isSubmitting}
-          style={{ position: 'absolute', top: '29%', right: '2%' }}
-        />
-      </Form>
-    </Wrapper>
+    <>
+      {isLoading && <Loading />}
+      <Wrapper>
+        <UserEditImg id={id} setimgFiles={setimgFiles} />
+        <Form onSubmit={handleSubmit(handleChangeUserInfo)}>
+          <UserName>
+            <Label>유저네임</Label>
+            <Input
+              type='text'
+              {...register('fullName', {
+                minLength: {
+                  value: 2,
+                  message: '2자리 이상의 이름을 입력해주세요',
+                },
+                maxLength: {
+                  value: 10,
+                  message: '최대 10글자까지 가능합니다.',
+                },
+              })}
+              defaultValue={myData?.fullName}
+            />
+            <Error>{errors?.fullName?.message}</Error>
+          </UserName>
+          <Label>비밀번호</Label>
+          <Input
+            type='password'
+            {...register('password', {
+              minLength: {
+                value: 7,
+                message: '7자리 이상의 비밀번호를 입력해주세요.',
+              },
+            })}
+          />
+          <Error>{errors?.password?.message}</Error>
+          <Button
+            text={'저장'}
+            color={'default'}
+            width={6.25}
+            height={1.875}
+            disabled={isSubmitting}
+            style={{ position: 'absolute', top: '29%', right: '2%' }}
+          />
+        </Form>
+      </Wrapper>
+    </>
   );
 };
 
 export default UserEdit;
 
 const Wrapper = styled.div`
+  margin-top: 1.875rem;
   background-color: ${({ theme }) => theme.colors.white};
   max-width: 45.313rem;
-  border: 1px solid black;
   height: 100%;
   min-height: 40rem;
-  border: 1px solid ${({ theme }) => theme.colors.boxLine};
-  box-shadow: 0px 4px 4px ${({ theme }) => theme.colors.shadow};
+  box-shadow: ${({ theme }) => theme.shadow.boxShadow};
   border-radius: 5px;
   position: relative;
   z-index: 5;
@@ -135,23 +161,23 @@ const Form = styled.form`
   height: 23.125rem;
 `;
 
+const UserName = styled.div`
+  height: 150px;
+`;
+
 const Input = styled.input`
   display: block;
   width: 24.375rem;
   height: 2.5rem;
-  margin-bottom: 5rem;
+  margin-top: 0.625rem;
+  margin-bottom: 0.625rem;
   border-radius: 8px;
   border: 1px solid ${({ theme }) => theme.colors.contentLine};
-`;
-
-const PasswordInput = styled(Input)`
-  margin-bottom: 10px;
 `;
 
 const Label = styled.label`
   font-weight: bold;
   font-size: ${({ theme }) => theme.fontSize.large};
-  padding-bottom: 0.625rem;
   width: 24.375rem;
 `;
 

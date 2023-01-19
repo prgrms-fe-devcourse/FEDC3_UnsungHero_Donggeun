@@ -1,14 +1,12 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
-import useAxios from '../api/useAxios';
 import useMutation from '../api/useMutation';
 import { Button } from '../common';
 import { useToken, useUserId } from '../contexts/TokenProvider';
 import { IFollow } from '../types/follow';
 import { IUser } from '../types/user';
-
-const END_POINT = 'https://kdt.frontend.3rd.programmers.co.kr:5006';
+import { END_POINT } from '../api/apiAddress';
 
 interface IFollowList {
   followers: string[];
@@ -65,7 +63,7 @@ const useFollow = (currentPageId: string) => {
     };
 
     mutate({
-      url: `https://kdt.frontend.3rd.programmers.co.kr:5006/notifications/create`,
+      url: `${END_POINT}/notifications/create`,
       method: 'post',
       data: {
         ...body,
@@ -121,8 +119,8 @@ const useFollow = (currentPageId: string) => {
         text={'언팔로우'}
         color={'white'}
         onClick={(e) => handleClickUnFollow(e, id)}
-        width={100}
-        height={30}
+        width={6.25}
+        height={1.875}
         style={{ marginLeft: 'auto' }}
       />
     ) : (
@@ -130,8 +128,8 @@ const useFollow = (currentPageId: string) => {
         text={'팔로우'}
         color={'default'}
         onClick={(e) => handleClickFollow(e, id)}
-        width={100}
-        height={30}
+        width={6.25}
+        height={1.875}
         style={{ marginLeft: 'auto' }}
       />
     );

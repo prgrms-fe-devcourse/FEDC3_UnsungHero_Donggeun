@@ -1,36 +1,36 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import ErrorBoundary from '../api/ErrorBoundary';
 import Comment from '../comment';
 import Like from '../like';
-import useAxios from '../api/useAxios';
 import { IPost } from '../types/post';
-import { useToken, useUserId } from '../contexts/TokenProvider';
+import { useUserId } from '../contexts/TokenProvider';
 import { IComment } from '../types/comment';
 import { ILike } from '../types/like';
 import { useQuery } from 'react-query';
 import axios from 'axios';
-
-const END_POINT = 'https://kdt.frontend.3rd.programmers.co.kr:5006';
-const PROFIE_IMG_URL = 'https://ifh.cc/g/35RDD6.png';
+import { Avatar, Button } from '../common';
+import { END_POINT } from '../api/apiAddress';
 
 interface Iauthor {
   fullName: string;
-  image: string;
   createAt: string;
   _id: string;
 }
 
+export interface ITextarea {
+  scrollHeight: any;
+}
+
 const DetailPost = () => {
   const navigate = useNavigate();
-
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [image, setImage] = useState('');
   const [author, setAuthor] = useState<Iauthor>({
     fullName: '',
-    image: PROFIE_IMG_URL,
     createAt: '',
     _id: '',
   });
@@ -39,13 +39,10 @@ const DetailPost = () => {
 
   const { postId } = useParams();
 
-  const tokenObject = useToken();
-  const token = tokenObject?.token;
-
   const userObject = useUserId();
   const userId = userObject?.userId;
 
-  const { data: postData, refetch: fetchPostData } = useQuery<IPost>(
+  const { data: postData, refetch: fetchData } = useQuery<IPost>(
     'postData',
     async () => {
       return axios.get(`${END_POINT}/posts/${postId}`).then(({ data }) => data);
@@ -64,13 +61,11 @@ const DetailPost = () => {
 
       const author = postData?.author;
       const fullName = author.fullName;
-      const image = author.image;
       const _id = author._id;
 
       const createAt = postData.createdAt;
       setAuthor({
         fullName: fullName,
-        image: image ?? PROFIE_IMG_URL,
         createAt: createAt,
         _id: _id,
       });
@@ -86,42 +81,57 @@ const DetailPost = () => {
     navigate(`/post/channelId/updatePost/${postId}`);
   };
 
-  const identification = author._id === userId ? false : true;
+  const identification = author._id === userId ? true : false;
 
   return (
     <ErrorBoundary>
       <Container>
-        <Title>{title}</Title>
-        <CreateAt>작성일: {author.createAt.slice(0, 10)}</CreateAt>
-        <Div />
-        <Author onClick={() => navigate(`/user/${author._id}`)}>
-          <ProfileImg src={author.image} />
-          <UserName>{author.fullName}</UserName>
-        </Author>
-        <Div />
-        {image && <ContentImage src={image} alt='이미지!' />}
-        <Textarea value={content} disabled rows={10} cols={100} />
-        <Like
-          likeList={likes}
-          userId={userId || ''}
-          postuserId={postData?.author._id || ''}
-          postId={postId || ''}
-          fetchData={fetchPostData}
-        />
-        <Div />
-        {token ? (
-          <Button onClick={handleOnClickToUpdatePage} disabled={identification}>
-            내용 수정
-          </Button>
-        ) : null}
-        <Div />
-        <Comment
-          commentList={comments}
-          userId={postData?.author._id || ''}
-          postId={postId || ''}
-          fetchData={fetchPostData}
-        />
+        <Post>
+          <TitleWrapper>
+            <Title>
+              <div>{title}</div>
+              <CreateAt>작성일: {author.createAt.slice(0, 10)}</CreateAt>
+            </Title>
+            {identification ? (
+              <Button
+                text='내용 수정'
+                color='default'
+                onClick={handleOnClickToUpdatePage}
+                width={6.25}
+                height={1.875}
+              />
+            ) : null}
+          </TitleWrapper>
+          <Author onClick={() => navigate(`/user/${author._id}`)}>
+            <Avatar src={postData?.author.image} width={60} height={60} />
+            <UserName>{author.fullName}</UserName>
+          </Author>
+          <Content>
+            <ImageWarpper>{image && <ContentImage src={image} alt='이미지!' />}</ImageWarpper>
+            <Textarea
+              value={content}
+              disabled
+              rows={10}
+              cols={100}
+              ref={textareaRef}
+              scrollHeight={textareaRef.current?.scrollHeight}
+            />
+          </Content>
+          <Like
+            likeList={likes}
+            userId={userId || ''}
+            postuserId={postData?.author._id || ''}
+            postId={postId || ''}
+            fetchData={fetchData}
+          />
+        </Post>
       </Container>
+      <Comment
+        commentList={comments}
+        userId={postData?.author._id || ''}
+        postId={postId || ''}
+        fetchData={fetchData}
+      />
     </ErrorBoundary>
   );
 };
@@ -129,74 +139,85 @@ const DetailPost = () => {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  border: solid 1px #c4c4c4;
+  margin-top: 1.875rem;
+  background-color: ${({ theme }) => theme.colors.white};
+  border-radius: 0.3125rem;
   padding: 1rem;
-  width: 725px;
-  box-shadow: 12px 12px 2px 1px rgba(216, 216, 235, 0.2);
+  margin-bottom: 1rem;
+  width: 45.3125rem;
+  min-height: 40rem;
+  box-shadow: ${({ theme }) => theme.shadow.boxShadow};
 `;
 
-const Title = styled.h1`
-  font-size: 20px;
+const Post = styled.div`
+  padding-bottom: 1.625rem;
 `;
 
-const CreateAt = styled.p``;
+const TitleWrapper = styled.div`
+  display: flex;
+  height: 6.25rem;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.contentLine};
+`;
+
+const Title = styled.div`
+  font-size: 1.375rem;
+  > div {
+    font-weight: bold;
+    word-wrap: break-word;
+  }
+`;
+
+const CreateAt = styled.p`
+  color: ${({ theme }) => theme.colors.lightGray};
+  font-size: ${({ theme }) => theme.fontSize.medium};
+  margin-top: 0.5rem;
+`;
 
 const UserName = styled.p`
-  font-size: 14px;
+  font-size: ${({ theme }) => theme.fontSize.small};
+  font-weight: bold;
   margin-left: 0.5rem;
 `;
 
 const Author = styled.div`
+  cursor: pointer;
   display: flex;
   align-items: center;
-`;
-
-const ProfileImg = styled.img`
-  border-radius: 50%;
-  width: 50px;
+  padding: 1rem 0;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.contentLine};
 `;
 
 const ContentImage = styled.img`
-  margin-bottom: 1rem;
+  max-height: 31.25rem;
+  max-width: 43.3125rem;
+  margin: 1rem 0;
 `;
 
-const Div = styled.div`
-  width: 98%;
-  border: solid #c4c4c4 1px;
-  margin: 1rem 0;
+const ImageWarpper = styled.div`
+  display: flex;
+  align-items: center;
   justify-content: center;
 `;
 
-const Textarea = styled.textarea`
+const Content = styled.div`
+  margin-top: 1rem;
+  min-height: 32.5rem;
+`;
+
+const Textarea = styled.textarea<ITextarea>`
   resize: none;
   border: none;
-  font-size: 16px;
+  width: 100%;
+  height: auto;
+  font-size: ${({ theme }) => theme.fontSize.medium};
+  background-color: ${({ theme }) => theme.colors.white};
   &:focus {
     background-color: #f0f0f0;
     outline: none;
   }
-`;
-
-const Button = styled.button<{ backgroundColor?: string }>`
-  padding: 0.5rem;
-  align-self: end;
-  border: solid #52d2a4;
-  border-radius: 5%;
-  background-color: #ffffff;
-  color: #000000;
-  cursor: pointer;
-  &:hover:enabled {
-    color: #ffffff;
-    background-color: #48b790;
-  }
-  &:disabled {
-    background-color: gray;
-    border: none;
-    cursor: not-allowed;
-    ::after {
-      content: '은작성자만 가능합니다';
-    }
-  }
+  height: ${({ scrollHeight }) => `${scrollHeight}px`};
 `;
 
 export default DetailPost;

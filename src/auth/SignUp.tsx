@@ -1,27 +1,20 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
-import axios from 'axios';
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { IAuth } from '../types/auth';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { AiOutlineMail, AiOutlineUser, AiOutlineLock, AiOutlineCheckCircle } from 'react-icons/ai';
 import Header from './Header';
+import { Button } from '../common';
 import { IToken } from '../types/token';
 import { useToken } from '../contexts/TokenProvider';
-import useAxios from '../api/useAxios';
 import { processSignUp } from './api';
-import { END_POINT } from '../api/apiAddress';
+import useOverlapConfirm from './useOverlapConfirm';
 
 const SignUp = () => {
-  const [allFullNameList, setAllFullNameList] = useState<string[] | undefined>([]);
-  const [allEmailList, setAllEmailList] = useState<string[] | undefined>([]);
   const tokenContextObj: IToken | null = useToken();
-  const { data: userData } = useAxios<IAuth[]>({
-    url: `${END_POINT}/users/get-users`,
-    method: 'get',
-  });
-
+  const { CheckOverlapEmail, CheckOverlapName } = useOverlapConfirm();
   const {
     register,
     handleSubmit,
@@ -36,12 +29,12 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   const onSubmitHandler: SubmitHandler<IAuth> = async ({ email, fullName, password }) => {
-    if (allFullNameList?.indexOf(fullName) !== -1) {
+    if (CheckOverlapName(fullName)) {
       setError('fullName', { message: '이미 사용중인 nickname 입니다.' }, { shouldFocus: true });
       return;
     }
 
-    if (allEmailList?.indexOf(email) !== -1) {
+    if (CheckOverlapEmail(email)) {
       setError('email', { message: '이미 사용중인 email 입니다.' }, { shouldFocus: true });
       return;
     }
@@ -54,20 +47,9 @@ const SignUp = () => {
     }
   };
 
-  const getAllUserData = async () => {
-    const allFullNameData = userData?.map((data: IAuth) => data.fullName);
-    const allEmailData = userData?.map((data: IAuth) => data.email);
-    setAllFullNameList(allFullNameData);
-    setAllEmailList(allEmailData);
-  };
-
   useEffect(() => {
     tokenContextObj?.token && navigate('/');
   }, []);
-
-  useEffect(() => {
-    getAllUserData();
-  }, [userData]);
 
   return (
     <>
@@ -145,10 +127,7 @@ const SignUp = () => {
             <AiOutlineCheckCircle className='logo' />
             <ErrorText>{errors?.passwordConfrim?.message}</ErrorText>
           </InputContainer>
-
-          <SignUpButton type='submit' disabled={isSubmitting}>
-            가입하기
-          </SignUpButton>
+          <Button text='가입하기' color='default' height={2.5} disabled={isSubmitting} />
           <IsUserLink to='/login'>이미 계정이 있으신가요?</IsUserLink>
         </SignUpContainer>
       </form>
@@ -165,6 +144,7 @@ const SignUpHeader = styled.h1`
 
 const SignUpContainer = styled.div`
   margin: 0 auto;
+  min-width: 420px;
   width: 30vw;
   display: flex;
   flex-direction: column;
@@ -172,12 +152,12 @@ const SignUpContainer = styled.div`
   padding: 1.563rem 2.813rem;
   border-radius: 5px;
   border: none;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2), -1px -1px 5px rgba(0, 0, 0, 0.2);
-  background-color: white;
+  box-shadow: ${({ theme }) => theme.shadow.boxShadow};
+  background-color: ${({ theme }) => theme.colors.white};
 `;
 
 const FormTitle = styled.div`
-  font-size: 1.125em;
+  font-size: ${({ theme }) => theme.fontSize.large};
   font-weight: 700;
   margin: 0.625rem auto 2.188rem auto;
 `;
@@ -185,7 +165,7 @@ const FormTitle = styled.div`
 const Label = styled.label`
   margin-bottom: 0.313rem;
   font-weight: 700;
-  font-size: 0.875rem;
+  font-size: ${({ theme }) => theme.fontSize.small};
 `;
 
 const InputContainer = styled.div`
@@ -213,28 +193,11 @@ const Input = styled.input`
 
 const ErrorText = styled.span`
   font-size: 0.75rem;
-  color: #ff1f1f;
-`;
-
-const SignUpButton = styled.button`
-  background-color: ${({ theme }) => theme.colors.primary};
-  color: #e6e6e6;
-  border-radius: 0.313rem;
-  border: none;
-  height: 2.5rem;
-  margin-top: 1.25rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.5s ease;
-
-  &:hover {
-    background-color: #e6e6e6;
-    color: #52d2a4;
-  }
+  color: ${({ theme }) => theme.colors.alert};
 `;
 
 const IsUserLink = styled(Link)`
-  font-size: 0.75rem;
-  color: blue;
+  font-size: ${({ theme }) => theme.fontSize.smaller};
+  color: ${({ theme }) => theme.colors.link};
   margin: 0.625rem 0;
 `;

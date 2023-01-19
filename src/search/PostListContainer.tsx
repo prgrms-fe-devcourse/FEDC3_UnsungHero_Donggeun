@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { IsJsonString } from './isJsonString';
 import styled from 'styled-components';
 import { Pagination } from '../common';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 interface Ilikes {
   _id: string;
@@ -132,7 +132,6 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
   width: 45.3125rem;
-  margin: 0 0 0.625rem 0rem;
 
   .recentLikesButtonContainer {
     display: flex;
@@ -140,8 +139,8 @@ const ButtonContainer = styled.div`
 
     button {
       width: 5rem;
-      margin: 0.625rem 0 1.5625rem 0rem;
-      font-size: 1rem;
+      margin: 0.625rem 0.125rem 1rem 0rem;
+      font-size: ${({ theme }) => theme.fontSize.medium};
       line-height: 1.1875rem;
       font-weight: 900;
       padding: 0.25rem 0.5rem;
@@ -150,8 +149,7 @@ const ButtonContainer = styled.div`
       color: rgb(48, 176, 153);
       background: rgb(245, 245, 245);
       cursor: pointer;
-      box-shadow: 0 1.4px 2px rgba(0, 0, 0, 0.6);
-
+      box-shadow: 0px 2px 1px ${({ theme }) => theme.colors.shadow};
       &:disabled {
         background: rgb(48, 176, 153);
         color: white;
@@ -159,10 +157,9 @@ const ButtonContainer = styled.div`
       }
     }
   }
-
   .writePostButton {
-    width: 6rem;
-    margin: 0.625rem 0 1.5625rem 0rem;
+    width: 6.625rem;
+    margin: 0.625rem 0 1rem 0rem;
     font-size: 1rem;
     line-height: 1.1875rem;
     font-weight: 900;
@@ -172,7 +169,7 @@ const ButtonContainer = styled.div`
     color: rgb(48, 176, 153);
     background: rgb(245, 245, 245);
     cursor: pointer;
-    box-shadow: 0 1.4px 2px rgba(0, 0, 0, 0.6);
+    box-shadow: 0px 2px 1px ${({ theme }) => theme.colors.shadow};
 
     &:hover {
       background: rgb(48, 176, 153);

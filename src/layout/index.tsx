@@ -20,9 +20,9 @@ const Layout = () => {
 export default Layout;
 
 const Main = styled.div`
-  margin-top: 92px;
-  margin-left: 275px;
-  width: 725px;
+  margin-top: 5.75rem;
+  margin-left: 17.1875rem;
+  width: 45.3125rem;
 `;
 
 const MainWrapper = styled.div`

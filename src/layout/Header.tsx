@@ -5,6 +5,8 @@ import { useUserId } from '../contexts/TokenProvider';
 import NotificationStatus from '../notification/NotificationStatus';
 import { IUserId } from '../types/useId';
 import { useToken } from '../contexts/TokenProvider';
+import { Button } from '../common';
+import { AiOutlineBell, AiOutlineUser } from 'react-icons/ai';
 
 const Header = () => {
   const tokenObject = useToken();
@@ -20,19 +22,43 @@ const Header = () => {
   return (
     <Wrapper>
       <HeaderWrapper>
-        <div onClick={() => navigate('/')}>언성 히어로(로고)</div>
+        <Logo
+          height={64}
+          src={process.env.PUBLIC_URL + '/logo.png'}
+          onClick={() => navigate('/')}
+          alt='로고'
+        />
         <ButtonWrapper>
           {userLogin ? (
             <>
-              <NotificationStatus />
-              <button onClick={() => handleMovePage('notifications')}>알림</button>
-              <button onClick={() => handleMovePage('user', id)}>사용자</button>
               <Logout />
+              <NotificationWarpper>
+                <NotificationStatus />
+                <NotificationButton onClick={() => handleMovePage('notifications')}>
+                  <AiOutlineBell size={30} />
+                </NotificationButton>
+              </NotificationWarpper>
+              <UserButton onClick={() => handleMovePage('user', id)}>
+                <AiOutlineUser size={30} />
+              </UserButton>
             </>
           ) : (
             <>
-              <button onClick={() => handleMovePage('signup')}>회원가입</button>
-              <button onClick={() => handleMovePage('login')}>로그인</button>
+              <Button
+                text='SignUp'
+                color='default'
+                onClick={() => handleMovePage('signup')}
+                width={6.25}
+                height={2}
+                style={{ border: `2px solid #ffffff`, marginRight: '0.625rem' }}
+              />
+              <Button
+                text='Login'
+                color='white'
+                onClick={() => handleMovePage('login')}
+                width={6.25}
+                height={2}
+              />
             </>
           )}
         </ButtonWrapper>
@@ -47,7 +73,7 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   width: 100%;
-  height: 64px;
+  height: 4.75rem;
   position: fixed;
   z-index: 1000;
 `;
@@ -56,10 +82,40 @@ const HeaderWrapper = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 64px;
+  height: 4.75rem;
   width: 100%;
-  max-width: 1000px;
+  max-width: 62.5rem;
   position: fixed;
 `;
 
-const ButtonWrapper = styled.div``;
+const ButtonWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const Logo = styled.img`
+  cursor: pointer;
+  height: 64px;
+  padding: 0.1875rem;
+`;
+
+const UserButton = styled.button`
+  cursor: pointer;
+  border-radius: 50%;
+  border: none;
+  padding: 6px;
+  width: 2.625rem;
+  height: 2.625rem;
+  background-color: ${({ theme }) => theme.colors.white};
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.grayHover};
+  }
+`;
+
+const NotificationButton = styled(UserButton)`
+  margin-right: 0.625rem;
+`;
+
+const NotificationWarpper = styled.div`
+  position: relative;
+`;
