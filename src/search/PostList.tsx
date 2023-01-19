@@ -258,6 +258,7 @@ const PostTopWrapper = styled.div`
         font-size: ${({ theme }) => theme.fontSize.large};
         font-weight: 500;
         width: 35.625rem;
+        height: 23px;
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
