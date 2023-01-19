@@ -95,19 +95,19 @@ const useFollow = (currentPageId: string) => {
           Authorization: `bearer ${tokenContext?.token}`,
         },
       })
-      .then(({ data }) => {
+      .then(async ({ data }) => {
         const target = data?.followers.find(({ follower }: IFollow) => follower === userIdContext?.userId);
-        mutate({
+        await mutate({
           url: `${END_POINT}/follow/delete`,
           method: 'delete',
           data: {
             id: target?._id,
           },
         });
-      });
 
-    await fetchCurrentData();
-    await fetchLoginUserData();
+        await fetchCurrentData();
+        await fetchLoginUserData();
+      });
   };
 
   const followButton = (id: string) => {
