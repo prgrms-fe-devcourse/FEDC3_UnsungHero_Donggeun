@@ -200,15 +200,16 @@ const WholeWrapper = styled.div`
   margin-right: 2.5rem;
 
   .postListTitle {
+    font-family: 'BMHANNAPro';
+    font-size: 24px;
+    font-weight: bold;
     width: 725px;
     height: 3.125rem;
     padding: 0.9375rem 0 0 1.25rem;
-    font-size: ${({ theme }) => theme.fontSize.larger};
     border-top-left-radius: 0.3125rem;
     border-top-right-radius: 0.3125rem;
     background-color: ${({ theme }) => theme.colors.primary};
     z-index: 10;
-    font-weight: bold;
   }
 `;
 
@@ -298,7 +299,7 @@ const PostMiddleWrapper = styled.div`
   .includedChannel {
     display: flex;
     justify-content: center;
-    width: 3.75rem;
+    width: 4.0625rem;
     margin: 0.625rem 0 1.5625rem 0rem;
     font-size: 0.75rem;
     line-height: 1.1875rem;
