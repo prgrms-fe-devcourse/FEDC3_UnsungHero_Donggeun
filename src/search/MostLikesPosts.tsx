@@ -40,6 +40,10 @@ const MostLikesPosts = ({ postsInfo, currentChannelId }: IMostLikesPostsProps) =
         return -1;
       } else if (a.likes.length < b.likes.length) {
         return 1;
+      } else if (a.comments.length > b.comments.length) {
+        return -1;
+      } else if (a.comments.length < b.comments.length) {
+        return 1;
       } else {
         return 0;
       }
