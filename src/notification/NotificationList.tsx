@@ -9,6 +9,7 @@ import { Pagination } from '../common';
 import styled from 'styled-components';
 import { IoMdNotificationsOutline } from 'react-icons/io';
 import { Button } from '../common';
+import { useNavigate } from 'react-router-dom';
 import { END_POINT } from '../api/apiAddress';
 
 const NotificationList = () => {
@@ -20,6 +21,8 @@ const NotificationList = () => {
 
   const tokenContextObj: IToken | null = useToken();
   const notificationStatusContextObj: INotificationStatus | null = useNotificationStatus();
+
+  const navigator = useNavigate();
 
   const confirmNotificationlist = async () => {
     if (!notificationStatusContextObj?.notificationStatus) return;
@@ -60,7 +63,8 @@ const NotificationList = () => {
   };
 
   useEffect(() => {
-    tokenContextObj?.token !== '' && fetchNotificationData();
+    !tokenContextObj?.token && navigator('/');
+    tokenContextObj?.token && fetchNotificationData();
   }, []);
 
   // by 민형, notificationList state가 수정되는 경우(token이 있는 경우)에만 fetch 되므로 따로 token check x_230112
@@ -108,7 +112,9 @@ const NotificationList = () => {
         />
       </NotificationConfirmContainer>
 
-      <Pagination total={notificationList?.length as number} limit={limit} page={page} setPage={setPage} />
+      <PaginationContainer>
+        <Pagination total={notificationList?.length as number} limit={limit} page={page} setPage={setPage} />
+      </PaginationContainer>
     </>
   );
 };
@@ -139,4 +145,8 @@ const NotificationListContainer = styled.div`
 const NotificationConfirmContainer = styled.div`
   display: flex;
   justify-content: space-around;
+`;
+
+const PaginationContainer = styled.div`
+  position: relative;
 `;
