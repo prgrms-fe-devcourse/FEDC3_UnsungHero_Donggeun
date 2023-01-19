@@ -4,6 +4,7 @@ import { IsJsonString } from './isJsonString';
 import styled from 'styled-components';
 import { Pagination } from '../common';
 import { useNavigate } from 'react-router-dom';
+import { IChannel } from '../types/channel';
 
 interface Ilikes {
   _id: string;
@@ -19,6 +20,7 @@ interface IpostsInfo {
   author: Iauthor;
   likes: Ilikes[];
   createdAt: string;
+  channel: IChannel;
 }
 
 interface IpostListContainerProps {
@@ -90,6 +92,8 @@ const PostListContainer = ({
     setCheckedSorting(!checkedSorting);
   };
 
+  const channelName = postsInfo[0]?.channel.name;
+
   return (
     <>
       <ButtonContainer>
@@ -112,6 +116,7 @@ const PostListContainer = ({
         selectedSearchOption={selectedSearchOption}
         inputSearchValue={inputSearchValue}
         currentChannelId={currentChannelId}
+        channelName={channelName}
       />
       <PaginationContainer>
         <Pagination

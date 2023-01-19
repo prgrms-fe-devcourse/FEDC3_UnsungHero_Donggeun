@@ -1,7 +1,9 @@
 import { IsJsonString } from './isJsonString';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useToken } from '../contexts/TokenProvider';
+import { IChannel } from '../types/channel';
+
 interface Ilikes {
   _id: string;
 }
@@ -23,6 +25,7 @@ interface IpostsInfo {
   likes: Ilikes[];
   createdAt: string;
   comments: IComment[];
+  channel: IChannel;
 }
 
 interface IMostLikesPostsProps {
@@ -30,7 +33,7 @@ interface IMostLikesPostsProps {
   currentChannelId: string | undefined;
 }
 
-const MostLikesPosts = ({ postsInfo, currentChannelId }: IMostLikesPostsProps) => {
+const MostLikesPosts = ({ postsInfo }: IMostLikesPostsProps) => {
   const navigatePost = useNavigate();
 
   const filterMostLikesPosts = () => {
@@ -56,27 +59,13 @@ const MostLikesPosts = ({ postsInfo, currentChannelId }: IMostLikesPostsProps) =
     return filteredMostLikesPosts;
   };
 
+  const { channelId } = useParams();
   const selectMostLikesPostsTitle = () => {
     let MostLikesPostsTitle = '';
-    switch (currentChannelId) {
-      case '63c775d2a989ba6d232518ce':
-        MostLikesPostsTitle = '바둑 베스트';
-        break;
-      case '63c775dba989ba6d232518d3':
-        MostLikesPostsTitle = '골프 베스트';
-        break;
-      case '63c775e0a989ba6d232518dc':
-        MostLikesPostsTitle = '낚시 베스트';
-        break;
-      case '63c775f3a989ba6d232518ef':
-        MostLikesPostsTitle = '육아 베스트';
-        break;
-      case '63c775fea989ba6d23251905':
-        MostLikesPostsTitle = '잡담 베스트';
-        break;
-      default:
-        MostLikesPostsTitle = '전체 베스트';
-    }
+
+    if (!channelId) MostLikesPostsTitle = '전체 베스트';
+    else MostLikesPostsTitle = `${postsInfo[0]?.channel.name} 베스트`;
+
     return MostLikesPostsTitle;
   };
 
