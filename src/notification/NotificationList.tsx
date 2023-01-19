@@ -15,7 +15,7 @@ import { END_POINT } from '../api/apiAddress';
 
 const NotificationList = () => {
   const [page, setPage] = useState(1);
-  const limit = 5;
+  const limit = 4;
   const offset = (page - 1) * limit;
 
   const tokenContextObj: IToken | null = useToken();
@@ -35,6 +35,7 @@ const NotificationList = () => {
       staleTime: 2000,
     }
   );
+
   const navigator = useNavigate();
 
   const confirmNotificationlist = async () => {
@@ -75,7 +76,8 @@ const NotificationList = () => {
         <IoMdNotificationsOutline className='logo' />
         <div>알림</div>
       </NotificationHeader>
-      <NotificationListContainer>
+
+      <NotificationListContainer dataview={!!notificationList?.length}>
         {notificationList
           ?.slice(offset, offset + limit)
           .map(({ _id, seen: isCheck, comment, like, follow, author, post }) => (
@@ -90,9 +92,17 @@ const NotificationList = () => {
               post={post}
             />
           ))}
+        <PaginationContainer>
+          <Pagination
+            total={notificationList?.length as number}
+            limit={limit}
+            page={page}
+            setPage={setPage}
+          />
+        </PaginationContainer>
       </NotificationListContainer>
 
-      <NotificationConfirmContainer>
+      <NotificationConfirmContainer dataview={!!notificationList?.length}>
         <Button
           text={'모든 알림 확인'}
           color={'default'}
@@ -108,10 +118,6 @@ const NotificationList = () => {
           onClick={refetchNotificationList}
         />
       </NotificationConfirmContainer>
-
-      <PaginationContainer>
-        <Pagination total={notificationList?.length as number} limit={limit} page={page} setPage={setPage} />
-      </PaginationContainer>
     </>
   );
 };
@@ -122,28 +128,34 @@ const NotificationHeader = styled.div`
   display: flex;
   align-items: center;
   font-size: 1.5rem;
-  margin-bottom: 0.9375rem;
+  margin-top: -0.625rem;
+  margin-bottom: 0.5625rem;
 
   & .logo {
     font-size: 2rem;
   }
 `;
 
-const NotificationListContainer = styled.div`
-  display: 'flex';
+const NotificationListContainer = styled.div<{ dataview: boolean }>`
+  display: ${(props) => (props.dataview ? 'flex' : 'none')};
   flex-direction: column;
   width: 45.3125rem;
   border-radius: 0.3125rem;
   border: none;
   box-shadow: ${({ theme }) => theme.shadow.boxShadow};
   background-color: ${(props) => props.theme.colors.white};
+  margin-bottom: 1.875rem;
+  min-height: 40rem;
+  position: relative;
 `;
 
-const NotificationConfirmContainer = styled.div`
-  display: flex;
+const NotificationConfirmContainer = styled.div<{ dataview: boolean }>`
+  display: ${(props) => (props.dataview ? 'flex' : 'none')};
   justify-content: space-around;
 `;
 
 const PaginationContainer = styled.div`
-  position: relative;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 `;
