@@ -63,13 +63,13 @@ const SearchBoxForm = styled.form`
   display: flex;
   justify-content: center;
   width: 45.3125rem;
-  margin: 2.5rem 0 3.75rem 0rem;
+  margin: 2rem 0;
 `;
 
 const SearchBoxSelect = styled.select`
   cursor: pointer;
-  width: 7.5rem;
-  padding: 0.8em 0.5em;
+  width: 8rem;
+  padding: 0.625rem;
   font-family: inherit;
   border-radius: 10%;
   background: url(https://farm1.staticflickr.com/379/19928272501_4ef877c265_t.jpg) no-repeat 95% 50%; /* 네이티브 화살표 대체 */
@@ -80,7 +80,7 @@ const SearchBoxSelect = styled.select`
   -moz-appearance: none;
   appearance: none;
   background-color: ${({ theme }) => theme.colors.white};
-  box-shadow: 0px 4px 4px ${({ theme }) => theme.colors.shadow};
+  box-shadow: 0px 2px 3px ${({ theme }) => theme.colors.shadow};
   margin-right: 1rem;
   border-radius: 0.3125rem;
   &::-ms-expand {
@@ -89,13 +89,13 @@ const SearchBoxSelect = styled.select`
 `;
 
 const SearchBoxInput = styled.input`
-  width: 30rem;
+  width: 37rem;
   font-size: 1rem;
   padding-left: 0.3125rem;
   border: 0.0625rem solid ${({ theme }) => theme.colors.contentLine};
   border-right: none;
   background-color: ${({ theme }) => theme.colors.white};
-  box-shadow: 0px 4px 4px ${({ theme }) => theme.colors.shadow};
+  box-shadow: 0px 2px 3px ${({ theme }) => theme.colors.shadow};
   border-top-left-radius: 0.3125rem;
   border-bottom-left-radius: 0.3125rem;
   &::placeholder {
@@ -113,7 +113,7 @@ const SearchBoxButton = styled.button`
   cursor: pointer;
   border: 0.0625rem solid ${({ theme }) => theme.colors.contentLine};
   border-left: none;
-  box-shadow: 0px 4px 4px ${({ theme }) => theme.colors.shadow};
+  box-shadow: 0px 2px 3px ${({ theme }) => theme.colors.shadow};
   background-color: ${({ theme }) => theme.colors.white};
   border-top-right-radius: 0.3125rem;
   border-bottom-right-radius: 0.3125rem;

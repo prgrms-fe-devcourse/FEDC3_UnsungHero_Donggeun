@@ -77,7 +77,7 @@ const UpdatePost = () => {
       localStorage.removeItem('tempTitleInUpdatePost');
       localStorage.removeItem('tempContentInUpdatePost');
 
-      navigate(`/post/${postId}`);
+      navigate(`/post/${postId}`, { replace: true });
     });
   };
 
@@ -88,7 +88,7 @@ const UpdatePost = () => {
       data: {
         id: postId,
       },
-    }).then(() => navigate(`/channel/${channelId}`));
+    }).then(() => navigate(`/channel/${channelId}`, { replace: true }));
   };
 
   const handleOnClickUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -113,7 +113,9 @@ const UpdatePost = () => {
     <Form onSubmit={handleUpdatePost}>
       <TitleInput value={title} onChange={handleTitleOnChnage} />
       <Content>
-        <Image src={previewImage ? previewImage : data?.image}></Image>
+        <ImageWarpper>
+          <Image src={previewImage ? previewImage : data?.image}></Image>
+        </ImageWarpper>
         <Textarea onChange={handleContentOnChnage} rows={10} cols={100} value={content} placeholder='내용' />
       </Content>
       <ImageInput
@@ -136,15 +138,20 @@ const UpdatePost = () => {
   );
 };
 
-const Image = styled.img``;
+const Image = styled.img`
+  max-height: 31.25rem;
+  max-width: 43.3125rem;
+  margin: 1rem 0;
+`;
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
+  margin-top: 1.875rem;
   padding: 1rem;
   min-height: 40rem;
   width: 45.3125rem;
-  border-radius: 3%;
+  border-radius: 5px;
   background-color: ${({ theme }) => theme.colors.white};
   box-shadow: ${({ theme }) => theme.shadow.boxShadow};
 `;
@@ -177,15 +184,20 @@ const Content = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.contentLine};
 `;
 
+const ImageWarpper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const ImageInput = styled.input`
-  padding: 0.5rem;
-  background-color: #fafafa;
+  padding: 16px;
+  background-color: ${({ theme }) => theme.colors.white};
   border-radius: 3%;
   cursor: pointer;
   &::file-selector-button {
     cursor: pointer;
     border: none;
-    /* background-color: #52d2a4; */
   }
 `;
 

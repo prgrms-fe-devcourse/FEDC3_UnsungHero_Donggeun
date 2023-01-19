@@ -81,7 +81,7 @@ const MostLikesPosts = ({ postsInfo, currentChannelId }: IMostLikesPostsProps) =
 
   return (
     <WholeWrapper>
-      <div className='bestPostsTitle'>#{selectMostLikesPostsTitle()}</div>
+      <div className='bestPostsTitle'>🔥{selectMostLikesPostsTitle()}</div>
       <BestPostsEntireWrapper>
         {filterMostLikesPosts().map((filteredPost) => {
           const { title, _id, likes, comments } = filteredPost;
@@ -132,9 +132,8 @@ const WholeWrapper = styled.div`
 
   .bestPostsTitle {
     width: 45.3125rem;
-    height: 3.125rem;
-    padding: 0.9375rem 0 0 1.25rem;
-    margin: 0 0 0rem 0rem;
+    height: 50px;
+    padding: 0.9375rem 0 0 1rem;
     font-size: 1.25rem;
     border-top-left-radius: 0.3125rem;
     border-top-right-radius: 0.3125rem;
@@ -154,28 +153,21 @@ const BestPostsEntireWrapper = styled.ul`
 
 const BestPostWrapper = styled.li`
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   width: 45.3125rem;
-  height: 4.6875rem;
+  height: 55px;
   border-bottom: solid 0.0625rem #dce1e8;
-  padding: 1rem 1.25rem;
+  padding: 1rem 0.5rem 0 1rem;
   cursor: pointer;
   background-color: white;
   box-shadow: 0px 4px 4px ${({ theme }) => theme.colors.shadow};
 
   .bestPostTitleDotContainer {
     display: flex;
-    .redDot {
-      align-self: center;
-      width: 0.25rem;
-      height: 0.25rem;
-      margin-bottom: 1.0625rem;
-    }
     .bestPostTitle {
       font-size: 1.125rem;
       font-weight: 500;
-      margin: 0 0 0.625rem 0.3125rem;
-      width: 41.875rem;
+      width: 600px;
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;

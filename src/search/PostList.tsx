@@ -38,7 +38,8 @@ interface IpostListProps {
 }
 
 const Span = styled.span`
-  font-weight: 900;
+  background-color: #a6ffc6;
+  border-radius: 5px;
 `;
 
 const PostList = ({
@@ -94,7 +95,7 @@ const PostList = ({
 
   return (
     <WholeWrapper>
-      <div className='postListTitle'>#{selectPostsChannelTitle(currentChannelId)}</div>
+      <div className='postListTitle'>⚪{selectPostsChannelTitle(currentChannelId)}</div>
       <PostListWrapper>
         {filteredPostsInfo.map((postInfo) => {
           const { title, _id, likes, createdAt, comments, channel } = postInfo;
@@ -171,14 +172,16 @@ const WholeWrapper = styled.div`
   margin-right: 2.5rem;
 
   .postListTitle {
-    width: 45.3125rem;
+    width: 725px;
     height: 3.125rem;
     padding: 0.9375rem 0 0 1.25rem;
-    margin: 0 0 0.1875rem 0rem;
+    /* margin-bottom: -5px; */
     font-size: ${({ theme }) => theme.fontSize.larger};
-    border-radius: 0.3125rem;
+    border-top-left-radius: 0.3125rem;
+    border-top-right-radius: 0.3125rem;
     background-color: ${({ theme }) => theme.colors.primary};
     font-weight: bold;
+    z-index: 10;
   }
 `;
 
@@ -205,6 +208,11 @@ const PostWrapper = styled.li`
     .postTitle {
       text-decoration: underline;
     }
+  }
+  &:first-child {
+    border-radius: 0;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
   }
 `;
 

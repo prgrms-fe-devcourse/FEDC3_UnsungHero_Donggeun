@@ -103,7 +103,7 @@ const DetailPost = () => {
             <UserName>{author.fullName}</UserName>
           </Author>
           <Content>
-            {image && <ContentImage src={image} alt='이미지!' />}
+            <ImageWarpper>{image && <ContentImage src={image} alt='이미지!' />}</ImageWarpper>
             <Textarea
               value={content}
               disabled
@@ -135,6 +135,7 @@ const DetailPost = () => {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  margin-top: 1.875rem;
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: 0.3125rem;
   padding: 1rem;
@@ -186,8 +187,14 @@ const Author = styled.div`
 
 const ContentImage = styled.img`
   max-height: 31.25rem;
-  max-width: 43.75rem;
+  max-width: 43.3125rem;
   margin: 1rem 0;
+`;
+
+const ImageWarpper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const Content = styled.div`
