@@ -22,7 +22,12 @@ const Header = () => {
   return (
     <Wrapper>
       <HeaderWrapper>
-        <Logo height={64} src={process.env.PUBLIC_URL + 'logo.png'} onClick={() => navigate('/')} />
+        <Logo
+          height={64}
+          src={process.env.PUBLIC_URL + '/logo.png'}
+          onClick={() => navigate('/')}
+          alt='로고'
+        />
         <ButtonWrapper>
           {userLogin ? (
             <>
