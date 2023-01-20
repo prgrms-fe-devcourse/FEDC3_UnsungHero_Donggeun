@@ -104,7 +104,7 @@ const Button = styled.button`
   font-weight: bold;
   background-color: transparent;
   border-radius: 5px;
-  padding: 0 0.313rem;
+  padding: 0.4375rem 0.375rem 0.125rem 0.375rem;
   margin: 0 0.313rem;
   border: none;
   &:hover {
@@ -112,17 +112,18 @@ const Button = styled.button`
   }
 
   &:first-child {
-    width: 60px;
+    width: 3.75rem;
   }
 
   &:last-child {
-    width: 60px;
+    width: 3.75rem;
   }
 `;
 const Wrapper = styled.div`
   position: absolute;
   bottom: 0;
   display: flex;
+  align-items: baseline;
   padding: 1.25rem 0;
   left: 50%;
   transform: translateX(-50%);
