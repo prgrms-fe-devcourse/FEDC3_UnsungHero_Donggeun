@@ -48,9 +48,10 @@ const User = () => {
     refetchUserData();
   }, [currentPageId]);
 
-  const handlemoveEditPage = () => {
+  const handlOnClickMoveEditPage = () => {
     navigate(`/userEdit/${currentPageId}`);
   };
+
   const totalLikes = userInfo?.posts?.reduce((acc, cur: Pick<IPost, 'likes'>) => acc + cur.likes.length, 0);
   return (
     <Wrapper>
@@ -86,7 +87,7 @@ const User = () => {
             {currentPageId === myUserId ? (
               <Button
                 text={'내정보 수정'}
-                onClick={handlemoveEditPage}
+                onClick={handlOnClickMoveEditPage}
                 color='white'
                 width={6.25}
                 height={1.875}

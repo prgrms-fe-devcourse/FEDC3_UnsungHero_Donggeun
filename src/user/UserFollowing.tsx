@@ -28,7 +28,7 @@ const UserFollowing = () => {
   );
 
   const followingsList = followingData?.filter((user: IUser) => userFollow?.following?.includes(user._id));
-  const handleClickUser = (id: string) => {
+  const handleOnClickMoveUserPage = (id: string) => {
     navigate(`/user/${id}`);
   };
 
@@ -37,7 +37,7 @@ const UserFollowing = () => {
       <Title>팔로잉</Title>
       {followingsList &&
         followingsList.slice(offset, offset + limit).map((user: IUser) => (
-          <div key={user._id} onClick={() => handleClickUser(user._id)}>
+          <div key={user._id} onClick={() => handleOnClickMoveUserPage(user._id)}>
             <UserWrapper>
               <Avatar src={user.image} width={80} height={80} />
               <UserName>{user.fullName}</UserName>
