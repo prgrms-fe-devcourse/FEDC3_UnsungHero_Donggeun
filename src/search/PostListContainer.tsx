@@ -6,6 +6,7 @@ import { Pagination } from '../common';
 import { useNavigate } from 'react-router-dom';
 import { IChannel } from '../types/channel';
 import { useToken } from '../contexts/TokenProvider';
+import { IComment } from '../types/comment';
 
 interface Ilikes {
   _id: string;
@@ -13,6 +14,7 @@ interface Ilikes {
 interface Iauthor {
   fullName: string;
   username: string;
+  image: string;
 }
 
 interface IpostsInfo {
@@ -22,6 +24,7 @@ interface IpostsInfo {
   likes: Ilikes[];
   createdAt: string;
   channel: IChannel;
+  comments: IComment[];
 }
 
 interface IpostListContainerProps {
@@ -47,7 +50,7 @@ const PostListContainer = ({
     setCheckedSorting(true);
   }, [currentChannelId]);
 
-  const dividePosts = (posts: any) => {
+  const dividePosts = (posts: IpostsInfo[]) => {
     const result = posts.slice(offset, offset + limit);
     return result;
   };

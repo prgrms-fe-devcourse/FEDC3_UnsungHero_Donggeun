@@ -123,7 +123,7 @@ const NotificationList = () => {
           color={'default'}
           width={12.5}
           height={2.5}
-          onClick={refetchNotificationList}
+          onClick={() => refetchNotificationList}
         />
       </NotificationConfirmContainer>
     </>
