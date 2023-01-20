@@ -5,9 +5,9 @@ import UserEditImg from './UserEditImg';
 import useMutation from '../api/useMutation';
 import styled from 'styled-components';
 import { Button } from '../common';
-import useFollow from '../follow/useFollow';
+import useFollow from '../hooks/useFollow';
 import { END_POINT } from '../api/apiAddress';
-import useOverlapConfirm from '../auth/useOverlapConfirm';
+import useOverlapConfirm from '../hooks/useOverlapConfirm';
 import Loading from '../api/Loading';
 
 interface IFormValue {
@@ -36,14 +36,14 @@ const UserEdit = () => {
     setIsLoading(true);
 
     if (dirtyFields.fullName) {
-      if (!CheckUserName(fullName)) return;
-      await getChangeUserName(fullName);
+      if (!checkUserName(fullName)) return;
+      await changeUserFullName(fullName);
     }
-    if (dirtyFields.password) await getChangePassword(password);
+    if (dirtyFields.password) await changeUserPassword(password);
 
     for (const formdata of Object.values(imgFiles)) {
       if (formdata instanceof FormData) {
-        await getChangeImg(formdata);
+        await changeUserImage(formdata);
       }
     }
 
@@ -51,7 +51,7 @@ const UserEdit = () => {
     navigate(`/user/${id}`, { replace: true });
   };
 
-  const CheckUserName = (fullName: string) => {
+  const checkUserName = (fullName: string) => {
     if (CheckOverlapName(fullName)) {
       setIsLoading(false);
       setError('fullName', { message: '이미 사용중인 nickname 입니다.' }, { shouldFocus: true });
@@ -60,7 +60,7 @@ const UserEdit = () => {
     return true;
   };
 
-  const getChangeImg = async (formdata: FormData) => {
+  const changeUserImage = async (formdata: FormData) => {
     return await mutate({
       url: `${END_POINT}/users/upload-photo`,
       method: 'post',
@@ -68,7 +68,7 @@ const UserEdit = () => {
     });
   };
 
-  const getChangePassword = async (password: string) => {
+  const changeUserPassword = async (password: string) => {
     return await mutate({
       url: `${END_POINT}/settings/update-password`,
       method: 'put',
@@ -78,7 +78,7 @@ const UserEdit = () => {
     });
   };
 
-  const getChangeUserName = async (fullName: string) => {
+  const changeUserFullName = async (fullName: string) => {
     return await mutate({
       url: `${END_POINT}/settings/update-user`,
       method: 'put',

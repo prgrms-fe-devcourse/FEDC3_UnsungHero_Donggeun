@@ -6,6 +6,7 @@ import { Pagination } from '../common';
 import { useNavigate } from 'react-router-dom';
 import { IChannel } from '../types/channel';
 import { useToken } from '../contexts/TokenProvider';
+import { IComment } from '../types/comment';
 
 interface Ilikes {
   _id: string;
@@ -13,10 +14,7 @@ interface Ilikes {
 interface Iauthor {
   fullName: string;
   username: string;
-}
-
-interface IComments {
-  _id: string;
+  image: string;
 }
 
 interface IpostsInfo {
@@ -26,7 +24,7 @@ interface IpostsInfo {
   likes: Ilikes[];
   createdAt: string;
   channel: IChannel;
-  comments: IComments[];
+  comments: IComment[];
 }
 
 interface IpostListContainerProps {
@@ -52,7 +50,7 @@ const PostListContainer = ({
     setCheckedSorting(true);
   }, [currentChannelId]);
 
-  const dividePosts = (posts: any) => {
+  const dividePosts = (posts: IpostsInfo[]) => {
     const result = posts.slice(offset, offset + limit);
     return result;
   };
@@ -60,51 +58,43 @@ const PostListContainer = ({
   const filterPosts = () => {
     const filteredPosts = postsInfo.filter((postInfo) => {
       // 테스트 채널 제외하기.
-      if (postInfo.channel.name !== '테스트') {
-        const { title } = postInfo;
-        const { fullName } = postInfo.author; //fullName이 아니라 userName이 닉네임인 경우 변경해야함
-        const postTitle = IsJsonString(title) ? JSON.parse(title).title : title;
-        const postContent = IsJsonString(title) ? JSON.parse(title).content : '';
-        const searchValue = inputSearchValue.trim();
 
-        if (selectedSearchOption === '제목') {
-          return postTitle.includes(searchValue);
-        } else if (selectedSearchOption === '제목+내용') {
-          return postTitle.includes(searchValue) || postContent.includes(searchValue);
-        } else if (selectedSearchOption === '작성자') {
-          return fullName.includes(searchValue);
-        } else {
-          return postsInfo;
-        }
+      if (postInfo.channel.name === '테스트') return;
+
+      const { title } = postInfo;
+      const { fullName } = postInfo.author; //fullName이 아니라 userName이 닉네임인 경우 변경해야함
+      const postTitle = IsJsonString(title) ? JSON.parse(title).title : title;
+      const postContent = IsJsonString(title) ? JSON.parse(title).content : '';
+
+      if (selectedSearchOption === '제목') {
+        return postTitle.includes(inputSearchValue);
+      } else if (selectedSearchOption === '제목+내용') {
+        return postTitle.includes(inputSearchValue) || postContent.includes(inputSearchValue);
+      } else if (selectedSearchOption === '작성자') {
+        return fullName.includes(inputSearchValue);
+      } else {
+        return postsInfo;
       }
     });
 
-    if (!checkedSorting) {
-      filteredPosts.sort((a, b) => {
-        if (a.likes.length > b.likes.length) {
-          return -1;
-        } else if (a.likes.length < b.likes.length) {
-          return 1;
-        } else if (a.comments.length > b.comments.length) {
-          return -1;
-        } else if (a.comments.length < b.comments.length) {
-          return 1;
-        } else {
-          return 0;
-        }
-      });
-    }
+    if (checkedSorting) return filteredPosts;
+
+    filteredPosts.sort((a, b) => {
+      if (a.likes.length > b.likes.length) {
+        return -1;
+      } else if (a.likes.length < b.likes.length) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
 
     return filteredPosts;
   };
 
-  const handleClickRecent = () => {
-    setCheckedSorting(!checkedSorting);
-  };
+  const handleOnClickRecent = () => setCheckedSorting(!checkedSorting);
 
-  const handleClickSympathy = () => {
-    setCheckedSorting(!checkedSorting);
-  };
+  const handleOnClickSympathy = () => setCheckedSorting(!checkedSorting);
 
   const channelName = postsInfo[0]?.channel.name;
   const tokenObject = useToken();
@@ -114,10 +104,10 @@ const PostListContainer = ({
     <>
       <ButtonContainer>
         <div className='recentLikesButtonContainer'>
-          <button onClick={handleClickRecent} disabled={checkedSorting}>
+          <button onClick={handleOnClickRecent} disabled={checkedSorting}>
             최신순
           </button>
-          <button onClick={handleClickSympathy} disabled={!checkedSorting}>
+          <button onClick={handleOnClickSympathy} disabled={!checkedSorting}>
             공감순
           </button>
         </div>

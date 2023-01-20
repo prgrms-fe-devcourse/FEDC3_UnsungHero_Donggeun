@@ -18,7 +18,9 @@ export interface INotification {
   author?: IUser;
   userId?: IUser | string;
   postId?: string | null;
-  follow?: string;
+  follow?: {
+    user: string;
+  };
   comment?: IComment;
   like?: ILike;
   post?: string;
@@ -30,5 +32,5 @@ export interface INotification {
 }
 export interface INotificationStatus {
   notificationStatus: boolean;
-  setNotification: (bool: boolean) => void;
+  changeNotificationStatus: (bool: boolean) => void;
 }

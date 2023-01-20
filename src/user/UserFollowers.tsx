@@ -4,7 +4,7 @@ import { useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Avatar, Pagination } from '../common';
-import useFollow from '../follow/useFollow';
+import useFollow from '../hooks/useFollow';
 import { IUser } from '../types/user';
 import { END_POINT } from '../api/apiAddress';
 
@@ -28,7 +28,7 @@ const UserFollowers = () => {
   );
 
   const followersList = followersData?.filter((user: IUser) => userFollow?.followers?.includes(user._id));
-  const handleClickUser = (id: string) => {
+  const handleOnClickMoveUserPage = (id: string) => {
     navigate(`/user/${id}`);
   };
 
@@ -37,7 +37,7 @@ const UserFollowers = () => {
       <Title>팔로워</Title>
       {followersList &&
         followersList.slice(offset, offset + limit).map((user: IUser) => (
-          <div key={user._id} onClick={() => handleClickUser(user._id)}>
+          <div key={user._id} onClick={() => handleOnClickMoveUserPage(user._id)}>
             <UserWrapper>
               <Avatar src={user.image} width={80} height={80} />
               <UserName>{user.fullName}</UserName>

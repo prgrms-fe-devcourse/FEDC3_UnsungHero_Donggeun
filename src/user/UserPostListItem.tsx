@@ -11,11 +11,11 @@ const COMMENT_IMG_URL = 'https://ifh.cc/g/Y0gGms.png';
 const UserPostListItem = ({ post }: IProps) => {
   const navigate = useNavigate();
 
-  const handleClickPost = (id: string) => {
+  const handleOnClickMovePost = (id: string) => {
     navigate(`/post/${id}`);
   };
   return (
-    <Wrapper onClick={() => handleClickPost(post._id)}>
+    <Wrapper onClick={() => handleOnClickMovePost(post._id)}>
       <Title>{JSON.parse(post.title).title}</Title>
       <Content>{JSON.parse(post.title).content}</Content>
       <Reaction>

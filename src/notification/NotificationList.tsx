@@ -29,7 +29,12 @@ const NotificationList = () => {
         .get(`${END_POINT}/notifications`, {
           headers: { Authorization: `bearer ${tokenContextObj?.token}` },
         })
-        .then(({ data }) => data);
+        .then(({ data }) => {
+          const returnData = data.filter(
+            (item: INotification) => !(item.follow && item.follow.user === item.author?._id)
+          );
+          return returnData;
+        });
     },
     {
       refetchOnMount: true,
@@ -39,7 +44,7 @@ const NotificationList = () => {
 
   const navigator = useNavigate();
 
-  const confirmNotificationlist = async () => {
+  const viewAllNotificationList = async () => {
     if (!notificationStatusContextObj?.notificationStatus) return;
 
     await axios
@@ -58,7 +63,7 @@ const NotificationList = () => {
   const updateNotificationStatus = () => {
     const notificationListData = notificationList?.map(({ seen }) => seen);
     const notificationState = notificationListData?.includes(false);
-    notificationStatusContextObj?.setNotification(!!notificationState);
+    notificationStatusContextObj?.changeNotificationStatus(!!notificationState);
   };
 
   useEffect(() => {
@@ -116,14 +121,14 @@ const NotificationList = () => {
           color={'default'}
           width={12.5}
           height={2.5}
-          onClick={confirmNotificationlist}
+          onClick={viewAllNotificationList}
         />
         <Button
           text={'실시간 알람 확인'}
           color={'default'}
           width={12.5}
           height={2.5}
-          onClick={refetchNotificationList}
+          onClick={() => refetchNotificationList}
         />
       </NotificationConfirmContainer>
     </>

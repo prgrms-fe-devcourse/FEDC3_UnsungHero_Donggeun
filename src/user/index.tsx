@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { IPost } from '../types/post';
 import UserPosts from './UserPosts';
 import { useUserId } from '../contexts/TokenProvider';
-import useFollow from '../follow/useFollow';
+import useFollow from '../hooks/useFollow';
 import { Avatar, Button } from '../common';
 import Skeleton from '../common/Skeleton';
 
@@ -48,9 +48,10 @@ const User = () => {
     refetchUserData();
   }, [currentPageId]);
 
-  const handlemoveEditPage = () => {
+  const handlOnClickMoveEditPage = () => {
     navigate(`/userEdit/${currentPageId}`);
   };
+
   const totalLikes = userInfo?.posts?.reduce((acc, cur: Pick<IPost, 'likes'>) => acc + cur.likes.length, 0);
   return (
     <Wrapper>
@@ -87,7 +88,7 @@ const User = () => {
             {currentPageId === myUserId ? (
               <Button
                 text={'내정보 수정'}
-                onClick={handlemoveEditPage}
+                onClick={handlOnClickMoveEditPage}
                 color='white'
                 width={6.25}
                 height={1.875}

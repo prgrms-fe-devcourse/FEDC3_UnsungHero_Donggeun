@@ -10,7 +10,7 @@ import { Button } from '../common';
 import { IToken } from '../types/token';
 import { useToken } from '../contexts/TokenProvider';
 import { processSignUp } from './api';
-import useOverlapConfirm from './useOverlapConfirm';
+import useOverlapConfirm from '../hooks/useOverlapConfirm';
 
 const SignUp = () => {
   const tokenContextObj: IToken | null = useToken();

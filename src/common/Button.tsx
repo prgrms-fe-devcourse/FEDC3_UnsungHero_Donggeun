@@ -1,12 +1,13 @@
+import React from 'react';
 import styled from 'styled-components';
 
 interface IProps extends React.HTMLAttributes<HTMLElement> {
   text?: string;
   color: string;
-  onClick?: (e?: any) => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   width?: number;
   height: number;
-  disabled?: any;
+  disabled?: boolean;
 }
 
 interface IBtnType {
