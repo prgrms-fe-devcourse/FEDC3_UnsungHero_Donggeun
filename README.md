@@ -52,20 +52,19 @@
 <div align="center">
   <img src="https://user-images.githubusercontent.com/113018070/213634598-0c8c28cf-36f0-49cc-9533-805545835ad7.png" height="600px" width="650px"
 </div>
-(임시)
 
 <br/>
 <br/>
 
 ## <img src="https://user-images.githubusercontent.com/113018070/213464160-8d2176e2-57ec-4a60-bc95-cd1c7cbbb583.png" width="20px" height="20px"/> Unsung Hero 관련 문서
 
-[언성히어로 Github](https://github.com/prgrms-fe-devcourse/FEDC3_UnsungHero_Donggeun)
+[👀 언성히어로 Github](https://github.com/prgrms-fe-devcourse/FEDC3_UnsungHero_Donggeun)
     
 [🎨 Notion 기획서](https://www.notion.so/prgrms/UnsungHero-Project-d7e2e25362ad490b94356b781a45a429)
     
 [🗒 Notion 회의록](https://www.notion.so/prgrms/a595b2d4fbde464bbf5cb29cf14c62b2?v=78b4706a3f924d19a9af0830ed8c29d1)
     
-[🗒 Notion 중간 회고록](https://www.notion.so/prgrms/486e3a3821584c72a95954655145306f)
+[🕐 Notion 중간 회고록](https://www.notion.so/prgrms/486e3a3821584c72a95954655145306f)
 
 
 <br/>
