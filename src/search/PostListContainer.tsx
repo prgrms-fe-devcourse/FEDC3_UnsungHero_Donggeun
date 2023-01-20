@@ -58,36 +58,40 @@ const PostListContainer = ({
   const filterPosts = () => {
     const filteredPosts = postsInfo.filter((postInfo) => {
       // 테스트 채널 제외하기.
+      if (postInfo.channel.name !== '테스트') {
+        const { title } = postInfo;
+        const { fullName } = postInfo.author; //fullName이 아니라 userName이 닉네임인 경우 변경해야함
+        const postTitle = IsJsonString(title) ? JSON.parse(title).title : title;
+        const postContent = IsJsonString(title) ? JSON.parse(title).content : '';
+        const searchValue = inputSearchValue.trim();
 
-      if (postInfo.channel.name === '테스트') return;
-
-      const { title } = postInfo;
-      const { fullName } = postInfo.author; //fullName이 아니라 userName이 닉네임인 경우 변경해야함
-      const postTitle = IsJsonString(title) ? JSON.parse(title).title : title;
-      const postContent = IsJsonString(title) ? JSON.parse(title).content : '';
-
-      if (selectedSearchOption === '제목') {
-        return postTitle.includes(inputSearchValue);
-      } else if (selectedSearchOption === '제목+내용') {
-        return postTitle.includes(inputSearchValue) || postContent.includes(inputSearchValue);
-      } else if (selectedSearchOption === '작성자') {
-        return fullName.includes(inputSearchValue);
-      } else {
-        return postsInfo;
+        if (selectedSearchOption === '제목') {
+          return postTitle.includes(searchValue);
+        } else if (selectedSearchOption === '제목+내용') {
+          return postTitle.includes(searchValue) || postContent.includes(searchValue);
+        } else if (selectedSearchOption === '작성자') {
+          return fullName.includes(searchValue);
+        } else {
+          return postsInfo;
+        }
       }
     });
 
-    if (checkedSorting) return filteredPosts;
-
-    filteredPosts.sort((a, b) => {
-      if (a.likes.length > b.likes.length) {
-        return -1;
-      } else if (a.likes.length < b.likes.length) {
-        return 1;
-      } else {
-        return 0;
-      }
-    });
+    if (!checkedSorting) {
+      filteredPosts.sort((a, b) => {
+        if (a.likes.length > b.likes.length) {
+          return -1;
+        } else if (a.likes.length < b.likes.length) {
+          return 1;
+        } else if (a.comments.length > b.comments.length) {
+          return -1;
+        } else if (a.comments.length < b.comments.length) {
+          return 1;
+        } else {
+          return 0;
+        }
+      });
+    }
 
     return filteredPosts;
   };
