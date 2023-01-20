@@ -1,4 +1,4 @@
-# # <img src="https://user-images.githubusercontent.com/113018070/213464160-8d2176e2-57ec-4a60-bc95-cd1c7cbbb583.png" width="20px" height="20px"/> Unsung Hero 
+## <img src="https://user-images.githubusercontent.com/113018070/213464160-8d2176e2-57ec-4a60-bc95-cd1c7cbbb583.png" width="20px" height="20px"/> Unsung Hero 
     
 <div align="center">   
     <img src="https://user-images.githubusercontent.com/113018070/213464774-a7051b63-f34b-4a77-a53d-3b2e8884ef27.png" width="280px"/>
@@ -50,37 +50,112 @@
 <br/>
 
 <div align="center">
-  <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FJrbeH%2FbtrWI22M9Ln%2FtXnvzllNrepSOrO7AH1Yk0%2Fimg.png" height="600" width="500"
+  <img src="https://user-images.githubusercontent.com/113018070/213634598-0c8c28cf-36f0-49cc-9533-805545835ad7.png" height="600px" width="650px"
 </div>
-(임시)
 
 <br/>
 <br/>
-
-
-
-
-
-
-
-
-
 
 ## <img src="https://user-images.githubusercontent.com/113018070/213464160-8d2176e2-57ec-4a60-bc95-cd1c7cbbb583.png" width="20px" height="20px"/> Unsung Hero 관련 문서
 
-<br/>
-
-> [언성히어로 Github](https://github.com/prgrms-fe-devcourse/FEDC3_UnsungHero_Donggeun)
-
-> [🎨 Notion 기획서](https://www.notion.so/prgrms/UnsungHero-Project-d7e2e25362ad490b94356b781a45a429)
-
-> [🗒 Notion 회의록](https://www.notion.so/prgrms/a595b2d4fbde464bbf5cb29cf14c62b2?v=78b4706a3f924d19a9af0830ed8c29d1)
-
-> [🗒 Notion 중간 회고록](https://www.notion.so/prgrms/486e3a3821584c72a95954655145306f)
+[👀 언성히어로 Github](https://github.com/prgrms-fe-devcourse/FEDC3_UnsungHero_Donggeun)
+    
+[🎨 Notion 기획서](https://www.notion.so/prgrms/UnsungHero-Project-d7e2e25362ad490b94356b781a45a429)
+    
+[🗒 Notion 회의록](https://www.notion.so/prgrms/a595b2d4fbde464bbf5cb29cf14c62b2?v=78b4706a3f924d19a9af0830ed8c29d1)
+    
+[🕐 Notion 중간 회고록](https://www.notion.so/prgrms/486e3a3821584c72a95954655145306f)
 
 
 <br/>
 
-## <img src=“https://user-images.githubusercontent.com/113018070/213464160-8d2176e2-57ec-4a60-bc95-cd1c7cbbb583.png” width=“20px” height=“20px”/> Unsung Hero 프로젝트 기술스택
+## <img src="https://user-images.githubusercontent.com/113018070/213464160-8d2176e2-57ec-4a60-bc95-cd1c7cbbb583.png" width="20px" height="20px"/> Unsung Hero 기술스택
 
-수정 중
+<table>
+<tr>
+ <td align="center">언어</td>
+ <td>
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=TypeScript&logoColor=ffffff"/>
+ </td>
+</tr>
+<tr>
+ <td align="center">라이브러리</td>
+ <td>
+  <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=ffffff"/>&nbsp  
+ <img src="https://img.shields.io/badge/ReactRouter-bf0f32?style=for-the-badge&logo=ReactRouter&logoColor=ffffff"/>&nbsp
+<img src="https://img.shields.io/badge/styled%20components-DB7093?style=flat-square&logo=styled-components&logoColor=white" height="28px"/>
+&nbsp
+<img src="https://img.shields.io/badge/Axios-6028e0?style=for-the-badge&logo=Axios&logoColor=ffffff"/>&nbsp
+<img src="https://img.shields.io/badge/React Query-FF4154?style=for-the-badge&logo=React Query&logoColor=ffffff"/>&nbsp
+<img src="https://img.shields.io/badge/React Hook Form-EC5990?style=for-the-badge&logo=React-Hook-Form&logoColor=ffffff"/>&nbsp
+<img src="https://img.shields.io/badge/React Icons-1678e0?style=for-the-badge&logo=Recoil&logoColor=ffffff"/>&nbsp  
+  </td>
+</tr>
+<tr>
+ <td align="center">상태관리</td>
+ <td>
+  <img src="https://img.shields.io/badge/ContextAPI-1678e0?style=for-the-badge&logo=Recoil&logoColor=ffffff"/>&nbsp  
+ </td>
+</tr>
+<tr>
+ <td align="center">패키지</td>
+ <td>
+    <img src="https://img.shields.io/badge/Yarn-2C8EBB?style=for-the-badge&logo=Yarn&logoColor=white"/>&nbsp 
+  </td>
+</tr>
+<tr>
+ <td align="center">Formatter</td>
+ <td>
+  <img src="https://img.shields.io/badge/Prettier-373338?style=for-the-badge&logo=Prettier&logoColor=ffffff"/>&nbsp 
+  <img src="https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=ESLint&logoColor=ffffff"/>&nbsp 
+ </td>
+</tr>
+<tr>
+ <td align="center">배포</td>
+ <td><img src="https://img.shields.io/badge/Netlify-00C7B7?style=for-the-badge&logo=Netlify&logoColor=white"/>&nbsp
+</tr>
+<tr>
+ <td align="center">협업툴</td>
+ <td>
+    <img src="https://img.shields.io/badge/Notion-5a5d69?style=for-the-badge&logo=Notion&logoColor=white"/>&nbsp
+    <img src="https://img.shields.io/badge/Discord-4263f5?style=for-the-badge&logo=Discord&logoColor=white"/>&nbsp 
+    <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white"/>&nbsp 
+    <img src="https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=Slack&logoColor=white"/>&nbsp 
+    <img src="https://img.shields.io/badge/Figma-d90f42?style=for-the-badge&logo=Figma&logoColor=white"/>&nbsp  
+ </td>
+</tr>
+<tr>
+ <td align="center">IDE</td>
+ <td>
+    <img src="https://img.shields.io/badge/VSCode-007ACC?style=for-the-badge&logo=Visual%20Studio%20Code&logoColor=white"/>&nbsp
+</tr>
+</table>
+
+<br/>
+
+## <img src="https://user-images.githubusercontent.com/113018070/213464160-8d2176e2-57ec-4a60-bc95-cd1c7cbbb583.png" width="20px" height="20px"/> 초기 와이어 프레임 및 유저스토리
+
+[언성히어로 초기 와이어 프레임 및 유저 스토리](https://www.figma.com/file/6HrW5sUZkLFBSbVKyzhrAv?embed_host=notion&kind=&node-id=0%3A1&t=JX7lkPDgEh3aWZNH-1&viewer=1)
+<div align="center">
+  <img width="433" alt="초기 와이어 프레임" src="https://user-images.githubusercontent.com/113018070/213640148-aefbf885-42fd-4c15-85fc-c0e1d974a023.png">
+  <div>디자인은 초기 프로젝트 기획시 대략적인 구도를 잡은 것으로 현재 배포된 사이트와 차이가 있습니다.☺️</div>
+</div>
+
+<br/>
+
+## <img src="https://user-images.githubusercontent.com/113018070/213464160-8d2176e2-57ec-4a60-bc95-cd1c7cbbb583.png" width="20px" height="20px"/> 프로젝트 일정 관리
+
+<div align="center">
+  <img width="1192" alt="unsunghero 마일스톤" src="https://user-images.githubusercontent.com/113018070/213641600-ac235152-f762-4c0f-960c-242401746a3f.png">
+</div>
+
+<br/>
+
+## <img src="https://user-images.githubusercontent.com/113018070/213464160-8d2176e2-57ec-4a60-bc95-cd1c7cbbb583.png" width="20px" height="20px"/> 프로젝트 를 마무리 하며
+
+<div align="center">
+Unsung Hero 팀원 대부분이 프로젝트 경험이 없어 기획부터 시작하여 디자인과 기능 구현 리팩토링 과정들을 처음으로 해보면서 많은 감정을 느낀 것 같습니다. 어려운 부분들도 많이 있었고 시간이 지날수록 모두 지쳐가는 게 눈에 보였지만 팀원 모두가 끝까지 서로에게 힘을 주며 완주할 수 있었습니다. 처음 듣는 개념들과 기술들을 접하면서 많은 것들을 배울 수 있었고 그동안 공부한 내용들을 실전에 적용해 보면서 개발자로서 한 걸음 더 나아갈 수 있는 시간이었습니다.
+
+🎉Unsung Hero 흥해라🎉
+</div>
+

@@ -64,6 +64,7 @@ const SignUp = () => {
             <Input
               type='email'
               id='email'
+              placeholder='example@naver.com'
               {...register('email', {
                 required: '이메일 입력은 필수 입니다',
                 pattern: {
@@ -81,6 +82,7 @@ const SignUp = () => {
             <Input
               type='text'
               id='name'
+              placeholder='홍길동'
               {...register('fullName', {
                 required: '이름 입력은 필수 입니다',
                 minLength: {

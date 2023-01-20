@@ -63,6 +63,7 @@ const Login = () => {
             <Input
               type='email'
               id='email'
+              placeholder='example@naver.com'
               {...register('email', {
                 required: '이메일 입력은 필수 입니다',
                 pattern: {
