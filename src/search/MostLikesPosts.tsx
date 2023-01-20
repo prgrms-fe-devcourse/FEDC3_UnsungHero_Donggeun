@@ -62,7 +62,7 @@ const MostLikesPosts = ({ postsInfo }: IMostLikesPostsProps) => {
   };
 
   const { channelId } = useParams();
-  const selectMostLikesPostsTitle = () => {
+  const renderSelectedBestPostTitle = () => {
     let MostLikesPostsTitle = '';
 
     if (!channelId) MostLikesPostsTitle = '전체 베스트';
@@ -76,7 +76,7 @@ const MostLikesPosts = ({ postsInfo }: IMostLikesPostsProps) => {
 
   return (
     <WholeWrapper>
-      <div className='bestPostsTitle'>🔥{selectMostLikesPostsTitle()}</div>
+      <div className='bestPostsTitle'>🔥{renderSelectedBestPostTitle()}</div>
       <BestPostsEntireWrapper>
         {filterMostLikesPosts().map((filteredPost) => {
           const { title, _id, likes, comments } = filteredPost;

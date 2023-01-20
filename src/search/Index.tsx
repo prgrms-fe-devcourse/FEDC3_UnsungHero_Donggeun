@@ -28,7 +28,7 @@ const Search = () => {
     }
   );
 
-  const getPostsList = async () => {
+  const getSpecificPostsList = async () => {
     setIsLoading(true);
     axios.get(`${END_POINT}/posts/channel/${channelId}`).then((response) => {
       const { data } = response;
@@ -38,7 +38,7 @@ const Search = () => {
   };
 
   useEffect(() => {
-    channelId && getPostsList();
+    channelId && getSpecificPostsList();
   }, [channelId]);
 
   const loading = channelId ? isLoading : totalPostDataLoading;

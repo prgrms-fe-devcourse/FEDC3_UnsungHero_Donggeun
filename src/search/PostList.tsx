@@ -61,7 +61,7 @@ const PostList = ({
     return PostsChannelTitle;
   };
 
-  const highlightIncludedText = (content: string, searchedValue: string) => {
+  const highlightIncludedSearchResultText = (content: string, searchedValue: string) => {
     const title = content.toLowerCase();
     const searchValue = searchedValue.toLowerCase();
     if (searchValue !== '' && title.includes(searchValue)) {
@@ -77,7 +77,7 @@ const PostList = ({
     return content;
   };
 
-  const checkWrittenPostTime = (createdAt: string) => {
+  const renderPostWritingTime = (createdAt: string) => {
     const today = new Date();
     const timeValue = new Date(createdAt);
     const elapsedTime = Math.trunc((today.getTime() - timeValue.getTime()) / 1000);
@@ -135,13 +135,13 @@ const PostList = ({
                   <div className='postTitleDotContainer'>
                     <div className='postTitle'>
                       {selectedSearchOption === '제목' || selectedSearchOption === '제목+내용'
-                        ? highlightIncludedText(postTitle, inputSearchValue)
+                        ? highlightIncludedSearchResultText(postTitle, inputSearchValue)
                         : postTitle}
                     </div>
                   </div>
                   <div className='postContent'>
                     {selectedSearchOption === '제목+내용'
-                      ? highlightIncludedText(postContent, inputSearchValue)
+                      ? highlightIncludedSearchResultText(postContent, inputSearchValue)
                       : postContent}
                   </div>
                 </div>
@@ -149,7 +149,7 @@ const PostList = ({
               <PostMiddleWrapper>
                 <div className='postAuthor'>
                   {selectedSearchOption === '작성자'
-                    ? highlightIncludedText(fullName, inputSearchValue)
+                    ? highlightIncludedSearchResultText(fullName, inputSearchValue)
                     : fullName}
                 </div>
                 <div className='includedChannel'>{channel?.name}</div>
@@ -169,7 +169,7 @@ const PostList = ({
                   />
                   <div className='commentsNumber'>{comments.length}</div>
                 </div>
-                <div className='createdAt'>{checkWrittenPostTime(createdAt)}</div>
+                <div className='createdAt'>{renderPostWritingTime(createdAt)}</div>
               </PostBottomWrapper>
             </PostWrapper>
           );
