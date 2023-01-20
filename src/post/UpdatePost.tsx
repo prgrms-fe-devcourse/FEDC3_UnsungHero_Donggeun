@@ -22,11 +22,11 @@ const UpdatePost = () => {
 
   const { mutate } = useMutation();
 
-  const handleTitleOnChnage = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
     localStorage.setItem(`tempTitleInUpdatePost${postId}`, e.target.value);
   };
-  const handleContentOnChnage = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleChangeContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
     localStorage.setItem(`tempContentInUpdatePost${postId}`, e.target.value);
   };
@@ -59,7 +59,7 @@ const UpdatePost = () => {
     }
   }, [updatePost]);
 
-  const handleUpdatePost = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmitUpdatePost = (e: React.FormEvent<HTMLFormElement>) => {
     setIsLoading(true);
     e.preventDefault();
 
@@ -91,7 +91,7 @@ const UpdatePost = () => {
     });
   };
 
-  const handleDeletePost = () => {
+  const handleOnClickDeletePost = () => {
     if (confirm('글을 삭제하시겠습니까?')) {
       mutate({
         url: `${END_POINT}/posts/delete`,
@@ -124,19 +124,13 @@ const UpdatePost = () => {
   return (
     <Wrapper isLoading={isLoading}>
       {isLoading && <Loading />}
-      <Form onSubmit={handleUpdatePost}>
-        <TitleInput value={title} onChange={handleTitleOnChnage} />
+      <Form onSubmit={handleSubmitUpdatePost}>
+        <TitleInput value={title} onChange={handleChangeTitle} />
         <Content>
           <ImageWarpper>
             <Image src={previewImage ? previewImage : updatePost?.image}></Image>
           </ImageWarpper>
-          <Textarea
-            onChange={handleContentOnChnage}
-            rows={10}
-            cols={100}
-            value={content}
-            placeholder='내용'
-          />
+          <Textarea onChange={handleChangeContent} rows={10} cols={100} value={content} placeholder='내용' />
         </Content>
         <ImageInput
           id='Image-file'
@@ -152,7 +146,7 @@ const UpdatePost = () => {
             height={1.875}
             style={{ marginRight: '2.25rem' }}
           />
-          <Button text='글 삭제' color='delete' onClick={handleDeletePost} width={8} height={1.875} />
+          <Button text='글 삭제' color='delete' onClick={handleOnClickDeletePost} width={8} height={1.875} />
         </ButtonContainer>
       </Form>
     </Wrapper>
