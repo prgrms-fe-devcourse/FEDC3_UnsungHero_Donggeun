@@ -15,7 +15,7 @@ const Logout = () => {
   const userIdContext: IUserId | null = useUserId();
   const navigate = useNavigate();
 
-  const useLogout = () => {
+  const processLogout = () => {
     removeValue();
     removeUserId();
     tokenContextObj?.removeToken();
@@ -23,7 +23,7 @@ const Logout = () => {
     navigate('/');
   };
 
-  return <LogoutButton onClick={useLogout}>LogOut</LogoutButton>;
+  return <LogoutButton onClick={processLogout}>Logout</LogoutButton>;
 };
 
 export default Logout;
