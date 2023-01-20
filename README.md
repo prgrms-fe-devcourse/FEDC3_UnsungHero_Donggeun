@@ -50,37 +50,83 @@
 <br/>
 
 <div align="center">
-  <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FJrbeH%2FbtrWI22M9Ln%2FtXnvzllNrepSOrO7AH1Yk0%2Fimg.png" height="600" width="500"
+  <img src="https://user-images.githubusercontent.com/113018070/213634598-0c8c28cf-36f0-49cc-9533-805545835ad7.png" height="600px" width="650px"
 </div>
 (임시)
 
 <br/>
 <br/>
 
-
-
-
-
-
-
-
-
-
 ## <img src="https://user-images.githubusercontent.com/113018070/213464160-8d2176e2-57ec-4a60-bc95-cd1c7cbbb583.png" width="20px" height="20px"/> Unsung Hero 관련 문서
 
-<br/>
-
-> [언성히어로 Github](https://github.com/prgrms-fe-devcourse/FEDC3_UnsungHero_Donggeun)
-
-> [🎨 Notion 기획서](https://www.notion.so/prgrms/UnsungHero-Project-d7e2e25362ad490b94356b781a45a429)
-
-> [🗒 Notion 회의록](https://www.notion.so/prgrms/a595b2d4fbde464bbf5cb29cf14c62b2?v=78b4706a3f924d19a9af0830ed8c29d1)
-
-> [🗒 Notion 중간 회고록](https://www.notion.so/prgrms/486e3a3821584c72a95954655145306f)
+[언성히어로 Github](https://github.com/prgrms-fe-devcourse/FEDC3_UnsungHero_Donggeun)
+    
+[🎨 Notion 기획서](https://www.notion.so/prgrms/UnsungHero-Project-d7e2e25362ad490b94356b781a45a429)
+    
+[🗒 Notion 회의록](https://www.notion.so/prgrms/a595b2d4fbde464bbf5cb29cf14c62b2?v=78b4706a3f924d19a9af0830ed8c29d1)
+    
+[🗒 Notion 중간 회고록](https://www.notion.so/prgrms/486e3a3821584c72a95954655145306f)
 
 
 <br/>
 
-## <img src=“https://user-images.githubusercontent.com/113018070/213464160-8d2176e2-57ec-4a60-bc95-cd1c7cbbb583.png” width=“20px” height=“20px”/> Unsung Hero 프로젝트 기술스택
+## <img src="https://user-images.githubusercontent.com/113018070/213464160-8d2176e2-57ec-4a60-bc95-cd1c7cbbb583.png" width="20px" height="20px"/> Unsung Hero 기술스택
 
-수정 중
+<table>
+<tr>
+ <td align="center">언어</td>
+ <td>
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=TypeScript&logoColor=ffffff"/>
+ </td>
+</tr>
+<tr>
+ <td align="center">라이브러리</td>
+ <td>
+  <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=ffffff"/>&nbsp  
+ <img src="https://img.shields.io/badge/ReactRouter-bf0f32?style=for-the-badge&logo=ReactRouter&logoColor=ffffff"/>&nbsp
+<img src="https://img.shields.io/badge/styled%20components-DB7093?style=flat-square&logo=styled-components&logoColor=white" height="28px"/>
+&nbsp
+<img src="https://img.shields.io/badge/Axios-6028e0?style=for-the-badge&logo=Axios&logoColor=ffffff"/>&nbsp
+<img src="https://img.shields.io/badge/React Query-FF4154?style=for-the-badge&logo=React Query&logoColor=ffffff"/>&nbsp
+  </td>
+</tr>
+<tr>
+ <td align="center">상태관리</td>
+ <td>
+  <img src="https://img.shields.io/badge/ContextAPI-1678e0?style=for-the-badge&logo=Recoil&logoColor=ffffff"/>&nbsp  
+ </td>
+</tr>
+<tr>
+ <td align="center">패키지</td>
+ <td>
+    <img src="https://img.shields.io/badge/Yarn-2C8EBB?style=for-the-badge&logo=Yarn&logoColor=white"/>&nbsp 
+  </td>
+</tr>
+<tr>
+ <td align="center">Formatter</td>
+ <td>
+  <img src="https://img.shields.io/badge/Prettier-373338?style=for-the-badge&logo=Prettier&logoColor=ffffff"/>&nbsp 
+  <img src="https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=ESLint&logoColor=ffffff"/>&nbsp 
+ </td>
+</tr>
+<tr>
+ <td align="center">배포</td>
+ <td><img src="https://img.shields.io/badge/Netlify-00C7B7?style=for-the-badge&logo=Netlify&logoColor=white"/>&nbsp
+</tr>
+<tr>
+ <td align="center">협업툴</td>
+ <td>
+    <img src="https://img.shields.io/badge/Notion-5a5d69?style=for-the-badge&logo=Notion&logoColor=white"/>&nbsp
+    <img src="https://img.shields.io/badge/Discord-4263f5?style=for-the-badge&logo=Discord&logoColor=white"/>&nbsp 
+    <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=GitHub&logoColor=white"/>&nbsp 
+    <img src="https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=Slack&logoColor=white"/>&nbsp 
+    <img src="https://img.shields.io/badge/Figma-d90f42?style=for-the-badge&logo=Figma&logoColor=white"/>&nbsp  
+ </td>
+</tr>
+<tr>
+ <td align="center">IDE</td>
+ <td>
+    <img src="https://img.shields.io/badge/VSCode-007ACC?style=for-the-badge&logo=Visual%20Studio%20Code&logoColor=white"/>&nbsp
+</tr>
+</table>
+
