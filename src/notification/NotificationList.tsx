@@ -29,7 +29,12 @@ const NotificationList = () => {
         .get(`${END_POINT}/notifications`, {
           headers: { Authorization: `bearer ${tokenContextObj?.token}` },
         })
-        .then(({ data }) => data);
+        .then(({ data }) => {
+          const returnData = data.filter(
+            (item: INotification) => !(item.follow && item.follow.user === item.author?._id)
+          );
+          return returnData;
+        });
     },
     {
       refetchOnMount: true,

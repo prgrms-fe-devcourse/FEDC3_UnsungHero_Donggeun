@@ -18,7 +18,9 @@ export interface INotification {
   author?: IUser;
   userId?: IUser | string;
   postId?: string | null;
-  follow?: string;
+  follow?: {
+    user: string;
+  };
   comment?: IComment;
   like?: ILike;
   post?: string;
