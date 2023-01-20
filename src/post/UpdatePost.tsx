@@ -114,7 +114,7 @@ const UpdatePost = () => {
         e.currentTarget.value = '';
         setImage({});
         setPreviewImage('');
-        return alert('첨부파일 사이즈는 5MB 이내로 등로 가능합니다.');
+        return alert('첨부파일 사이즈는 5MB 이내로 등록 가능합니다.');
       }
 
       const reader = new FileReader();
