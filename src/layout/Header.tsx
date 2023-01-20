@@ -15,7 +15,7 @@ const Header = () => {
   const userIdContext: IUserId | null = useUserId();
   const id = userIdContext?.userId;
   const navigate = useNavigate();
-  const handleMovePage = (page: string, id?: string | null) => {
+  const handleClickMovePage = (page: string, id?: string | null) => {
     id ? navigate(`/${page}/${id}`) : navigate(`/${page}`);
   };
 
@@ -35,11 +35,11 @@ const Header = () => {
               <Logout />
               <NotificationWarpper>
                 <NotificationStatus />
-                <NotificationButton onClick={() => handleMovePage('notifications')}>
+                <NotificationButton onClick={() => handleClickMovePage('notifications')}>
                   <AiOutlineBell size={30} />
                 </NotificationButton>
               </NotificationWarpper>
-              <UserButton onClick={() => handleMovePage('user', id)}>
+              <UserButton onClick={() => handleClickMovePage('user', id)}>
                 <AiOutlineUser size={30} />
               </UserButton>
             </>
@@ -48,7 +48,7 @@ const Header = () => {
               <Button
                 text='SignUp'
                 color='default'
-                onClick={() => handleMovePage('signup')}
+                onClick={() => handleClickMovePage('signup')}
                 width={6.25}
                 height={2}
                 style={{ border: `2px solid #ffffff`, marginRight: '0.625rem' }}
@@ -56,7 +56,7 @@ const Header = () => {
               <Button
                 text='Login'
                 color='white'
-                onClick={() => handleMovePage('login')}
+                onClick={() => handleClickMovePage('login')}
                 width={6.25}
                 height={2}
               />
