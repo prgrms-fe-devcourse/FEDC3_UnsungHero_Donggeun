@@ -66,7 +66,7 @@ const Login = () => {
               {...register('email', {
                 required: '이메일 입력은 필수 입니다',
                 pattern: {
-                  value: /\S+@\S+\.\S+/,
+                  value: /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-z]{2,3}$/,
                   message: '이메일 형식에 맞지 않습니다.',
                 },
               })}
@@ -82,9 +82,9 @@ const Login = () => {
               id='password'
               {...register('password', {
                 required: '비밀번호 입력은 필수 입니다',
-                minLength: {
-                  value: 7,
-                  message: '7자리 이상의 비밀번호를 입력해주세요',
+                pattern: {
+                  value: /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/,
+                  message: '비밀번호는 영어, 숫자, 특수문자를 포함한 8-15글자로 입력해야 합니다.',
                 },
               })}
             />
