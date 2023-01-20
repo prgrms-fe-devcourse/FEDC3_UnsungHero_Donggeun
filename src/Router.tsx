@@ -14,7 +14,7 @@ import NotificationList from './notification/NotificationList';
 import Header from './layout/Header';
 import ErrorBoundary from './api/ErrorBoundary';
 import NotFound from './NotFound';
-import ScrollToTop from './Scroll';
+import ScrollToTop from './common/Scroll';
 
 function Router() {
   return (
