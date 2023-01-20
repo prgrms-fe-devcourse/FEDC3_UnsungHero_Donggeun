@@ -31,7 +31,7 @@ const UpdatePost = () => {
     localStorage.setItem(`tempContentInUpdatePost${postId}`, e.target.value);
   };
 
-  const { data: updatePost } = useQuery<IPost>('updatePost', async () => {
+  const { data: updatePost } = useQuery<IPost>([postId], async () => {
     return axios.get(`${END_POINT}/posts/${postId}`).then(({ data }) => data);
   });
 
@@ -54,7 +54,6 @@ const UpdatePost = () => {
       }
 
       setChannelId(updatePost.channel._id);
-
       setImage(updatePost.image as string);
     }
   }, [updatePost]);
