@@ -58,13 +58,14 @@ const User = () => {
       {isLoading ? (
         <>
           <UserWrapper>
-            <Skeleton.Circle size={90} />
-            <InfoWrapper>
-              <UserName>{userInfo.fullName}</UserName>
-            </InfoWrapper>
+            <AvatarSkeleton>
+              <Skeleton.Circle size={90} />
+            </AvatarSkeleton>
           </UserWrapper>
           <List>
-            <Skeleton.Box width={650} height={400} />
+            <ListSkeleton>
+              <Skeleton.Box width={600} height={400} />
+            </ListSkeleton>
           </List>
         </>
       ) : (
@@ -177,4 +178,13 @@ const Likes = styled.div`
   & img {
     margin-right: 0.3125rem;
   }
+`;
+
+const AvatarSkeleton = styled.div`
+  position: relative;
+  top: -1.875rem;
+`;
+
+const ListSkeleton = styled.div`
+  margin: 2rem;
 `;
