@@ -34,8 +34,8 @@ const NotificationStatus = () => {
 
   const checkNotificationStatus = () => {
     notificationStatusList.includes(false)
-      ? notificationStatusContextObj?.setNotification(true)
-      : notificationStatusContextObj?.setNotification(false);
+      ? notificationStatusContextObj?.changeNotificationStatus(true)
+      : notificationStatusContextObj?.changeNotificationStatus(false);
   };
 
   useEffect(() => {

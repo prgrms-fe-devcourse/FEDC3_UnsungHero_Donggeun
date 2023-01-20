@@ -30,5 +30,5 @@ export interface INotification {
 }
 export interface INotificationStatus {
   notificationStatus: boolean;
-  setNotification: (bool: boolean) => void;
+  changeNotificationStatus: (bool: boolean) => void;
 }

@@ -40,7 +40,7 @@ const NotificationListItem = ({ _id, seen, comment, like, follow, author, post: 
     if (follow) return <SlUserFollow className='logo' />;
   };
 
-  const navigatePage = () => {
+  const movePage = () => {
     if (!commentLikeFollowCheeck) return;
 
     if (comment || like) {
@@ -52,7 +52,7 @@ const NotificationListItem = ({ _id, seen, comment, like, follow, author, post: 
   };
 
   return (
-    <NotificationItem onClick={navigatePage} seen={seen} key={_id}>
+    <NotificationItem onClick={movePage} seen={seen} key={_id}>
       <NotificationIntroduceContainer>
         <Avatar src={'https://ifh.cc/g/35RDD6.png'} width={60} height={60} />
         <NotificationIntroduce>

@@ -39,7 +39,7 @@ const NotificationList = () => {
 
   const navigator = useNavigate();
 
-  const confirmNotificationlist = async () => {
+  const viewAllNotificationList = async () => {
     if (!notificationStatusContextObj?.notificationStatus) return;
 
     await axios
@@ -58,7 +58,7 @@ const NotificationList = () => {
   const updateNotificationStatus = () => {
     const notificationListData = notificationList?.map(({ seen }) => seen);
     const notificationState = notificationListData?.includes(false);
-    notificationStatusContextObj?.setNotification(!!notificationState);
+    notificationStatusContextObj?.changeNotificationStatus(!!notificationState);
   };
 
   useEffect(() => {
@@ -116,7 +116,7 @@ const NotificationList = () => {
           color={'default'}
           width={12.5}
           height={2.5}
-          onClick={confirmNotificationlist}
+          onClick={viewAllNotificationList}
         />
         <Button
           text={'실시간 알람 확인'}

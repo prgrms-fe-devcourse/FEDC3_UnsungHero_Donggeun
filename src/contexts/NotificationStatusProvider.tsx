@@ -8,10 +8,10 @@ export const useNotificationStatus = () => useContext(notificationStatusContext)
 const NotificationStatusProvider = ({ children }: { children: React.ReactNode }) => {
   const [notificationStatus, setNotificationStatus] = useState(false);
 
-  const setNotification = (bool: boolean) => setNotificationStatus(bool);
+  const changeNotificationStatus = (bool: boolean) => setNotificationStatus(bool);
 
   return (
-    <notificationStatusContext.Provider value={{ notificationStatus, setNotification }}>
+    <notificationStatusContext.Provider value={{ notificationStatus, changeNotificationStatus }}>
       {children}
     </notificationStatusContext.Provider>
   );
