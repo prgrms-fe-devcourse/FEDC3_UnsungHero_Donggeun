@@ -60,13 +60,14 @@ const PostListContainer = ({
         const { fullName } = postInfo.author; //fullName이 아니라 userName이 닉네임인 경우 변경해야함
         const postTitle = IsJsonString(title) ? JSON.parse(title).title : title;
         const postContent = IsJsonString(title) ? JSON.parse(title).content : '';
+        const searchValue = inputSearchValue.trim();
 
         if (selectedSearchOption === '제목') {
-          return postTitle.includes(inputSearchValue);
+          return postTitle.includes(searchValue);
         } else if (selectedSearchOption === '제목+내용') {
-          return postTitle.includes(inputSearchValue) || postContent.includes(inputSearchValue);
+          return postTitle.includes(searchValue) || postContent.includes(searchValue);
         } else if (selectedSearchOption === '작성자') {
-          return fullName.includes(inputSearchValue);
+          return fullName.includes(searchValue);
         } else {
           return postsInfo;
         }

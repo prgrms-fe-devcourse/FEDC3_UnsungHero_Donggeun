@@ -62,8 +62,8 @@ const PostList = ({
   };
 
   const highlightIncludedText = (content: string, searchedValue: string) => {
-    const title = content.toLowerCase();
-    const searchValue = searchedValue.toLowerCase();
+    const title = content.toLowerCase().trim();
+    const searchValue = searchedValue.toLowerCase().trim();
     if (searchValue !== '' && title.includes(searchValue)) {
       const matchText = content.split(new RegExp(`(${searchValue})`, 'gi'));
       return (
