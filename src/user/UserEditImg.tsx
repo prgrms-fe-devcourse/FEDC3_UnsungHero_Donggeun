@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Avatar } from '../common';
-import useFollow from '../follow/useFollow';
+import useFollow from '../hooks/useFollow';
 
 const COVER_IMG_URL = 'https://ifh.cc/g/ZSypny.png';
 const PROFIE_IMG_URL = 'https://ifh.cc/g/35RDD6.png';

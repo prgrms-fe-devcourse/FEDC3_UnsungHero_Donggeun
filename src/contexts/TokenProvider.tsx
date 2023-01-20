@@ -1,5 +1,5 @@
 import React, { useState, createContext, useContext } from 'react';
-import useLocalStorage from '../auth/useLocalStorage';
+import useLocalStorage from '../hooks/useLocalStorage';
 import { IToken } from '../types/token';
 import { IUserId } from '../types/useId';
 

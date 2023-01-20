@@ -4,7 +4,7 @@ import { useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { Avatar, Pagination } from '../common';
-import useFollow from '../follow/useFollow';
+import useFollow from '../hooks/useFollow';
 import { IUser } from '../types/user';
 import { END_POINT } from '../api/apiAddress';
 

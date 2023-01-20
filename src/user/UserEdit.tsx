@@ -5,9 +5,9 @@ import UserEditImg from './UserEditImg';
 import useMutation from '../api/useMutation';
 import styled from 'styled-components';
 import { Button } from '../common';
-import useFollow from '../follow/useFollow';
+import useFollow from '../hooks/useFollow';
 import { END_POINT } from '../api/apiAddress';
-import useOverlapConfirm from '../auth/useOverlapConfirm';
+import useOverlapConfirm from '../hooks/useOverlapConfirm';
 import Loading from '../api/Loading';
 
 interface IFormValue {

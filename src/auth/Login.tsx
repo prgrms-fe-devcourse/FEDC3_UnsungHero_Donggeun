@@ -1,5 +1,5 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
-import useLocalStorage from './useLocalStorage';
+import useLocalStorage from '../hooks/useLocalStorage';
 import { useToken, useUserId } from '../contexts/TokenProvider';
 import { useNavigate } from 'react-router-dom';
 import { IToken } from '../types/token';

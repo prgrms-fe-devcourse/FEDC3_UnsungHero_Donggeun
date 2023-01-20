@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { IPost } from '../types/post';
 import UserPosts from './UserPosts';
 import { useUserId } from '../contexts/TokenProvider';
-import useFollow from '../follow/useFollow';
+import useFollow from '../hooks/useFollow';
 import { Avatar, Button } from '../common';
 import Skeleton from '../common/Skeleton';
 
