@@ -51,10 +51,12 @@ const MostLikesPosts = ({ postsInfo }: IMostLikesPostsProps) => {
         return 0;
       }
     })
-      .slice(0, 4)
       .filter((postInfo) => {
-        return postInfo.likes.length !== 0;
-      });
+        if (postInfo.channel.name !== '테스트') {
+          return postInfo.likes.length !== 0;
+        }
+      })
+      .slice(0, 4);
 
     return filteredMostLikesPosts;
   };

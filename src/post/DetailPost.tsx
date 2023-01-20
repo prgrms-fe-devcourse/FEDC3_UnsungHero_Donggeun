@@ -20,13 +20,9 @@ interface Iauthor {
   _id: string;
 }
 
-// export interface ITextarea {
-//   scrollHeight: any;
-// }
-
 const DetailPost = () => {
   const navigate = useNavigate();
-  // const textareaRef = useRef<HTMLTextAreaElement>(null);
+
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [image, setImage] = useState('');

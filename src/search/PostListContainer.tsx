@@ -54,19 +54,22 @@ const PostListContainer = ({
 
   const filterPosts = () => {
     const filteredPosts = postsInfo.filter((postInfo) => {
-      const { title } = postInfo;
-      const { fullName } = postInfo.author; //fullName이 아니라 userName이 닉네임인 경우 변경해야함
-      const postTitle = IsJsonString(title) ? JSON.parse(title).title : title;
-      const postContent = IsJsonString(title) ? JSON.parse(title).content : '';
+      // 테스트 채널 제외하기.
+      if (postInfo.channel.name !== '테스트') {
+        const { title } = postInfo;
+        const { fullName } = postInfo.author; //fullName이 아니라 userName이 닉네임인 경우 변경해야함
+        const postTitle = IsJsonString(title) ? JSON.parse(title).title : title;
+        const postContent = IsJsonString(title) ? JSON.parse(title).content : '';
 
-      if (selectedSearchOption === '제목') {
-        return postTitle.includes(inputSearchValue);
-      } else if (selectedSearchOption === '제목+내용') {
-        return postTitle.includes(inputSearchValue) || postContent.includes(inputSearchValue);
-      } else if (selectedSearchOption === '작성자') {
-        return fullName.includes(inputSearchValue);
-      } else {
-        return postsInfo;
+        if (selectedSearchOption === '제목') {
+          return postTitle.includes(inputSearchValue);
+        } else if (selectedSearchOption === '제목+내용') {
+          return postTitle.includes(inputSearchValue) || postContent.includes(inputSearchValue);
+        } else if (selectedSearchOption === '작성자') {
+          return fullName.includes(inputSearchValue);
+        } else {
+          return postsInfo;
+        }
       }
     });
 
