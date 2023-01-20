@@ -117,9 +117,9 @@ const UserEdit = () => {
           <Input
             type='password'
             {...register('password', {
-              minLength: {
-                value: 7,
-                message: '7자리 이상의 비밀번호를 입력해주세요.',
+              pattern: {
+                value: /^.*(?=^.{8,15}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/,
+                message: '비밀번호는 영어, 숫자, 특수문자를 포함한 8-15글자로 입력해야 합니다.',
               },
             })}
           />
@@ -186,4 +186,5 @@ const Error = styled.div`
   height: 1rem;
   color: ${({ theme }) => theme.colors.alert};
   width: 24.375rem;
+  font-size: 0.75rem;
 `;
