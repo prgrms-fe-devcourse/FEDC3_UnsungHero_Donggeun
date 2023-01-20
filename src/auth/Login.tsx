@@ -1,5 +1,4 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
-import axios from 'axios';
 import useLocalStorage from './useLocalStorage';
 import { useToken, useUserId } from '../contexts/TokenProvider';
 import { useNavigate } from 'react-router-dom';

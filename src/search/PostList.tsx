@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { IsJsonString } from './isJsonString';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useToken } from '../contexts/TokenProvider';
 import { Avatar } from '../common';
 

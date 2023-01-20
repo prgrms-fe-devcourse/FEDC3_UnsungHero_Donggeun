@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import ErrorBoundary from '../api/ErrorBoundary';
@@ -20,13 +20,13 @@ interface Iauthor {
   _id: string;
 }
 
-export interface ITextarea {
-  scrollHeight: any;
-}
+// export interface ITextarea {
+//   scrollHeight: any;
+// }
 
 const DetailPost = () => {
   const navigate = useNavigate();
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  // const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [image, setImage] = useState('');
