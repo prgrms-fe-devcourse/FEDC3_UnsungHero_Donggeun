@@ -6,6 +6,7 @@ import useMutation from '../api/useMutation';
 import { Button } from '../common';
 import { END_POINT } from '../api/apiAddress';
 import Loading from '../api/Loading';
+import { maxImageSize } from '../api/constValue';
 
 export interface ILoading {
   isLoading: boolean;
@@ -93,9 +94,18 @@ function CreatePost() {
     });
   };
 
+  // updatePost에 있는 함수와 동일함. 추후에 파일로 따로 뺴면 좋을듯.
   const handleOnClickUploadImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.currentTarget.files) {
       const file = e.currentTarget.files[0];
+      const fileSize = file.size;
+
+      if (fileSize > maxImageSize) {
+        e.currentTarget.value = '';
+        setImage({});
+        setPreviewImage('');
+        return alert('첨부파일 사이즈는 5MB 이내로 등록 가능합니다.');
+      }
 
       const reader = new FileReader();
       reader.readAsDataURL(file);
