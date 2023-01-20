@@ -22,9 +22,14 @@ const Channels = () => {
   const handleClickMoveChannel = (id: string) => {
     navigate(`/channel/${id}`);
   };
-  const hobbyChannel = channelData?.filter((channel: IChannel) => channel.description === '취미');
+
+  // 테스트 채널 description이 '취미' 라서 테스트 채널 id를 제외함.
+  const hobbyChannel = channelData?.filter(
+    (channel: IChannel) => channel.description === '취미' && channel._id !== '63c775b0a989ba6d232518bf'
+  );
   const familyChannel = channelData?.filter((channel: IChannel) => channel.description === '가족');
   const etcChannel = channelData?.filter((channel: IChannel) => channel.description === '기타');
+
   return (
     <Wrapper>
       <EntireViewSidebar>
