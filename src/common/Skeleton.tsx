@@ -59,7 +59,7 @@ const Box = styled(Base)<IBox>`
 
 function Paragraph({ line = 3, ...props }) {
   return (
-    <div {...props}>
+    <div {...props} style={{ ...props.style }}>
       {Array.from(Array(line), (_, index) =>
         index !== line - 1 ? (
           <Box width='100%' height={16} key={index} />

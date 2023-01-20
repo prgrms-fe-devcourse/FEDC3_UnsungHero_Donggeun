@@ -196,6 +196,7 @@ const Textarea = styled.textarea`
   resize: none;
   border: none;
   width: 100%;
+  min-height: 32.5rem;
   font-size: ${({ theme }) => theme.fontSize.medium};
   &:focus {
     outline: none;

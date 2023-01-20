@@ -96,8 +96,12 @@ const DetailPost = () => {
               <Author>
                 <Skeleton.Circle size={60} />
               </Author>
-              <Skeleton.Box width={600} height={400} />
-              <Skeleton.Paragraph line={3} />
+              <Content>
+                <ImageWarpper>
+                  <Skeleton.Box width={600} height={300} />
+                </ImageWarpper>
+                <Skeleton.Paragraph line={3} style={{ marginTop: '20px' }} />
+              </Content>
             </>
           ) : (
             <>
