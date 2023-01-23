@@ -16,7 +16,6 @@ import ErrorBoundary from './api/ErrorBoundary';
 import NotFound from './NotFound';
 import ScrollToTop from './common/Scroll';
 import Navbar from './common/Navbar';
-import InfiniteScroll from './InfiniteScroll';
 
 function Router() {
   return (
@@ -38,7 +37,6 @@ function Router() {
             <Route path='/post/create/:channelId' element={<CreatePost />} />
             <Route path='/channel/:channelId' element={<Search />} />
             <Route path='/userEdit/:id' element={<UserEdit />} />
-            <Route path='/infinite' element={<InfiniteScroll />} />
           </Route>
           <Route path='/*' element={<NotFound />} />
         </Routes>
