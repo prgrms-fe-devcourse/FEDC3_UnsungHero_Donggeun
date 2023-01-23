@@ -5,6 +5,7 @@ import { createComment, deleteComment } from './api';
 import { Avatar, Button } from '../common';
 import { useNavigate } from 'react-router-dom';
 import { IUser } from '../types/user';
+import { useUserId } from '../contexts/TokenProvider';
 
 interface ICommentProps {
   commentList?: IComment[];
@@ -16,6 +17,7 @@ interface ICommentProps {
 
 const Comment = ({ commentList, userId, postId, fetchData }: ICommentProps) => {
   const [value, setValue] = useState('');
+  const [anonymous, setAnonymous] = useState<boolean>(false);
 
   const handleInputValue = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (e.target.value.length > 300) {
@@ -28,7 +30,12 @@ const Comment = ({ commentList, userId, postId, fetchData }: ICommentProps) => {
   const handleSubmitInput = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    await createComment(value, userId, postId);
+    const newComment = JSON.stringify({
+      comment: value,
+      anonymous: anonymous,
+    });
+
+    await createComment(newComment, userId, postId);
     fetchData();
 
     setValue('');
@@ -46,10 +53,39 @@ const Comment = ({ commentList, userId, postId, fetchData }: ICommentProps) => {
     navigate(`/user/${author._id}`);
   };
 
+  const temp = () => {
+    console.log('익명!');
+    setAnonymous(!anonymous);
+  };
+
+  const IsJSON = (e: any) => {
+    try {
+      const result = JSON.parse(e);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  const loginedUser = useUserId()?.userId;
+  const IsAuthore = (e: any) => {
+    if (loginedUser === e._id) {
+      console.log('본인');
+      return true;
+    } else if (loginedUser === userId) {
+      return true;
+    } else {
+      console.log('본인 아님');
+      return false;
+    }
+  };
+
   return (
     <>
       <CommentForm onSubmit={(e) => handleSubmitInput(e)}>
         <TextArea placeholder='댓글을 입력해주세요' onChange={handleInputValue} value={value} rows={3} />
+        익명
+        <input type='checkbox' onChange={temp} />
         <Button
           text='전송'
           color='white'
@@ -63,14 +99,34 @@ const Comment = ({ commentList, userId, postId, fetchData }: ICommentProps) => {
         {commentList && commentList?.length > 0 ? (
           commentList?.map(({ _id, author, comment }: IComment) => (
             <Li key={_id}>
-              <AuthorContainer onClick={() => handleOnClickMoveToUserPage(author)}>
-                <Avatar src={author.image} width={60} height={60} />
-                <AuthorName>{author.fullName}</AuthorName>
-              </AuthorContainer>
-              <CommentContainer>
-                <PCmoment>{comment}</PCmoment>
-                <ButtonX onClick={() => handleClickButton(_id)}>X</ButtonX>
-              </CommentContainer>
+              {IsJSON(comment) ? (
+                <>
+                  <AuthorContainer onClick={() => handleOnClickMoveToUserPage(author)}>
+                    <Avatar src={author.image} width={60} height={60} />
+                    <AuthorName>{author.fullName}</AuthorName>
+                  </AuthorContainer>
+                  <CommentContainer>
+                    {IsAuthore(author) ? (
+                      <PCmoment>{JSON.parse(comment).comment}</PCmoment>
+                    ) : (
+                      <PCmoment>비밀 댓글입니다</PCmoment>
+                    )}
+                    {/* <PCmoment>{IsAuthore(author) ? <h1>본인</h1> : <h2>아님</h2>}</PCmoment> */}
+                    <ButtonX onClick={() => handleClickButton(_id)}>X</ButtonX>
+                  </CommentContainer>
+                </>
+              ) : (
+                <>
+                  <AuthorContainer onClick={() => handleOnClickMoveToUserPage(author)}>
+                    <Avatar src={author.image} width={60} height={60} />
+                    <AuthorName>{author.fullName}</AuthorName>
+                  </AuthorContainer>
+                  <CommentContainer>
+                    <PCmoment>{comment}</PCmoment>
+                    <ButtonX onClick={() => handleClickButton(_id)}>X</ButtonX>
+                  </CommentContainer>
+                </>
+              )}
             </Li>
           ))
         ) : (
