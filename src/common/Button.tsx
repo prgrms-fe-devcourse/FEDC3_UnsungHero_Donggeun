@@ -24,6 +24,7 @@ const Button = ({ text, color, onClick, width, height, disabled, ...props }: IPr
       height={height}
       disabled={disabled}
       style={{ ...props.style }}
+      {...props}
     >
       {text}
     </Btn>
