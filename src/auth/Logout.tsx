@@ -23,12 +23,12 @@ const Logout = () => {
     navigate('/');
   };
 
-  return <LogoutButton onClick={processLogout}>Logout</LogoutButton>;
+  return <Button onClick={processLogout}>Logout</Button>;
 };
 
 export default Logout;
 
-const LogoutButton = styled.button`
+export const Button = styled.button`
   cursor: pointer;
   background-color: transparent;
   border: none;

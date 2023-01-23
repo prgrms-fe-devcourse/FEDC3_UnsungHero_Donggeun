@@ -15,7 +15,6 @@ import Header from './layout/Header';
 import ErrorBoundary from './api/ErrorBoundary';
 import NotFound from './NotFound';
 import ScrollToTop from './common/Scroll';
-import Navbar from './common/Navbar';
 import InfiniteScroll from './InfiniteScroll';
 
 function Router() {
@@ -44,7 +43,6 @@ function Router() {
           <Route path='/*' element={<NotFound />} />
         </Routes>
       </ErrorBoundary>
-      <Navbar />
     </BrowserRouter>
   );
 }
