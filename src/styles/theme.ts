@@ -29,10 +29,16 @@ const shadow = {
   boxShadow: '1px 1px 4px rgba(0, 0, 0, 0.2), -1px -1px 4px rgba(0, 0, 0, 0.2)',
 };
 
+const media = {
+  moblie: 768,
+  tablet: 1024,
+};
+
 const theme: DefaultTheme = {
   colors,
   fontSize,
   shadow,
+  media,
 };
 
 export default theme;

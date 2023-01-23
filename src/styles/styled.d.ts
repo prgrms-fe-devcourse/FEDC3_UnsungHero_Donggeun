@@ -30,5 +30,10 @@ declare module 'styled-components' {
     shadow: {
       boxShadow: string;
     };
+
+    media: {
+      moblie: number;
+      tablet: number;
+    };
   }
 }
