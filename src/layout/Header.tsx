@@ -24,7 +24,7 @@ const Header = () => {
       <HeaderWrapper>
         <Logo
           height={64}
-          src={process.env.PUBLIC_URL + '/logo.png'}
+          src={process.env.PUBLIC_URL + '/logo.svg'}
           onClick={() => navigate('/')}
           alt='로고'
         />
@@ -32,7 +32,9 @@ const Header = () => {
         <ButtonWrapper>
           {userLogin ? (
             <>
-              <Logout />
+              <LogOutWrapper>
+                <Logout />
+              </LogOutWrapper>
               <NotificationWarpper>
                 <NotificationStatus />
                 <NotificationButton onClick={() => handleClickMovePage('notifications')}>
@@ -51,6 +53,7 @@ const Header = () => {
                 onClick={() => handleClickMovePage('signup')}
                 width={6.25}
                 height={2}
+                className='button'
                 style={{ border: `2px solid #ffffff`, marginRight: '0.625rem' }}
               />
               <Button
@@ -59,7 +62,11 @@ const Header = () => {
                 onClick={() => handleClickMovePage('login')}
                 width={6.25}
                 height={2}
+                className='button'
               />
+              <UserButton className='mobileUserBtn' onClick={() => handleClickMovePage('login')}>
+                <AiOutlineUser size={30} />
+              </UserButton>
             </>
           )}
         </ButtonWrapper>
@@ -92,30 +99,50 @@ const HeaderWrapper = styled.header`
 const ButtonWrapper = styled.div`
   display: flex;
   align-items: center;
+  .mobileUserBtn {
+    display: none;
+    @media (max-width: ${({ theme }) => theme.media.moblie}) {
+      display: block;
+    }
+  }
+  .button {
+    @media (max-width: ${({ theme }) => theme.media.moblie}) {
+      display: none;
+    }
+  }
 `;
 
 const Logo = styled.img`
   cursor: pointer;
-  height: 64px;
+  height: 4rem;
   width: auto;
   padding: 0.1875rem;
+  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+    height: 3.5rem;
+  }
 `;
 
 const UserButton = styled.button`
   cursor: pointer;
   border-radius: 50%;
   border: none;
-  padding: 6px;
+  padding: 0.375rem;
   width: 2.625rem;
   height: 2.625rem;
   background-color: ${({ theme }) => theme.colors.white};
   &:hover {
     background-color: ${({ theme }) => theme.colors.grayHover};
   }
+  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+    margin-right: 0.625rem;
+  }
 `;
 
 const NotificationButton = styled(UserButton)`
   margin-right: 0.625rem;
+  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+    display: none;
+  }
 `;
 
 const NotificationWarpper = styled.div`
@@ -123,5 +150,14 @@ const NotificationWarpper = styled.div`
 `;
 
 const CatchImg = styled.img`
-  padding-left: 80px;
+  padding-left: 5rem;
+  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+    display: none;
+  }
+`;
+
+const LogOutWrapper = styled.div`
+  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+    display: none;
+  }
 `;

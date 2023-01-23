@@ -7,7 +7,7 @@ const Header = () => {
     <Wrapper>
       <HeaderWrapper>
         <div onClick={() => navigate('/')}>
-          <Logo height={64} width='auto' src={process.env.PUBLIC_URL + '/logo.png'} alt='로고' />
+          <Logo height={64} width='auto' src={process.env.PUBLIC_URL + '/logo.svg'} alt='로고' />
         </div>
       </HeaderWrapper>
     </Wrapper>
