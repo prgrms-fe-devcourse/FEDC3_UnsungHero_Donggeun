@@ -75,7 +75,6 @@ const MostLikesPosts = ({ postsInfo }: IMostLikesPostsProps) => {
   };
 
   const pathname = useLocation().pathname;
-  console.log(typeof pathname);
   const tokenObject = useToken();
   const token = tokenObject?.token;
 
@@ -127,7 +126,7 @@ export default MostLikesPosts;
 const WholeWrapper = styled.div<IPathname>`
   height: auto;
   display: flex;
-  width: 45.3125rem;
+  width: 100%;
   flex-direction: column;
   margin-top: 1.875rem;
 
@@ -145,7 +144,8 @@ const WholeWrapper = styled.div<IPathname>`
 
   @media (max-width: ${({ theme }) => theme.media.moblie}) {
     margin-top: 0px;
-    display: ${(pathname) => `${pathname?.pathname?.includes('search') ? 'none' : 'block'}`};
+    width: 100%;
+    display: ${(pathname) => `${pathname?.pathname?.includes('search') ? 'none' : 'flex'}`};
   }
 `;
 
@@ -171,7 +171,7 @@ const BestPostWrapper = styled.li`
     .bestPostTitle {
       font-size: 1.125rem;
       font-weight: 500;
-      width: 600px;
+      /* width: 600px; */
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;

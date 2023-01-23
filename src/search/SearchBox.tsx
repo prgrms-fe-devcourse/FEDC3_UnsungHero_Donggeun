@@ -72,13 +72,14 @@ const SearchBoxForm = styled.form<IPathname>`
   margin: 2rem 0;
 
   @media (max-width: ${({ theme }) => theme.media.moblie}) {
-    display: ${(pathname) => `${pathname?.pathname?.includes('search') ? 'block' : 'none'}`};
+    display: ${(pathname) => `${pathname?.pathname?.includes('search') ? 'flex' : 'none'}`};
   }
 `;
 
 const SearchBoxSelect = styled.select`
   cursor: pointer;
   width: 8rem;
+  /* width: 100%; */
   padding: 0.625rem;
   font-family: inherit;
   border-radius: 10%;
@@ -98,8 +99,8 @@ const SearchBoxSelect = styled.select`
   }
 
   @media (max-width: ${({ theme }) => theme.media.moblie}) {
-    width: 4rem;
-    margin-right: 0px;
+    margin-right: 10px;
+    width: 20%;
   }
 `;
 
@@ -115,9 +116,6 @@ const SearchBoxInput = styled.input`
   border-bottom-left-radius: 0.3125rem;
   &::placeholder {
     font-size: 1rem;
-  }
-  @media (max-width: ${({ theme }) => theme.media.moblie}) {
-    width: 50%;
   }
 `;
 

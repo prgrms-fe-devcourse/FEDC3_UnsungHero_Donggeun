@@ -27,6 +27,7 @@ const Main = styled.div`
 
   @media (max-width: ${({ theme }) => theme.media.moblie}) {
     margin-left: 0px;
+    /* width: 100%; */
   }
 `;
 
