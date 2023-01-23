@@ -56,7 +56,7 @@ const PostList = ({
 
   const selectPostsChannelTitle = (channelId: string | undefined) => {
     let PostsChannelTitle = '';
-    if (!channelId) PostsChannelTitle = '전체';
+    if (!channelId || channelId === 'undefined') PostsChannelTitle = '전체';
     else PostsChannelTitle = channelName as string;
 
     return PostsChannelTitle;

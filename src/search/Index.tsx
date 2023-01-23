@@ -30,11 +30,19 @@ const Search = () => {
 
   const getSpecificPostsList = async () => {
     setIsLoading(true);
-    axios.get(`${END_POINT}/posts/channel/${channelId}`).then((response) => {
-      const { data } = response;
-      setSpecificPostData(data);
-      setIsLoading(false);
-    });
+    if (channelId !== 'undefined') {
+      axios.get(`${END_POINT}/posts/channel/${channelId}`).then((response) => {
+        const { data } = response;
+        setSpecificPostData(data);
+        setIsLoading(false);
+      });
+    } else {
+      axios.get(`${END_POINT}/posts`).then((response) => {
+        const { data } = response;
+        setSpecificPostData(data);
+        setIsLoading(false);
+      });
+    }
   };
 
   useEffect(() => {

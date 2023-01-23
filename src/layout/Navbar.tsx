@@ -37,6 +37,10 @@ const Navbar = ({ menuOpen, setMenuOpen }: IProps) => {
     navigator(page);
   };
 
+  const moveSearchPage = (id: string | undefined) => {
+    movePage(`/search/${id}`);
+  };
+
   return (
     <NavContainer>
       <NavContainerItem
@@ -47,7 +51,7 @@ const Navbar = ({ menuOpen, setMenuOpen }: IProps) => {
         <GiHamburgerMenu className='menuIcon' />
       </NavContainerItem>
       <NavContainerItem>
-        <FiSearch className='menuIcon' onClick={() => movePage(`/search/${channelId}`)} />
+        <FiSearch className='menuIcon' onClick={() => moveSearchPage(channelId)} />
       </NavContainerItem>
       {itemListObj.map((item) => (
         <NavContainerItem onClick={() => movePage(item.movePage)} key={item.id}>
