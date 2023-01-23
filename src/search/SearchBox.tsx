@@ -1,6 +1,10 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
+interface IPathname {
+  pathname: string;
+}
 interface IsearchBoxProps {
   setSelectedSearchOption: (value: string) => void;
   setInputSearchValue: (value: string) => void;
@@ -34,8 +38,10 @@ const SearchBox = ({ setSelectedSearchOption, setInputSearchValue, currentChanne
     [inputValue, selectedOption, currentChannelId]
   );
 
+  const pathname = useLocation().pathname;
+
   return (
-    <SearchBoxForm onSubmit={handleSubmitForm}>
+    <SearchBoxForm onSubmit={handleSubmitForm} pathname={pathname}>
       <SearchBoxSelect onChange={handleChangeSelect} value={selectedOption}>
         <option>제목</option>
         <option>제목+내용</option>
@@ -59,16 +65,21 @@ const SearchBox = ({ setSelectedSearchOption, setInputSearchValue, currentChanne
 
 export default SearchBox;
 
-const SearchBoxForm = styled.form`
+const SearchBoxForm = styled.form<IPathname>`
   display: flex;
   justify-content: center;
   width: 45.3125rem;
   margin: 2rem 0;
+
+  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+    display: ${(pathname) => `${pathname?.pathname?.includes('search') ? 'flex' : 'none'}`};
+  }
 `;
 
 const SearchBoxSelect = styled.select`
   cursor: pointer;
   width: 8rem;
+  /* width: 100%; */
   padding: 0.625rem;
   font-family: inherit;
   border-radius: 10%;
@@ -85,6 +96,11 @@ const SearchBoxSelect = styled.select`
   border-radius: 0.3125rem;
   &::-ms-expand {
     display: none;
+  }
+
+  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+    margin-right: 10px;
+    width: 20%;
   }
 `;
 

@@ -125,6 +125,7 @@ const Wrapper = styled.div<IProps>`
   margin-top: 7.6875rem;
   z-index: 280;
   gap: 2rem;
+
   @media (max-width: ${({ theme }) => theme.media.moblie}) {
     gap: 0;
     background-color: ${({ theme }) => theme.colors.white};
