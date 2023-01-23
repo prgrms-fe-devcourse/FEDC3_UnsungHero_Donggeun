@@ -24,6 +24,10 @@ const Main = styled.div`
   margin-left: 17.1875rem;
   width: 45.3125rem;
   height: 100%;
+
+  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+    margin-left: 0px;
+  }
 `;
 
 const MainWrapper = styled.div`

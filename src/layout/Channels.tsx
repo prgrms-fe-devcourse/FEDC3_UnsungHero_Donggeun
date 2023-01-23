@@ -103,6 +103,10 @@ const Wrapper = styled.div`
   position: fixed;
   margin-top: 7.6875rem;
   gap: 2rem;
+
+  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+    display: none;
+  }
 `;
 
 const Sidebar = styled.nav`

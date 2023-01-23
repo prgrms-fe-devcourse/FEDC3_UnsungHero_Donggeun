@@ -39,6 +39,7 @@ function Router() {
             <Route path='/channel/:channelId' element={<Search />} />
             <Route path='/userEdit/:id' element={<UserEdit />} />
             <Route path='/infinite' element={<InfiniteScroll />} />
+            <Route path='/search/:channelId' element={<Search />} />
           </Route>
           <Route path='/*' element={<NotFound />} />
         </Routes>

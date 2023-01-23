@@ -30,8 +30,8 @@ const shadow = {
 };
 
 const media = {
-  moblie: 768,
-  tablet: 1024,
+  moblie: '576px',
+  tablet: '1024px',
 };
 
 const theme: DefaultTheme = {

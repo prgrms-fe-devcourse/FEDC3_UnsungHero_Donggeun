@@ -1,9 +1,12 @@
 import { IsJsonString } from './isJsonString';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useToken } from '../contexts/TokenProvider';
 import { IChannel } from '../types/channel';
 
+interface IPathname {
+  pathname: string | undefined;
+}
 interface Ilikes {
   _id: string;
 }
@@ -71,11 +74,13 @@ const MostLikesPosts = ({ postsInfo }: IMostLikesPostsProps) => {
     return MostLikesPostsTitle;
   };
 
+  const pathname = useLocation().pathname;
+  console.log(typeof pathname);
   const tokenObject = useToken();
   const token = tokenObject?.token;
 
   return (
-    <WholeWrapper>
+    <WholeWrapper pathname={pathname}>
       <div className='bestPostsTitle'>🔥{renderSelectedBestPostTitle()}</div>
       <BestPostsEntireWrapper>
         {filterMostLikesPosts().map((filteredPost) => {
@@ -119,16 +124,16 @@ const MostLikesPosts = ({ postsInfo }: IMostLikesPostsProps) => {
 
 export default MostLikesPosts;
 
-const WholeWrapper = styled.div`
+const WholeWrapper = styled.div<IPathname>`
   height: auto;
   display: flex;
+  width: 45.3125rem;
   flex-direction: column;
   margin-top: 1.875rem;
 
   .bestPostsTitle {
     font-family: 'BMHANNAPro';
     font-size: 24px;
-    width: 45.3125rem;
     height: 50px;
     padding: 0.9375rem 0 0 1rem;
     border-top-left-radius: 0.3125rem;
@@ -137,10 +142,14 @@ const WholeWrapper = styled.div`
     box-shadow: 0 0.0625rem 0.0625rem ${({ theme }) => theme.colors.shadow};
     font-weight: bold;
   }
+
+  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+    margin-top: 0px;
+    display: ${(pathname) => `${pathname?.pathname?.includes('search') ? 'none' : 'block'}`};
+  }
 `;
 
 const BestPostsEntireWrapper = styled.ul`
-  width: 45.3125rem;
   padding: 0;
   display: flex;
   flex-direction: column;
@@ -150,7 +159,6 @@ const BestPostsEntireWrapper = styled.ul`
 const BestPostWrapper = styled.li`
   display: flex;
   justify-content: space-between;
-  width: 45.3125rem;
   height: 55px;
   border-bottom: solid 0.0625rem #dce1e8;
   padding: 1rem 0.5rem 0 1rem;

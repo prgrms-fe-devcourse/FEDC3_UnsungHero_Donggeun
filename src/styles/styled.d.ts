@@ -32,8 +32,8 @@ declare module 'styled-components' {
     };
 
     media: {
-      moblie: number;
-      tablet: number;
+      moblie: string;
+      tablet: string;
     };
   }
 }
