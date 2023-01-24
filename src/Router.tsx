@@ -10,12 +10,11 @@ import UserEdit from './user/UserEdit';
 import UserFollowers from './user/UserFollowers';
 import UserFollowing from './user/UserFollowing';
 import { Login, SignUp } from './auth';
-import NotificationList from './notification/NotificationList';
 import Header from './layout/Header';
 import ErrorBoundary from './api/ErrorBoundary';
 import NotFound from './NotFound';
 import ScrollToTop from './common/Scroll';
-import InfiniteScroll from './InfiniteScroll';
+import NotificationComponent from './notification';
 
 function Router() {
   return (
@@ -28,7 +27,7 @@ function Router() {
           <Route path='/login' element={<Login />} />
           <Route element={<Layout />}>
             <Route path='/' element={<Post />} />
-            <Route path='/notifications' element={<NotificationList />} />
+            <Route path='/notifications' element={<NotificationComponent />} />
             <Route path='/user/:id' element={<User />} />
             <Route path='/followers/:id' element={<UserFollowers />} />
             <Route path='/following/:id' element={<UserFollowing />} />
@@ -37,7 +36,6 @@ function Router() {
             <Route path='/post/create/:channelId' element={<CreatePost />} />
             <Route path='/channel/:channelId' element={<Search />} />
             <Route path='/userEdit/:id' element={<UserEdit />} />
-            <Route path='/infinite' element={<InfiniteScroll />} />
             <Route path='/search/:channelId' element={<Search />} />
           </Route>
           <Route path='/*' element={<NotFound />} />
