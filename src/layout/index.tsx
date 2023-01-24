@@ -16,7 +16,7 @@ const Layout = () => {
       <Wrapper>
         <MainWrapper>
           <SidebarBackground onClick={() => setMenuOpen(false)} menuOpen={menuOpen} />
-          <Channels menuOpen={menuOpen} />
+          <Channels menuOpen={menuOpen} urlPathname={'noturl'} />
           <Main>
             <Outlet />
           </Main>
@@ -53,7 +53,7 @@ const Wrapper = styled.div`
   width: 100%;
 `;
 
-const SidebarBackground = styled.div<IProps>`
+export const SidebarBackground = styled.div<IProps>`
   z-index: 250;
   position: fixed;
   top: 0;
