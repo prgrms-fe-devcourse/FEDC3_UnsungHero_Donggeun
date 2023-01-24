@@ -9,14 +9,22 @@ const GlobalStyles = createGlobalStyle`
     body {
         font-size: 16px;
         background-color: #FAFAFA;
-        height: 100vh;
-        width: 100vw;
+        height: 100%;
+        width: 100%;
         font-family: 'GmarketSansMedium', sans-serif;
+        @media (max-width: ${({ theme }) => theme.media.moblie}) {
+        position: fixed;
+        overflow: hidden;
+        overflow-y: scroll;
+        }
     }
     body::-webkit-scrollbar{
         width: 10px;
         height: 10px;
         background: transparent;
+        @media (max-width: ${({ theme }) => theme.media.moblie}) {
+        display: none;
+        }
         }
     body::-webkit-scrollbar-thumb{
         background-color: #60606080;
