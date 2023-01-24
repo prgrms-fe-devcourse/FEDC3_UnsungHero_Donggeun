@@ -146,7 +146,7 @@ const SignUpHeader = styled.h1`
 
 const SignUpContainer = styled.div`
   margin: 0 auto;
-  min-width: 420px;
+  min-width: 360px;
   width: 30vw;
   display: flex;
   flex-direction: column;
@@ -169,6 +169,10 @@ const FormTitle = styled.div`
   font-size: ${({ theme }) => theme.fontSize.large};
   font-weight: 700;
   margin: 0.625rem auto 2.188rem auto;
+
+  @media screen and (max-width: ${(props) => props.theme.media.moblie}) {
+    font-size: ${({ theme }) => theme.fontSize.medium};
+  }
 `;
 
 const Label = styled.label`

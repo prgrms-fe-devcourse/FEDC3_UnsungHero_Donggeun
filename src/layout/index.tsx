@@ -3,6 +3,7 @@ import Channels from './Channels';
 import styled from 'styled-components';
 import { Outlet } from 'react-router-dom';
 import Navbar from './Navbar';
+import Header from './Header';
 
 interface IProps {
   menuOpen: boolean;
@@ -13,6 +14,7 @@ const Layout = () => {
 
   return (
     <>
+      <Header />
       <Wrapper>
         <MainWrapper>
           <SidebarBackground onClick={() => setMenuOpen(false)} menuOpen={menuOpen} />
