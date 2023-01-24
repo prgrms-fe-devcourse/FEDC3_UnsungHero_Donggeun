@@ -109,7 +109,7 @@ const LoginHeader = styled.h1`
 
 const LoginContainer = styled.div`
   margin: 0 auto;
-  min-width: 26.25rem;
+  min-width: 22.5rem;
   width: 30vw;
   display: flex;
   flex-direction: column;
@@ -131,6 +131,10 @@ const FormTitle = styled.div`
   font-size: ${({ theme }) => theme.fontSize.large};
   font-weight: 700;
   margin: 0.625rem auto 2.188rem auto;
+
+  @media screen and (max-width: ${(props) => props.theme.media.moblie}) {
+    font-size: ${({ theme }) => theme.fontSize.medium};
+  }
 `;
 
 const Label = styled.label`
