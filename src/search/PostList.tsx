@@ -3,6 +3,7 @@ import { IsJsonString } from './isJsonString';
 import { useNavigate } from 'react-router-dom';
 import { useToken } from '../contexts/TokenProvider';
 import { Avatar } from '../common';
+import theme from '../styles/theme';
 
 interface Ilikes {
   _id: string;
@@ -55,7 +56,7 @@ const PostList = ({
 
   const selectPostsChannelTitle = (channelId: string | undefined) => {
     let PostsChannelTitle = '';
-    if (!channelId) PostsChannelTitle = '전체';
+    if (!channelId || channelId === 'undefined') PostsChannelTitle = '전체';
     else PostsChannelTitle = channelName as string;
 
     return PostsChannelTitle;
@@ -204,6 +205,7 @@ const PostListWrapper = styled.ul`
   display: flex;
   flex-direction: column;
   margin-top: 0rem;
+  width: 45.3125rem;
 `;
 
 const PostWrapper = styled.li`
@@ -213,7 +215,6 @@ const PostWrapper = styled.li`
   padding: 1rem 1.25rem;
   gap: 0rem;
   cursor: pointer;
-  width: 45.3125rem;
   height: 12.5rem;
   margin-bottom: 0.9375rem;
   background-color: white;
@@ -224,9 +225,16 @@ const PostWrapper = styled.li`
     }
   }
   &:first-child {
-    border-radius: 0;
+    border-radius: 0px;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
+  }
+
+  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+    margin-bottom: 0px;
+    border-radius: 0px;
+    border-top: solid 1px ${({ theme }) => theme.colors.lightGray};
+    box-shadow: none;
   }
 `;
 

@@ -8,12 +8,19 @@ import { END_POINT } from '../api/apiAddress';
 import { MdOutlineFamilyRestroom, MdSportsTennis } from 'react-icons/md';
 import { GiBatMask } from 'react-icons/gi';
 import { BsFillChatDotsFill } from 'react-icons/bs';
+import { Logout } from '../auth';
+import { useToken } from '../contexts/TokenProvider';
+import { Button } from '../auth/Logout';
 interface Channel {
   _id: string;
   name: string;
 }
 
-const Channels = () => {
+interface IProps {
+  menuOpen?: boolean;
+}
+
+const Channels = ({ menuOpen }: IProps) => {
   const { data: channelData } = useQuery('channelData', async () => {
     return axios.get(`${END_POINT}/channels`).then(({ data }) => data);
   });
@@ -23,6 +30,8 @@ const Channels = () => {
     navigate(`/channel/${id}`);
   };
 
+  const tokenObject = useToken();
+  const userLogin = tokenObject?.token;
   // 테스트 채널 description이 '취미' 라서 테스트 채널 id를 제외함.
   const hobbyChannel = channelData?.filter(
     (channel: IChannel) => channel.description === '취미' && channel._id !== '63c775b0a989ba6d232518bf'
@@ -31,7 +40,7 @@ const Channels = () => {
   const etcChannel = channelData?.filter((channel: IChannel) => channel.description === '기타');
 
   return (
-    <Wrapper>
+    <Wrapper menuOpen={menuOpen}>
       <EntireViewSidebar>
         <ChannelTitle>
           <GiBatMask className='icon' />
@@ -90,19 +99,42 @@ const Channels = () => {
           ))}
         </ChannelWrapper>
       </Sidebar>
+      <ButtonWrapper>
+        {menuOpen &&
+          (userLogin ? (
+            <Logout />
+          ) : (
+            <>
+              <Button onClick={() => navigate('/signup')}>Sign Up</Button>
+              <Button onClick={() => navigate('/login')}>Login</Button>
+            </>
+          ))}
+      </ButtonWrapper>
     </Wrapper>
   );
 };
 
 export default Channels;
-const Wrapper = styled.div`
+
+const Wrapper = styled.div<IProps>`
   display: flex;
   flex-direction: column;
   height: 100%;
   width: 15rem;
   position: fixed;
   margin-top: 7.6875rem;
+  z-index: 280;
   gap: 2rem;
+
+  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+    gap: 0;
+    background-color: ${({ theme }) => theme.colors.white};
+    margin-top: 0;
+    padding-top: 7.6875rem;
+    z-index: 280;
+    transition: all 0.5s ease-out;
+    transform: translateX(${({ menuOpen }) => (menuOpen ? '0%' : '-100%')});
+  }
 `;
 
 const Sidebar = styled.nav`
@@ -114,6 +146,12 @@ const Sidebar = styled.nav`
   min-height: 90px;
   height: 18%;
   box-shadow: ${({ theme }) => theme.shadow.boxShadow};
+
+  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+    background-color: transparent;
+    box-shadow: none;
+    height: auto;
+  }
 `;
 
 const ChannelWrapper = styled.div`
@@ -138,6 +176,11 @@ const EntireViewSidebar = styled.div`
   min-height: 5.9375rem;
   height: 8%;
   box-shadow: ${({ theme }) => theme.shadow.boxShadow};
+  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+    background-color: transparent;
+    box-shadow: none;
+    height: auto;
+  }
 `;
 
 const ChannelTitle = styled.div`
@@ -165,4 +208,9 @@ const Channel = styled.div`
   &:hover {
     background-color: ${({ theme }) => theme.colors.grayHover};
   }
+`;
+
+const ButtonWrapper = styled.div`
+  text-align: center;
+  margin-top: 20px;
 `;

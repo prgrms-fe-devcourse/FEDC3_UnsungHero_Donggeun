@@ -15,7 +15,6 @@ import Header from './layout/Header';
 import ErrorBoundary from './api/ErrorBoundary';
 import NotFound from './NotFound';
 import ScrollToTop from './common/Scroll';
-import Navbar from './common/Navbar';
 
 function Router() {
   return (
@@ -37,11 +36,11 @@ function Router() {
             <Route path='/post/create/:channelId' element={<CreatePost />} />
             <Route path='/channel/:channelId' element={<Search />} />
             <Route path='/userEdit/:id' element={<UserEdit />} />
+            <Route path='/search/:channelId' element={<Search />} />
           </Route>
           <Route path='/*' element={<NotFound />} />
         </Routes>
       </ErrorBoundary>
-      <Navbar />
     </BrowserRouter>
   );
 }
