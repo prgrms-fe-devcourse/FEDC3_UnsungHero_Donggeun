@@ -119,6 +119,12 @@ const LoginContainer = styled.div`
   border: none;
   box-shadow: ${({ theme }) => theme.shadow.boxShadow};
   background-color: ${({ theme }) => theme.colors.white};
+
+  @media screen and (max-width: ${(props) => props.theme.media.moblie}) {
+    border: none;
+    background-color: transparent;
+    box-shadow: unset;
+  }
 `;
 
 const FormTitle = styled.div`
