@@ -156,6 +156,13 @@ const SignUpContainer = styled.div`
   border: none;
   box-shadow: ${({ theme }) => theme.shadow.boxShadow};
   background-color: ${({ theme }) => theme.colors.white};
+
+  @media screen and (max-width: ${(props) => props.theme.media.moblie}) {
+    border: none;
+    background-color: transparent;
+    box-shadow: unset;
+    height: 110vh;
+  }
 `;
 
 const FormTitle = styled.div`
