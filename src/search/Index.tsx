@@ -14,6 +14,7 @@ const Search = () => {
   const [inputSearchValue, setInputSearchValue] = useState('');
   const [specificPostData, setSpecificPostData] = useState([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isMobileSearching, setIsMobileSearching] = useState<boolean>(true);
   const { channelId } = useParams();
   const pathname = useLocation().pathname;
   // 캐싱 안되게끔.
@@ -37,6 +38,7 @@ const Search = () => {
         setInputSearchValue('');
         setSelectedSearchOption('제목');
         setIsLoading(false);
+        setIsMobileSearching(true);
       });
     } else {
       axios.get(`${END_POINT}/posts`).then((response) => {
@@ -45,6 +47,7 @@ const Search = () => {
         setInputSearchValue('');
         setSelectedSearchOption('제목');
         setIsLoading(false);
+        setIsMobileSearching(true);
       });
     }
   };
@@ -67,12 +70,14 @@ const Search = () => {
             setSelectedSearchOption={setSelectedSearchOption}
             setInputSearchValue={setInputSearchValue}
             currentChannelId={channelId}
+            setIsMobileSearching={setIsMobileSearching}
           />
           <PostListContainer
             postsInfo={postsInfo}
             selectedSearchOption={selectedSearchOption}
             inputSearchValue={inputSearchValue}
             currentChannelId={channelId}
+            isMobileSearching={isMobileSearching}
           />
         </>
       )}

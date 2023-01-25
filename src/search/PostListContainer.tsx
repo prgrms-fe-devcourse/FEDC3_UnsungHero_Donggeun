@@ -35,6 +35,7 @@ interface IpostListContainerProps {
   selectedSearchOption: string;
   inputSearchValue: string;
   currentChannelId: string | undefined;
+  isMobileSearching: boolean;
 }
 
 const PostListContainer = ({
@@ -42,6 +43,7 @@ const PostListContainer = ({
   selectedSearchOption,
   inputSearchValue,
   currentChannelId,
+  isMobileSearching,
 }: IpostListContainerProps) => {
   const [page, setPage] = useState(1);
   const [checkedSorting, setCheckedSorting] = useState(true);
@@ -131,6 +133,7 @@ const PostListContainer = ({
         inputSearchValue={inputSearchValue}
         currentChannelId={currentChannelId}
         channelName={channelName}
+        isMobileSearching={isMobileSearching}
       />
       <PaginationContainer innerWidth={innerWidth}>
         <Pagination

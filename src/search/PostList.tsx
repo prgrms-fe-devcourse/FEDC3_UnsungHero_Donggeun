@@ -1,10 +1,14 @@
 import styled from 'styled-components';
 import { IsJsonString } from './isJsonString';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useToken } from '../contexts/TokenProvider';
 import { Avatar } from '../common';
-import theme from '../styles/theme';
+import { useState } from 'react';
 
+interface IMobile {
+  isMobileSearching: boolean;
+  pathName: string;
+}
 interface Ilikes {
   _id: string;
 }
@@ -38,6 +42,7 @@ interface IpostListProps {
   inputSearchValue: string;
   currentChannelId: string | undefined;
   channelName?: string;
+  isMobileSearching: boolean;
 }
 
 const Span = styled.span`
@@ -51,8 +56,10 @@ const PostList = ({
   inputSearchValue,
   currentChannelId,
   channelName,
+  isMobileSearching,
 }: IpostListProps) => {
   const navigatePost = useNavigate();
+  const pathName = useLocation().pathname;
 
   const selectPostsChannelTitle = (channelId: string | undefined) => {
     let PostsChannelTitle = '';
@@ -110,7 +117,7 @@ const PostList = ({
   const token = tokenObject?.token;
 
   return (
-    <WholeWrapper>
+    <WholeWrapper isMobileSearching={isMobileSearching} pathName={pathName}>
       <div className='postListTitle'>📃{selectPostsChannelTitle(currentChannelId)}</div>
       <PostListWrapper>
         {filteredPostsInfo.map((postInfo) => {
@@ -181,8 +188,8 @@ const PostList = ({
 };
 export default PostList;
 
-const WholeWrapper = styled.div`
-  display: flex;
+const WholeWrapper = styled.div<IMobile>`
+  display: ${(props) => `${props.pathName.includes('search') && props.isMobileSearching ? 'none' : 'flex'}`};
   flex-direction: column;
   margin-right: 2.5rem;
 
