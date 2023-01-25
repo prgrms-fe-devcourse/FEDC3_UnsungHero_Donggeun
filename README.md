@@ -9,7 +9,7 @@
 
 ## <img src="https://user-images.githubusercontent.com/113018070/213464160-8d2176e2-57ec-4a60-bc95-cd1c7cbbb583.png" width="20px" height="20px"/> 배포 주소
 
-> https://unsunghero.netlify.app/ (현재 일부 수정 중)
+> https://unsunghero.netlify.app/ (모바일 버전 구현 중)
 
 <br/>
 
