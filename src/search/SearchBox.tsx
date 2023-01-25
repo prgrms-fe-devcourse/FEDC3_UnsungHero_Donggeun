@@ -8,10 +8,16 @@ interface IPathname {
 interface IsearchBoxProps {
   setSelectedSearchOption: (value: string) => void;
   setInputSearchValue: (value: string) => void;
+  setIsMobileSearching: (value: boolean) => void;
   currentChannelId: string | undefined;
 }
 
-const SearchBox = ({ setSelectedSearchOption, setInputSearchValue, currentChannelId }: IsearchBoxProps) => {
+const SearchBox = ({
+  setSelectedSearchOption,
+  setInputSearchValue,
+  setIsMobileSearching,
+  currentChannelId,
+}: IsearchBoxProps) => {
   const [inputValue, setInputValue] = useState('');
   const [selectedOption, setSelectedOption] = useState('제목');
   const inputRef = useRef<HTMLInputElement>(null);
@@ -34,6 +40,7 @@ const SearchBox = ({ setSelectedSearchOption, setInputSearchValue, currentChanne
       e.preventDefault();
       setSelectedSearchOption(selectedOption);
       setInputSearchValue(inputValue);
+      setIsMobileSearching(false);
     },
     [inputValue, selectedOption, currentChannelId]
   );
