@@ -4,11 +4,20 @@ import NotificationList from './NotificationList';
 
 const NotificationComponent = () => {
   const [mobileStatus, setMobileStatus] = useState(false);
-  const handleResize = () => {
-    if (window.innerWidth <= 576) setMobileStatus(true);
+
+  const checkMobileScreen = () => {
+    if (window.innerWidth <= 576) {
+      setMobileStatus(true);
+      return;
+    }
+
+    setMobileStatus(false);
   };
 
+  const handleResize = () => checkMobileScreen();
+
   useEffect(() => {
+    checkMobileScreen();
     window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);
