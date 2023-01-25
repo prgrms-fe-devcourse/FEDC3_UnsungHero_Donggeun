@@ -197,6 +197,9 @@ const WholeWrapper = styled.div`
     border-top-right-radius: 0.3125rem;
     background-color: ${({ theme }) => theme.colors.primary};
     z-index: 10;
+    @media (max-width: ${({ theme }) => theme.media.moblie}) {
+      width: 100vw;
+    }
   }
 `;
 
@@ -206,6 +209,9 @@ const PostListWrapper = styled.ul`
   flex-direction: column;
   margin-top: 0rem;
   width: 45.3125rem;
+  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+    width: 100vw;
+  }
 `;
 
 const PostWrapper = styled.li`

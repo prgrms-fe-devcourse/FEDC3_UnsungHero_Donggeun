@@ -80,9 +80,10 @@ const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.primary};
   display: flex;
   justify-content: center;
-  width: 100%;
+  width: 100vw;
   height: 4.75rem;
   position: fixed;
+  top: 0;
   z-index: 1000;
 `;
 
@@ -91,9 +92,10 @@ const HeaderWrapper = styled.header`
   align-items: center;
   justify-content: space-between;
   height: 4.75rem;
-  width: 100%;
+  width: 100vw;
   max-width: 62.5rem;
   position: fixed;
+  top: 0;
 `;
 
 const ButtonWrapper = styled.div`
