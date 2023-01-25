@@ -4,7 +4,7 @@ import MostLikesPosts from './MostLikesPosts';
 import { useState, useEffect } from 'react';
 import ErrorBoundary from '../api/ErrorBoundary';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import Loading from '../api/Loading';
 import { useQuery } from 'react-query';
 import { END_POINT } from '../api/apiAddress';
@@ -15,7 +15,7 @@ const Search = () => {
   const [specificPostData, setSpecificPostData] = useState([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { channelId } = useParams();
-
+  const pathname = useLocation().pathname;
   // 캐싱 안되게끔.
   const { data: totalPostData, isLoading: totalPostDataLoading } = useQuery(
     'totalPostData',
@@ -34,12 +34,16 @@ const Search = () => {
       axios.get(`${END_POINT}/posts/channel/${channelId}`).then((response) => {
         const { data } = response;
         setSpecificPostData(data);
+        setInputSearchValue('');
+        setSelectedSearchOption('제목');
         setIsLoading(false);
       });
     } else {
       axios.get(`${END_POINT}/posts`).then((response) => {
         const { data } = response;
         setSpecificPostData(data);
+        setInputSearchValue('');
+        setSelectedSearchOption('제목');
         setIsLoading(false);
       });
     }
@@ -47,7 +51,7 @@ const Search = () => {
 
   useEffect(() => {
     channelId && getSpecificPostsList();
-  }, [channelId]);
+  }, [channelId, pathname]);
 
   const loading = channelId ? isLoading : totalPostDataLoading;
   const postsInfo = channelId ? specificPostData : totalPostData;

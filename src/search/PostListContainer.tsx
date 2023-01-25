@@ -8,6 +8,9 @@ import { IChannel } from '../types/channel';
 import { useToken } from '../contexts/TokenProvider';
 import { IComment } from '../types/comment';
 
+interface IInnerWidth {
+  innerWidth: number;
+}
 interface Ilikes {
   _id: string;
 }
@@ -45,6 +48,7 @@ const PostListContainer = ({
   const limit = 6;
   const offset = (page - 1) * limit;
   const navigate = useNavigate();
+  const innerWidth = window.innerWidth;
 
   useEffect(() => {
     setCheckedSorting(true);
@@ -122,13 +126,13 @@ const PostListContainer = ({
         ) : null}
       </ButtonContainer>
       <PostList
-        filteredPostsInfo={dividePosts(filterPosts())}
+        filteredPostsInfo={innerWidth > 600 ? dividePosts(filterPosts()) : filterPosts()}
         selectedSearchOption={selectedSearchOption}
         inputSearchValue={inputSearchValue}
         currentChannelId={currentChannelId}
         channelName={channelName}
       />
-      <PaginationContainer>
+      <PaginationContainer innerWidth={innerWidth}>
         <Pagination
           limit={limit}
           page={page}
@@ -197,6 +201,9 @@ const ButtonContainer = styled.div`
   }
 `;
 
-const PaginationContainer = styled.div`
+const PaginationContainer = styled.div<IInnerWidth>`
   position: relative;
+  display: ${(props) => {
+    return `${props.innerWidth > 600 ? 'block' : 'none'}`;
+  }};
 `;
