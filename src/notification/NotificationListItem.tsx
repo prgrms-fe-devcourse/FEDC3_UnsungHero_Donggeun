@@ -77,6 +77,7 @@ const NotificationItem = styled.div<{ seen: boolean | undefined }>`
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   transition: background-color 0.2s ease;
   cursor: pointer;
+  position: relative;
 
   & .logo {
     font-size: 1.75rem;
@@ -96,6 +97,14 @@ const NotificationItem = styled.div<{ seen: boolean | undefined }>`
 
   &:hover {
     background-color: ${(props) => !props.seen && props.theme.colors.grayHover};
+  }
+
+  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+    & .logo {
+      position: absolute;
+      bottom: 1.25rem;
+      right: 1.25rem;
+    }
   }
 `;
 

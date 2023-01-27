@@ -122,6 +122,10 @@ const NotificationHeader = styled.div`
   & .logo {
     font-size: 2rem;
   }
+
+  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+    display: none;
+  }
 `;
 
 const NotificationContainer = styled.div`
@@ -143,6 +147,10 @@ const NotificationContainer = styled.div`
   & h3 {
     opacity: 0.5;
   }
+
+  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+    width: 100vw;
+  }
 `;
 
 const NoNotificationContainer = styled.div<{ dataview: boolean }>`
@@ -159,8 +167,14 @@ const NotificationListContainer = styled.div<{ dataview: boolean }>`
 
 const NotificationConfirmContainer = styled.div<{ dataview: boolean }>`
   display: ${(props) => (props.dataview ? 'flex' : 'none')};
-  justify-content: space-around;
+  justify-content: space-evenly;
   margin-bottom: 1.25rem;
+
+  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+    & button {
+      width: 45vw;
+    }
+  }
 `;
 
 const InfiniteScrollDiv = styled.div``;

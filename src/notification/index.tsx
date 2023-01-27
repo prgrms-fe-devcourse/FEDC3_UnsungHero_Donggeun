@@ -6,7 +6,7 @@ const NotificationComponent = () => {
   const [mobileStatus, setMobileStatus] = useState(false);
 
   const checkMobileScreen = () => {
-    if (window.innerWidth <= 576) {
+    if (window.screen.width <= 576) {
       setMobileStatus(true);
       return;
     }
