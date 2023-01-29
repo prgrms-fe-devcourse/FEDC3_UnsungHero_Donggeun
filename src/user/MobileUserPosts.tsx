@@ -1,7 +1,6 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useInfiniteScroll } from '../hooks/useInfiniteScroll';
-import { IPost } from '../types/post';
 
 import UserPostListItem from './UserPostListItem';
 
