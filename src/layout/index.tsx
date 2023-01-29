@@ -38,6 +38,7 @@ const Main = styled.div`
   margin-left: 17.1875rem;
   width: 100vw;
   max-width: 725px;
+  margin-bottom: 3.75rem;
   @media (max-width: ${({ theme }) => theme.media.moblie}) {
     margin-left: 0;
   }
@@ -47,7 +48,6 @@ const MainWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100vw;
-  height: 100vh;
 
   max-width: 1000px;
 `;
@@ -55,7 +55,6 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   width: 100vw;
-  height: 100vh;
 `;
 
 const SidebarBackground = styled.div<IProps>`

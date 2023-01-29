@@ -7,6 +7,8 @@ import { useUserId } from '../contexts/TokenProvider';
 import useFollow from '../hooks/useFollow';
 import { Avatar, Button } from '../common';
 import Skeleton from '../common/Skeleton';
+import MobileUserPosts from './MobileUserPosts';
+import useCheckMobile from '../hooks/useCheckMobile';
 
 interface IUserInfo {
   fullName: string | undefined;
@@ -27,6 +29,7 @@ const User = () => {
     posts: [],
     coverImage: '',
   });
+  const { mobile } = useCheckMobile();
 
   const {
     followButton,
@@ -53,6 +56,7 @@ const User = () => {
   };
 
   const totalLikes = userInfo?.posts?.reduce((acc, cur: Pick<IPost, 'likes'>) => acc + cur.likes.length, 0);
+  const userPostListComponent = mobile ? <MobileUserPosts /> : <UserPosts posts={userInfo.posts} />;
   return (
     <Wrapper>
       <CoverImg src={userInfo.coverImage} alt='커버 이미지' />
@@ -106,13 +110,7 @@ const User = () => {
               팔로워 <span>{userFollow?.followers?.length}</span>
             </Link>
           </Follow>
-          <List>
-            {userInfo?.posts?.length > 0 ? (
-              <UserPosts posts={userInfo.posts} />
-            ) : (
-              <p>작성한 글이 없습니다.</p>
-            )}
-          </List>
+          <List>{userInfo?.posts?.length > 0 ? userPostListComponent : <p>작성한 글이 없습니다.</p>}</List>
         </>
       )}
     </Wrapper>
@@ -136,6 +134,9 @@ const Wrapper = styled.div`
   border-radius: 5px;
   position: relative;
   z-index: 5;
+  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+    margin-top: -16px;
+  }
 `;
 
 const UserName = styled.div`

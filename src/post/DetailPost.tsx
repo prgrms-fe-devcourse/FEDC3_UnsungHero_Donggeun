@@ -158,6 +158,9 @@ const Container = styled.div`
   width: 45.3125rem;
   min-height: 40rem;
   box-shadow: ${({ theme }) => theme.shadow.boxShadow};
+  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+    width: 100vw;
+  }
 `;
 
 const Post = styled.div`

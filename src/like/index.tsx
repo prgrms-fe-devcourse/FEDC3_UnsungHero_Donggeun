@@ -46,11 +46,11 @@ const Like = ({ likeList, userId, postId, postuserId, fetchData }: ILikeProps) =
 };
 
 const LikeContainer = styled.div`
-  width: 7%;
+  width: 100%;
+  text-align: right;
   box-sizing: content-box;
   font-size: 1.375rem;
   cursor: pointer;
-  margin-left: auto;
 `;
 
 export default Like;
