@@ -3,7 +3,6 @@ import { IsJsonString } from './isJsonString';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useToken } from '../contexts/TokenProvider';
 import { Avatar } from '../common';
-import { useState } from 'react';
 
 interface IMobile {
   isMobileSearching: boolean;
@@ -269,6 +268,10 @@ const PostTopWrapper = styled.div`
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
+
+        @media (max-width: ${({ theme }) => theme.media.moblie}) {
+          width: 65vw;
+        }
       }
     }
   }
@@ -281,6 +284,10 @@ const PostTopWrapper = styled.div`
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+
+    @media (max-width: ${({ theme }) => theme.media.moblie}) {
+      width: 70vw;
+    }
   }
 `;
 
@@ -351,5 +358,11 @@ const PostBottomWrapper = styled.div`
   .createdAt {
     margin-left: auto;
     color: ${({ theme }) => theme.colors.lightGray};
+
+    @media (max-width: ${({ theme }) => theme.media.moblie}) {
+      display: flex;
+      justify-content: flex-end;
+      width: 100vw;
+    }
   }
 `;
