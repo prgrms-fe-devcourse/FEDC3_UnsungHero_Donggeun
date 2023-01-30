@@ -7,13 +7,15 @@ interface IInterSectionObserver {
   threshold: number | number[];
 }
 
-export const useInfiniteScroll = (url: string, loader: React.RefObject<HTMLElement>) => {
+export const useIntersectionObserver = (url: string, loader: React.RefObject<HTMLElement>) => {
   const [page, setPage] = useState(0);
 
   const { list, loading, error, sendQuery } = useInfiniteSendQuery(page, url);
 
+  const limit = 7;
+
   useEffect(() => {
-    sendQuery();
+    if (list.length !== (page + 1) * limit) sendQuery();
   }, [page]);
 
   const handleObserver: IntersectionObserverCallback = useCallback(([{ isIntersecting }]) => {
