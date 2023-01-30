@@ -8,7 +8,7 @@ import Navbar from '../layout/Navbar';
 const Header = () => {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
-  const pathname = useLocation().pathname.slice(1);
+  const { pathname } = useLocation();
 
   return (
     <>

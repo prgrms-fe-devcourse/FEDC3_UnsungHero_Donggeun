@@ -146,7 +146,7 @@ const SignUpHeader = styled.h1`
 
 const SignUpContainer = styled.div`
   margin: 0 auto;
-  min-width: 22.5rem;
+  min-width: 25rem;
   width: 30vw;
   display: flex;
   flex-direction: column;

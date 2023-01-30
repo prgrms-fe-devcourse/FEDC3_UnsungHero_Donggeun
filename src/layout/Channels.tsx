@@ -18,7 +18,7 @@ interface Channel {
 
 interface IProps {
   menuOpen?: boolean;
-  urlPathname: string;
+  urlPathname?: string;
 }
 
 const Channels = ({ menuOpen, urlPathname }: IProps) => {
@@ -118,7 +118,8 @@ const Channels = ({ menuOpen, urlPathname }: IProps) => {
 export default Channels;
 
 const Wrapper = styled.div<IProps>`
-  display: ${(props) => (props.urlPathname === 'signup' || props.urlPathname === 'login' ? 'none' : 'flex')};
+  display: ${(props) =>
+    props.urlPathname === '/signup' || props.urlPathname === '/login' ? 'none' : 'flex'};
   flex-direction: column;
   height: 100%;
   width: 15rem;

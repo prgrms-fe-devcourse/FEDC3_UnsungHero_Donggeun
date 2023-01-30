@@ -18,7 +18,7 @@ const Layout = () => {
       <Wrapper>
         <MainWrapper>
           <SidebarBackground onClick={() => setMenuOpen(false)} menuOpen={menuOpen} />
-          <Channels menuOpen={menuOpen} urlPathname={'noturl'} />
+          <Channels menuOpen={menuOpen} />
           <Main>
             <Outlet />
           </Main>
