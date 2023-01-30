@@ -18,6 +18,7 @@ interface Channel {
 
 interface IProps {
   menuOpen?: boolean;
+  urlPathname?: string;
 }
 
 interface IChannelId {
@@ -26,7 +27,7 @@ interface IChannelId {
   currentId?: string;
 }
 
-const Channels = ({ menuOpen }: IProps) => {
+const Channels = ({ menuOpen, urlPathname }: IProps) => {
   const { data: channelData } = useQuery('channelData', async () => {
     return axios.get(`${END_POINT}/channels`).then(({ data }) => data);
   });

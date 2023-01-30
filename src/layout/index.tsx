@@ -59,8 +59,7 @@ const Wrapper = styled.div`
   width: 100vw;
 `;
 
-
-const SidebarBackground = styled.div<IProps>`
+export const SidebarBackground = styled.div<IProps>`
   @media (max-width: ${({ theme }) => theme.media.moblie}) {
     z-index: 250;
     position: fixed;
