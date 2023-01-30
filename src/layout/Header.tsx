@@ -80,7 +80,7 @@ const Wrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.primary};
   display: flex;
   justify-content: center;
-  width: 100vw;
+  width: 100%;
   height: 4.75rem;
   position: fixed;
   top: 0;
