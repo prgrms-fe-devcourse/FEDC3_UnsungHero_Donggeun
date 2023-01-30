@@ -158,6 +158,9 @@ const Container = styled.div`
   width: 45.3125rem;
   min-height: 40rem;
   box-shadow: ${({ theme }) => theme.shadow.boxShadow};
+  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+    width: 100vw;
+  }
 `;
 
 const Post = styled.div`
@@ -204,6 +207,9 @@ const ContentImage = styled.img`
   max-height: 31.25rem;
   max-width: 43.3125rem;
   margin: 1rem 0;
+  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+    width: 100vw;
+  }
 `;
 
 const ImageWarpper = styled.div`

@@ -83,6 +83,7 @@ const Wrapper = styled.div`
   width: 100%;
   height: 4.75rem;
   position: fixed;
+  top: 0;
   z-index: 1000;
 `;
 
@@ -91,9 +92,10 @@ const HeaderWrapper = styled.header`
   align-items: center;
   justify-content: space-between;
   height: 4.75rem;
-  width: 100%;
+  width: 100vw;
   max-width: 62.5rem;
   position: fixed;
+  top: 0;
 `;
 
 const ButtonWrapper = styled.div`

@@ -8,10 +8,16 @@ interface IPathname {
 interface IsearchBoxProps {
   setSelectedSearchOption: (value: string) => void;
   setInputSearchValue: (value: string) => void;
+  setIsMobileSearching: (value: boolean) => void;
   currentChannelId: string | undefined;
 }
 
-const SearchBox = ({ setSelectedSearchOption, setInputSearchValue, currentChannelId }: IsearchBoxProps) => {
+const SearchBox = ({
+  setSelectedSearchOption,
+  setInputSearchValue,
+  setIsMobileSearching,
+  currentChannelId,
+}: IsearchBoxProps) => {
   const [inputValue, setInputValue] = useState('');
   const [selectedOption, setSelectedOption] = useState('제목');
   const inputRef = useRef<HTMLInputElement>(null);
@@ -34,6 +40,7 @@ const SearchBox = ({ setSelectedSearchOption, setInputSearchValue, currentChanne
       e.preventDefault();
       setSelectedSearchOption(selectedOption);
       setInputSearchValue(inputValue);
+      setIsMobileSearching(false);
     },
     [inputValue, selectedOption, currentChannelId]
   );
@@ -73,6 +80,7 @@ const SearchBoxForm = styled.form<IPathname>`
 
   @media (max-width: ${({ theme }) => theme.media.moblie}) {
     display: ${(pathname) => `${pathname?.pathname?.includes('search') ? 'flex' : 'none'}`};
+    width: 100%;
   }
 `;
 
@@ -99,8 +107,8 @@ const SearchBoxSelect = styled.select`
   }
 
   @media (max-width: ${({ theme }) => theme.media.moblie}) {
-    margin-right: 10px;
-    width: 20%;
+    margin-right: 5px;
+    font-size: 12px;
   }
 `;
 
@@ -116,6 +124,15 @@ const SearchBoxInput = styled.input`
   border-bottom-left-radius: 0.3125rem;
   &::placeholder {
     font-size: 1rem;
+  }
+
+  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+    width: 55vw;
+
+    &::placeholder {
+      font-size: small;
+      padding-bottom: 10px;
+    }
   }
 `;
 
