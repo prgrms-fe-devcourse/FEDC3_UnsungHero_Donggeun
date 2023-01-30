@@ -1,21 +1,26 @@
 import { useState, useCallback, useEffect } from 'react';
 import useInfiniteSendQuery from './useInfiniteSendQuery';
+import { INFINITE_SCROLL_LIMIT } from '../api/constValue';
 
-interface IInterSectionObserver {
+interface InterSectionObserver {
   root: null;
   rootMargin: string;
   threshold: number | number[];
 }
 
-export const useIntersectionObserver = (url: string, loader: React.RefObject<HTMLElement>) => {
+interface InterSectionObserverData {
+  url: string;
+  loader: React.RefObject<HTMLElement>;
+}
+
+export const useIntersectionObserver = ({ url, loader }: InterSectionObserverData) => {
   const [page, setPage] = useState(0);
-
-  const { list, loading, error, sendQuery } = useInfiniteSendQuery(page, url);
-
-  const limit = 7;
+  const { list, loading, error, sendQuery } = useInfiniteSendQuery({ page, url });
 
   useEffect(() => {
-    if (list.length !== (page + 1) * limit) sendQuery();
+    if (list.length === (page + 1) * INFINITE_SCROLL_LIMIT) return;
+
+    sendQuery();
   }, [page]);
 
   const handleObserver: IntersectionObserverCallback = useCallback(([{ isIntersecting }]) => {
@@ -25,7 +30,7 @@ export const useIntersectionObserver = (url: string, loader: React.RefObject<HTM
   useEffect(() => {
     if (!loader.current) return;
 
-    const option: IInterSectionObserver = {
+    const option: InterSectionObserver = {
       root: null,
       rootMargin: '10px',
       threshold: 0,

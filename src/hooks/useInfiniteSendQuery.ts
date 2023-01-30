@@ -5,35 +5,43 @@ import request from 'axios';
 import { useToken } from '../contexts/TokenProvider';
 import { IToken } from '../types/token';
 import { IPost } from '../types/post';
+import { INFINITE_SCROLL_LIMIT } from '../api/constValue';
+import { INotification } from '../types/notification';
 
 interface TodoErrorResponse {
   error: string;
 }
 
-const useInfiniteSendQuery = (page: number, url?: string) => {
+interface SendQueryData {
+  page: number;
+  url: string;
+}
+
+const useInfiniteSendQuery = ({ page, url }: SendQueryData) => {
   const tokenContextObj: IToken | null = useToken();
 
   const [error, setError] = useState(false);
-  // 수정(IPost)
-  const [list, setList] = useState<IPost[]>([]);
+  const [list, setList] = useState<IPost[] | INotification[]>([]);
   const loading = useRef(true);
 
-  const limit = 7;
-
   const sendQuery = useCallback(
-    async (specificData?: any) => {
+    async (specificData?: INotification[]) => {
       try {
         loading.current = true;
         setError(false);
 
         if (specificData) {
           setList(specificData);
+          loading.current = false;
           return;
         }
 
-        const res = await axios.get(`${END_POINT}${url}?offset=${page * limit}&limit=${limit}`, {
-          headers: { Authorization: `bearer ${tokenContextObj?.token}` },
-        });
+        const res = await axios.get(
+          `${END_POINT}${url}?offset=${page * INFINITE_SCROLL_LIMIT}&limit=${INFINITE_SCROLL_LIMIT}`,
+          {
+            headers: { Authorization: `bearer ${tokenContextObj?.token}` },
+          }
+        );
         setList((prev) => [...prev, ...res.data]);
         loading.current = false;
       } catch (err) {
