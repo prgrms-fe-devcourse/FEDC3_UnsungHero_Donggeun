@@ -11,7 +11,6 @@ import UserFollowers from './user/UserFollowers';
 import UserFollowing from './user/UserFollowing';
 import { Login, SignUp } from './auth';
 import NotificationList from './notification/NotificationList';
-import Header from './layout/Header';
 import ErrorBoundary from './api/ErrorBoundary';
 import NotFound from './NotFound';
 import ScrollToTop from './common/Scroll';
@@ -20,7 +19,6 @@ function Router() {
   return (
     <BrowserRouter>
       <ScrollToTop />
-      <Header />
       <ErrorBoundary>
         <Routes>
           <Route element={<Layout />}>

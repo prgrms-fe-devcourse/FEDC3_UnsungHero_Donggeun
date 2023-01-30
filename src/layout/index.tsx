@@ -3,6 +3,7 @@ import Channels from './Channels';
 import styled from 'styled-components';
 import { Outlet, useLocation } from 'react-router-dom';
 import Navbar from './Navbar';
+import Header from './Header';
 
 interface IProps {
   menuOpen: boolean;
@@ -17,6 +18,7 @@ const Layout = () => {
   }, [pathname]);
   return (
     <>
+      <Header />
       <Wrapper>
         <MainWrapper>
           <SidebarBackground onClick={() => setMenuOpen(false)} menuOpen={menuOpen} />
@@ -56,6 +58,7 @@ const Wrapper = styled.div`
   justify-content: center;
   width: 100vw;
 `;
+
 
 const SidebarBackground = styled.div<IProps>`
   @media (max-width: ${({ theme }) => theme.media.moblie}) {

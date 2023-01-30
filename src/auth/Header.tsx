@@ -1,16 +1,28 @@
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { SidebarBackground } from '../layout';
+import Channels from '../layout/Channels';
+import Navbar from '../layout/Navbar';
 
 const Header = () => {
   const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const { pathname } = useLocation();
+
   return (
-    <Wrapper>
-      <HeaderWrapper>
-        <div onClick={() => navigate('/')}>
-          <Logo height={64} width='auto' src={process.env.PUBLIC_URL + '/logo.svg'} alt='로고' />
-        </div>
-      </HeaderWrapper>
-    </Wrapper>
+    <>
+      <SidebarBackground onClick={() => setMenuOpen(false)} menuOpen={menuOpen} />
+      <Channels menuOpen={menuOpen} urlPathname={pathname} />
+      <Wrapper>
+        <HeaderWrapper>
+          <div onClick={() => navigate('/')}>
+            <Logo height={64} width='auto' src={process.env.PUBLIC_URL + '/logo.svg'} alt='로고' />
+          </div>
+        </HeaderWrapper>
+      </Wrapper>
+      <Navbar menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+    </>
   );
 };
 
