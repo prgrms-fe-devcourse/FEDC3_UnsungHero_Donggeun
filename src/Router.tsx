@@ -14,7 +14,6 @@ import NotificationList from './notification/NotificationList';
 import ErrorBoundary from './api/ErrorBoundary';
 import NotFound from './NotFound';
 import ScrollToTop from './common/Scroll';
-import InfiniteScroll from './InfiniteScroll';
 
 function Router() {
   return (
@@ -22,9 +21,9 @@ function Router() {
       <ScrollToTop />
       <ErrorBoundary>
         <Routes>
-          <Route path='/signup' element={<SignUp />} />
-          <Route path='/login' element={<Login />} />
           <Route element={<Layout />}>
+            <Route path='/signup' element={<SignUp />} />
+            <Route path='/login' element={<Login />} />
             <Route path='/' element={<Post />} />
             <Route path='/notifications' element={<NotificationList />} />
             <Route path='/user/:id' element={<User />} />
@@ -35,7 +34,6 @@ function Router() {
             <Route path='/post/create/:channelId' element={<CreatePost />} />
             <Route path='/channel/:channelId' element={<Search />} />
             <Route path='/userEdit/:id' element={<UserEdit />} />
-            <Route path='/infinite' element={<InfiniteScroll />} />
             <Route path='/search/:channelId' element={<Search />} />
           </Route>
           <Route path='/*' element={<NotFound />} />

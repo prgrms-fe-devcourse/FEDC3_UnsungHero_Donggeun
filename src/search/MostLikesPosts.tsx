@@ -167,6 +167,7 @@ const BestPostWrapper = styled.li`
   box-shadow: 0px 4px 4px ${({ theme }) => theme.colors.shadow};
 
   .bestPostTitleDotContainer {
+    width: 100vw;
     display: flex;
     .bestPostTitle {
       font-size: 1.125rem;
@@ -175,6 +176,10 @@ const BestPostWrapper = styled.li`
       text-overflow: ellipsis;
       white-space: nowrap;
       overflow: hidden;
+
+      @media (max-width: ${({ theme }) => theme.media.moblie}) {
+        max-width: 200px;
+      }
     }
 
     &:hover {
