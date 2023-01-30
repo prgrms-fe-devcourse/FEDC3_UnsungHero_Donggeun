@@ -153,7 +153,7 @@ export default PostListContainer;
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 45.3125rem;
+  width: 100%;
 
   .recentLikesButtonContainer {
     display: flex;
