@@ -1,25 +1,26 @@
 import { useEffect, useState } from 'react';
 
 const useCheckMobile = () => {
-  const [mobile, setMobile] = useState(window.innerWidth <= 576);
+const [mobileStatus, setMobileStatus] = useState(false);
 
-  const handleCheckScreen = () => {
-    if (window.innerWidth <= 576) {
-      setMobile(true);
-      return;
-    }
-    setMobile(false);
+const handleCheckScreen = () => {
+  if (window.screen.width <= 576 || window.innerWidth <= 576) {
+    setMobileStatus(true);
+    return;
+  }
+
+  setMobileStatus(false);
+};
+
+useEffect(() => {
+  window.addEventListener('resize', handleCheckScreen);
+
+  return () => {
+    window.removeEventListener('resize', handleCheckScreen);
   };
+}, []);
 
-  useEffect(() => {
-    window.addEventListener('resize', handleCheckScreen);
-
-    return () => {
-      window.removeEventListener('resize', handleCheckScreen);
-    };
-  }, []);
-
-  return { mobile };
+return { mobileStatus };
 };
 
 export default useCheckMobile;
