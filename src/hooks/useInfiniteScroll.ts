@@ -1,11 +1,5 @@
-import { useState, useCallback, useEffect, ReactNode } from 'react';
-import axios from 'axios';
-import { END_POINT } from '../api/apiAddress';
-import request from 'axios';
-
-interface TodoErrorResponse {
-  error: string;
-}
+import { useState, useCallback, useEffect } from 'react';
+import useInfiniteSendQuery from './useInfiniteSendQuery';
 
 interface IInterSectionObserver {
   root: null;
@@ -13,37 +7,17 @@ interface IInterSectionObserver {
   threshold: number | number[];
 }
 
-const limit = 5;
-
-export const useInfiniteScroll = (url: string, loader: React.MutableRefObject<null>) => {
+export const useInfiniteScroll = (url: string, loader: React.RefObject<HTMLElement>) => {
   const [page, setPage] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-  const [list, setList] = useState<object[]>([]);
 
-  const sendQuery = useCallback(
-    async (url: string) => {
-      try {
-        setLoading(true);
-        setError(false);
-        const res = await axios.get(`${END_POINT}${url}?offset=${page * limit}&limit=${limit}`);
-        setList((prev) => [...prev, ...res.data]);
-        setLoading(false);
-      } catch (err) {
-        if (request.isAxiosError(err) && err.response) {
-          setError(!!(err.response?.data as TodoErrorResponse).error);
-        }
-      }
-    },
-    [page]
-  );
+  const { list, loading, error, sendQuery } = useInfiniteSendQuery(page, url);
 
   useEffect(() => {
-    sendQuery(url);
+    sendQuery();
   }, [page]);
 
   const handleObserver: IntersectionObserverCallback = useCallback(([{ isIntersecting }]) => {
-    if (isIntersecting) setPage((prev) => prev + 1);
+    if (!loading.current && isIntersecting) setPage((prev) => prev + 1);
   }, []);
 
   useEffect(() => {
@@ -51,7 +25,7 @@ export const useInfiniteScroll = (url: string, loader: React.MutableRefObject<nu
 
     const option: IInterSectionObserver = {
       root: null,
-      rootMargin: '0px',
+      rootMargin: '10px',
       threshold: 0,
     };
     const observer: IntersectionObserver = new IntersectionObserver(handleObserver, option);
@@ -62,5 +36,5 @@ export const useInfiniteScroll = (url: string, loader: React.MutableRefObject<nu
     };
   }, [handleObserver]);
 
-  return { list, loading, error };
+  return { page, list, loading, error, sendQuery };
 };
