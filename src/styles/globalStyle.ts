@@ -9,11 +9,9 @@ const GlobalStyles = createGlobalStyle`
     body {
         font-size: 16px;
         background-color: #FAFAFA;
-        height: 100%;
         width: 100%;
         font-family: 'GmarketSansMedium', sans-serif;
         @media (max-width: ${({ theme }) => theme.media.moblie}) {
-        position: fixed;
         overflow: hidden;
         overflow-y: scroll;
         }
