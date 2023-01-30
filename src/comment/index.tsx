@@ -49,12 +49,11 @@ const Comment = ({ commentList, userId, postId, fetchData }: ICommentProps) => {
 
   const navigate = useNavigate();
 
-  const handleOnClickMoveToUserPage = (author: IUser) => {
+  const handleClickMoveToUserPage = (author: IUser) => {
     navigate(`/user/${author._id}`);
   };
 
   const temp = () => {
-    console.log('익명!');
     setAnonymous(!anonymous);
   };
 
@@ -101,7 +100,7 @@ const Comment = ({ commentList, userId, postId, fetchData }: ICommentProps) => {
             <Li key={_id}>
               {IsJSON(comment) ? (
                 <>
-                  <AuthorContainer onClick={() => handleOnClickMoveToUserPage(author)}>
+                  <AuthorContainer onClick={() => handleClickMoveToUserPage(author)}>
                     <Avatar src={author.image} width={60} height={60} />
                     <AuthorName>{author.fullName}</AuthorName>
                   </AuthorContainer>
@@ -111,13 +110,12 @@ const Comment = ({ commentList, userId, postId, fetchData }: ICommentProps) => {
                     ) : (
                       <PCmoment>비밀 댓글입니다</PCmoment>
                     )}
-                    {/* <PCmoment>{IsAuthore(author) ? <h1>본인</h1> : <h2>아님</h2>}</PCmoment> */}
                     <ButtonX onClick={() => handleClickButton(_id)}>X</ButtonX>
                   </CommentContainer>
                 </>
               ) : (
                 <>
-                  <AuthorContainer onClick={() => handleOnClickMoveToUserPage(author)}>
+                  <AuthorContainer onClick={() => handleClickMoveToUserPage(author)}>
                     <Avatar src={author.image} width={60} height={60} />
                     <AuthorName>{author.fullName}</AuthorName>
                   </AuthorContainer>
