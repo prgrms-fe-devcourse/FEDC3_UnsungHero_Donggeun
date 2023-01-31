@@ -1,14 +1,12 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { END_POINT } from '../api/apiAddress';
-import useInfiniteSendQuery from '../hooks/useInfiniteSendQuery';
+import { INFINITE_SCROLL_LIMIT } from '../api/constValue';
 
 interface MobileButton {
   token?: string;
   page: number;
 }
-
-const limit = 5;
 
 export const useMobileButtonSendData = ({ token, page }: MobileButton) => {
   const [prevListLength, setPrevListLength] = useState(0);
@@ -37,38 +35,28 @@ export const useMobileButtonSendData = ({ token, page }: MobileButton) => {
     saveNotificationLength();
   }, []);
 
-  const confirmMobileNotificationList = async () => {
-    const differenceLength = differenceListLength === prevListLength ? 0 : differenceListLength;
+  const fetchNotificationData = async (differenceLength: number) => {
     const res = await axios.get(
-      `${END_POINT}/notifications?offset=${0}&limit=${page * limit + limit + differenceLength}`,
+      `${END_POINT}/notifications?offset=${0}&limit=${
+        page * INFINITE_SCROLL_LIMIT + INFINITE_SCROLL_LIMIT + differenceLength
+      }`,
       headers
     );
 
     return res.data;
+  };
+
+  const confirmMobileNotificationList = async () => {
+    const differenceLength = differenceListLength === prevListLength ? 0 : differenceListLength;
+
+    return await fetchNotificationData(differenceLength);
   };
 
   const renderRealTimeMobileNotificationList = async () => {
     const differenceLength = await saveNotificationLength();
 
-    const res = await axios.get(
-      `${END_POINT}/notifications?offset=${0}&limit=${page * limit + limit + differenceLength}`,
-      headers
-    );
-
-    return res.data;
+    return await fetchNotificationData(differenceLength);
   };
-
-  //   const renderScrollMobileNotificationList = async () => {
-  //     const differenceLength = differenceListLength === prevListLength ? 0 : differenceListLength;
-  //     const res = await axios.get(
-  //       `${END_POINT}notifications?offset=${page * limit + differenceLength}&limit=${limit}`,
-  //       headers
-  //     );
-
-  //     // by 민형, 실시간 알람 확인 후 한번 스크롤을 내렸을 때 처리
-  //     if (differenceLength !== 0) setPrevListLength(differenceLength);
-  //     refetchNotificationList(res.data);
-  //   };
 
   return { confirmMobileNotificationList, renderRealTimeMobileNotificationList };
 };

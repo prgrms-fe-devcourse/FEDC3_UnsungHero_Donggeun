@@ -24,7 +24,7 @@ const MobileNotificationList = () => {
     page: currentPage,
     list: notificationList,
     sendQuery: refetchNotificationList,
-  } = useIntersectionObserver('/notifications', infiniteRef);
+  } = useIntersectionObserver({ url: '/notifications', loader: infiniteRef });
   const { confirmMobileNotificationList, renderRealTimeMobileNotificationList } = useMobileButtonSendData({
     token: tokenContextObj?.token,
     page: currentPage,
