@@ -10,10 +10,9 @@ interface MobileButton {
 
 const limit = 5;
 
-export const useMobileButton = ({ token, page }: MobileButton) => {
+export const useMobileButtonSendData = ({ token, page }: MobileButton) => {
   const [prevListLength, setPrevListLength] = useState(0);
   const [differenceListLength, setDifferenceListLength] = useState(0);
-  const { sendQuery } = useInfiniteSendQuery(page);
 
   const headers = {
     headers: { Authorization: `bearer ${token}` },

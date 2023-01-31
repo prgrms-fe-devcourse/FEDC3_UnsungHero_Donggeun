@@ -11,8 +11,8 @@ import { Button } from '../common';
 import { useNavigate } from 'react-router-dom';
 import { END_POINT } from '../api/apiAddress';
 import { IoMdNotificationsOff } from 'react-icons/io';
-import { useInfiniteScroll } from '../hooks/useInfiniteScroll';
-import { useMobileButton } from './useMobileButton';
+import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
+import { useMobileButtonSendData } from './useMobileButtonSendData';
 
 const MobileNotificationList = () => {
   const infiniteRef = useRef(null);
@@ -24,8 +24,8 @@ const MobileNotificationList = () => {
     page: currentPage,
     list: notificationList,
     sendQuery: refetchNotificationList,
-  } = useInfiniteScroll('/notifications', infiniteRef);
-  const { confirmMobileNotificationList, renderRealTimeMobileNotificationList } = useMobileButton({
+  } = useIntersectionObserver('/notifications', infiniteRef);
+  const { confirmMobileNotificationList, renderRealTimeMobileNotificationList } = useMobileButtonSendData({
     token: tokenContextObj?.token,
     page: currentPage,
   });
