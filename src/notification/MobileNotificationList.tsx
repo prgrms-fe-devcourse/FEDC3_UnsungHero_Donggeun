@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { END_POINT } from '../api/apiAddress';
 import { IoMdNotificationsOff } from 'react-icons/io';
 import { useInfiniteScroll } from '../hooks/useInfiniteScroll';
+import { useMobileButton } from './useMobileButton';
 
 const MobileNotificationList = () => {
   const infiniteRef = useRef(null);
@@ -19,11 +20,15 @@ const MobileNotificationList = () => {
   const tokenContextObj: IToken | null = useToken();
   const notificationStatusContextObj: INotificationStatus | null = useNotificationStatus();
 
-  const { list: notificationList, fetchData: refetchNotificationList } = useInfiniteScroll(
-    '/notifications',
-    infiniteRef,
-    tokenContextObj?.token
-  );
+  const {
+    page: currentPage,
+    list: notificationList,
+    sendQuery: refetchNotificationList,
+  } = useInfiniteScroll('/notifications', infiniteRef);
+  const { confirmMobileNotificationList, renderRealTimeMobileNotificationList } = useMobileButton({
+    token: tokenContextObj?.token,
+    page: currentPage,
+  });
 
   const navigator = useNavigate();
 
@@ -38,8 +43,8 @@ const MobileNotificationList = () => {
           headers: { Authorization: `bearer ${tokenContextObj?.token}` },
         }
       )
-      .then(() => {
-        refetchNotificationList('mobileNotificationConfirm');
+      .then(async () => {
+        refetchNotificationList(await confirmMobileNotificationList());
       });
   };
 
@@ -53,7 +58,6 @@ const MobileNotificationList = () => {
     !tokenContextObj?.token && navigator('/');
   }, []);
 
-  // by 민형, notificationList state가 수정되는 경우(token이 있는 경우)에만 fetch 되므로 따로 token check x_230112
   useEffect(() => {
     updateNotificationStatus();
   }, [notificationList]);
@@ -78,7 +82,7 @@ const MobileNotificationList = () => {
           color={'default'}
           width={12.5}
           height={2.5}
-          // onClick={() => refetchNotificationList}
+          onClick={async () => refetchNotificationList(await renderRealTimeMobileNotificationList())}
         />
       </NotificationConfirmContainer>
 
