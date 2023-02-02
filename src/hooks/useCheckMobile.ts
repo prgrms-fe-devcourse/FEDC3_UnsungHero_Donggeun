@@ -13,6 +13,7 @@ const useCheckMobile = () => {
   };
 
   useEffect(() => {
+    handleCheckScreen();
     window.addEventListener('resize', handleCheckScreen);
 
     return () => {

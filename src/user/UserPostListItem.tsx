@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { IPost } from '../types/post';
 
 interface IProps {
-  post: Pick<IPost, 'title' | '_id' | 'likes' | 'comments'>;
+  post: IPost;
 }
 const LIKE_IMG_URL = 'https://ifh.cc/g/sq1joM.png';
 const COMMENT_IMG_URL = 'https://ifh.cc/g/Y0gGms.png';
