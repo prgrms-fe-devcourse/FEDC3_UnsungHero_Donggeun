@@ -21,9 +21,9 @@ function Router() {
       <ScrollToTop />
       <ErrorBoundary>
         <Routes>
+          <Route path='/signup' element={<SignUp />} />
+          <Route path='/login' element={<Login />} />
           <Route element={<Layout />}>
-            <Route path='/signup' element={<SignUp />} />
-            <Route path='/login' element={<Login />} />
             <Route path='/' element={<Post />} />
             <Route path='/notifications' element={<NotificationList />} />
             <Route path='/user/:id' element={<User />} />
