@@ -1,16 +1,22 @@
 import { useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import { useInfiniteScroll } from '../hooks/useInfiniteScroll';
+import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
+import { IPost } from '../types/post';
 
 import UserPostListItem from './UserPostListItem';
 
 const MobileUserPosts = () => {
   const { id: currentPageId } = useParams();
   const listRef = useRef<HTMLDivElement>(null);
-  const { list } = useInfiniteScroll(`/posts/author/${currentPageId}`, listRef);
+  const InfiniteScrollProps = {
+    url: `/posts/author/${currentPageId}`,
+    loader: listRef,
+  };
+  const { list } = useIntersectionObserver(InfiniteScrollProps);
+  const userPostList = list as IPost[];
   return (
     <>
-      {list && list.map((post) => <UserPostListItem key={post._id} post={post} />)}
+      {userPostList && userPostList.map((post) => <UserPostListItem key={post._id} post={post} />)}
       <div ref={listRef} />
     </>
   );
