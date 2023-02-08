@@ -6,36 +6,17 @@ import Comment from '../comment';
 import Like from '../like';
 import { IPost } from '../types/post';
 import { useUserId } from '../contexts/TokenProvider';
-import { IComment } from '../types/comment';
-import { ILike } from '../types/like';
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import { Avatar, Button } from '../common';
 import { END_POINT } from '../api/apiAddress';
 import Skeleton from '../common/Skeleton';
 
-interface Iauthor {
-  fullName: string;
-  createAt: string;
-  _id: string;
-}
-
 const DetailPost = () => {
   const navigate = useNavigate();
-
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [image, setImage] = useState('');
-  const [author, setAuthor] = useState<Iauthor>({
-    fullName: '',
-    createAt: '',
-    _id: '',
-  });
-  const [comments, setComments] = useState<IComment[]>([]);
-  const [likes, setLikes] = useState<ILike[]>([]);
-
   const { postId } = useParams();
-
   const userObject = useUserId();
   const userId = userObject?.userId;
 
@@ -44,35 +25,22 @@ const DetailPost = () => {
     refetch: fetchData,
     isLoading,
   } = useQuery<IPost>(
-    [postId],
-    async () => {
-      return await axios.get(`${END_POINT}/posts/${postId}`).then(({ data }) => data);
+    [postId], // 더 유니크한 키 값으로 수정
+    async (): Promise<IPost> => {
+      const { data } = await axios.get(`${END_POINT}/posts/${postId}`);
+      return data;
     },
     {
       refetchOnMount: true,
-      staleTime: 0,
+      staleTime: 10000,
     }
   );
 
   useEffect(() => {
     if (typeof postData === 'object') {
-      const post = JSON.parse(postData?.title as string);
+      const post = JSON.parse(postData.title as string);
       setTitle(post.title);
       setContent(post.content);
-
-      const author = postData?.author;
-      const fullName = author.fullName;
-      const _id = author._id;
-
-      const createAt = postData.createdAt;
-      setAuthor({
-        fullName: fullName,
-        createAt: createAt,
-        _id: _id,
-      });
-      setImage(postData.image as string);
-      setComments(postData.comments);
-      setLikes(postData.likes);
     }
   }, [postData]);
 
@@ -80,13 +48,13 @@ const DetailPost = () => {
     navigate(`/post/channelId/updatePost/${postId}`);
   };
 
-  const identification = author._id === userId ? true : false;
+  const identification = postData?.author._id === userId ? true : false;
 
   return (
     <ErrorBoundary>
       <Container>
         <Post>
-          {isLoading ? (
+          {isLoading || !postData ? (
             <>
               <Skeleton.Paragraph line={3} />
               <Author>
@@ -104,7 +72,7 @@ const DetailPost = () => {
               <TitleWrapper>
                 <Title>
                   <div>{title}</div>
-                  <CreateAt>작성일: {author.createAt.slice(0, 10)}</CreateAt>
+                  <CreateAt>작성일: {postData.author.createdAt.slice(0, 10)}</CreateAt>
                 </Title>
                 {identification ? (
                   <Button
@@ -116,31 +84,41 @@ const DetailPost = () => {
                   />
                 ) : null}
               </TitleWrapper>
-              <Author onClick={() => navigate(`/user/${author._id}`)}>
-                <Avatar src={postData?.author.image} width={60} height={60} />
-                <UserName>{author.fullName}</UserName>
+              <Author onClick={() => navigate(`/user/${postData.author._id}`)}>
+                <Avatar src={postData.author.image} width={60} height={60} />
+                <UserName>{postData.author.fullName}</UserName>
               </Author>
               <Content>
-                <ImageWarpper>{image && <ContentImage src={image} alt='이미지!' />}</ImageWarpper>
+                <ImageWarpper>
+                  {postData.image && <ContentImage src={postData.image} alt='이미지!' />}
+                </ImageWarpper>
                 <ContentText>{content}</ContentText>
               </Content>
             </>
           )}
-          <Like
-            likeList={likes}
-            userId={userId || ''}
-            postuserId={postData?.author._id || ''}
-            postId={postId || ''}
-            fetchData={fetchData}
-          />
+          {postData ? (
+            <Like
+              likeList={postData.likes}
+              userId={userId || ''}
+              postuserId={postData.author._id || ''}
+              postId={postId || ''}
+              fetchData={fetchData}
+            />
+          ) : (
+            ''
+          )}
         </Post>
       </Container>
-      <Comment
-        commentList={comments}
-        userId={postData?.author._id || ''}
-        postId={postId || ''}
-        fetchData={fetchData}
-      />
+      {postData ? (
+        <Comment
+          commentList={postData.comments}
+          userId={postData.author._id || ''}
+          postId={postId || ''}
+          fetchData={fetchData}
+        />
+      ) : (
+        ''
+      )}
     </ErrorBoundary>
   );
 };
