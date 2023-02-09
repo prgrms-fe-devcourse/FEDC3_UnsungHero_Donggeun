@@ -9,7 +9,7 @@
 
 ## <img src="https://user-images.githubusercontent.com/113018070/213464160-8d2176e2-57ec-4a60-bc95-cd1c7cbbb583.png" width="20px" height="20px"/> 배포 주소
 
-> https://unsunghero.netlify.app/ (현재 일부 수정 중)
+> https://unsunghero.netlify.app/
 
 <br/>
 
@@ -47,10 +47,12 @@
 아버지라는 본연의 책임에서 벗어나 본인 스스로를 되돌아 볼 수 있는 시간을 갖을 수 있는 공간입니다.
 ```
 
-<br/>
-
 <div align="center">
-  <img src="https://user-images.githubusercontent.com/113018070/213634598-0c8c28cf-36f0-49cc-9533-805545835ad7.png" height="600px" width="650px"
+  <h4>웹 버전</h4>
+  <img src="https://user-images.githubusercontent.com/113018070/213634598-0c8c28cf-36f0-49cc-9533-805545835ad7.png" height="600px" width="650px" />
+  <br/>
+  <h4>모바일 버전</h4>
+   <img src="https://user-images.githubusercontent.com/113018070/215849164-17844d02-a0c2-495d-af31-cc605a1a0766.png" height="700px" width="650px" />
 </div>
 
 <br/>
@@ -64,7 +66,9 @@
     
 [🗒 Notion 회의록](https://www.notion.so/prgrms/a595b2d4fbde464bbf5cb29cf14c62b2?v=78b4706a3f924d19a9af0830ed8c29d1)
     
-[🕐 Notion 중간 회고록](https://www.notion.so/prgrms/486e3a3821584c72a95954655145306f)
+[🕐 Notion 중간/최종 회고록](https://www.notion.so/prgrms/486e3a3821584c72a95954655145306f)
+
+[🕐 Notion 개인 회고록 모음](https://www.notion.so/prgrms/ecade25bd64b4cd1b2e71d2cbd0df282?v=6219dc0cc53e43bdbc6482c217e6b923)
 
 
 <br/>

@@ -109,7 +109,7 @@ const LoginHeader = styled.h1`
 
 const LoginContainer = styled.div`
   margin: 0 auto;
-  min-width: 26.25rem;
+  min-width: 25rem;
   width: 30vw;
   display: flex;
   flex-direction: column;
@@ -119,12 +119,22 @@ const LoginContainer = styled.div`
   border: none;
   box-shadow: ${({ theme }) => theme.shadow.boxShadow};
   background-color: ${({ theme }) => theme.colors.white};
+
+  @media screen and (max-width: ${(props) => props.theme.media.moblie}) {
+    border: none;
+    background-color: transparent;
+    box-shadow: unset;
+  }
 `;
 
 const FormTitle = styled.div`
   font-size: ${({ theme }) => theme.fontSize.large};
   font-weight: 700;
   margin: 0.625rem auto 2.188rem auto;
+
+  @media screen and (max-width: ${(props) => props.theme.media.moblie}) {
+    font-size: ${({ theme }) => theme.fontSize.medium};
+  }
 `;
 
 const Label = styled.label`

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useQuery } from 'react-query';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { IChannel } from '../types/channel';
 import { AiOutlineRight } from 'react-icons/ai';
@@ -18,13 +18,21 @@ interface Channel {
 
 interface IProps {
   menuOpen?: boolean;
+  urlPathname?: string;
 }
 
-const Channels = ({ menuOpen }: IProps) => {
+interface IChannelId {
+  key?: string;
+  channelId?: string;
+  currentId?: string;
+}
+
+const Channels = ({ menuOpen, urlPathname }: IProps) => {
   const { data: channelData } = useQuery('channelData', async () => {
     return axios.get(`${END_POINT}/channels`).then(({ data }) => data);
   });
   const navigate = useNavigate();
+  const { channelId } = useParams();
 
   const handleClickMoveChannel = (id: string) => {
     navigate(`/channel/${id}`);
@@ -38,9 +46,8 @@ const Channels = ({ menuOpen }: IProps) => {
   );
   const familyChannel = channelData?.filter((channel: IChannel) => channel.description === '가족');
   const etcChannel = channelData?.filter((channel: IChannel) => channel.description === '기타');
-
   return (
-    <Wrapper menuOpen={menuOpen}>
+    <Wrapper menuOpen={menuOpen} urlPathname={urlPathname}>
       <EntireViewSidebar>
         <ChannelTitle>
           <GiBatMask className='icon' />
@@ -64,7 +71,12 @@ const Channels = ({ menuOpen }: IProps) => {
         </ChannelTitle>
         <ChannelWrapper>
           {hobbyChannel?.map(({ _id, name }: Channel) => (
-            <Channel key={_id} onClick={() => handleClickMoveChannel(_id)}>
+            <Channel
+              key={_id}
+              onClick={() => handleClickMoveChannel(_id)}
+              channelId={channelId}
+              currentId={_id}
+            >
               {name}
               <AiOutlineRight />
             </Channel>
@@ -78,7 +90,12 @@ const Channels = ({ menuOpen }: IProps) => {
         </ChannelTitle>
         <ChannelWrapper>
           {familyChannel?.map(({ _id, name }: Channel) => (
-            <Channel key={_id} onClick={() => handleClickMoveChannel(_id)}>
+            <Channel
+              key={_id}
+              onClick={() => handleClickMoveChannel(_id)}
+              channelId={channelId}
+              currentId={_id}
+            >
               {name}
               <AiOutlineRight />
             </Channel>
@@ -92,7 +109,12 @@ const Channels = ({ menuOpen }: IProps) => {
         </ChannelTitle>
         <ChannelWrapper>
           {etcChannel?.map(({ _id, name }: Channel) => (
-            <Channel key={_id} onClick={() => handleClickMoveChannel(_id)}>
+            <Channel
+              key={_id}
+              onClick={() => handleClickMoveChannel(_id)}
+              channelId={channelId}
+              currentId={_id}
+            >
               {name}
               <AiOutlineRight />
             </Channel>
@@ -117,7 +139,8 @@ const Channels = ({ menuOpen }: IProps) => {
 export default Channels;
 
 const Wrapper = styled.div<IProps>`
-  display: flex;
+  display: ${(props) =>
+    props.urlPathname === '/signup' || props.urlPathname === '/login' ? 'none' : 'flex'};
   flex-direction: column;
   height: 100%;
   width: 15rem;
@@ -125,18 +148,21 @@ const Wrapper = styled.div<IProps>`
   margin-top: 7.6875rem;
   z-index: 280;
   gap: 2rem;
-
+  scroll-behavior: smooth;
   @media (max-width: ${({ theme }) => theme.media.moblie}) {
+    display: flex;
     gap: 0;
     background-color: ${({ theme }) => theme.colors.white};
     margin-top: 0;
-    padding-top: 7.6875rem;
+    padding-top: 80px;
+    padding-bottom: 90px;
     z-index: 280;
     transition: all 0.5s ease-out;
+    height: 100%;
+    max-width: 60%;
     transform: translateX(${({ menuOpen }) => (menuOpen ? '0%' : '-100%')});
   }
 `;
-
 const Sidebar = styled.nav`
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: 5px;
@@ -150,7 +176,8 @@ const Sidebar = styled.nav`
   @media (max-width: ${({ theme }) => theme.media.moblie}) {
     background-color: transparent;
     box-shadow: none;
-    height: auto;
+    height: 100%;
+    width: 100%;
   }
 `;
 
@@ -164,6 +191,9 @@ const ChannelWrapper = styled.div`
   &::-webkit-scrollbar-thumb {
     background-color: #60606080;
     border-radius: 10px;
+  }
+  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+    height: auto;
   }
 `;
 
@@ -180,6 +210,7 @@ const EntireViewSidebar = styled.div`
     background-color: transparent;
     box-shadow: none;
     height: auto;
+    width: 100%;
   }
 `;
 
@@ -197,7 +228,7 @@ const ChannelTitle = styled.div`
   }
 `;
 
-const Channel = styled.div`
+const Channel = styled.div<IChannelId>`
   cursor: pointer;
   display: flex;
   justify-content: space-between;
@@ -205,6 +236,8 @@ const Channel = styled.div`
   padding: 0.5rem 1rem;
   transition: all 0.2s ease;
   color: ${({ theme }) => theme.colors.gray};
+  background-color: ${({ currentId, channelId, theme }) =>
+    currentId && currentId === channelId ? theme.colors.grayHover : ''};
   &:hover {
     background-color: ${({ theme }) => theme.colors.grayHover};
   }
@@ -212,5 +245,5 @@ const Channel = styled.div`
 
 const ButtonWrapper = styled.div`
   text-align: center;
-  margin-top: 20px;
+  margin-top: 5%;
 `;

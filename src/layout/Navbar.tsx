@@ -5,21 +5,35 @@ import { GiHamburgerMenu } from 'react-icons/gi';
 import { FiSearch } from 'react-icons/fi';
 import { AiOutlineHome, AiOutlineMessage } from 'react-icons/ai';
 import { IoMdNotificationsOutline } from 'react-icons/io';
+import { useToken } from '../contexts/TokenProvider';
 
 const itemListObj = [
   {
-    name: <AiOutlineHome className='menuIcon' />,
+    name: 'category',
+    tag: <GiHamburgerMenu className='menuIcon' />,
     id: 1,
+  },
+  {
+    name: 'search',
+    tag: <FiSearch className='menuIcon' />,
+    id: 2,
+  },
+  {
+    name: 'home',
+    tag: <AiOutlineHome className='menuIcon' />,
+    id: 3,
     movePage: '/',
   },
   {
-    name: <IoMdNotificationsOutline className='menuIcon' />,
-    id: 2,
+    name: 'notification',
+    tag: <IoMdNotificationsOutline className='menuIcon' />,
+    id: 4,
     movePage: '/notifications',
   },
   {
-    name: <AiOutlineMessage className='menuIcon' />,
-    id: 3,
+    name: 'message',
+    tag: <AiOutlineMessage className='menuIcon' />,
+    id: 5,
     movePage: '/message',
   },
 ];
@@ -32,30 +46,32 @@ interface IProps {
 const Navbar = ({ menuOpen, setMenuOpen }: IProps) => {
   const navigator = useNavigate();
   const { channelId } = useParams();
+  const userToken = useToken()?.token;
 
-  const movePage = (page: string) => {
-    navigator(page);
-  };
-
-  const moveSearchPage = (id: string | undefined) => {
-    movePage(`/search/${id}`);
+  const handlemovePage = (name: string, id: string | undefined) => {
+    switch (name) {
+      case 'category':
+        setMenuOpen(!menuOpen);
+        break;
+      case 'search':
+        navigator(`/search/${id}`);
+        break;
+      case 'home':
+        navigator('/');
+        break;
+      case 'notification':
+        userToken ? navigator('/notifications') : navigator('/login');
+        break;
+      case 'message':
+        userToken ? navigator('/message') : navigator('/login');
+    }
   };
 
   return (
     <NavContainer>
-      <NavContainerItem
-        onClick={() => {
-          setMenuOpen(!menuOpen);
-        }}
-      >
-        <GiHamburgerMenu className='menuIcon' />
-      </NavContainerItem>
-      <NavContainerItem>
-        <FiSearch className='menuIcon' onClick={() => moveSearchPage(channelId)} />
-      </NavContainerItem>
       {itemListObj.map((item) => (
-        <NavContainerItem onClick={() => movePage(item.movePage)} key={item.id}>
-          {item.name}
+        <NavContainerItem onClick={() => handlemovePage(item.name, channelId)} key={item.id}>
+          {item.tag}
         </NavContainerItem>
       ))}
     </NavContainer>
@@ -72,7 +88,7 @@ const NavContainer = styled.div`
   border-top: 1px solid ${({ theme }) => theme.colors.contentLine};
   position: fixed;
   bottom: 0;
-  width: 100%;
+  width: 100vw;
   height: 3.75rem;
   padding: 0 1.875rem;
   z-index: 300;
