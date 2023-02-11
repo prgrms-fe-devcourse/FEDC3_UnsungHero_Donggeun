@@ -1,46 +1,34 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import NotificationlistItem from './NotificationListItem';
 import { INotification, INotificationStatus } from '../types/notification';
 import { useToken } from '../contexts/TokenProvider';
 import { IToken } from '../types/token';
 import { useNotificationStatus } from '../contexts/NotificationStatusProvider';
-import { Pagination } from '../common';
 import styled from 'styled-components';
 import { IoMdNotificationsOutline } from 'react-icons/io';
 import { Button } from '../common';
-import { useQuery } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 import { END_POINT } from '../api/apiAddress';
 import { IoMdNotificationsOff } from 'react-icons/io';
+import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
+import { useMobileButtonSendData } from './useMobileButtonSendData';
 
-const NotificationList = () => {
-  const [page, setPage] = useState(1);
-  const limit = 4;
-  const offset = (page - 1) * limit;
+const MobileNotificationList = () => {
+  const infiniteRef = useRef(null);
 
   const tokenContextObj: IToken | null = useToken();
   const notificationStatusContextObj: INotificationStatus | null = useNotificationStatus();
 
-  const { data: notificationList, refetch: refetchNotificationList } = useQuery<INotification[]>(
-    'notificationListData',
-    async () => {
-      return await axios
-        .get(`${END_POINT}/notifications`, {
-          headers: { Authorization: `bearer ${tokenContextObj?.token}` },
-        })
-        .then(({ data }) => {
-          const returnData = data.filter(
-            (item: INotification) => !(item.follow && item.follow.user === item.author?._id)
-          );
-          return returnData;
-        });
-    },
-    {
-      refetchOnMount: true,
-      staleTime: 2000,
-    }
-  );
+  const {
+    page: currentPage,
+    list: notificationList,
+    sendQuery: refetchNotificationList,
+  } = useIntersectionObserver({ url: '/notifications', loader: infiniteRef });
+  const { confirmMobileNotificationList, renderRealTimeMobileNotificationList } = useMobileButtonSendData({
+    token: tokenContextObj?.token,
+    page: currentPage,
+  });
 
   const navigator = useNavigate();
 
@@ -55,23 +43,21 @@ const NotificationList = () => {
           headers: { Authorization: `bearer ${tokenContextObj?.token}` },
         }
       )
-      .then(() => {
-        refetchNotificationList();
+      .then(async () => {
+        refetchNotificationList(await confirmMobileNotificationList());
       });
   };
 
   const updateNotificationStatus = () => {
-    const notificationListData = notificationList?.map(({ seen }) => seen);
+    const notificationListData = notificationList?.map(({ seen }: any) => seen);
     const notificationState = notificationListData?.includes(false);
     notificationStatusContextObj?.changeNotificationStatus(!!notificationState);
   };
 
   useEffect(() => {
     !tokenContextObj?.token && navigator('/');
-    tokenContextObj?.token && refetchNotificationList();
   }, []);
 
-  // by 민형, notificationList state가 수정되는 경우(token이 있는 경우)에만 fetch 되므로 따로 token check x_230112
   useEffect(() => {
     updateNotificationStatus();
   }, [notificationList]);
@@ -82,38 +68,6 @@ const NotificationList = () => {
         <IoMdNotificationsOutline className='logo' />
         <div>알림</div>
       </NotificationHeader>
-
-      <NotificationContainer>
-        <NoNotificationContainer dataview={!!notificationList?.length}>
-          <IoMdNotificationsOff size={80} className='notlogo' />
-          <h3>알람이 없습니다.</h3>
-        </NoNotificationContainer>
-
-        <NotificationListContainer dataview={!!notificationList?.length}>
-          {notificationList
-            ?.slice(offset, offset + limit)
-            .map(({ _id, seen: isCheck, comment, like, follow, author, post }) => (
-              <NotificationlistItem
-                key={_id}
-                _id={_id}
-                seen={isCheck}
-                comment={comment}
-                like={like}
-                follow={follow}
-                author={author}
-                post={post}
-              />
-            ))}
-          <PaginationContainer>
-            <Pagination
-              total={notificationList?.length as number}
-              limit={limit}
-              page={page}
-              setPage={setPage}
-            />
-          </PaginationContainer>
-        </NotificationListContainer>
-      </NotificationContainer>
 
       <NotificationConfirmContainer dataview={!!notificationList?.length}>
         <Button
@@ -128,24 +82,53 @@ const NotificationList = () => {
           color={'default'}
           width={12.5}
           height={2.5}
-          onClick={() => refetchNotificationList()}
+          onClick={async () => refetchNotificationList(await renderRealTimeMobileNotificationList())}
         />
       </NotificationConfirmContainer>
+
+      <NotificationContainer>
+        <NoNotificationContainer dataview={!!notificationList?.length}>
+          <IoMdNotificationsOff size={80} className='notlogo' />
+          <h3>알람이 없습니다.</h3>
+        </NoNotificationContainer>
+
+        <NotificationListContainer dataview={!!notificationList?.length}>
+          {notificationList.map(
+            ({ _id, seen: isCheck, comment, like, follow, author, post }: INotification) => (
+              <NotificationlistItem
+                key={_id}
+                _id={_id}
+                seen={isCheck}
+                comment={comment}
+                like={like}
+                follow={follow}
+                author={author}
+                post={post}
+              />
+            )
+          )}
+          <InfiniteScrollDiv ref={infiniteRef}></InfiniteScrollDiv>
+        </NotificationListContainer>
+      </NotificationContainer>
     </>
   );
 };
 
-export default NotificationList;
+export default MobileNotificationList;
 
 const NotificationHeader = styled.div`
   display: flex;
   align-items: center;
   font-size: 1.5rem;
   margin-top: -0.625rem;
-  margin-bottom: 0.5625rem;
+  margin-bottom: 1.25rem;
 
   & .logo {
     font-size: 2rem;
+  }
+
+  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+    display: none;
   }
 `;
 
@@ -168,6 +151,10 @@ const NotificationContainer = styled.div`
   & h3 {
     opacity: 0.5;
   }
+
+  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+    width: 100vw;
+  }
 `;
 
 const NoNotificationContainer = styled.div<{ dataview: boolean }>`
@@ -184,11 +171,14 @@ const NotificationListContainer = styled.div<{ dataview: boolean }>`
 
 const NotificationConfirmContainer = styled.div<{ dataview: boolean }>`
   display: ${(props) => (props.dataview ? 'flex' : 'none')};
-  justify-content: space-around;
+  justify-content: space-evenly;
+  margin-bottom: 1.25rem;
+
+  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+    & button {
+      width: 45vw;
+    }
+  }
 `;
 
-const PaginationContainer = styled.div`
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-`;
+const InfiniteScrollDiv = styled.div``;
