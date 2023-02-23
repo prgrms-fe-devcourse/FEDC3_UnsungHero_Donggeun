@@ -103,7 +103,7 @@ const PostList = ({
       elapsedText = Math.trunc(elapsedTime / minute) + '분 전';
     } else if (elapsedTime < day) {
       elapsedText = Math.trunc(elapsedTime / hour) + '시간 전';
-    } else if (elapsedTime < day * 15) {
+    } else if (elapsedTime < day * 30) {
       elapsedText = Math.trunc(elapsedTime / day) + '일 전';
     } else {
       elapsedText = createdAt.slice(0, 10);
@@ -356,6 +356,9 @@ const PostBottomWrapper = styled.div`
   }
 
   .createdAt {
+    display: flex;
+    justify-content: end;
+    width: 100%;
     margin-left: auto;
     color: ${({ theme }) => theme.colors.lightGray};
 
