@@ -32,7 +32,7 @@ declare module 'styled-components' {
     };
 
     media: {
-      moblie: string;
+      mobile: string;
       tablet: string;
     };
   }

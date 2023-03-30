@@ -61,9 +61,9 @@ const DetailPost = () => {
                 <Skeleton.Circle size={60} />
               </Author>
               <Content>
-                <ImageWarpper>
+                <ImageWrapper>
                   <Skeleton.Box width={600} height={300} />
-                </ImageWarpper>
+                </ImageWrapper>
                 <Skeleton.Paragraph line={3} style={{ marginTop: '20px' }} />
               </Content>
             </>
@@ -81,6 +81,7 @@ const DetailPost = () => {
                     onClick={handleOnClickToUpdatePage}
                     width={6.25}
                     height={1.875}
+                    style={{ minWidth: '6.25rem' }}
                   />
                 ) : null}
               </TitleWrapper>
@@ -89,9 +90,9 @@ const DetailPost = () => {
                 <UserName>{postData.author.fullName}</UserName>
               </Author>
               <Content>
-                <ImageWarpper>
+                <ImageWrapper>
                   {postData.image && <ContentImage src={postData.image} alt='이미지!' />}
-                </ImageWarpper>
+                </ImageWrapper>
                 <ContentText>{content}</ContentText>
               </Content>
             </>
@@ -136,7 +137,7 @@ const Container = styled.div`
   width: 45.3125rem;
   min-height: 40rem;
   box-shadow: ${({ theme }) => theme.shadow.boxShadow};
-  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+  @media (max-width: ${({ theme }) => theme.media.mobile}) {
     width: 100vw;
   }
 `;
@@ -185,12 +186,12 @@ const ContentImage = styled.img`
   max-height: 31.25rem;
   max-width: 43.3125rem;
   margin: 1rem 0;
-  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+  @media (max-width: ${({ theme }) => theme.media.mobile}) {
     width: 100vw;
   }
 `;
 
-const ImageWarpper = styled.div`
+const ImageWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;

@@ -157,7 +157,7 @@ const SignUpContainer = styled.div`
   box-shadow: ${({ theme }) => theme.shadow.boxShadow};
   background-color: ${({ theme }) => theme.colors.white};
 
-  @media screen and (max-width: ${(props) => props.theme.media.moblie}) {
+  @media screen and (max-width: ${(props) => props.theme.media.mobile}) {
     border: none;
     background-color: transparent;
     box-shadow: unset;
@@ -170,7 +170,7 @@ const FormTitle = styled.div`
   font-weight: 700;
   margin: 0.625rem auto 2.188rem auto;
 
-  @media screen and (max-width: ${(props) => props.theme.media.moblie}) {
+  @media screen and (max-width: ${(props) => props.theme.media.mobile}) {
     font-size: ${({ theme }) => theme.fontSize.medium};
   }
 `;

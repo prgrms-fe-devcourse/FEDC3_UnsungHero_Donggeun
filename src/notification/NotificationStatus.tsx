@@ -55,7 +55,7 @@ const NotificationDot = styled.div`
   height: 0.875rem;
   background-color: #4caf50;
   box-shadow: 0px 0px 3px #4caf50;
-  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+  @media (max-width: ${({ theme }) => theme.media.mobile}) {
     display: none;
   }
 `;

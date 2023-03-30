@@ -149,7 +149,7 @@ const Wrapper = styled.div<IProps>`
   z-index: 280;
   gap: 2rem;
   scroll-behavior: smooth;
-  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+  @media (max-width: ${({ theme }) => theme.media.mobile}) {
     display: flex;
     gap: 0;
     background-color: ${({ theme }) => theme.colors.white};
@@ -173,7 +173,7 @@ const Sidebar = styled.nav`
   height: 18%;
   box-shadow: ${({ theme }) => theme.shadow.boxShadow};
 
-  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+  @media (max-width: ${({ theme }) => theme.media.mobile}) {
     background-color: transparent;
     box-shadow: none;
     height: 100%;
@@ -192,7 +192,7 @@ const ChannelWrapper = styled.div`
     background-color: #60606080;
     border-radius: 10px;
   }
-  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+  @media (max-width: ${({ theme }) => theme.media.mobile}) {
     height: auto;
   }
 `;
@@ -206,7 +206,7 @@ const EntireViewSidebar = styled.div`
   min-height: 5.9375rem;
   height: 8%;
   box-shadow: ${({ theme }) => theme.shadow.boxShadow};
-  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+  @media (max-width: ${({ theme }) => theme.media.mobile}) {
     background-color: transparent;
     box-shadow: none;
     height: auto;
