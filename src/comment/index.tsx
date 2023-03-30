@@ -69,12 +69,10 @@ const Comment = ({ commentList, userId, postId, fetchData }: ICommentProps) => {
   const loginedUser = useUserId()?.userId;
   const IsAuthore = (e: any) => {
     if (loginedUser === e._id) {
-      console.log('본인');
       return true;
     } else if (loginedUser === userId) {
       return true;
     } else {
-      console.log('본인 아님');
       return false;
     }
   };
@@ -83,15 +81,19 @@ const Comment = ({ commentList, userId, postId, fetchData }: ICommentProps) => {
     <>
       <CommentForm onSubmit={(e) => handleSubmitInput(e)}>
         <TextArea placeholder='댓글을 입력해주세요' onChange={handleInputValue} value={value} rows={3} />
-        익명
-        <input type='checkbox' onChange={temp} />
-        <Button
-          text='전송'
-          color='white'
-          width={5}
-          height={1.875}
-          style={{ marginTop: '0.875rem', marginLeft: 'auto' }}
-        />
+        <ButtonWrapper>
+          <Secret>
+            익명
+            <input type='checkbox' onChange={temp} />
+          </Secret>
+          <Button
+            text='전송'
+            color='white'
+            width={5}
+            height={1.875}
+            style={{ marginTop: '0.875rem', marginLeft: 'auto' }}
+          />
+        </ButtonWrapper>
       </CommentForm>
       <Ul>
         <CommentTitle>전체 댓글</CommentTitle>
@@ -151,7 +153,7 @@ const CommentForm = styled.form`
 const TextArea = styled.textarea`
   border: none;
   border-bottom: 1px solid ${({ theme }) => theme.colors.contentLine};
-  padding: 1.25rem 0.625rem 0.625rem 0.625rem;
+  padding: 1.875rem 0.625rem 0.625rem 0.625rem;
   width: 95%;
   min-height: 7.5rem;
   resize: none;
@@ -218,6 +220,23 @@ const Nothing = styled.p`
   text-align: center;
   color: ${({ theme }) => theme.colors.lightGray};
   padding: 0.625rem 0 1.25rem 0;
+`;
+
+const Secret = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 0.75rem;
+
+  & input {
+    margin-left: 6px;
+  }
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-left: auto;
 `;
 
 export default Comment;
