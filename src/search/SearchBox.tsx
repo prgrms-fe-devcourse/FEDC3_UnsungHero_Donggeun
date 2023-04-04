@@ -78,7 +78,7 @@ const SearchBoxForm = styled.form<IPathname>`
   width: 45.3125rem;
   margin: 2rem 0;
 
-  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+  @media (max-width: ${({ theme }) => theme.media.mobile}) {
     display: ${(pathname) => `${pathname?.pathname?.includes('search') ? 'flex' : 'none'}`};
     width: 100%;
   }
@@ -106,7 +106,7 @@ const SearchBoxSelect = styled.select`
     display: none;
   }
 
-  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+  @media (max-width: ${({ theme }) => theme.media.mobile}) {
     margin-right: 5px;
     font-size: 12px;
   }
@@ -126,7 +126,7 @@ const SearchBoxInput = styled.input`
     font-size: 1rem;
   }
 
-  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+  @media (max-width: ${({ theme }) => theme.media.mobile}) {
     width: 55vw;
 
     &::placeholder {

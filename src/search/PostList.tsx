@@ -203,7 +203,7 @@ const WholeWrapper = styled.div<IMobile>`
     border-top-right-radius: 0.3125rem;
     background-color: ${({ theme }) => theme.colors.primary};
     z-index: 10;
-    @media (max-width: ${({ theme }) => theme.media.moblie}) {
+    @media (max-width: ${({ theme }) => theme.media.mobile}) {
       width: 100vw;
     }
   }
@@ -215,7 +215,7 @@ const PostListWrapper = styled.ul`
   flex-direction: column;
   margin-top: 0rem;
   width: 45.3125rem;
-  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+  @media (max-width: ${({ theme }) => theme.media.mobile}) {
     width: 100vw;
   }
 `;
@@ -242,7 +242,7 @@ const PostWrapper = styled.li`
     border-bottom-right-radius: 5px;
   }
 
-  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+  @media (max-width: ${({ theme }) => theme.media.mobile}) {
     margin-bottom: 0px;
     border-radius: 0px;
     border-top: solid 1px ${({ theme }) => theme.colors.lightGray};
@@ -269,7 +269,7 @@ const PostTopWrapper = styled.div`
         white-space: nowrap;
         overflow: hidden;
 
-        @media (max-width: ${({ theme }) => theme.media.moblie}) {
+        @media (max-width: ${({ theme }) => theme.media.mobile}) {
           width: 65vw;
         }
       }
@@ -285,7 +285,7 @@ const PostTopWrapper = styled.div`
     white-space: nowrap;
     overflow: hidden;
 
-    @media (max-width: ${({ theme }) => theme.media.moblie}) {
+    @media (max-width: ${({ theme }) => theme.media.mobile}) {
       width: 70vw;
     }
   }
@@ -362,7 +362,7 @@ const PostBottomWrapper = styled.div`
     margin-left: auto;
     color: ${({ theme }) => theme.colors.lightGray};
 
-    @media (max-width: ${({ theme }) => theme.media.moblie}) {
+    @media (max-width: ${({ theme }) => theme.media.mobile}) {
       display: flex;
       justify-content: flex-end;
       width: 100vw;

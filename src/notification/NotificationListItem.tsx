@@ -99,7 +99,7 @@ const NotificationItem = styled.div<{ seen: boolean | undefined }>`
     background-color: ${(props) => !props.seen && props.theme.colors.grayHover};
   }
 
-  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+  @media (max-width: ${({ theme }) => theme.media.mobile}) {
     & .logo {
       position: absolute;
       bottom: 1.25rem;

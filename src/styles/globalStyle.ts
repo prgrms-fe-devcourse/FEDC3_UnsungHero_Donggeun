@@ -11,7 +11,7 @@ const GlobalStyles = createGlobalStyle`
         background-color: #FAFAFA;
         width: 100%;
         font-family: 'GmarketSansMedium', sans-serif;
-        @media (max-width: ${({ theme }) => theme.media.moblie}) {
+        @media (max-width: ${({ theme }) => theme.media.mobile}) {
         overflow: hidden;
         overflow-y: scroll;
         }
@@ -20,7 +20,7 @@ const GlobalStyles = createGlobalStyle`
         width: 10px;
         height: 10px;
         background: transparent;
-        @media (max-width: ${({ theme }) => theme.media.moblie}) {
+        @media (max-width: ${({ theme }) => theme.media.mobile}) {
         display: none;
         }
         }

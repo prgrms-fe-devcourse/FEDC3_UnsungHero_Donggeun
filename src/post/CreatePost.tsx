@@ -133,9 +133,9 @@ function CreatePost() {
           placeholder='제목을 입력하세요.'
         />
         <Content>
-          <ImageWarpper>
+          <ImageWrapper>
             <Image src={previewImage ? previewImage : ''}></Image>
-          </ImageWarpper>
+          </ImageWrapper>
           <Textarea
             rows={20}
             cols={100}
@@ -168,6 +168,10 @@ export default CreatePost;
 const Wrapper = styled.div<ILoading>`
   position: ${({ isLoading }) => isLoading && 'fixed'};
   margin-top: 1.875rem;
+  @media (max-width: ${({ theme }) => theme.media.mobile}) {
+    width: 100vw;
+    border-radius: none;
+  }
 `;
 
 const Image = styled.img`
@@ -181,7 +185,7 @@ const Form = styled.form`
   flex-direction: column;
   background-color: ${({ theme }) => theme.colors.white};
   padding: 1rem;
-  width: 45.3125rem;
+  max-width: 45.3125rem;
   border-radius: 5px;
   box-shadow: ${({ theme }) => theme.shadow.boxShadow};
 `;
@@ -226,7 +230,7 @@ const Content = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.contentLine};
 `;
 
-const ImageWarpper = styled.div`
+const ImageWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;

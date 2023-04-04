@@ -30,7 +30,7 @@ const shadow = {
 };
 
 const media = {
-  moblie: '576px',
+  mobile: '576px',
   tablet: '1024px',
 };
 

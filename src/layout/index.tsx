@@ -41,7 +41,7 @@ const Main = styled.div`
   width: 100vw;
   max-width: 725px;
   margin-bottom: 3.75rem;
-  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+  @media (max-width: ${({ theme }) => theme.media.mobile}) {
     margin-left: 0;
   }
 `;
@@ -60,7 +60,7 @@ const Wrapper = styled.div`
 `;
 
 export const SidebarBackground = styled.div<IProps>`
-  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+  @media (max-width: ${({ theme }) => theme.media.mobile}) {
     z-index: 250;
     position: fixed;
     top: 0;

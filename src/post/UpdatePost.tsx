@@ -164,6 +164,10 @@ const UpdatePost = () => {
 const Wrapper = styled.div<ILoading>`
   position: ${({ isLoading }) => isLoading && 'fixed'};
   margin-top: 1.875rem;
+  @media (max-width: ${({ theme }) => theme.media.mobile}) {
+    width: 100vw;
+    border-radius: none;
+  }
 `;
 
 const Image = styled.img`
@@ -178,7 +182,7 @@ const Form = styled.form`
   margin-top: 1.875rem;
   padding: 1rem;
   min-height: 40rem;
-  width: 45.3125rem;
+  max-width: 45.3125rem;
   border-radius: 5px;
   background-color: ${({ theme }) => theme.colors.white};
   box-shadow: ${({ theme }) => theme.shadow.boxShadow};

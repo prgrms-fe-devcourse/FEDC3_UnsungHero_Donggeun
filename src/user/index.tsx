@@ -134,7 +134,7 @@ const Wrapper = styled.div`
   border-radius: 5px;
   position: relative;
   z-index: 5;
-  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+  @media (max-width: ${({ theme }) => theme.media.mobile}) {
     margin-top: -16px;
   }
 `;

@@ -92,7 +92,7 @@ const NavContainer = styled.div`
   height: 3.75rem;
   padding: 0 1.875rem;
   z-index: 300;
-  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+  @media (max-width: ${({ theme }) => theme.media.mobile}) {
     display: flex;
   }
 `;

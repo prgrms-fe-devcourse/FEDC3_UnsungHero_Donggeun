@@ -142,7 +142,7 @@ const WholeWrapper = styled.div<IPathname>`
     font-weight: bold;
   }
 
-  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+  @media (max-width: ${({ theme }) => theme.media.mobile}) {
     margin-top: 0px;
     width: 100%;
     display: ${(pathname) => `${pathname?.pathname?.includes('search') ? 'none' : 'flex'}`};
@@ -177,7 +177,7 @@ const BestPostWrapper = styled.li`
       white-space: nowrap;
       overflow: hidden;
 
-      @media (max-width: ${({ theme }) => theme.media.moblie}) {
+      @media (max-width: ${({ theme }) => theme.media.mobile}) {
         max-width: 200px;
       }
     }

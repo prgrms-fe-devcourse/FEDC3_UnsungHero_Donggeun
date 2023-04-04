@@ -127,7 +127,7 @@ const NotificationHeader = styled.div`
     font-size: 2rem;
   }
 
-  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+  @media (max-width: ${({ theme }) => theme.media.mobile}) {
     display: none;
   }
 `;
@@ -152,7 +152,7 @@ const NotificationContainer = styled.div`
     opacity: 0.5;
   }
 
-  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+  @media (max-width: ${({ theme }) => theme.media.mobile}) {
     width: 100vw;
   }
 `;
@@ -174,7 +174,7 @@ const NotificationConfirmContainer = styled.div<{ dataview: boolean }>`
   justify-content: space-evenly;
   margin-bottom: 1.25rem;
 
-  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+  @media (max-width: ${({ theme }) => theme.media.mobile}) {
     & button {
       width: 45vw;
     }

@@ -103,12 +103,12 @@ const ButtonWrapper = styled.div`
   align-items: center;
   .mobileUserBtn {
     display: none;
-    @media (max-width: ${({ theme }) => theme.media.moblie}) {
+    @media (max-width: ${({ theme }) => theme.media.mobile}) {
       display: block;
     }
   }
   .button {
-    @media (max-width: ${({ theme }) => theme.media.moblie}) {
+    @media (max-width: ${({ theme }) => theme.media.mobile}) {
       display: none;
     }
   }
@@ -119,7 +119,7 @@ const Logo = styled.img`
   height: 4rem;
   width: auto;
   padding: 0.1875rem;
-  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+  @media (max-width: ${({ theme }) => theme.media.mobile}) {
     height: 3.5rem;
   }
 `;
@@ -135,14 +135,14 @@ const UserButton = styled.button`
   &:hover {
     background-color: ${({ theme }) => theme.colors.grayHover};
   }
-  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+  @media (max-width: ${({ theme }) => theme.media.mobile}) {
     margin-right: 0.625rem;
   }
 `;
 
 const NotificationButton = styled(UserButton)`
   margin-right: 0.625rem;
-  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+  @media (max-width: ${({ theme }) => theme.media.mobile}) {
     display: none;
   }
 `;
@@ -153,13 +153,13 @@ const NotificationWarpper = styled.div`
 
 const CatchImg = styled.img`
   padding-left: 5rem;
-  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+  @media (max-width: ${({ theme }) => theme.media.mobile}) {
     display: none;
   }
 `;
 
 const LogOutWrapper = styled.div`
-  @media (max-width: ${({ theme }) => theme.media.moblie}) {
+  @media (max-width: ${({ theme }) => theme.media.mobile}) {
     display: none;
   }
 `;
