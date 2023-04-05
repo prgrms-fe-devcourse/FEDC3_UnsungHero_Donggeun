@@ -3,6 +3,8 @@ import { IsJsonString } from './isJsonString';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useToken } from '../contexts/TokenProvider';
 import { Avatar } from '../common';
+import { getElapsedTime } from './getElapsedTime';
+import { getHighlightingContent } from './getHighlightingContent';
 
 interface IMobile {
   isMobileSearching: boolean;
@@ -44,11 +46,6 @@ interface IpostListProps {
   isMobileSearching: boolean;
 }
 
-const Span = styled.span`
-  background-color: #a6ffc6;
-  border-radius: 5px;
-`;
-
 const PostList = ({
   filteredPostsInfo,
   selectedSearchOption,
@@ -66,50 +63,6 @@ const PostList = ({
     else PostsChannelTitle = channelName as string;
 
     return PostsChannelTitle;
-  };
-
-  const highlightIncludedSearchResultText = (content: string, searchedValue: string) => {
-    const title = content.toLowerCase().trim();
-    const searchValue = searchedValue.toLowerCase().trim();
-    if (searchValue !== '' && title.includes(searchValue)) {
-      const matchText = content.split(new RegExp(`(${searchValue})`, 'gi'));
-      return (
-        <>
-          {matchText.map((text, index) =>
-            text.toLowerCase() === searchValue.toLowerCase() ? <Span key={index}>{text}</Span> : text
-          )}
-        </>
-      );
-    }
-    return content;
-  };
-
-  const renderPostWritingTime = (createdAt: string) => {
-    const today = new Date();
-    const timeValue = new Date(createdAt);
-    const elapsedTime = Math.trunc((today.getTime() - timeValue.getTime()) / 1000);
-
-    const seconds = 1;
-    const minute = seconds * 60;
-    const hour = minute * 60;
-    const day = hour * 24;
-
-    let elapsedText = '';
-    if (elapsedTime < seconds) {
-      elapsedText = '방금 전';
-    } else if (elapsedTime < minute) {
-      elapsedText = elapsedTime + '초 전';
-    } else if (elapsedTime < hour) {
-      elapsedText = Math.trunc(elapsedTime / minute) + '분 전';
-    } else if (elapsedTime < day) {
-      elapsedText = Math.trunc(elapsedTime / hour) + '시간 전';
-    } else if (elapsedTime < day * 30) {
-      elapsedText = Math.trunc(elapsedTime / day) + '일 전';
-    } else {
-      elapsedText = createdAt.slice(0, 10);
-    }
-
-    return elapsedText;
   };
 
   const tokenObject = useToken();
@@ -142,13 +95,13 @@ const PostList = ({
                   <div className='postTitleDotContainer'>
                     <div className='postTitle'>
                       {selectedSearchOption === '제목' || selectedSearchOption === '제목+내용'
-                        ? highlightIncludedSearchResultText(postTitle, inputSearchValue)
+                        ? getHighlightingContent(postTitle, inputSearchValue)
                         : postTitle}
                     </div>
                   </div>
                   <div className='postContent'>
                     {selectedSearchOption === '제목+내용'
-                      ? highlightIncludedSearchResultText(postContent, inputSearchValue)
+                      ? getHighlightingContent(postContent, inputSearchValue)
                       : postContent}
                   </div>
                 </div>
@@ -156,7 +109,7 @@ const PostList = ({
               <PostMiddleWrapper>
                 <div className='postAuthor'>
                   {selectedSearchOption === '작성자'
-                    ? highlightIncludedSearchResultText(fullName, inputSearchValue)
+                    ? getHighlightingContent(fullName, inputSearchValue)
                     : fullName}
                 </div>
                 <div className='includedChannel'>{channel?.name}</div>
@@ -176,7 +129,7 @@ const PostList = ({
                   />
                   <div className='commentsNumber'>{comments.length}</div>
                 </div>
-                <div className='createdAt'>{renderPostWritingTime(createdAt)}</div>
+                <div className='createdAt'>{getElapsedTime(createdAt)}</div>
               </PostBottomWrapper>
             </PostWrapper>
           );
