@@ -3,6 +3,8 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useToken } from '../contexts/TokenProvider';
 import { IChannel } from '../types/channel';
+import { FaRegCommentAlt } from 'react-icons/fa';
+import { FiHeart } from 'react-icons/fi';
 
 interface IPathname {
   pathname: string | undefined;
@@ -100,17 +102,9 @@ const MostLikesPosts = ({ postsInfo }: IMostLikesPostsProps) => {
                 <div className='bestPostTitle'>{postTitle}</div>
               </div>
               <div className='postInfoContainer'>
-                <img
-                  className='likesImg'
-                  src='https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fmdos4%2FbtrWuNYDtvi%2F7BdrJ7GO6iU7vuoCbMvhek%2Fimg.png'
-                  alt='좋아요'
-                />
+                <FiHeart fontSize={19} />
                 <div className='likesNumber'>{likes.length}</div>
-                <img
-                  className='commentsImg'
-                  src='https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fk7UN0%2FbtrWu7bJfuo%2FPDforMZSQxfDA0lBp3eFE0%2Fimg.png'
-                  alt='댓글아이콘'
-                />
+                <FaRegCommentAlt className='commentIcon' />
                 <div className='commentsNumber'>{comments.length}</div>
               </div>
             </BestPostWrapper>
@@ -194,24 +188,20 @@ const BestPostWrapper = styled.li`
     justify-content: end;
     color: ${({ theme }) => theme.colors.lightGray};
 
-    .likesImg {
-      margin-right: 0.125rem;
-      padding-top: 0.0625rem;
-      width: 1.0625rem;
-      height: 1.0625rem;
-    }
-    .commentsImg {
-      margin: 0 0.125rem 0 0.625rem;
-      width: 1.125rem;
-      height: 1.125rem;
+    .commentIcon {
+      margin-top: 2px;
     }
 
     .commentsNumber {
       width: 1.25rem;
+      margin-left: 0.1875rem;
+      margin-top: 1.5px;
     }
 
     .likesNumber {
       width: 1.25rem;
+      margin-left: 0.1875rem;
+      margin-top: 1px;
     }
   }
 `;

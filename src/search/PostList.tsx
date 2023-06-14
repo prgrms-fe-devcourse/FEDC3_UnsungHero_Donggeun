@@ -5,6 +5,8 @@ import { useToken } from '../contexts/TokenProvider';
 import { Avatar } from '../common';
 import { getElapsedTime } from './getElapsedTime';
 import { getHighlightingContent } from './getHighlightingContent';
+import { FaRegCommentAlt } from 'react-icons/fa';
+import { FiHeart } from 'react-icons/fi';
 
 interface IMobile {
   isMobileSearching: boolean;
@@ -115,19 +117,11 @@ const PostList = ({
                 <div className='includedChannel'>{channel?.name}</div>
               </PostMiddleWrapper>
               <PostBottomWrapper>
-                <div className='likesCommentContatiner'>
-                  <img
-                    className='likesImg'
-                    src='https://cdn.discordapp.com/attachments/1030309344237080636/1064609094020911214/Vector_1.png'
-                    alt='좋아요'
-                  />
-                  <div className='likesNumber'>{likes.length}</div>
-                  <img
-                    className='commentsImg'
-                    src='https://cdn.discordapp.com/attachments/1030309344237080636/1064610348914720898/icon-message-square.png'
-                    alt='댓글아이콘'
-                  />
-                  <div className='commentsNumber'>{comments.length}</div>
+                <div className='likesCommentContainer'>
+                  <FiHeart fontSize={19} className='likeIcon' />
+                  <div className='iconNumber'>{likes.length}</div>
+                  <FaRegCommentAlt />
+                  <div className='iconNumber'>{comments.length}</div>
                 </div>
                 <div className='createdAt'>{getElapsedTime(createdAt)}</div>
               </PostBottomWrapper>
@@ -282,29 +276,19 @@ const PostBottomWrapper = styled.div`
   display: flex;
   flex-direction: row;
 
-  .likesCommentContatiner {
+  .likesCommentContainer {
     display: flex;
+    align-items: center;
     width: 87%;
+    color: ${({ theme }) => theme.colors.lightGray};
 
-    .likesImg {
-      padding-top: 0.0625rem;
-      width: 1.0625rem;
-      height: 1.0625rem;
+    .likeIcon {
+      margin-bottom: 0.125rem;
     }
-    .commentsImg {
-      margin-left: 0.625rem;
-      width: 1.125rem;
-      height: 1.125rem;
-    }
-    .likesNumber {
+    .iconNumber {
       width: 1.25rem;
-      margin-left: 0.125rem;
-      color: ${({ theme }) => theme.colors.lightGray};
-    }
-    .commentsNumber {
-      width: 1.25rem;
-      margin-left: 0.125rem;
-      color: ${({ theme }) => theme.colors.lightGray};
+      margin-left: 0.1875rem;
+      margin-top: 0.0625rem;
     }
   }
 
