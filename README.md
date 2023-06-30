@@ -11,6 +11,10 @@
 
 > https://unsunghero.netlify.app/
 
+현재 서버 이용 기간 종료로 인해 새롭게 서버를 구축하고 있습니다. <br />
+따라서 시연 영상으로 redirect 시켜 놓았습니다. <br />
+시연 영상 주소 : https://youtu.be/gS8CALiBvEM
+ 
 <br/>
 
 ## <img src="https://user-images.githubusercontent.com/113018070/213464160-8d2176e2-57ec-4a60-bc95-cd1c7cbbb583.png" width="20px" height="20px"/> 팀원 소개
